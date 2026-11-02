@@ -202,7 +202,7 @@ function renderHome() {
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
       <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
     </div>
     <div class="hero-cta">
       <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
@@ -230,6 +230,7 @@ function renderHome() {
     </section>
   </div>`;
   $("#app").querySelectorAll(".ptab").forEach(b => b.onclick = () => { state.part = b.dataset.part; tsView = false; save(); renderHome(); });
+  $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };

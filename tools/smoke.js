@@ -25,6 +25,28 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(!!(await p.waitForSelector("#sheetgo", { timeout: 10000 }).catch(() => null)), "tapping a building in 3D opens its area");
   if (await p.$("#sheetx")) await p.click("#sheetx");
 
+  /* full screen 3D: open, drag the map, tap a tower, drill it, Escape closes */
+  await p.click("#fsbtn");
+  await p.waitForFunction(() => window.__townDebug().fs && document.querySelector(".town-fs canvas"), null, { timeout: 10000 }).catch(() => {});
+  check(await p.evaluate(() => window.__townDebug().fs && !!document.querySelector(".town-fs canvas")), "3D button opens the city full screen");
+  check(await p.evaluate(() => document.querySelectorAll(".town-fs .labels .tag").length) === 13, "full screen labels all 13 towers");
+  await p.waitForTimeout(1500);
+  const t0 = await p.evaluate(() => window.__townDebug().target);
+  await p.mouse.move(550, 450); await p.mouse.down(); await p.mouse.move(450, 380, { steps: 6 }); await p.mouse.up();
+  await p.waitForTimeout(1500);
+  const t1 = await p.evaluate(() => window.__townDebug().target);
+  check(Math.hypot(t1[0] - t0[0], t1[2] - t0[2]) > 5, "dragging moves around the city");
+  await p.evaluate(() => document.querySelectorAll(".town-fs .labels .tag").forEach(t => { t.style.pointerEvents = "none"; }));
+  const fspot = await p.evaluate(() => window.__townDebug().screenOf("P1-3"));
+  if (fspot) await p.mouse.click(fspot.x, fspot.y);
+  await p.waitForFunction(() => window.__townDebug().picked && !document.querySelector(".fs-card").hidden, null, { timeout: 10000 }).catch(() => {});
+  check(await p.evaluate(() => !!window.__townDebug().picked && !document.querySelector(".fs-card").hidden), "tapping a tower in full screen shows its card");
+  if (await p.$("[data-fs=drill]")) await p.click("[data-fs=drill]");
+  check(!!(await p.waitForSelector("#sheetgo", { timeout: 10000 }).catch(() => null)) && await p.evaluate(() => !window.__townDebug().fs), "Drill in the card closes 3D and opens the area");
+  if (await p.$("#sheetx")) await p.click("#sheetx");
+  await p.click("#fsbtn"); await p.waitForTimeout(800); await p.keyboard.press("Escape"); await p.waitForTimeout(800);
+  check(await p.evaluate(() => !window.__townDebug().fs && !!document.querySelector("#stage canvas")), "Escape closes full screen and the town returns to home");
+
   /* drill and flagging */
   await p.click("#play"); await p.click(".choice >> nth=0");
   check(!!(await p.$(".explain")), "drill: answering shows the explanation");

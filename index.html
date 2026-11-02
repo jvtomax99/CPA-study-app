@@ -112,6 +112,20 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .stagebtns { position: absolute; top: 4px; right: 14px; z-index: 4; display: flex; gap: 6px; }
 .sky { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); color: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .sky svg { width: 15px; height: 15px; flex: none; }
+.town-fs { position: fixed; inset: 0; z-index: 60; background: #07060f; touch-action: none; user-select: none; -webkit-user-select: none; }
+.town-fs canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+html.town-fs-open, html.town-fs-open body { overflow: hidden; }
+.fs-top { position: absolute; z-index: 4; left: 0; right: 0; top: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: flex-start; padding: calc(env(safe-area-inset-top, 0px) + 10px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
+.fs-views { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.fs-bottom { position: absolute; z-index: 4; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); display: flex; gap: 8px; }
+.fs-hint { position: absolute; z-index: 3; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 70px); transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); text-align: center; background: rgba(18,16,46,0.72); color: #fff; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; pointer-events: none; transition: opacity 600ms; }
+.fs-hint.gone { opacity: 0; }
+.fs-card { position: absolute; z-index: 5; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 66px); max-width: 420px; margin: 0 auto; display: grid; gap: 8px; background: var(--paper); color: var(--ink); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: 0 18px 40px -16px rgba(0,0,0,0.7); }
+.fs-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 16px; }
+.fs-card .sky { padding: 4px 10px; }
+.fs-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.fs-bar i { display: block; height: 100%; background: var(--amber); border-radius: 999px; }
+.fs-card span { font-size: 13px; color: var(--ink-soft); }
 .hero.night { background: radial-gradient(120% 70% at 50% 108%, #6b3d5e 0%, #3a2758 32%, transparent 62%), linear-gradient(180deg, #0b0a24 0%, #1b1742 62%, #3a2758 100%); }
 .stage-msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: rgba(255,255,255,0.8); font-size: 14px; }
 .hero-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; padding: 0 16px 18px; margin-top: -8px; position: relative; }
@@ -456,7 +470,7 @@ function renderHome() {
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
       <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
     </div>
     <div class="hero-cta">
       <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
@@ -484,6 +498,7 @@ function renderHome() {
     </section>
   </div>`;
   $("#app").querySelectorAll(".ptab").forEach(b => b.onclick = () => { state.part = b.dataset.part; tsView = false; save(); renderHome(); });
+  $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
@@ -1053,7 +1068,7 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     const done = b.m >= 0.999, cut = done ? b.H + 200 : Math.max(0.3, Math.round(b.H * b.m / 4) * 4);
     b.below.constant = cut; b.above.constant = -cut;
     b.net.visible = b.hoist.visible = !done; b.crown.visible = done;
-    b.crane.visible = !done && String(b.part) === currentPart && !viewTS;
+    b.crane.visible = !done && ((String(b.part) === currentPart && !viewTS) || !!fs);
   }
 
   /* ---------- build the instanced city ---------- */
@@ -1423,9 +1438,9 @@ void main() {
     if (!labels) return; labels.innerHTML = ""; tagEls = {};
     const names = (window.__townLabels && window.__townLabels().names) || {};
     for (const d in B) {
-      if (!d.startsWith("P" + currentPart)) continue;
+      if (!fs && !d.startsWith("P" + currentPart)) continue;
       const el = document.createElement("button"); el.className = "tag"; el.type = "button";
-      el.innerHTML = `<b class="fl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 11V1.5M2.6 1.8 10 3.6 2.6 5.6Z" fill="currentColor" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></b>${names[d] || d}<i></i>`; el.onclick = () => window.__townPick && window.__townPick(d);
+      el.innerHTML = `<b class="fl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 11V1.5M2.6 1.8 10 3.6 2.6 5.6Z" fill="currentColor" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></b>${names[d] || d}<i></i>`; el.onclick = () => fs ? select(d) : window.__townPick && window.__townPick(d);
       labels.appendChild(el); tagEls[d] = el;
     }
     updateLabelText();
@@ -1434,12 +1449,12 @@ void main() {
     for (const d in tagEls) { tagEls[d].querySelector("i").textContent = Math.round(B[d].target * 100) + "%"; tagEls[d].classList.toggle("focus", d === focusD || d === highlightD); tagEls[d].classList.toggle("done", B[d].target >= 0.999); }
   }
   function placeLabels() {
-    if (!stage) return; if (labels) labels.style.visibility = viewTS ? "hidden" : ""; if (viewTS) return; const w = stage.clientWidth, h = stage.clientHeight;
+    if (!stage) return; const hideL = viewTS && !fs; if (labels) labels.style.visibility = hideL ? "hidden" : ""; if (hideL) return; const w = stage.clientWidth, h = stage.clientHeight;
     const items = [];
     for (const d in tagEls) {
       const b = B[d]; v3.set(b.x, b.H + 12, b.z).project(camera);
       const el = tagEls[d]; if (!el._w) { el._w = el.offsetWidth || 90; el._h = el.offsetHeight || 26; }
-      items.push({ el, x: (v3.x + 1) / 2 * w, y: (1 - v3.y) / 2 * h, on: v3.z < 1 });
+      items.push({ el, x: (v3.x + 1) / 2 * w, y: (1 - v3.y) / 2 * h, on: v3.z < 1 && (!fs || (Math.abs(v3.x) < 1.02 && v3.y < 1.02 && v3.y > -1.02)) });
     }
     items.sort((a, b) => b.y - a.y);
     const placed = [];
@@ -1457,22 +1472,23 @@ void main() {
         it.y = hit.y - hh;
       }
       it.hw = hw; placed.push(it);
+      const squeezed = fs && it.y < it.el._h + 6;   /* full screen: a label with no room left hides instead of piling at the top */
       it.y = Math.max(it.el._h + 6, it.y); it.el.style.transform = `translate(${it.x}px, ${it.y}px) translate(-50%, -100%)`;
-      it.el.style.opacity = it.on ? 1 : 0;
+      it.el.style.opacity = it.on && !squeezed ? 1 : 0;
     }
   }
 
   /* ---------- pointer: drag to turn, pinch or wheel to zoom, tap a tower to drill it ---------- */
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   const ptrs = new Map(); let downAt = null, moved = false, pinch0 = null;
-  function onDown(e) { canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 1) { downAt = { x: e.clientX, y: e.clientY, off: rig.off }; moved = false; } if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = { d: Math.hypot(a.x - b.x, a.y - b.y), z: rig.zoom }; } }
+  function onDown(e) { if (fs) return; canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 1) { downAt = { x: e.clientX, y: e.clientY, off: rig.off }; moved = false; } if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = { d: Math.hypot(a.x - b.x, a.y - b.y), z: rig.zoom }; } }
   function onMove(e) {
-    if (!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (fs || !ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (ptrs.size === 2 && pinch0) { const [a, b] = [...ptrs.values()]; rig.zoom = THREE.MathUtils.clamp(pinch0.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch0.d, 0.75, 1.9); moved = true; kick(); return; }
     if (downAt) { const dx = e.clientX - downAt.x; if (Math.abs(dx) > 6 || Math.abs(e.clientY - downAt.y) > 6) moved = true; rig.off = THREE.MathUtils.clamp(downAt.off - dx * 0.004, -0.5, 0.5); kick(); }
   }
   function onUp(e) {
-    ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = null;
+    if (fs) return; ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = null;
     if (ptrs.size === 0 && downAt && !moved) {
       const r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
@@ -1483,8 +1499,154 @@ void main() {
   }
   canvas.addEventListener("pointerdown", onDown); canvas.addEventListener("pointermove", onMove);
   canvas.addEventListener("pointerup", onUp); canvas.addEventListener("pointercancel", onUp);
-  canvas.addEventListener("wheel", e => { e.preventDefault(); rig.zoom = THREE.MathUtils.clamp(rig.zoom * (e.deltaY < 0 ? 1.08 : 0.93), 0.75, 1.9); kick(); }, { passive: false });
-  canvas.addEventListener("dblclick", () => { rig.off = 0; rig.zoom = 1; kick(); });
+  canvas.addEventListener("wheel", e => { if (fs) return; e.preventDefault(); rig.zoom = THREE.MathUtils.clamp(rig.zoom * (e.deltaY < 0 ? 1.08 : 0.93), 0.75, 1.9); kick(); }, { passive: false });
+  canvas.addEventListener("dblclick", () => { if (fs) return; rig.off = 0; rig.zoom = 1; kick(); });
+
+  /* ---------- full screen: the city fills the screen and moves like a map (the CoreCHI campus way) ----------
+     One finger drags the ground (the spot under it stays under it) and glides on when let go; two fingers pinch to zoom
+     toward them, twist to turn, slide up or down together to tilt; tapping a tower flies to it. A mouse: drag to move,
+     right-drag to turn and tilt, the wheel zooms toward the pointer. The view stops softly at the city's edges. */
+  const NAV = { minD: 45, maxD: 1200, minPhi: 0.18, maxPhi: 1.42, x0: -420, x1: 420, z0: -480, z1: 480 };
+  const UPV = new THREE.Vector3(0, 1, 0), GPLANE = new THREE.Plane(UPV, 0), SPH = new THREE.Spherical(), tgt = new THREE.Vector3();
+  let fs = null, fsPrev = null, picked = null, glide = null, fly = null;
+  const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
+  function look() { camera.lookAt(tgt); camera.updateMatrixWorld(); sky.position.copy(camera.position); }
+  function groundAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.ray.intersectPlane(GPLANE, new THREE.Vector3()); return h && h.distanceTo(camera.position) < 3000 ? h : null; }
+  function moveBy(dx, dz) { tgt.x += dx; tgt.z += dz; camera.position.x += dx; camera.position.z += dz; }
+  function keepIn() { moveBy(Math.min(NAV.x1, Math.max(NAV.x0, tgt.x)) - tgt.x, Math.min(NAV.z1, Math.max(NAV.z0, tgt.z)) - tgt.z); pushOut(); }
+  /* the buildings as plain boxes on a 50 m grid, so the camera can tell what it is over and what a finger points at */
+  const GC = 50, SOLID = new Map(), gkey = (i, j) => i * 4096 + j;
+  function addSolid(x0, x1, z0, z1, top) { const s = [x0, x1, z0, z1, top]; for (let i = Math.floor(x0 / GC); i <= Math.floor(x1 / GC); i++) for (let j = Math.floor(z0 / GC); j <= Math.floor(z1 / GC); j++) { const k = gkey(i, j); if (!SOLID.has(k)) SOLID.set(k, []); SOLID.get(k).push(s); } }
+  for (const t of towers) if (Math.abs(t[0]) < 1600 && Math.abs(t[2]) < 1600) addSolid(t[0] - t[3] / 2, t[0] + t[3] / 2, t[2] - t[5] / 2, t[2] + t[5] / 2, t[1] + t[4]);
+  for (const d in B) { const b = B[d], bb = new THREE.Box3().setFromObject(b.g.children[0]); addSolid(bb.min.x, bb.max.x, bb.min.z, bb.max.z, b.H + 10); }
+  function solidAt(p) { const l = SOLID.get(gkey(Math.floor(p.x / GC), Math.floor(p.z / GC))); if (l) for (const s of l) if (p.x > s[0] && p.x < s[1] && p.z > s[2] && p.z < s[3] && p.y < s[4]) return s; return null; }
+  /* never inside a building: rise above its roof */
+  function pushOut() { const s = solidAt(camera.position); if (s) camera.position.y = s[4] + 12; if (camera.position.y < 20) camera.position.y = 20; }
+  /* the first thing under a screen point: a building face or the street */
+  function hitAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
+    const o = ray.ray.origin, dv = ray.ray.direction, p = new THREE.Vector3();
+    for (let t = 4; t < 2500; t += t < 300 ? 3 : 8) { p.copy(o).addScaledVector(dv, t); if (p.y <= 0) return groundAt(x, y); if (solidAt(p)) return p.clone(); }
+    return groundAt(x, y); }
+  function zoomAbout(M, k) { const d = camera.position.distanceTo(tgt); k = Math.min(Math.max(k, NAV.minD / d), NAV.maxD / d); for (const p of [camera.position, tgt]) p.sub(M).multiplyScalar(k).add(M);
+    const dir = tgt.clone().sub(camera.position).normalize(); if (dir.y < -0.05) tgt.addScaledVector(dir, -tgt.y / dir.y); else tgt.y = 0; }
+  function turnAbout(M, a) { for (const p of [camera.position, tgt]) p.sub(M).applyAxisAngle(UPV, a).add(M); }
+  function tiltBy(d) { const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off); SPH.phi = Math.min(NAV.maxPhi, Math.max(NAV.minPhi, SPH.phi + d)); off.setFromSpherical(SPH); camera.position.copy(tgt).add(off); }
+  /* a stage view (target, yaw, pitch, distance) as the same picture pivoting on the ground */
+  function groundPose(t, yaw, pitch, dist) { const s = t[1] / Math.sin(pitch), cp = Math.cos(pitch); return { x: t[0] - s * Math.sin(yaw) * cp, z: t[2] - s * Math.cos(yaw) * cp, r: dist + s, th: yaw, ph: Math.PI / 2 - pitch }; }
+  function flyTo(p, ms = 900) { const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off);
+    fly = { t0: performance.now(), ms, a: { x: tgt.x, z: tgt.z, r: SPH.radius, th: SPH.theta, ph: SPH.phi }, b: { x: p.x, z: p.z, r: p.r, th: SPH.theta + wrapA((p.th ?? SPH.theta) - SPH.theta), ph: p.ph ?? SPH.phi } }; glide = null; kick(); }
+  const fsView = k => { const f = FOCUS[k]; return groundPose(f.t, f.yaw, f.pitch, f.dist * (aspect < 1 ? 1.25 : 1)); };
+  function fsUpdate(now) {
+    if (glide) { const dt = Math.min(48, now - glide.t); glide.t = now; moveBy(glide.x * dt, glide.z * dt); keepIn(); const k = Math.pow(0.86, dt / 16); glide.x *= k; glide.z *= k; if (Math.hypot(glide.x, glide.z) < 0.003) glide = null; }
+    if (fly) { const u = Math.min(1, (now - fly.t0) / fly.ms), e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2, L = p => fly.a[p] + (fly.b[p] - fly.a[p]) * e;
+      tgt.set(L("x"), 0, L("z")); SPH.set(L("r"), L("ph"), L("th")); camera.position.copy(tgt).add(new THREE.Vector3().setFromSpherical(SPH)); pushOut(); if (u >= 1) fly = null; }
+    look();
+  }
+  const FP = new Map(); let fmode = null, anchor = null, d0 = 0, vel = { x: 0, z: 0, t: 0 }, tap = null;
+  const two = () => { const [a, b] = [...FP.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.hypot(b.x - a.x, b.y - a.y), ang: Math.atan2(b.y - a.y, b.x - a.x) }; };
+  function fbegin() { glide = null;
+    if (FP.size === 1) { const p = [...FP.values()][0]; fmode = p.b === 2 ? "turn" : "pan"; anchor = groundAt(p.x, p.y); vel = { x: 0, z: 0, t: performance.now() }; }
+    else if (FP.size === 2) { fmode = "two"; for (const p of FP.values()) { p.sx = p.x; p.sy = p.y; } d0 = two().d; tap = null; }
+    else fmode = null; }
+  canvas.addEventListener("pointerdown", e => { if (!fs) return; try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
+    FP.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button }); fly = null; tap = FP.size === 1 && e.button === 0 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; fbegin(); kick(); });
+  canvas.addEventListener("pointermove", e => { if (!fs) return; const p = FP.get(e.pointerId); if (!p) return;
+    const before = FP.size === 2 ? two() : null, dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+    if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 8) tap = null;
+    if (fmode === "pan" && anchor) { const h = groundAt(p.x, p.y); if (!h) return;
+      const sx = anchor.x - h.x, sz = anchor.z - h.z, now = performance.now(), dt = Math.max(8, now - vel.t);
+      moveBy(sx, sz); keepIn(); look(); vel = { x: vel.x * 0.5 + sx / dt * 0.5, z: vel.z * 0.5 + sz / dt * 0.5, t: now }; kick(); return; }
+    if (fmode === "turn") { turnAbout(tgt.clone(), -dx * 0.006); tiltBy(-dy * 0.005); keepIn(); look(); kick(); return; }
+    if (!before || FP.size !== 2) return;
+    const now2 = two();
+    if (fmode === "two") { const [a, b] = [...FP.values()], va = a.y - a.sy, vb = b.y - b.sy, ha = a.x - a.sx, hb = b.x - b.sx;
+      if (Math.abs(va) + Math.abs(vb) + Math.abs(ha) + Math.abs(hb) + Math.abs(now2.d - d0) < 14) return;   /* not decided yet */
+      fmode = va * vb > 0 && Math.abs(va) > 1.5 * Math.abs(ha) && Math.abs(vb) > 1.5 * Math.abs(hb) && Math.abs(now2.d - d0) < 0.3 * (Math.abs(va) + Math.abs(vb)) ? "tilt" : "zoom"; }
+    if (fmode === "tilt") { tiltBy(-(now2.y - before.y) * 0.004); keepIn(); look(); kick(); return; }
+    const M = hitAt(before.x, before.y); if (!M) return;
+    zoomAbout(M, before.d / Math.max(1, now2.d)); turnAbout(M, wrapA(now2.ang - before.ang)); look();
+    const h = groundAt(now2.x, now2.y); if (h) moveBy(M.x - h.x, M.z - h.z);   /* the spot between the fingers follows them */
+    keepIn(); look(); kick(); });
+  function fend(e) { if (!fs || !FP.has(e.pointerId)) return; FP.delete(e.pointerId);
+    if (tap && FP.size === 0 && performance.now() - tap.t < 450) { pickAt(e.clientX, e.clientY); tap = null; }
+    else if (fmode === "pan" && FP.size === 0 && performance.now() - vel.t < 90 && Math.hypot(vel.x, vel.z) > 0.02) { const v = Math.hypot(vel.x, vel.z), k = Math.min(1, 0.6 / v); glide = { x: vel.x * k, z: vel.z * k, t: performance.now() }; }
+    if (FP.size) fbegin(); else fmode = null; kick(); }
+  canvas.addEventListener("pointerup", fend); canvas.addEventListener("pointercancel", fend);
+  canvas.addEventListener("contextmenu", e => { if (fs) e.preventDefault(); });
+  canvas.addEventListener("wheel", e => { if (!fs) return; e.preventDefault(); fly = null; glide = null; const M = hitAt(e.clientX, e.clientY); if (!M) return; zoomAbout(M, Math.exp(e.deltaY * 0.0015)); keepIn(); look(); kick(); }, { passive: false });
+  function pickAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d); select(hit ? hit.object.userData.d : null); }
+  /* a tapped tower: fly to it and show its card */
+  function select(d) {
+    picked = d; for (const k in B) { B[k].hl = k === d; B[k].clad.emissive.setHex(B[k].hl ? 0x3a2a08 : 0x000000); }
+    highlightD = d; updateLabelText();
+    const card = fs && fs.querySelector(".fs-card"); if (!card) return;
+    if (!d) { card.hidden = true; return; }
+    const b = B[d], names = (window.__townLabels && window.__townLabels().names) || {}, pctv = Math.round(b.target * 100), floors = Math.round(b.H / 4);
+    card.innerHTML = `<div class="fs-card-top"><b>${names[d] || d}</b><button class="sky" type="button" data-fs="unpick" aria-label="Close this card">✕</button></div>
+      <div class="fs-bar"><i style="width:${pctv}%"></i></div>
+      <span>${pctv >= 100 ? "Finished: every floor is mastered." : `${pctv}% finished · ${Math.round(floors * b.target)} of ${floors} floors done`}</span>
+      <button class="btn primary" type="button" data-fs="drill">Drill ${names[d] || "this area"}</button>`;
+    card.hidden = false;
+    const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off);
+    /* frame the whole tower, a little above center so the card below doesn't cover it */
+    const r = Math.max(260, b.H * 1.9 + 80) * (aspect < 1 ? 1.1 : 1), ph = Math.min(1.05, Math.max(0.85, SPH.phi));
+    /* aim at the tower's middle, not its base: slide the ground pivot past the tower along the view */
+    const th = clearSide(b, r, ph, SPH.theta), lift = b.H * 0.45 * Math.tan(ph);
+    flyTo({ x: b.x - Math.sin(th) * lift, z: b.z - Math.cos(th) * lift, r: r + b.H * 0.3, ph, th });
+  }
+  /* of 16 directions around a tower, the one nearest the current view with nothing standing in front of it */
+  function clearSide(b, r, ph, cur) {
+    const ths = []; for (let i = 0; i < 16; i++) ths.push(cur + wrapA(i * Math.PI / 8));
+    ths.sort((a, c) => Math.abs(wrapA(a - cur)) - Math.abs(wrapA(c - cur)));
+    const base = new THREE.Vector3(b.x, 0, b.z), aim = new THREE.Vector3(b.x, b.H * 0.7, b.z), cam = new THREE.Vector3(), p = new THREE.Vector3();
+    for (const th of ths) {
+      cam.setFromSpherical(new THREE.Spherical(r, ph, th)).add(base); const L = cam.distanceTo(aim); let clear = !solidAt(cam);
+      for (let t = 0; clear && t < L - 32; t += 5) { p.lerpVectors(cam, aim, t / L); if (solidAt(p)) clear = false; }
+      if (clear) return th;
+    }
+    return cur;
+  }
+  function onFsClick(e) {
+    const a = e.target.closest("[data-fs]"); if (!a) return; const k = a.dataset.fs;
+    if (k === "close") closeFs();
+    else if (k === "home") { select(null); flyTo(fsView(currentPart)); }
+    else if (k === "unpick") select(null);
+    else if (k === "drill") { const d = picked; closeFs(); if (d && window.__townPick) setTimeout(() => window.__townPick(d), 60); }
+    else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? "Day" : "Dusk"; }
+    else if (k.startsWith("view-")) { select(null); flyTo(fsView(k.slice(5))); }
+  }
+  function openFs() {
+    if (fs) return;
+    fsPrev = stage;
+    const pose = stage ? groundPose(rig.t, rig.yaw + rig.off, rig.pitch, rig.dist / rig.zoom * (aspect < 1.2 ? 1.12 : 1)) : fsView(currentPart);
+    fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
+    fs.innerHTML = `<div class="labels"></div>
+      <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
+        <div class="fs-views">${[["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]].map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+      <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · tap a tower</div>
+      <div class="fs-bottom"><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
+      <div class="fs-card" hidden></div>`;
+    fs.addEventListener("click", onFsClick);
+    document.body.appendChild(fs); document.documentElement.classList.add("town-fs-open");
+    window.Town.mount(fs);
+    tgt.set(pose.x, 0, pose.z); SPH.set(pose.r, pose.ph, pose.th); camera.position.copy(tgt).add(new THREE.Vector3().setFromSpherical(SPH)); look();
+    for (const d in B) applyCut(B[d]);
+    try { history.pushState({ town3d: 1 }, ""); } catch (e) {}
+    setTimeout(() => { const h = fs && fs.querySelector(".fs-hint"); if (h) h.classList.add("gone"); }, 5000);
+    const close = fs.querySelector("[data-fs=close]"); if (close) close.focus();
+  }
+  function closeFs(fromHistory) {
+    if (!fs) return;
+    const el = fs, prev = fsPrev; fs = null; fsPrev = null; glide = null; fly = null; FP.clear(); fmode = null;
+    select(null);
+    window.Town.unmount(); el.remove(); document.documentElement.classList.remove("town-fs-open");
+    if (prev && document.body.contains(prev)) window.Town.mount(prev);
+    for (const d in B) applyCut(B[d]);
+    if (!fromHistory) { try { if (history.state && history.state.town3d) history.back(); } catch (e) {} }
+  }
+  addEventListener("popstate", () => { if (fs) closeFs(true); });
+  addEventListener("keydown", e => { if (fs && e.key === "Escape") { if (picked) select(null); else closeFs(); } });
 
   /* ---------- loop ---------- */
   let running = false, visible = true, lastT = performance.now(), paintAnim = null, wantFrame = true, nCars = 0, lastStat = 0, statI = 0, lastDraw = 0;
@@ -1515,7 +1677,7 @@ void main() {
     if (low && !wantFrame && now - lastDraw < 30) { requestAnimationFrame(frame); return; }
     const raw = now - lastT; lastDraw = now; sampleFrame(now, raw);
     const dt = Math.min(0.05, raw / 1000); lastT = now; U.time.value = now / 1000;
-    let busy = !reduce;
+    let busy = !reduce || (fs && (glide || fly));
     if (rig.anim) { const k = Math.min(1, (now - rig.anim.t0) / rig.anim.dur), e = 1 - Math.pow(1 - k, 3); for (let i = 0; i < 3; i++) rig.t[i] = rig.anim.from.t[i] + (rig.anim.to.t[i] - rig.anim.from.t[i]) * e; for (const key of ["yaw", "pitch", "dist"]) rig[key] = rig.anim.from[key] + (rig.anim.to[key] - rig.anim.from[key]) * e; if (k >= 1) rig.anim = null; busy = true; }
     if (paintAnim) {
       const k = Math.max(0, Math.min(1, (now - paintAnim.t0) / paintAnim.dur)), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
@@ -1536,7 +1698,7 @@ void main() {
       redLightM.color.setRGB(Math.sin(now / 300) > 0 ? 4 : 0.6, 0.3, 0.2);
       if (now - lastStat > 2600) { lastStat = now; const s = stats[statI++ % stats.length]; s.i++; drawStat(s); }
     }
-    placeCamera();
+    if (fs) fsUpdate(now); else placeCamera();
     renderer.info.reset();
     if (composer && !low) composer.render(); else renderer.render(scene, camera);
     placeLabels();
@@ -1584,9 +1746,10 @@ void main() {
     },
     setSky(name) { setSky(name, false); },
     setView(v) { viewTS = v === "ts"; for (const d in B) applyCut(B[d]); focusPart(viewTS ? "ts" : currentPart, false); kick(); },
-    celebrate(d) { if (B[d] && !reduce) { pending.push({ d, k: 0, at: performance.now() }); kick(); } }
+    celebrate(d) { if (B[d] && !reduce) { pending.push({ d, k: 0, at: performance.now() }); kick(); } },
+    fullscreen(on) { if (on) openFs(); else closeFs(); }
   };
-  window.__townDebug = () => ({ b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
+  window.__townDebug = () => ({ fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
     /* where a tower sits on screen, for tests that tap it */
     screenOf(d) { const b = B[d]; if (!b || !stage) return null; v3.set(b.x, b.H * 0.85, b.z).project(camera); const r = canvas.getBoundingClientRect(); return { x: r.left + (v3.x + 1) / 2 * r.width, y: r.top + (1 - v3.y) / 2 * r.height }; } });
   applySky(); focusPart("1", true);

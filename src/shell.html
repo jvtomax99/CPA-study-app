@@ -96,6 +96,20 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .stagebtns { position: absolute; top: 4px; right: 14px; z-index: 4; display: flex; gap: 6px; }
 .sky { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); color: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .sky svg { width: 15px; height: 15px; flex: none; }
+.town-fs { position: fixed; inset: 0; z-index: 60; background: #07060f; touch-action: none; user-select: none; -webkit-user-select: none; }
+.town-fs canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+html.town-fs-open, html.town-fs-open body { overflow: hidden; }
+.fs-top { position: absolute; z-index: 4; left: 0; right: 0; top: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: flex-start; padding: calc(env(safe-area-inset-top, 0px) + 10px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
+.fs-views { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.fs-bottom { position: absolute; z-index: 4; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); display: flex; gap: 8px; }
+.fs-hint { position: absolute; z-index: 3; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 70px); transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); text-align: center; background: rgba(18,16,46,0.72); color: #fff; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; pointer-events: none; transition: opacity 600ms; }
+.fs-hint.gone { opacity: 0; }
+.fs-card { position: absolute; z-index: 5; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 66px); max-width: 420px; margin: 0 auto; display: grid; gap: 8px; background: var(--paper); color: var(--ink); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: 0 18px 40px -16px rgba(0,0,0,0.7); }
+.fs-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 16px; }
+.fs-card .sky { padding: 4px 10px; }
+.fs-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.fs-bar i { display: block; height: 100%; background: var(--amber); border-radius: 999px; }
+.fs-card span { font-size: 13px; color: var(--ink-soft); }
 .hero.night { background: radial-gradient(120% 70% at 50% 108%, #6b3d5e 0%, #3a2758 32%, transparent 62%), linear-gradient(180deg, #0b0a24 0%, #1b1742 62%, #3a2758 100%); }
 .stage-msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: rgba(255,255,255,0.8); font-size: 14px; }
 .hero-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; padding: 0 16px 18px; margin-top: -8px; position: relative; }
