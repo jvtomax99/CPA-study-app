@@ -87,6 +87,8 @@ function gap(p) {
 /* ---------- recording an answer ---------- */
 function record(q, ok, mode) {
   const s = st(q.id), now = Date.now();
+  /* first answer of the day: keep each area's mastery as it stood, so the daily summary can show what grew */
+  if (!state.day || state.day.k !== dayKey(now)) state.day = { k: dayKey(now), m: Object.fromEntries(Object.keys(DOMAINS).map(d => [d, mastery(d)])) };
   const wasDue = !s.seen || s.due <= now;
   let box = s.box, due = s.due;
   if (!ok) { box = 0; due = now + INTERVALS[0]; }
@@ -181,17 +183,20 @@ function pushTown() {
 /* ---------- home cards ---------- */
 const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
 const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
-function areaCard(d) {
-  const D = DOMAINS[d], m = mastery(d), a = accuracy(d), qs = inBank(d), now = Date.now();
+/* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
+   Add the id here once its file is in; until then the card shows the area's tower, lit to mastery. */
+const ART = new Set([]);
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+function areaCard(d, focus) {
+  const D = DOMAINS[d], m = mastery(d), qs = inBank(d), now = Date.now();
   const due = qs.filter(q => isDue(q, now)).length;
-  const learned = qs.filter(q => st(q.id).box >= 3).length, unseen = qs.filter(q => !st(q.id).seen).length;
-  const meta = [`${examShare(d)}% of the exam`, esc(D.bld), a == null ? "not started" : pct(a) + "% right"];
-  if (due) meta.push(`<b>${due} due</b>`);
-  return `<section class="card area-card hue-${hueOf(d)}">
-    <button class="area-top" data-sheet="${d}"><i class="gem" aria-hidden="true"></i>
-      <span class="nm">${esc(D.name)}</span><span class="pct">${pct(m)}%</span><span class="area-meta">${meta.join(" · ")}</span></button>
-    <span class="meter"><i style="width:${pct(m)}%"></i></span>
-    <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
+  const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : towerSvg(m);
+  return `<section class="card area-card hue-${hueOf(d)}${focus ? " focus" : ""}">
+    <button class="area-top" data-sheet="${d}"><span class="area-art" aria-hidden="true">${art}</span>
+      <span class="area-txt"><span class="nm">${esc(D.name)}</span><span class="bld">${esc(cap(D.bld))}</span>
+        <span class="area-meta"><span>${examShare(d)}% of exam</span> · <span>${qs.length} questions</span>${due ? ` · <b>${due} due</b>` : ""}</span></span></button>
+    <div class="area-side">${focus && m === 0 ? `<span class="start">Start here</span>` : `<span class="pct">${pct(m)}%</span>`}
+      <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
   </section>`;
 }
 function renderHome() {
@@ -232,11 +237,8 @@ function renderHome() {
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
-    ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
-      <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
-      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-    ${partDomains(p).map(areaCard).join("")}
+    ${partDomains(p).map(d => areaCard(d, g && g.m < 0.999 && g.d === d)).join("")}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
@@ -355,7 +357,7 @@ function renderDrill() {
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
         <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
-      : `<div class="actions"><button class="btn primary" id="next">Next question</button>${ok && !drill.guessed ? `<button class="btn" id="guess" title="Counts this as a miss, so it comes back soon">I guessed</button>` : ""}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
+      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">See today's summary</button>` : `<button class="btn primary" id="next">Next question</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="Counts this as a miss, so it comes back soon">I guessed</button>` : ""}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
@@ -369,6 +371,7 @@ function renderDrill() {
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
   if ($("#guess")) $("#guess").onclick = markGuess;
+  if ($("#summary")) $("#summary").onclick = renderSummary;
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
   if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
@@ -383,7 +386,7 @@ function answerDrill(i) {
   record(drill.q, ok, "drill");
   drill.mAfter = mastery(drill.q.domain);
   drill.run = ok ? (drill.run || 0) + 1 : 0; drill.line = pickLine(ok ? PRAISE : CONSOLE);
-  if (before < state.goal && todayCount() >= state.goal) toast(`Daily goal done: ${state.goal} questions.`);
+  if (before < state.goal && todayCount() >= state.goal) drill.goalHit = true;
   renderDrill();
 }
 /* "I guessed": a right answer that was luck is scheduled as a miss, so it comes back in 5 minutes and doesn't add to mastery.
@@ -398,11 +401,11 @@ function markGuess() {
   if (drill.row) drill.row.g = true;
   renderDrill();
 }
-function leaveDrill() { if (sess && sess.rows.length >= 3) renderSummary(); else renderHome(); }
-/* Session summary, shown when leaving a drill after 3 or more answers. Guesses count as misses.
+function leaveDrill() { if (sess && sess.rows.length >= 3) renderSession(); else renderHome(); }
+/* Session summary (renderSession; the daily summary is renderSummary), shown when leaving a drill after 3 or more answers. Guesses count as misses.
    "New" means never answered before this session's first try, the closest thing in Drill to an exam-day number. */
-function renderSummary() {
-  view = "summary";
+function renderSession() {
+  view = "session";
   const S = sess, rows = S.rows, n = rows.length, good = r => r.ok && !r.g;
   const right = rows.filter(good).length, guessed = rows.filter(r => r.g).length;
   const fresh = rows.filter(r => r.first), rev = rows.filter(r => !r.first);
@@ -415,7 +418,7 @@ function renderSummary() {
     <div class="eyebrow" style="color:var(--ink-soft)">Session · ${esc(scope)} · ${mins} min</div>
     <div class="result-big">${pct(right / n)}%</div>
     <div class="muted">${right} of ${n} right.${guessed ? ` ${guessed} more ${guessed === 1 ? "was a guess, counted as a miss" : "were guesses, counted as misses"}.` : ""}</div>
-    <div class="sumstats">${stat("New questions", fresh)}${stat("Reviews", rev)}</div>
+    <div class="sessstats">${stat("New questions", fresh)}${stat("Reviews", rev)}</div>
     ${fresh.length ? `<p class="hint" style="margin:0">Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.</p>` : ""}
   </section>
   <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>Mastery</h2></div>
@@ -429,6 +432,37 @@ function renderSummary() {
   <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">Keep drilling</button><button class="btn" id="sumhome">Back to town</button></div>`;
   $("#back").onclick = renderHome; $("#sumhome").onclick = renderHome;
   $("#sumgo").onclick = () => startDrill(S.domain, true);
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Daily summary: shown once the daily goal is reached in a drill ---------- */
+function todayStats() {
+  const k = dayKey(Date.now()), rows = state.log.filter(r => dayKey(r.t) === k);
+  let right = 0, run = 0, best = 0, ms = 0;
+  rows.forEach((r, i) => {
+    if (r.ok) { right++; run++; best = Math.max(best, run); } else run = 0;
+    ms += i ? Math.min(r.t - rows[i - 1].t, 3 * MIN) : 40e3; /* gaps over 3 minutes count as a break */
+  });
+  const areas = [...new Set(rows.map(r => byId[r.id] && byId[r.id].domain).filter(Boolean))];
+  return { n: rows.length, right, best, min: Math.max(1, Math.round(ms / MIN)), areas, missed: rows.length - right };
+}
+function renderSummary() {
+  view = "summary";
+  const t = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
+  const towers = t.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
+    return `<div class="sumtower">${towerSvg(now, was)}<b>${esc(DOMAINS[d].short)}</b><span class="${dm < 0 ? "dn" : ""}">${dm > 0 ? "+" : dm < 0 ? "−" : "±"}${Math.abs(dm)}%</span></div>`; }).join("");
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  <article class="sheet summary">
+    <div class="sumhead"><img class="sumbuddy" src="art/buddy-bust.webp" alt="">
+      <div><span class="k">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</span><h2>Daily goal done${state.name ? `, ${esc(state.name)}` : ""}.</h2>
+      <span class="sk">${ICON.fire}${sk} day${sk === 1 ? "" : "s"} in a row</span></div></div>
+    <div class="sumstats"><div><b>${t.n}</b><span>answered</span></div><div><b>${t.n ? pct(t.right / t.n) : 0}%</b><span>right</span></div><div><b>${t.min}</b><span>min</span></div><div><b>${t.best}</b><span>best run</span></div></div>
+    <div class="sumtowers"><h3>What you built today</h3><div class="row">${towers}</div></div>
+    <p class="summiss">${t.missed ? `You missed ${t.missed}. Each comes back in 5 minutes, then again tomorrow if you get it.` : "Nothing missed today."}</p>
+    <div class="actions"><button class="btn primary" id="keepgo">Keep going</button><button class="btn ghost" id="totown">Back to town</button></div>
+  </article>`;
+  $("#back").onclick = renderHome; $("#totown").onclick = renderHome;
+  $("#keepgo").onclick = () => { drill.goalHit = false; nextQ(); };
   window.scrollTo(0, 0);
 }
 
@@ -648,7 +682,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && $("#scrim")) return closeLayer();
   if (view === "drill" && drill && drill.q) {
     if (drill.picked == null && i >= 0) { e.preventDefault(); answerDrill(i); }
-    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); nextQ(); }
+    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); drill.goalHit ? renderSummary() : nextQ(); }
     else if (drill.picked != null && !drill.flagging && k === "g") { e.preventDefault(); markGuess(); }
   } else if (view === "exam" && state.examRun && !state.examRun.onBreak && i >= 0) {
     const btn = $("#app").querySelectorAll(".choice")[i]; if (btn) { e.preventDefault(); btn.click(); }
