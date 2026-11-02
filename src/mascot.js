@@ -1,14 +1,55 @@
-/* The study buddy on the home card. Ported from Dr. Smiley's hello in the Interp app:
-   numbers and equations spiral in from the edges, lock into a ring around "A = L + E",
-   pulse once, then spin down into him with a flash and a burst of gold stars. He springs
-   in, the coach bubble pops up beside him, and a thought cloud types a pep talk.
-   The full hello plays once per app load. Tapping him gives a hop and a new pep talk.
-   renderHome (app.js) writes the .buddy markup and calls Mascot.mount(hero). */
+/* The greeting at the top of Home, with the study buddy. Ported from Dr. Smiley's hello in
+   the Interp app (home-polish.js / home-polish.css there):
+   - a night Midtown skyline (drawn here, no photo), "Good morning," and the date, the
+     person's name in Parisienne, a tax quote of the day in Lora italic;
+   - the buddy as a bust popping out of a gold-coin disc, with a ring of numbers turning
+     behind it (Dr. Smiley's ring is the Hackensack mark's sixteen squares);
+   - "PLAY" lit up on the screen of the calculator he holds (where Dr. Smiley has his "Ask" badge);
+   - the hello, once per app load: numbers and equations spiral in from the edges, lock
+     into a ring around "A = L + E", pulse, then spin down into him with a flash and gold
+     stars. He springs in, Play lights up on his calculator, his name is written in, and
+     a thought cloud types a pep talk. Tapping him gives a hop and a new pep talk.
+   renderHome (app.js) puts Mascot.greeting(...) at the top and calls Mascot.mount(). */
 (() => {
   const TAU = Math.PI * 2;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const ART = "art/mascot.webp";
+  const ART = "art/buddy-bust.webp";
   const art = new Image(); art.decoding = "async"; art.src = ART;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, cut from the
+     full figure; it is S wide and ART_H * S tall, reaching below the calculator so his body
+     fills the whole disc). The disc sits round his shoulders; his head pops out above its
+     centre line, and so does the calculator he holds, over the disc's lower right rim. */
+  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360;
+  // The calculator and his hand, measured on the picture, from where its left edge meets the
+  // disc round to the top-right corner (clockwise in reverse: bottom, right side, top).
+  const CALC = [[0.5475, 1.2], [0.8625, 1.269], [0.9625, 1.2125], [0.975, 1.0875], [1.006, 0.9125], [1.01, 0.8]];
+  // Clip for the picture: above the disc's centre line, the disc below it, plus the calculator.
+  const FACE_CLIP = (() => {
+    const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
+    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, DISC.y)];
+    for (let i = CALC.length - 1; i >= 0; i--) pts.push(P(CALC[i][0], CALC[i][1]));
+    // round the disc from where the calculator's left edge meets it, to the left rim
+    const a0 = Math.acos((0.5375 - DISC.x) / DISC.r);
+    for (let k = 0; k <= 10; k++) { const a = a0 + (Math.PI - a0) * k / 10; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
+    pts.push(P(-0.4, DISC.y));
+    return `polygon(${pts.join(",")})`;
+  })();
+
+  /* Quote of the day. Wording as published:
+     Franklin, letter to Jean-Baptiste Le Roy, Nov. 13, 1789.
+     Holmes, dissenting, Compañía General de Tabacos de Filipinas v. Collector, 275 U.S. 87, 100 (1927).
+     Learned Hand, Helvering v. Gregory, 69 F.2d 809, 810 (2d Cir. 1934).
+     Marshall, McCulloch v. Maryland, 17 U.S. 316, 431 (1819).
+     Conan Doyle, "A Scandal in Bohemia" (1891), Sherlock Holmes speaking. */
+  const QUOTES = [
+    ["In this world nothing can be said to be certain, except death and taxes.", "Benjamin Franklin"],
+    ["Taxes are what we pay for civilized society.", "Oliver Wendell Holmes Jr."],
+    ["Any one may so arrange his affairs that his taxes shall be as low as possible.", "Judge Learned Hand"],
+    ["The power to tax involves the power to destroy.", "Chief Justice John Marshall"],
+    ["It is a capital mistake to theorize before one has data.", "Arthur Conan Doyle"]
+  ];
 
   const PEP = [
     "You’ve got this!", "Small wins add up.", "One tower at a time.", "Progress compounds.",
@@ -30,6 +71,95 @@
   const easeOut3 = x => 1 - Math.pow(1 - clamp(x), 3), easeIn3 = x => Math.pow(clamp(x), 3);
   const back = (x, k) => { x = clamp(x); const c = k + 1; return 1 + c * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
 
+  /* ---------- the night Midtown skyline, drawn once ---------- */
+  let skyline = "";
+  function drawSkyline() {
+    if (skyline) return skyline;
+    let seed = 7; const R = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const W = 400, H = 280, out = [];
+    out.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice">
+      <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#090822"/><stop offset=".45" stop-color="#17143e"/><stop offset=".75" stop-color="#33255a"/><stop offset="1" stop-color="#6b3d5e"/></linearGradient>
+      <radialGradient id="g" cx=".5" cy="1" r=".7"><stop offset="0" stop-color="#d9876e" stop-opacity=".45"/><stop offset="1" stop-color="#d9876e" stop-opacity="0"/></radialGradient>
+      <radialGradient id="m" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6dc" stop-opacity=".5"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient></defs>
+      <rect width="${W}" height="${H}" fill="url(#s)"/><rect y="${H * 0.45}" width="${W}" height="${H * 0.55}" fill="url(#g)"/>`);
+    for (let i = 0; i < 60; i++) out.push(`<circle cx="${(R() * W).toFixed(1)}" cy="${(R() * H * 0.5).toFixed(1)}" r="${(0.3 + R() * 0.8).toFixed(2)}" fill="#fff" opacity="${(0.25 + R() * 0.6).toFixed(2)}"/>`);
+    out.push(`<circle cx="214" cy="38" r="22" fill="url(#m)"/><path d="M214 28a10 10 0 1 0 9 14 8 8 0 0 1-9-14z" fill="#fff3d0"/>`);
+    const windows = (x, y, w, h, p, lit) => {
+      for (let wy = y + 5; wy < h + y - 4; wy += 6) for (let wx = x + 3; wx < x + w - 3; wx += 5)
+        if (R() < p) out.push(`<rect x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width="2.4" height="3.2" fill="${lit[Math.floor(R() * lit.length)]}" opacity="${(0.5 + R() * 0.5).toFixed(2)}"/>`);
+    };
+    // far blocks
+    for (let x = -6; x < W;) { const w = 14 + R() * 18, h = 50 + R() * 70; out.push(`<rect x="${x.toFixed(1)}" y="${(H - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#2a2354"/>`); windows(x, H - h, w, h, 0.08, ["#8f84c9", "#c9b4ff"]); x += w + 1; }
+    // two landmarks: a stepped tower with a mast, a tower with a stepped crown and spire
+    const step = (cx, base, tiers, color) => { let y = base; for (const [w, h] of tiers) { y -= h; out.push(`<rect x="${cx - w / 2}" y="${y}" width="${w}" height="${h + 1}" fill="${color}"/>`); windows(cx - w / 2, y, w, h, 0.22, ["#ffd27a", "#ffe9b0", "#9be3b8"]); } return y; };
+    let top = step(92, H, [[40, 120], [30, 36], [20, 18], [12, 10]], "#1d1946");
+    out.push(`<rect x="90.5" y="${top - 26}" width="3" height="26" fill="#1d1946"/><circle cx="92" cy="${top - 27}" r="1.6" fill="#ff5d6c"/>`);
+    top = step(300, H, [[34, 150], [24, 16]], "#1d1946");
+    for (let k = 0; k < 4; k++) out.push(`<path d="M${300 - 12 + k * 3} ${top - k * 7} q${12 - k * 3} -${10 - k} ${24 - k * 6} 0" fill="none" stroke="#e7d9a8" stroke-width="1.4" opacity=".85"/>`);
+    out.push(`<path d="M300 ${top - 50} L302 ${top - 26} L298 ${top - 26}Z" fill="#e7d9a8"/><circle cx="300" cy="${top - 51}" r="1.4" fill="#ff5d6c"/>`);
+    // near blocks
+    for (let x = -4; x < W;) { const w = 18 + R() * 26, h = 24 + R() * 60; out.push(`<rect x="${x.toFixed(1)}" y="${(H - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#120f30"/>`); windows(x, H - h, w, h, 0.16, ["#ffd27a", "#ffe9b0", "#ffb35c"]); x += w + 2; }
+    out.push(`<rect y="${H - 8}" width="${W}" height="8" fill="#0b0a22"/></svg>`);
+    skyline = "data:image/svg+xml," + encodeURIComponent(out.join(""));
+    return skyline;
+  }
+
+  /* ---------- the greeting markup ---------- */
+  /* PLAY on the calculator's screen, drawn as SVG in his figure's own units (S = 1000 across), so it
+     lands on the same pixels in every browser. The screen's corners, measured on the picture
+     (695,672 862,730 842,783 672,718 in the full figure), pulled 6% in toward their centre so the
+     glass sits inside the bezel. The words are centred on the screen and turned with it (19.5deg);
+     textLength fixes their width whatever font the device has. */
+  const LCD = (() => {
+    const C = [[695, 672], [862, 730], [842, 783], [672, 718]].map(([x, y]) => [(x - 110) / 0.8, (y - 30) / 0.8]);
+    const cx = C.reduce((a, p) => a + p[0], 0) / 4, cy = C.reduce((a, p) => a + p[1], 0) / 4;
+    const pts = C.map(([x, y]) => `${(cx + 0.94 * (x - cx)).toFixed(1)},${(cy + 0.94 * (y - cy)).toFixed(1)}`).join(" ");
+    const r = n => n.toFixed(1);
+    return `<defs><linearGradient id="bpG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecfff3"/><stop offset="1" stop-color="#a4eac0"/></linearGradient>
+      <filter id="bpB" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+      <polygon class="bp-glow" points="${pts}" fill="#9be3b8" filter="url(#bpB)"/>
+      <polygon points="${pts}" fill="url(#bpG)" stroke="#0b3a21" stroke-opacity=".35" stroke-width="2"/>
+      <g transform="rotate(19.5 ${r(cx)} ${r(cy)})" fill="#0b3a21">
+        <path d="M${r(cx - 80)} ${r(cy - 14)}V${r(cy + 14)}L${r(cx - 56)} ${r(cy)}Z"/>
+        <text x="${r(cx - 42)}" y="${r(cy + 16.5)}" textLength="122" lengthAdjust="spacingAndGlyphs" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="46">PLAY</text>
+      </g>`;
+  })();
+  const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
+  function greeting({ name, pill }) {
+    const now = new Date(), h = now.getHours();
+    const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
+    const nm = (name || "").trim(), shown = nm || "Welcome";
+    const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const ring = RING_GLYPHS.map((g, i) => { const a = i / RING_GLYPHS.length * TAU - Math.PI / 2;
+      return `<span class="rg" style="left:${(50 + 50 * Math.cos(a)).toFixed(2)}%;top:${(50 + 50 * Math.sin(a)).toFixed(2)}%;--i:${i}"><i>${g}</i></span>`; }).join("");
+    return `<section class="greet" aria-label="Greeting">
+      <div class="greet-sky" style="background-image:url(&quot;${drawSkyline()}&quot;)"></div>
+      <div class="greet-scrim"></div>
+      <div class="greet-text">
+        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
+        <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
+        <div class="greet-row">
+          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}</div>
+          <div class="buddy" id="buddy">
+            <span class="buddy-ring" aria-hidden="true">${ring}</span>
+            <span class="buddy-disc" aria-hidden="true"></span>
+            <span class="buddy-fig">
+              <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+                <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
+              </button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
+              <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
+            </span>
+            <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
+            <span class="buddy-status" aria-live="polite"></span>
+          </div>
+        </div>
+        <blockquote class="greet-quote">“${esc(q)}”<cite>${esc(who)}</cite></blockquote>
+      </div>
+    </section>`;
+  }
+
   /* ---------- thought cloud (Dr. Smiley's "Sparkle Float", in cream and mint) ---------- */
   const BUMPS = [[26,46,19],[46,30,22],[72,24,25],[99,31,21],[117,47,16],[96,56,19],[64,59,20],[34,58,15]];
   const SHAPES = '<rect x="14" y="34" width="112" height="36" rx="18"/>' + BUMPS.map(b => `<circle cx="${b[0]}" cy="${b[1]}" r="${b[2]}"/>`).join("");
@@ -43,7 +173,7 @@
     for (let i = 1; i < w.length; i++) { const a = w.slice(0, i).join(" "), b = w.slice(i).join(" "), s = Math.max(a.length, b.length); if (s < score) { score = s; best = [a, b]; } }
     return best;
   }
-  function makeCloud(button, text) {
+  function makeCloud(face, text) {
     const id = "bc" + (++cloudSeq), lines = split(text);
     const el = document.createElement("span");
     el.className = "buddy-thought"; el.setAttribute("aria-hidden", "true");
@@ -64,9 +194,13 @@
       ${GLYPHS.map(g => `<text class="bc-glyph" text-anchor="middle" dominant-baseline="central" opacity="0">${g[2]}</text>`).join("")}
     </svg>`;
     document.body.appendChild(el);
-    const b = button.getBoundingClientRect(), room = document.documentElement.clientWidth - 4;
-    let left = b.left - 150, top = b.top + 4, sc = 1;
-    if (left < 8) { sc = Math.max(0.7, (b.left - 8) / 150); left = b.left - 150 * sc; el.style.transformOrigin = "100% 0"; }
+    // To his left, level with his face, the dots trailing to his head.
+    const b = face.getBoundingClientRect(), room = document.documentElement.clientWidth - 4;
+    const edge = b.left + b.width * 0.08;
+    // never over the name: when he stands level with it, the cloud opens just below it
+    const nameEl = document.querySelector(".greet-name"), nameBottom = nameEl ? nameEl.getBoundingClientRect().bottom - 2 : -1e9;
+    let left = edge - 156, top = Math.max(b.top + b.width * 0.12, nameBottom), sc = 1;
+    if (left < 8) { sc = Math.max(0.7, (edge - 8) / 156); left = edge - 156 * sc; el.style.transformOrigin = "100% 0"; }
     left = Math.max(8, Math.min(room - 150, left));
     el.style.left = (left + window.scrollX) + "px"; el.style.top = (top + window.scrollY) + "px";
     if (sc < 1) el.style.scale = sc.toFixed(3);
@@ -104,11 +238,11 @@
   /* One cloud at a time, on its own clock, taken down when Home goes away. */
   let cloud = null;
   function stopCloud() { if (!cloud) return; cancelAnimationFrame(cloud.frame); cloud.c.remove(); window.removeEventListener("resize", cloud.onResize); cloud = null; }
-  function think(button, text, holdStill) {
+  function think(root, text, holdStill) {
     stopCloud();
-    const status = button.querySelector(".buddy-status");
+    const face = root.querySelector(".buddy-face"), status = root.querySelector(".buddy-status");
     if (status) status.textContent = text;
-    const c = makeCloud(button, text), w = window.innerWidth;
+    const c = makeCloud(face, text), w = window.innerWidth;
     const me = { c, frame: 0, onResize: () => { if (window.innerWidth !== w) stopCloud(); } };
     cloud = me; window.addEventListener("resize", me.onResize, { passive: true });
     // With reduced motion the cloud just sits there, finished, for its 6.5 seconds.
@@ -116,19 +250,18 @@
     let t0 = null;
     const step = now => {
       if (cloud !== me) return;
-      if (!button.isConnected) return stopCloud();
+      if (!root.isConnected) return stopCloud();
       if (t0 === null) t0 = now;
       if (holdStill ? now - t0 > 6500 : !c.update(now - t0)) return stopCloud();
       me.frame = requestAnimationFrame(step);
     };
     me.frame = requestAnimationFrame(step);
-    return me;
   }
 
-  /* ---------- the opening: numbers and equations spiral into him ---------- */
+  /* ---------- the hello: numbers and equations spiral into him ---------- */
   const TOKENS = ["7", "$", "%", "+", "3", "÷", "=", "9", "×", "1040", "Σ", "−", "0", "W-2"];
   const TOKEN_INK = ["#FFD27A", "#FFFFFF", "#9BE3B8"];
-  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, COACH_AT = 2700, CLOUD_AT = 2880;
+  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, PLAY_AT = FACE_AT + 380, PEN_AT = 2650, CLOUD_AT = 2880, END = 4300;
   const sprite = rgb => { const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d");
     const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(0.35, `rgba(${rgb},.4)`); gr.addColorStop(1, `rgba(${rgb},0)`);
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c; };
@@ -143,26 +276,26 @@
     return { opacity: Math.min(1, p * 5), transform: `translate3d(0,${y.toFixed(2)}px,0) rotate(${angle.toFixed(2)}deg) scale(${s.toFixed(4)})` };
   }
 
-  let played = false, running = null;
-  function stopOpening() { if (running) running(); }
+  let played = false, running = null, onDone = null;
+  const done = () => { const f = onDone; onDone = null; if (f) setTimeout(f, 1200); };
 
-  async function hello(hero, button) {
-    const body = button.querySelector(".buddy-body"), coach = hero.querySelector(".coach");
-    button.classList.add("buddy-pending");
-    try { await art.decode(); } catch (e) { button.classList.remove("buddy-pending"); return; }
+  async function hello(greet, root) {
+    const body = root.querySelector(".buddy-fig");
+    root.classList.add("buddy-pending");
+    try { await art.decode(); } catch (e) { root.classList.remove("buddy-pending"); done(); return; }
     if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 600))]);
-    if (!button.isConnected) return;
-    if (reduced.matches || document.hidden || !button.animate) { button.classList.remove("buddy-pending"); think(button, pickPep(), true); return; }
+    if (!root.isConnected) return;
+    if (reduced.matches || document.hidden || !root.animate) { root.classList.remove("buddy-pending"); think(root, pickPep(), true); done(); return; }
 
     const canvas = document.createElement("canvas");
     canvas.className = "buddy-canvas"; canvas.setAttribute("aria-hidden", "true");
     const ctx = canvas.getContext("2d");
-    if (!ctx) { button.classList.remove("buddy-pending"); return; }
-    hero.appendChild(canvas);
-    const box = hero.getBoundingClientRect(), b = button.getBoundingClientRect();
-    const w = box.width, h = box.height, bx = b.left - box.left + b.width / 2, by = b.top - box.top + b.height * 0.44;
+    if (!ctx) { root.classList.remove("buddy-pending"); done(); return; }
+    greet.appendChild(canvas);
+    const box = greet.getBoundingClientRect(), face = root.querySelector(".buddy-face").getBoundingClientRect();
+    const w = box.width, h = box.height, bx = face.left - box.left + face.width * 0.5, by = face.top - box.top + face.width * 0.6;
     // The ring forms where it fits inside the card, then glides into him as it spins down.
-    const fx = Math.max(RING + 26, Math.min(bx, w - RING - 26)), fy = Math.max(RING + 20, by);
+    const fx = Math.max(RING + 26, Math.min(bx, w - RING - 26)), fy = Math.max(RING + 20, Math.min(by, h - RING - 20));
     let cx = fx, cy = fy;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -186,7 +319,7 @@
       const slot = i / N * TAU - Math.PI / 2;
       const r = (reach + (RING - reach) * f) * scale * (1 - 0.94 * collapse);
       const a = slot - (1 - f) * TURN + spin;
-      return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.86, f, st, a };
+      return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.86, f, st };
     }
     function drawOpening(t) {
       ctx.clearRect(0, 0, w, h);
@@ -195,7 +328,7 @@
       const beat = Math.sin(Math.PI * win(t, 1650, 1780)), scale = 1 + 0.08 * beat;
       const rays = smooth(win(t, 1050, 1450)) * (1 - smooth(win(t, 1800, 2250)));
       if (rays > 0) {
-        const len = Math.max(170, h * 0.35);
+        const len = Math.max(170, h * 0.5);
         ctx.save(); ctx.translate(cx, cy); ctx.rotate(t / 1000 * 0.6); ctx.globalCompositeOperation = "lighter";
         for (let n = 0; n < 10; n++) {
           ctx.rotate(TAU / 10); const gr = ctx.createLinearGradient(0, 0, 0, -len);
@@ -229,8 +362,8 @@
       // the accounting equation glows in the middle of the ring
       const eq = smooth(win(t, 1100, 1400)) * alpha;
       if (eq > 0) {
-        const s = 17 * k;
-        lctx.save(); lctx.translate(cx, cy); lctx.rotate(spin); lctx.scale(0.7 + 0.3 * back(win(t, 1100, 1450), 2), 0.7 + 0.3 * back(win(t, 1100, 1450), 2));
+        const s = 17 * k, z = 0.7 + 0.3 * back(win(t, 1100, 1450), 2);
+        lctx.save(); lctx.translate(cx, cy); lctx.rotate(spin); lctx.scale(z, z);
         lctx.globalAlpha = eq; lctx.font = `800 ${s.toFixed(1)}px Inter, system-ui, sans-serif`;
         lctx.lineWidth = Math.max(1, s * 0.18); lctx.strokeStyle = "rgba(11,10,36,.6)"; lctx.strokeText("A = L + E", 0, 0);
         lctx.fillStyle = "#FFFFFF"; lctx.fillText("A = L + E", 0, 0); lctx.restore();
@@ -255,24 +388,28 @@
       }
     }
 
-    // Browser animations for the halo, shine, glints and coach bubble, moved along by the same clock.
+    // Browser animations, moved along by the same clock as the canvas.
     let anims = [];
     const anim = (el, frames, opts) => { if (!el) return; const a = el.animate(frames, opts); a.pause(); a.currentTime = 0; anims.push(a); };
-    anim(button.querySelector(".buddy-halo"), [{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.05)", opacity: 0.45, offset: 0.55 }, { transform: "scale(1.6)", opacity: 1, offset: 0.7 }, { transform: "scale(1)", opacity: 0.6 }], { duration: 3500, easing: "ease-in-out" });
-    anim(button.querySelector(".buddy-shine"), [{ opacity: 0, backgroundPosition: "100% 0" }, { opacity: 0.5, offset: 0.3 }, { opacity: 0, backgroundPosition: "0% 0" }], { duration: 950, delay: 2710, easing: "ease-in-out" });
-    button.querySelectorAll(".buddy-glint").forEach((el, i) => anim(el, [{ opacity: 0, transform: "scale(.3) rotate(-25deg)" }, { opacity: 0.9, transform: "scale(1.05) rotate(15deg)", offset: 0.4 }, { opacity: 0, transform: "scale(.5) rotate(35deg)" }], { duration: 600, delay: 2940 + i * 550 }));
-    anim(coach, [{ opacity: 0, transform: "translateY(8px) scale(.86)" }, { opacity: 1, transform: "none" }], { duration: 460, delay: COACH_AT, fill: "backwards", easing: "cubic-bezier(.3,1.4,.5,1)" });
+    anim(root.querySelector(".buddy-disc"), [{ opacity: 0, transform: "scale(.6)" }, { opacity: 1, transform: "none" }], { duration: 450, delay: FACE_AT - 120, fill: "backwards", easing: "cubic-bezier(.3,1.4,.5,1)" });
+    anim(root.querySelector(".buddy-ring"), [{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: FACE_AT, fill: "backwards", easing: "ease-out" });
+    anim(root.querySelector(".buddy-shine"), [{ opacity: 0, backgroundPosition: "100% 0" }, { opacity: 0.5, offset: 0.3 }, { opacity: 0, backgroundPosition: "0% 0" }], { duration: 950, delay: 2710, easing: "ease-in-out" });
+    root.querySelectorAll(".buddy-glint").forEach((el, i) => anim(el, [{ opacity: 0, transform: "scale(.3) rotate(-25deg)" }, { opacity: 0.9, transform: "scale(1.05) rotate(15deg)", offset: 0.4 }, { opacity: 0, transform: "scale(.5) rotate(35deg)" }], { duration: 600, delay: 2940 + i * 550 }));
+    // the name is written in, left to right, once he has landed
+    anim(greet.querySelector(".greet-name"), [{ clipPath: "inset(-20% 100% -20% 0)", opacity: 0.6 }, { clipPath: "inset(-20% 0% -20% 0)", opacity: 1 }], { duration: 1100, delay: PEN_AT, fill: "backwards", easing: "cubic-bezier(.45,.1,.4,1)" });
 
     let frame = 0, last = null, elapsed = 0, entered = false, thought = false;
-    button.classList.add("buddy-entering");
-    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; button.classList.remove("buddy-entering"); };
+    root.classList.add("buddy-entering", "buddy-wait");
+    // Play lights up on his calculator just after he lands
+    anim(root.querySelector(".bp-lcd"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
+    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); };
     const stop = () => {
       cancelAnimationFrame(frame); anims.forEach(a => a.cancel()); anims = [];
-      if (!entered) land(); canvas.remove(); button.classList.remove("buddy-pending");
+      if (!entered) land(); canvas.remove(); root.classList.remove("buddy-pending", "buddy-wait");
       if (running === stop) running = null;
     };
-    stopOpening(); running = stop;
-    button.classList.remove("buddy-pending");
+    if (running) running(); running = stop;
+    root.classList.remove("buddy-pending");
     const place = t => {
       if (entered) return;
       if (t < FACE_AT) { body.style.opacity = "0"; return; }
@@ -281,49 +418,78 @@
     };
     place(0);
     const draw = now => {
-      if (!button.isConnected) return stop();
+      if (!root.isConnected) return stop();
       // A short stall (the 3D town loading) slows the hello down instead of skipping it;
       // a very slow device still finishes within a few seconds.
       if (last !== null) elapsed += Math.min(100, Math.max(0, now - last));
       last = now;
       anims.forEach(a => { a.currentTime = elapsed; });
       place(elapsed);
-      if (elapsed >= CLOUD_AT && !thought) { thought = true; think(button, pickPep()); }
+      if (elapsed >= PLAY_AT) root.classList.remove("buddy-wait");
+      if (elapsed >= CLOUD_AT && !thought) { thought = true; think(root, pickPep()); }
       if (elapsed < OPEN_END) drawOpening(elapsed);
-      else return stop();
+      else if (!canvas.hidden) canvas.hidden = true;
+      if (elapsed >= END) { stop(); done(); return; }
       frame = requestAnimationFrame(draw);
     };
     frame = requestAnimationFrame(draw);
   }
 
-  /* ---------- tap: a hop, a puff of numbers off the calculator, a new pep talk ---------- */
-  function hop(button) {
-    const body = button.querySelector(".buddy-body");
+  /* ---------- tap: a hop, a puff of numbers, a new pep talk ---------- */
+  function hop(root) {
+    const body = root.querySelector(".buddy-fig");
     if (!reduced.matches && body.animate) {
       body.animate([
         { transform: "none" }, { transform: "translateY(2px) scale(1.06,.92)", offset: 0.15 },
-        { transform: "translateY(-16px) scale(.96,1.05)", offset: 0.45 }, { transform: "translateY(1px) scale(1.05,.95)", offset: 0.75 }, { transform: "none" }
+        { transform: "translateY(-12px) scale(.96,1.05)", offset: 0.45 }, { transform: "translateY(1px) scale(1.05,.95)", offset: 0.75 }, { transform: "none" }
       ], { duration: 620, easing: "ease-out" });
-      const puff = ["+", "$", "%", "=", "7"];
-      puff.forEach((g, i) => {
+      ["+", "$", "%", "=", "7"].forEach((g, i) => {
         const s = document.createElement("span"); s.className = "buddy-puff"; s.textContent = g; s.setAttribute("aria-hidden", "true");
-        s.style.left = (62 + i * 6) + "%"; s.style.top = "52%"; button.appendChild(s);
+        s.style.left = (56 + i * 7) + "%"; s.style.top = "62%"; root.appendChild(s);
         const dx = (i - 2) * 14 + (Math.random() * 8 - 4), dy = -50 - Math.random() * 30;
         s.animate([{ opacity: 0, transform: "translate(-50%,-50%) scale(.4)" }, { opacity: 1, transform: `translate(calc(-50% + ${dx * 0.4}px), calc(-50% + ${dy * 0.4}px)) scale(1.1)`, offset: 0.3 }, { opacity: 0, transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.8) rotate(${dx}deg)` }],
           { duration: 900, delay: i * 40, easing: "ease-out", fill: "backwards" }).onfinish = () => s.remove();
       });
     }
-    think(button, pickPep(), reduced.matches);
+    think(root, pickPep(), reduced.matches);
   }
 
+  /* Like Dr. Smiley's fitWave: when the name leaves room beside it, he moves up so his head
+     sits level with the name and no empty band opens up beside him. A long name keeps him
+     on the line below. */
+  let fitBound = false;
+  function fit() {
+    const greet = document.querySelector(".greet"); if (!greet) return;
+    const name = greet.querySelector(".greet-name"), root = greet.querySelector(".buddy");
+    const text = name.firstChild; if (!text) return;
+    root.style.removeProperty("--lift"); name.style.fontSize = "";
+    const range = document.createRange(); range.selectNodeContents(name);
+    let nr = range.getBoundingClientRect();
+    const br = root.getBoundingClientRect(), room = br.left - 10 - nr.left;
+    if (nr.width > room) {
+      // shrink the script name to fit beside him, but not below 38px
+      const size = parseFloat(getComputedStyle(name).fontSize) * room / nr.width;
+      if (size < 38) return;
+      name.style.fontSize = size.toFixed(1) + "px"; nr = range.getBoundingClientRect();
+    }
+    root.style.setProperty("--lift", Math.round(name.getBoundingClientRect().height * 0.85) + "px");
+  }
   window.Mascot = {
     src: ART,
-    mount(hero) {
-      const button = hero && hero.querySelector(".buddy");
-      if (!button) return;
-      button.onclick = () => hop(button);
-      if (!played) { played = true; hello(hero, button); }
-    },
-    leave() { stopOpening(); stopCloud(); }
+    greeting,
+    /* Wires the greeting renderHome just wrote. onPlay: the calculator Play button's action. afterHello: run
+       once the first hello has finished (or right away if it already played). */
+    mount({ onPlay, afterHello } = {}) {
+      const greet = document.querySelector(".greet"), root = greet && greet.querySelector(".buddy");
+      if (!root) return;
+      root.querySelector(".buddy-face").onclick = () => hop(root);
+      root.querySelector(".buddy-play").onclick = () => { if (onPlay) onPlay(); };
+      onDone = afterHello || null;
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      if (!fitBound) { fitBound = true; window.addEventListener("resize", fit, { passive: true }); }
+      if (!played) { played = true; hello(greet, root); }
+      else done();
+    }
   };
 })();

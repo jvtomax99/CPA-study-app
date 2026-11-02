@@ -14,17 +14,24 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(e.message));
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
 
-  /* study buddy: the numbers spiral plays, he lands, a thought cloud types, a tap brings a new one */
+  /* greeting + study buddy: the numbers spiral plays, he lands with Play on his calculator, a thought cloud types,
+     the name prompt comes once and the greeting uses the name, a tap brings a new cloud */
   check(!!(await p.waitForSelector(".buddy-canvas", { timeout: 15000 }).catch(() => null)), "buddy: the number spiral starts on Home");
-  await p.waitForFunction(() => !document.querySelector(".buddy-canvas") && !document.querySelector(".buddy-pending"), null, { timeout: 60000 }).catch(() => {});
-  check(await p.evaluate(() => { const i = document.querySelector(".buddy-art"); return !document.querySelector(".buddy-canvas") && i.naturalWidth > 0 && getComputedStyle(document.querySelector(".buddy-body")).opacity === "1"; }), "buddy: the spiral clears and he is standing");
-  await p.waitForFunction(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || ""), null, { timeout: 30000 }).catch(() => {});
-  check(await p.evaluate(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || "")), "buddy: his thought cloud types a pep talk");
-  await p.click("#buddy");
-  check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1 && !!document.querySelector(".buddy-status").textContent), "buddy: tapping him gives one new cloud");
+  await p.waitForFunction(() => !document.querySelector(".buddy-canvas") && !document.querySelector(".buddy-pending, .buddy-wait"), null, { timeout: 60000 }).catch(() => {});
+  check(await p.evaluate(() => { const i = document.querySelector(".buddy-art"); return !document.querySelector(".buddy-canvas") && i.naturalWidth > 0 && getComputedStyle(document.querySelector(".buddy-body")).opacity === "1" && getComputedStyle(document.querySelector(".buddy-play")).opacity === "1"; }), "buddy: the spiral clears and he is up with Play on his calculator");
+  check(await p.evaluate(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || "") || !!document.querySelector(".buddy-status").textContent), "buddy: his thought cloud has a pep talk");
+  check(!!(await p.waitForSelector("#namein", { timeout: 20000 }).catch(() => null)), "greeting: asks for a name once");
+  await p.fill("#namein", "Sam"); await p.click("#nameform button[type=submit]");
+  check(await p.evaluate(() => document.querySelector(".greet-name").textContent === "Sam" && !document.querySelector("#scrim")), "greeting: says hello with the saved name");
+  await p.click("#buddyface", { force: true });
+  check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1), "buddy: tapping him gives one new cloud");
+  await p.click("#buddyplay", { force: true });
+  check(!!(await p.$(".choice")), "buddy: Play on his calculator starts a drill");
+  await p.click("#back"); await p.waitForSelector("#stage");
 
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
+  await p.evaluate(() => document.querySelector("#stage").scrollIntoView({ block: "center" })); /* the greeting sits above the town */
   await p.waitForTimeout(4000);
   const dbg = await p.evaluate(() => window.__townDebug());
   check(await p.evaluate(() => { const s = getComputedStyle(document.querySelector("#stage canvas")); return (s.webkitMaskImage || s.maskImage || "none") === "none" && getComputedStyle(document.querySelector(".hero")).getPropertyValue("--fh").trim() !== ""; }), "home town fades in by overlay, not a canvas mask");

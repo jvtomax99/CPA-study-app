@@ -22,7 +22,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, guideSeen: false }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, guideSeen: false }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -200,19 +200,11 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `
+  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
-      <div class="hero-main">
-        <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-        ${coach ? `<div class="coach">${coach}</div>` : ""}
-      </div>
-      <button class="buddy" id="buddy" type="button" aria-label="Your study buddy. Tap for a pep talk.">
-        <span class="buddy-halo"></span>
-        <span class="buddy-body"><img class="buddy-art" src="${window.Mascot ? window.Mascot.src : "art/mascot.webp"}" alt="" width="235" height="440" decoding="async"><span class="buddy-shine"></span></span>
-        <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
-        <span class="buddy-status" aria-live="polite"></span>
-      </button>
+      <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
+      <div class="coach">${coach}</div>
     </div>
     <div class="pills">
       <span class="pill">${ICON.fire}${sk} day${sk === 1 ? "" : "s"}</span>
@@ -270,8 +262,20 @@ function renderHome() {
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));
-  if (window.Mascot) window.Mascot.mount($(".hero"));
+  if (window.Mascot) window.Mascot.mount({ onPlay: () => startDrill(null), afterHello: state.nameAsked ? null : () => { if (view === "home" && !$("#scrim")) askName(); } });
   mountTown();
+}
+/* Asked once, after the first hello: the greeting's name. Changeable in More. */
+function askName() {
+  state.nameAsked = true; save();
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="Your name"><div class="grab"></div>
+    <h3>What should your study buddy call you?</h3>
+    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="First name" aria-label="First name">
+    <div class="row"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" id="nameskip">Not now</button></div>
+    <p class="hint" style="margin:0">It stays on this device. Change it any time in More.</p></form></div>`;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+  $("#nameskip").onclick = closeLayer;
+  $("#nameform").onsubmit = e => { e.preventDefault(); const v = $("#namein").value.trim(); closeLayer(); if (v) { state.name = v; save(); renderHome(); } };
 }
 function mountTown() {
   const stage = $("#stage");
@@ -510,6 +514,9 @@ function renderMore() {
     <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
       <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
       <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
+      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
+      <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
       <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
@@ -540,6 +547,7 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
+  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
   $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };

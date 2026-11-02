@@ -19,7 +19,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Serif:wght@400;500&family=Lora:ital,wght@1,500&family=Parisienne&display=swap">
 <style>
 /* Layout: one phone-width column. A dusk "toy town" hero card (always dark, like the CCHI campus card) sits over a light or dark page; drill and exam screens are plain sheets below it. */
 :root {
@@ -81,39 +81,93 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   background: radial-gradient(120% 70% at 50% 108%, var(--dusk-edge) 0%, var(--dusk-low) 32%, transparent 62%), linear-gradient(180deg, var(--dusk-top) 0%, var(--dusk-mid) 62%, var(--dusk-low) 100%);
   box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); }
 .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12); }
-.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 20px 14px 0 18px; align-items: end; }
-.hero-main { display: grid; gap: 12px; align-content: start; align-self: start; min-width: 0; }
+.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px; padding: 20px 18px 0; align-items: start; }
 .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
 .ready { font-size: 52px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: var(--amber); margin-top: 6px; font-variant-numeric: tabular-nums; }
 .ready-sub { font-size: 15px; color: rgba(255,255,255,0.86); margin-top: 4px; }
-.coach { background: #fff; color: #1b1f30; border-radius: 18px 18px 6px 18px; transform-origin: 100% 100%; padding: 12px 14px; font-size: 14px; line-height: 1.4; box-shadow: 0 10px 24px -14px rgba(0,0,0,0.5); min-width: 0; }
+.coach { background: #fff; color: #1b1f30; border-radius: 18px 18px 18px 6px; padding: 12px 14px; font-size: 14px; line-height: 1.4; box-shadow: 0 10px 24px -14px rgba(0,0,0,0.5); min-width: 0; }
 .coach b { color: #b3485e; font-weight: 700; }
-/* The study buddy (src/mascot.js): stands at the right of the card, his coach line beside him. */
-.buddy { position: relative; isolation: isolate; width: 112px; height: 210px; padding: 0; margin: 0 0 -6px; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; align-self: end; }
-.buddy:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; border-radius: 16px; }
-.buddy-body { position: absolute; inset: 0; transform-origin: 50% 92%; pointer-events: none; }
-.buddy-art { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 3px 2px rgba(11,10,36,0.45)) drop-shadow(0 10px 12px rgba(11,10,36,0.35)); }
+/* Greeting with the study buddy (src/mascot.js), after Dr. Smiley's in the Interp app: a drawn night
+   Midtown, the name in Parisienne, the quote in Lora italic, the buddy popping out of a gold-coin disc
+   with a ring of numbers turning behind him and Play on the calculator he holds. --s is his picture's size;
+   every part of him is placed in fractions of it, matching DISC in mascot.js (centre .48,.80, radius .34). */
+.greet { --s: 136px; position: relative; isolation: isolate; border-radius: 28px; overflow: hidden; color: #fff; background: #0b0a24; margin-bottom: 14px; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); }
+.greet-sky { position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: 50% 100%; }
+.greet-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none; background:
+  radial-gradient(ellipse 90% 30% at 24% 26%, rgba(6,6,28,0.5), rgba(6,6,28,0) 100%),
+  radial-gradient(ellipse 100% 30% at 30% 86%, rgba(6,6,28,0.55), rgba(6,6,28,0) 100%); }
+.greet-text { position: relative; padding: 18px 20px 20px; display: grid; grid-template-columns: minmax(0, 1fr) var(--s); column-gap: 8px;
+  grid-template-areas: "meta meta" "name name" "side buddy" "quote quote"; }
+.greet-meta { grid-area: meta; } .greet-name { grid-area: name; } .greet-side { grid-area: side; align-self: center; min-width: 0; } .buddy { grid-area: buddy; } .greet-quote { grid-area: quote; }
+.greet-row { display: contents; }
+.greet-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); }
+.greet-meta time { letter-spacing: 0.02em; text-transform: none; font-size: 13px; }
+.greet-name { margin: 2px 0 0; font: 400 58px/1.12 "Parisienne", cursive; letter-spacing: 0; text-transform: none; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 0.1em 0.06em 0; text-shadow: 0 1px 2px rgba(4,4,28,0.6), 0 2px 6px rgba(4,4,28,0.35), 0 3px 22px rgba(4,4,28,0.42); }
+.greet-name.is-long { font-size: 42px; }
+.greet-pill { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; font-size: 14px; font-weight: 700; color: #fff; background: linear-gradient(90deg, #1d6a43, #39a66d); box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 6px 14px -6px rgba(0,0,0,0.6); }
+.greet-pill svg { width: 16px; height: 16px; }
+.greet-quote { margin: 6px 0 0; padding: 0; max-width: 26em; font: italic 500 19px/1.34 "Lora", Georgia, serif; text-wrap: balance; text-shadow: 0 1px 2px rgba(4,4,28,0.55), 0 2px 16px rgba(4,4,28,0.45); }
+.greet-quote cite { display: flex; align-items: center; gap: 9px; margin-top: 8px; font: normal 650 11.5px/1.5 var(--f-ui); letter-spacing: 0.16em; text-transform: uppercase; text-shadow: 0 1px 3px rgba(4,4,28,0.7); }
+.greet-quote cite::before { content: ""; flex: none; width: 18px; height: 2px; border-radius: 2px; background: currentColor; opacity: 0.85; }
+.buddy { position: relative; isolation: isolate; width: var(--s); height: calc(var(--s) * 1.3); margin-top: calc(-14px - var(--lift, 0px)); }
+.buddy-fig { position: absolute; left: 0; top: 0; z-index: 2; width: var(--s); height: calc(var(--s) * 464 / 360); transform-origin: 48% 85%; }
+.buddy-face { position: absolute; left: 0; top: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 40%; }
+.buddy-face:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.buddy-body { position: absolute; inset: 0; transform-origin: 48% 85%; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(11,10,36,0.45)) drop-shadow(0 6px 8px rgba(11,10,36,0.35)); }
+.buddy-art { display: block; width: 100%; height: 100%; }
 .buddy-shine { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: linear-gradient(110deg, transparent 34%, rgba(255,255,255,0.08) 44%, rgba(255,255,255,0.5) 48%, rgba(255,255,255,0.12) 52%, transparent 58%); background-size: 300% 100%; background-position: 100% 0;
-  -webkit-mask: url(art/mascot.webp) center / contain no-repeat; mask: url(art/mascot.webp) center / contain no-repeat; }
-.buddy-halo { position: absolute; left: -22%; right: -22%; top: 8%; height: 64%; z-index: -1; border-radius: 50%; pointer-events: none; opacity: 0.6;
-  background: radial-gradient(closest-side, rgba(155,227,184,0.42), rgba(255,210,122,0.16) 55%, transparent); }
-.buddy::after { content: ""; position: absolute; left: 14%; right: 10%; bottom: 0; height: 12px; border-radius: 50%; background: radial-gradient(closest-side, rgba(10,8,30,0.5), transparent); z-index: -1; pointer-events: none; }
-.buddy-glint { position: absolute; color: #fff4cf; opacity: 0; pointer-events: none; font-size: 18px; line-height: 1; text-shadow: 0 0 8px #ffe2a3; }
-.buddy-glint.a { left: 4px; top: 22px; }
-.buddy-glint.b { right: 2px; top: 46%; font-size: 13px; }
+  -webkit-mask: url(art/buddy-bust.webp) center / contain no-repeat; mask: url(art/buddy-bust.webp) center / contain no-repeat; }
+.buddy-disc { position: absolute; z-index: 1; left: calc(var(--s) * 0.14); top: calc(var(--s) * 0.46); width: calc(var(--s) * 0.68); height: calc(var(--s) * 0.68); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 38% 28%, #fffdf0 0, #fbe9b4 28%, #eec468 62%, #c98f2c 100%);
+  box-shadow: inset 0 -6px 12px rgba(120,70,10,0.35), inset 0 3px 6px rgba(255,255,255,0.9), 0 0 0 2.2px rgba(255,255,255,0.85), 0 10px 22px -6px rgba(5,5,30,0.6); }
+.buddy-ring { position: absolute; z-index: 0; left: calc(var(--s) * 0.01); top: calc(var(--s) * 0.33); width: calc(var(--s) * 0.94); height: calc(var(--s) * 0.94); pointer-events: none; }
+.buddy-ring .rg { position: absolute; width: 0; height: 0; }
+.buddy-ring .rg i { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); font: 800 calc(var(--s) * 0.11) / 1 var(--f-ui); font-style: normal; color: #ffd27a; text-shadow: 0 0 1.5px #fff, 0 0 7px rgba(255,210,122,0.7); }
+.buddy-ring .rg:nth-child(3n+2) i { color: #fff; text-shadow: 0 0 1.5px #fff, 0 0 7px rgba(255,255,255,0.6); }
+.buddy-ring .rg:nth-child(3n) i { color: #9be3b8; text-shadow: 0 0 1.5px #fff, 0 0 7px rgba(155,227,184,0.75); }
+@keyframes buddyRingTurn { to { rotate: 1turn; } }
+@keyframes buddyRingUnturn { to { rotate: -1turn; } }
+@keyframes buddyGlyphGlow { 0%, 9%, 100% { scale: 1; filter: none; } 3% { scale: 1.55; filter: brightness(1.6) drop-shadow(0 0 6px #fff); } }
+@media (prefers-reduced-motion: no-preference) {
+  .buddy-ring { animation: buddyRingTurn 24s linear infinite; }
+  .buddy-ring .rg i { animation: buddyRingUnturn 24s linear infinite, buddyGlyphGlow 18s ease-in-out infinite; animation-delay: 0s, calc(var(--i) * 1.5s); }
+}
+.buddy-glint { position: absolute; z-index: 5; color: #fff4cf; opacity: 0; pointer-events: none; font-size: 18px; line-height: 1; text-shadow: 0 0 8px #ffe2a3; }
+.buddy-glint.a { left: 4%; top: 8%; }
+.buddy-glint.b { right: -2%; top: 42%; font-size: 13px; }
 .buddy-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.buddy-pending .buddy-body { opacity: 0; }
+.buddy-pending .buddy-fig, .buddy-pending .buddy-disc, .buddy-pending .buddy-ring,
+.buddy-wait .buddy-play { opacity: 0; }
 .buddy-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
-.buddy-puff { position: absolute; z-index: 2; pointer-events: none; font: 800 15px var(--f-ui); color: var(--amber); text-shadow: 0 1px 0 rgba(11,10,36,0.6), 0 0 8px rgba(255,210,122,0.6); }
+.buddy-puff { position: absolute; z-index: 5; pointer-events: none; font: 800 15px var(--f-ui); color: var(--amber); text-shadow: 0 1px 0 rgba(11,10,36,0.6), 0 0 8px rgba(255,210,122,0.6); }
 .buddy-puff:nth-child(odd) { color: #9be3b8; }
-@keyframes buddyBreathe { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.2%; } }
+@keyframes buddyBreathe { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.4%; } }
 @keyframes buddyDrift { 0%, 100% { rotate: 0deg; } 30% { rotate: 0.8deg; } 65% { rotate: -0.6deg; } }
-@media (prefers-reduced-motion: no-preference) { .buddy-art { transform-origin: 50% 95%; animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
-.buddy-entering .buddy-art { animation: none; }
+@media (prefers-reduced-motion: no-preference) { .buddy-fig { animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
+.buddy-entering .buddy-fig { animation: none; }
+/* Play on his calculator: a tap area over the whole calculator, turned to match it (19.5deg), showing
+   with PLAY lit up on its screen. */
+.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.78); top: calc(var(--s) * 1.0); width: calc(var(--s) * 0.5); height: calc(var(--s) * 0.56); transform: translate(-50%, -50%) rotate(19.5deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
+.buddy-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.buddy-play:active { scale: 0.94; }
+/* PLAY on the calculator's screen: an SVG over his whole figure, in the figure's own units (see LCD
+   in mascot.js). It pops in from the screen's centre (82.2%, 67.5% of the figure). */
+.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82.2% 67.5%; }
+.buddy-wait .bp-lcd { opacity: 0; }
+.buddy-play:active ~ .bp-lcd { opacity: 0.85; }
+@keyframes bpGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.bp-glow { opacity: 0.75; }
+@media (prefers-reduced-motion: no-preference) { .bp-glow { animation: bpGlow 2.6s ease-in-out infinite; } }
 .buddy-thought { position: absolute; left: 0; top: 0; width: 136px; height: 76px; opacity: 0; pointer-events: none; z-index: 35; }
 .buddy-cloudsvg { position: absolute; left: -30px; top: -20px; width: 180px; height: 110px; overflow: visible; }
 .buddy-cloudsvg .bc-text { fill: #0f4d2e; font: 700 12.5px var(--f-ui); letter-spacing: -0.01em; }
 .buddy-cloudsvg .bc-glyph { fill: #f5b84a; font: 800 13px var(--f-ui); paint-order: stroke; stroke: #fff; stroke-width: 2px; }
+.namein { font: 500 17px var(--f-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; width: 100%; }
+@media (min-width: 560px) {
+  .greet { --s: 140px; } .greet-name { font-size: 68px; } .greet-name.is-long { font-size: 48px; } .greet-quote { font-size: 21px; align-self: end; }
+  .greet-text { padding: 22px 26px 24px; grid-template-areas: "meta meta" "name buddy" "side buddy" "quote buddy"; grid-template-rows: auto auto auto 1fr; }
+  .buddy { margin-top: calc(6px - var(--lift, 0px)); align-self: end; } .greet-side { margin-top: 2px; } }
+@media (max-width: 350px) { .greet { --s: 112px; } .greet-name { font-size: 50px; } .greet-name.is-long { font-size: 36px; } .greet-quote { font-size: 17.5px; } }
 .pills { display: flex; gap: 8px; flex-wrap: wrap; padding: 14px 18px 0; }
 .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 7px 12px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .pill svg { width: 16px; height: 16px; flex: none; }
@@ -306,14 +360,12 @@ details.miss .body { display: grid; gap: 6px; margin-top: 8px; font-size: 14px; 
 footer { margin-top: 28px; font-size: 12px; color: var(--ink-soft); display: grid; gap: 6px; }
 footer p { margin: 0; max-width: 70ch; }
 @media (max-width: 420px) {
-  .hero-top { padding-left: 16px; padding-right: 10px; }
-  .buddy { width: 100px; height: 188px; }
+  .hero-top { grid-template-columns: 1fr; }
   .ready { font-size: 46px; }
   .stage { height: 340px; }
   .tag { font-size: 11.5px; padding: 4px 8px; }
   .qtext { font-size: 17.5px; }
 }
-@media (max-width: 350px) { .buddy { width: 84px; height: 158px; } .ready { font-size: 40px; } }
 @media (prefers-reduced-motion: reduce) { .cta, .tag { transition: none; } }
 </style>
 
@@ -333,17 +385,58 @@ footer p { margin: 0; max-width: 70ch; }
 <div id="layer"></div>
 
 <script>
-/* The study buddy on the home card. Ported from Dr. Smiley's hello in the Interp app:
-   numbers and equations spiral in from the edges, lock into a ring around "A = L + E",
-   pulse once, then spin down into him with a flash and a burst of gold stars. He springs
-   in, the coach bubble pops up beside him, and a thought cloud types a pep talk.
-   The full hello plays once per app load. Tapping him gives a hop and a new pep talk.
-   renderHome (app.js) writes the .buddy markup and calls Mascot.mount(hero). */
+/* The greeting at the top of Home, with the study buddy. Ported from Dr. Smiley's hello in
+   the Interp app (home-polish.js / home-polish.css there):
+   - a night Midtown skyline (drawn here, no photo), "Good morning," and the date, the
+     person's name in Parisienne, a tax quote of the day in Lora italic;
+   - the buddy as a bust popping out of a gold-coin disc, with a ring of numbers turning
+     behind it (Dr. Smiley's ring is the Hackensack mark's sixteen squares);
+   - "PLAY" lit up on the screen of the calculator he holds (where Dr. Smiley has his "Ask" badge);
+   - the hello, once per app load: numbers and equations spiral in from the edges, lock
+     into a ring around "A = L + E", pulse, then spin down into him with a flash and gold
+     stars. He springs in, Play lights up on his calculator, his name is written in, and
+     a thought cloud types a pep talk. Tapping him gives a hop and a new pep talk.
+   renderHome (app.js) puts Mascot.greeting(...) at the top and calls Mascot.mount(). */
 (() => {
   const TAU = Math.PI * 2;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const ART = "art/mascot.webp";
+  const ART = "art/buddy-bust.webp";
   const art = new Image(); art.decoding = "async"; art.src = ART;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, cut from the
+     full figure; it is S wide and ART_H * S tall, reaching below the calculator so his body
+     fills the whole disc). The disc sits round his shoulders; his head pops out above its
+     centre line, and so does the calculator he holds, over the disc's lower right rim. */
+  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360;
+  // The calculator and his hand, measured on the picture, from where its left edge meets the
+  // disc round to the top-right corner (clockwise in reverse: bottom, right side, top).
+  const CALC = [[0.5475, 1.2], [0.8625, 1.269], [0.9625, 1.2125], [0.975, 1.0875], [1.006, 0.9125], [1.01, 0.8]];
+  // Clip for the picture: above the disc's centre line, the disc below it, plus the calculator.
+  const FACE_CLIP = (() => {
+    const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
+    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, DISC.y)];
+    for (let i = CALC.length - 1; i >= 0; i--) pts.push(P(CALC[i][0], CALC[i][1]));
+    // round the disc from where the calculator's left edge meets it, to the left rim
+    const a0 = Math.acos((0.5375 - DISC.x) / DISC.r);
+    for (let k = 0; k <= 10; k++) { const a = a0 + (Math.PI - a0) * k / 10; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
+    pts.push(P(-0.4, DISC.y));
+    return `polygon(${pts.join(",")})`;
+  })();
+
+  /* Quote of the day. Wording as published:
+     Franklin, letter to Jean-Baptiste Le Roy, Nov. 13, 1789.
+     Holmes, dissenting, Compañía General de Tabacos de Filipinas v. Collector, 275 U.S. 87, 100 (1927).
+     Learned Hand, Helvering v. Gregory, 69 F.2d 809, 810 (2d Cir. 1934).
+     Marshall, McCulloch v. Maryland, 17 U.S. 316, 431 (1819).
+     Conan Doyle, "A Scandal in Bohemia" (1891), Sherlock Holmes speaking. */
+  const QUOTES = [
+    ["In this world nothing can be said to be certain, except death and taxes.", "Benjamin Franklin"],
+    ["Taxes are what we pay for civilized society.", "Oliver Wendell Holmes Jr."],
+    ["Any one may so arrange his affairs that his taxes shall be as low as possible.", "Judge Learned Hand"],
+    ["The power to tax involves the power to destroy.", "Chief Justice John Marshall"],
+    ["It is a capital mistake to theorize before one has data.", "Arthur Conan Doyle"]
+  ];
 
   const PEP = [
     "You’ve got this!", "Small wins add up.", "One tower at a time.", "Progress compounds.",
@@ -365,6 +458,95 @@ footer p { margin: 0; max-width: 70ch; }
   const easeOut3 = x => 1 - Math.pow(1 - clamp(x), 3), easeIn3 = x => Math.pow(clamp(x), 3);
   const back = (x, k) => { x = clamp(x); const c = k + 1; return 1 + c * Math.pow(x - 1, 3) + k * Math.pow(x - 1, 2); };
 
+  /* ---------- the night Midtown skyline, drawn once ---------- */
+  let skyline = "";
+  function drawSkyline() {
+    if (skyline) return skyline;
+    let seed = 7; const R = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const W = 400, H = 280, out = [];
+    out.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMax slice">
+      <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#090822"/><stop offset=".45" stop-color="#17143e"/><stop offset=".75" stop-color="#33255a"/><stop offset="1" stop-color="#6b3d5e"/></linearGradient>
+      <radialGradient id="g" cx=".5" cy="1" r=".7"><stop offset="0" stop-color="#d9876e" stop-opacity=".45"/><stop offset="1" stop-color="#d9876e" stop-opacity="0"/></radialGradient>
+      <radialGradient id="m" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff6dc" stop-opacity=".5"/><stop offset="1" stop-color="#fff6dc" stop-opacity="0"/></radialGradient></defs>
+      <rect width="${W}" height="${H}" fill="url(#s)"/><rect y="${H * 0.45}" width="${W}" height="${H * 0.55}" fill="url(#g)"/>`);
+    for (let i = 0; i < 60; i++) out.push(`<circle cx="${(R() * W).toFixed(1)}" cy="${(R() * H * 0.5).toFixed(1)}" r="${(0.3 + R() * 0.8).toFixed(2)}" fill="#fff" opacity="${(0.25 + R() * 0.6).toFixed(2)}"/>`);
+    out.push(`<circle cx="214" cy="38" r="22" fill="url(#m)"/><path d="M214 28a10 10 0 1 0 9 14 8 8 0 0 1-9-14z" fill="#fff3d0"/>`);
+    const windows = (x, y, w, h, p, lit) => {
+      for (let wy = y + 5; wy < h + y - 4; wy += 6) for (let wx = x + 3; wx < x + w - 3; wx += 5)
+        if (R() < p) out.push(`<rect x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width="2.4" height="3.2" fill="${lit[Math.floor(R() * lit.length)]}" opacity="${(0.5 + R() * 0.5).toFixed(2)}"/>`);
+    };
+    // far blocks
+    for (let x = -6; x < W;) { const w = 14 + R() * 18, h = 50 + R() * 70; out.push(`<rect x="${x.toFixed(1)}" y="${(H - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#2a2354"/>`); windows(x, H - h, w, h, 0.08, ["#8f84c9", "#c9b4ff"]); x += w + 1; }
+    // two landmarks: a stepped tower with a mast, a tower with a stepped crown and spire
+    const step = (cx, base, tiers, color) => { let y = base; for (const [w, h] of tiers) { y -= h; out.push(`<rect x="${cx - w / 2}" y="${y}" width="${w}" height="${h + 1}" fill="${color}"/>`); windows(cx - w / 2, y, w, h, 0.22, ["#ffd27a", "#ffe9b0", "#9be3b8"]); } return y; };
+    let top = step(92, H, [[40, 120], [30, 36], [20, 18], [12, 10]], "#1d1946");
+    out.push(`<rect x="90.5" y="${top - 26}" width="3" height="26" fill="#1d1946"/><circle cx="92" cy="${top - 27}" r="1.6" fill="#ff5d6c"/>`);
+    top = step(300, H, [[34, 150], [24, 16]], "#1d1946");
+    for (let k = 0; k < 4; k++) out.push(`<path d="M${300 - 12 + k * 3} ${top - k * 7} q${12 - k * 3} -${10 - k} ${24 - k * 6} 0" fill="none" stroke="#e7d9a8" stroke-width="1.4" opacity=".85"/>`);
+    out.push(`<path d="M300 ${top - 50} L302 ${top - 26} L298 ${top - 26}Z" fill="#e7d9a8"/><circle cx="300" cy="${top - 51}" r="1.4" fill="#ff5d6c"/>`);
+    // near blocks
+    for (let x = -4; x < W;) { const w = 18 + R() * 26, h = 24 + R() * 60; out.push(`<rect x="${x.toFixed(1)}" y="${(H - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#120f30"/>`); windows(x, H - h, w, h, 0.16, ["#ffd27a", "#ffe9b0", "#ffb35c"]); x += w + 2; }
+    out.push(`<rect y="${H - 8}" width="${W}" height="8" fill="#0b0a22"/></svg>`);
+    skyline = "data:image/svg+xml," + encodeURIComponent(out.join(""));
+    return skyline;
+  }
+
+  /* ---------- the greeting markup ---------- */
+  /* PLAY on the calculator's screen, drawn as SVG in his figure's own units (S = 1000 across), so it
+     lands on the same pixels in every browser. The screen's corners, measured on the picture
+     (695,672 862,730 842,783 672,718 in the full figure), pulled 6% in toward their centre so the
+     glass sits inside the bezel. The words are centred on the screen and turned with it (19.5deg);
+     textLength fixes their width whatever font the device has. */
+  const LCD = (() => {
+    const C = [[695, 672], [862, 730], [842, 783], [672, 718]].map(([x, y]) => [(x - 110) / 0.8, (y - 30) / 0.8]);
+    const cx = C.reduce((a, p) => a + p[0], 0) / 4, cy = C.reduce((a, p) => a + p[1], 0) / 4;
+    const pts = C.map(([x, y]) => `${(cx + 0.94 * (x - cx)).toFixed(1)},${(cy + 0.94 * (y - cy)).toFixed(1)}`).join(" ");
+    const r = n => n.toFixed(1);
+    return `<defs><linearGradient id="bpG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecfff3"/><stop offset="1" stop-color="#a4eac0"/></linearGradient>
+      <filter id="bpB" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+      <polygon class="bp-glow" points="${pts}" fill="#9be3b8" filter="url(#bpB)"/>
+      <polygon points="${pts}" fill="url(#bpG)" stroke="#0b3a21" stroke-opacity=".35" stroke-width="2"/>
+      <g transform="rotate(19.5 ${r(cx)} ${r(cy)})" fill="#0b3a21">
+        <path d="M${r(cx - 80)} ${r(cy - 14)}V${r(cy + 14)}L${r(cx - 56)} ${r(cy)}Z"/>
+        <text x="${r(cx - 42)}" y="${r(cy + 16.5)}" textLength="122" lengthAdjust="spacingAndGlyphs" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="46">PLAY</text>
+      </g>`;
+  })();
+  const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
+  function greeting({ name, pill }) {
+    const now = new Date(), h = now.getHours();
+    const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
+    const nm = (name || "").trim(), shown = nm || "Welcome";
+    const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const ring = RING_GLYPHS.map((g, i) => { const a = i / RING_GLYPHS.length * TAU - Math.PI / 2;
+      return `<span class="rg" style="left:${(50 + 50 * Math.cos(a)).toFixed(2)}%;top:${(50 + 50 * Math.sin(a)).toFixed(2)}%;--i:${i}"><i>${g}</i></span>`; }).join("");
+    return `<section class="greet" aria-label="Greeting">
+      <div class="greet-sky" style="background-image:url(&quot;${drawSkyline()}&quot;)"></div>
+      <div class="greet-scrim"></div>
+      <div class="greet-text">
+        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
+        <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
+        <div class="greet-row">
+          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}</div>
+          <div class="buddy" id="buddy">
+            <span class="buddy-ring" aria-hidden="true">${ring}</span>
+            <span class="buddy-disc" aria-hidden="true"></span>
+            <span class="buddy-fig">
+              <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+                <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
+              </button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
+              <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
+            </span>
+            <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
+            <span class="buddy-status" aria-live="polite"></span>
+          </div>
+        </div>
+        <blockquote class="greet-quote">“${esc(q)}”<cite>${esc(who)}</cite></blockquote>
+      </div>
+    </section>`;
+  }
+
   /* ---------- thought cloud (Dr. Smiley's "Sparkle Float", in cream and mint) ---------- */
   const BUMPS = [[26,46,19],[46,30,22],[72,24,25],[99,31,21],[117,47,16],[96,56,19],[64,59,20],[34,58,15]];
   const SHAPES = '<rect x="14" y="34" width="112" height="36" rx="18"/>' + BUMPS.map(b => `<circle cx="${b[0]}" cy="${b[1]}" r="${b[2]}"/>`).join("");
@@ -378,7 +560,7 @@ footer p { margin: 0; max-width: 70ch; }
     for (let i = 1; i < w.length; i++) { const a = w.slice(0, i).join(" "), b = w.slice(i).join(" "), s = Math.max(a.length, b.length); if (s < score) { score = s; best = [a, b]; } }
     return best;
   }
-  function makeCloud(button, text) {
+  function makeCloud(face, text) {
     const id = "bc" + (++cloudSeq), lines = split(text);
     const el = document.createElement("span");
     el.className = "buddy-thought"; el.setAttribute("aria-hidden", "true");
@@ -399,9 +581,13 @@ footer p { margin: 0; max-width: 70ch; }
       ${GLYPHS.map(g => `<text class="bc-glyph" text-anchor="middle" dominant-baseline="central" opacity="0">${g[2]}</text>`).join("")}
     </svg>`;
     document.body.appendChild(el);
-    const b = button.getBoundingClientRect(), room = document.documentElement.clientWidth - 4;
-    let left = b.left - 150, top = b.top + 4, sc = 1;
-    if (left < 8) { sc = Math.max(0.7, (b.left - 8) / 150); left = b.left - 150 * sc; el.style.transformOrigin = "100% 0"; }
+    // To his left, level with his face, the dots trailing to his head.
+    const b = face.getBoundingClientRect(), room = document.documentElement.clientWidth - 4;
+    const edge = b.left + b.width * 0.08;
+    // never over the name: when he stands level with it, the cloud opens just below it
+    const nameEl = document.querySelector(".greet-name"), nameBottom = nameEl ? nameEl.getBoundingClientRect().bottom - 2 : -1e9;
+    let left = edge - 156, top = Math.max(b.top + b.width * 0.12, nameBottom), sc = 1;
+    if (left < 8) { sc = Math.max(0.7, (edge - 8) / 156); left = edge - 156 * sc; el.style.transformOrigin = "100% 0"; }
     left = Math.max(8, Math.min(room - 150, left));
     el.style.left = (left + window.scrollX) + "px"; el.style.top = (top + window.scrollY) + "px";
     if (sc < 1) el.style.scale = sc.toFixed(3);
@@ -439,11 +625,11 @@ footer p { margin: 0; max-width: 70ch; }
   /* One cloud at a time, on its own clock, taken down when Home goes away. */
   let cloud = null;
   function stopCloud() { if (!cloud) return; cancelAnimationFrame(cloud.frame); cloud.c.remove(); window.removeEventListener("resize", cloud.onResize); cloud = null; }
-  function think(button, text, holdStill) {
+  function think(root, text, holdStill) {
     stopCloud();
-    const status = button.querySelector(".buddy-status");
+    const face = root.querySelector(".buddy-face"), status = root.querySelector(".buddy-status");
     if (status) status.textContent = text;
-    const c = makeCloud(button, text), w = window.innerWidth;
+    const c = makeCloud(face, text), w = window.innerWidth;
     const me = { c, frame: 0, onResize: () => { if (window.innerWidth !== w) stopCloud(); } };
     cloud = me; window.addEventListener("resize", me.onResize, { passive: true });
     // With reduced motion the cloud just sits there, finished, for its 6.5 seconds.
@@ -451,19 +637,18 @@ footer p { margin: 0; max-width: 70ch; }
     let t0 = null;
     const step = now => {
       if (cloud !== me) return;
-      if (!button.isConnected) return stopCloud();
+      if (!root.isConnected) return stopCloud();
       if (t0 === null) t0 = now;
       if (holdStill ? now - t0 > 6500 : !c.update(now - t0)) return stopCloud();
       me.frame = requestAnimationFrame(step);
     };
     me.frame = requestAnimationFrame(step);
-    return me;
   }
 
-  /* ---------- the opening: numbers and equations spiral into him ---------- */
+  /* ---------- the hello: numbers and equations spiral into him ---------- */
   const TOKENS = ["7", "$", "%", "+", "3", "÷", "=", "9", "×", "1040", "Σ", "−", "0", "W-2"];
   const TOKEN_INK = ["#FFD27A", "#FFFFFF", "#9BE3B8"];
-  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, COACH_AT = 2700, CLOUD_AT = 2880;
+  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, PLAY_AT = FACE_AT + 380, PEN_AT = 2650, CLOUD_AT = 2880, END = 4300;
   const sprite = rgb => { const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d");
     const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(0.35, `rgba(${rgb},.4)`); gr.addColorStop(1, `rgba(${rgb},0)`);
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c; };
@@ -478,26 +663,26 @@ footer p { margin: 0; max-width: 70ch; }
     return { opacity: Math.min(1, p * 5), transform: `translate3d(0,${y.toFixed(2)}px,0) rotate(${angle.toFixed(2)}deg) scale(${s.toFixed(4)})` };
   }
 
-  let played = false, running = null;
-  function stopOpening() { if (running) running(); }
+  let played = false, running = null, onDone = null;
+  const done = () => { const f = onDone; onDone = null; if (f) setTimeout(f, 1200); };
 
-  async function hello(hero, button) {
-    const body = button.querySelector(".buddy-body"), coach = hero.querySelector(".coach");
-    button.classList.add("buddy-pending");
-    try { await art.decode(); } catch (e) { button.classList.remove("buddy-pending"); return; }
+  async function hello(greet, root) {
+    const body = root.querySelector(".buddy-fig");
+    root.classList.add("buddy-pending");
+    try { await art.decode(); } catch (e) { root.classList.remove("buddy-pending"); done(); return; }
     if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 600))]);
-    if (!button.isConnected) return;
-    if (reduced.matches || document.hidden || !button.animate) { button.classList.remove("buddy-pending"); think(button, pickPep(), true); return; }
+    if (!root.isConnected) return;
+    if (reduced.matches || document.hidden || !root.animate) { root.classList.remove("buddy-pending"); think(root, pickPep(), true); done(); return; }
 
     const canvas = document.createElement("canvas");
     canvas.className = "buddy-canvas"; canvas.setAttribute("aria-hidden", "true");
     const ctx = canvas.getContext("2d");
-    if (!ctx) { button.classList.remove("buddy-pending"); return; }
-    hero.appendChild(canvas);
-    const box = hero.getBoundingClientRect(), b = button.getBoundingClientRect();
-    const w = box.width, h = box.height, bx = b.left - box.left + b.width / 2, by = b.top - box.top + b.height * 0.44;
+    if (!ctx) { root.classList.remove("buddy-pending"); done(); return; }
+    greet.appendChild(canvas);
+    const box = greet.getBoundingClientRect(), face = root.querySelector(".buddy-face").getBoundingClientRect();
+    const w = box.width, h = box.height, bx = face.left - box.left + face.width * 0.5, by = face.top - box.top + face.width * 0.6;
     // The ring forms where it fits inside the card, then glides into him as it spins down.
-    const fx = Math.max(RING + 26, Math.min(bx, w - RING - 26)), fy = Math.max(RING + 20, by);
+    const fx = Math.max(RING + 26, Math.min(bx, w - RING - 26)), fy = Math.max(RING + 20, Math.min(by, h - RING - 20));
     let cx = fx, cy = fy;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -521,7 +706,7 @@ footer p { margin: 0; max-width: 70ch; }
       const slot = i / N * TAU - Math.PI / 2;
       const r = (reach + (RING - reach) * f) * scale * (1 - 0.94 * collapse);
       const a = slot - (1 - f) * TURN + spin;
-      return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.86, f, st, a };
+      return { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.86, f, st };
     }
     function drawOpening(t) {
       ctx.clearRect(0, 0, w, h);
@@ -530,7 +715,7 @@ footer p { margin: 0; max-width: 70ch; }
       const beat = Math.sin(Math.PI * win(t, 1650, 1780)), scale = 1 + 0.08 * beat;
       const rays = smooth(win(t, 1050, 1450)) * (1 - smooth(win(t, 1800, 2250)));
       if (rays > 0) {
-        const len = Math.max(170, h * 0.35);
+        const len = Math.max(170, h * 0.5);
         ctx.save(); ctx.translate(cx, cy); ctx.rotate(t / 1000 * 0.6); ctx.globalCompositeOperation = "lighter";
         for (let n = 0; n < 10; n++) {
           ctx.rotate(TAU / 10); const gr = ctx.createLinearGradient(0, 0, 0, -len);
@@ -564,8 +749,8 @@ footer p { margin: 0; max-width: 70ch; }
       // the accounting equation glows in the middle of the ring
       const eq = smooth(win(t, 1100, 1400)) * alpha;
       if (eq > 0) {
-        const s = 17 * k;
-        lctx.save(); lctx.translate(cx, cy); lctx.rotate(spin); lctx.scale(0.7 + 0.3 * back(win(t, 1100, 1450), 2), 0.7 + 0.3 * back(win(t, 1100, 1450), 2));
+        const s = 17 * k, z = 0.7 + 0.3 * back(win(t, 1100, 1450), 2);
+        lctx.save(); lctx.translate(cx, cy); lctx.rotate(spin); lctx.scale(z, z);
         lctx.globalAlpha = eq; lctx.font = `800 ${s.toFixed(1)}px Inter, system-ui, sans-serif`;
         lctx.lineWidth = Math.max(1, s * 0.18); lctx.strokeStyle = "rgba(11,10,36,.6)"; lctx.strokeText("A = L + E", 0, 0);
         lctx.fillStyle = "#FFFFFF"; lctx.fillText("A = L + E", 0, 0); lctx.restore();
@@ -590,24 +775,28 @@ footer p { margin: 0; max-width: 70ch; }
       }
     }
 
-    // Browser animations for the halo, shine, glints and coach bubble, moved along by the same clock.
+    // Browser animations, moved along by the same clock as the canvas.
     let anims = [];
     const anim = (el, frames, opts) => { if (!el) return; const a = el.animate(frames, opts); a.pause(); a.currentTime = 0; anims.push(a); };
-    anim(button.querySelector(".buddy-halo"), [{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.05)", opacity: 0.45, offset: 0.55 }, { transform: "scale(1.6)", opacity: 1, offset: 0.7 }, { transform: "scale(1)", opacity: 0.6 }], { duration: 3500, easing: "ease-in-out" });
-    anim(button.querySelector(".buddy-shine"), [{ opacity: 0, backgroundPosition: "100% 0" }, { opacity: 0.5, offset: 0.3 }, { opacity: 0, backgroundPosition: "0% 0" }], { duration: 950, delay: 2710, easing: "ease-in-out" });
-    button.querySelectorAll(".buddy-glint").forEach((el, i) => anim(el, [{ opacity: 0, transform: "scale(.3) rotate(-25deg)" }, { opacity: 0.9, transform: "scale(1.05) rotate(15deg)", offset: 0.4 }, { opacity: 0, transform: "scale(.5) rotate(35deg)" }], { duration: 600, delay: 2940 + i * 550 }));
-    anim(coach, [{ opacity: 0, transform: "translateY(8px) scale(.86)" }, { opacity: 1, transform: "none" }], { duration: 460, delay: COACH_AT, fill: "backwards", easing: "cubic-bezier(.3,1.4,.5,1)" });
+    anim(root.querySelector(".buddy-disc"), [{ opacity: 0, transform: "scale(.6)" }, { opacity: 1, transform: "none" }], { duration: 450, delay: FACE_AT - 120, fill: "backwards", easing: "cubic-bezier(.3,1.4,.5,1)" });
+    anim(root.querySelector(".buddy-ring"), [{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: FACE_AT, fill: "backwards", easing: "ease-out" });
+    anim(root.querySelector(".buddy-shine"), [{ opacity: 0, backgroundPosition: "100% 0" }, { opacity: 0.5, offset: 0.3 }, { opacity: 0, backgroundPosition: "0% 0" }], { duration: 950, delay: 2710, easing: "ease-in-out" });
+    root.querySelectorAll(".buddy-glint").forEach((el, i) => anim(el, [{ opacity: 0, transform: "scale(.3) rotate(-25deg)" }, { opacity: 0.9, transform: "scale(1.05) rotate(15deg)", offset: 0.4 }, { opacity: 0, transform: "scale(.5) rotate(35deg)" }], { duration: 600, delay: 2940 + i * 550 }));
+    // the name is written in, left to right, once he has landed
+    anim(greet.querySelector(".greet-name"), [{ clipPath: "inset(-20% 100% -20% 0)", opacity: 0.6 }, { clipPath: "inset(-20% 0% -20% 0)", opacity: 1 }], { duration: 1100, delay: PEN_AT, fill: "backwards", easing: "cubic-bezier(.45,.1,.4,1)" });
 
     let frame = 0, last = null, elapsed = 0, entered = false, thought = false;
-    button.classList.add("buddy-entering");
-    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; button.classList.remove("buddy-entering"); };
+    root.classList.add("buddy-entering", "buddy-wait");
+    // Play lights up on his calculator just after he lands
+    anim(root.querySelector(".bp-lcd"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
+    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); };
     const stop = () => {
       cancelAnimationFrame(frame); anims.forEach(a => a.cancel()); anims = [];
-      if (!entered) land(); canvas.remove(); button.classList.remove("buddy-pending");
+      if (!entered) land(); canvas.remove(); root.classList.remove("buddy-pending", "buddy-wait");
       if (running === stop) running = null;
     };
-    stopOpening(); running = stop;
-    button.classList.remove("buddy-pending");
+    if (running) running(); running = stop;
+    root.classList.remove("buddy-pending");
     const place = t => {
       if (entered) return;
       if (t < FACE_AT) { body.style.opacity = "0"; return; }
@@ -616,50 +805,79 @@ footer p { margin: 0; max-width: 70ch; }
     };
     place(0);
     const draw = now => {
-      if (!button.isConnected) return stop();
+      if (!root.isConnected) return stop();
       // A short stall (the 3D town loading) slows the hello down instead of skipping it;
       // a very slow device still finishes within a few seconds.
       if (last !== null) elapsed += Math.min(100, Math.max(0, now - last));
       last = now;
       anims.forEach(a => { a.currentTime = elapsed; });
       place(elapsed);
-      if (elapsed >= CLOUD_AT && !thought) { thought = true; think(button, pickPep()); }
+      if (elapsed >= PLAY_AT) root.classList.remove("buddy-wait");
+      if (elapsed >= CLOUD_AT && !thought) { thought = true; think(root, pickPep()); }
       if (elapsed < OPEN_END) drawOpening(elapsed);
-      else return stop();
+      else if (!canvas.hidden) canvas.hidden = true;
+      if (elapsed >= END) { stop(); done(); return; }
       frame = requestAnimationFrame(draw);
     };
     frame = requestAnimationFrame(draw);
   }
 
-  /* ---------- tap: a hop, a puff of numbers off the calculator, a new pep talk ---------- */
-  function hop(button) {
-    const body = button.querySelector(".buddy-body");
+  /* ---------- tap: a hop, a puff of numbers, a new pep talk ---------- */
+  function hop(root) {
+    const body = root.querySelector(".buddy-fig");
     if (!reduced.matches && body.animate) {
       body.animate([
         { transform: "none" }, { transform: "translateY(2px) scale(1.06,.92)", offset: 0.15 },
-        { transform: "translateY(-16px) scale(.96,1.05)", offset: 0.45 }, { transform: "translateY(1px) scale(1.05,.95)", offset: 0.75 }, { transform: "none" }
+        { transform: "translateY(-12px) scale(.96,1.05)", offset: 0.45 }, { transform: "translateY(1px) scale(1.05,.95)", offset: 0.75 }, { transform: "none" }
       ], { duration: 620, easing: "ease-out" });
-      const puff = ["+", "$", "%", "=", "7"];
-      puff.forEach((g, i) => {
+      ["+", "$", "%", "=", "7"].forEach((g, i) => {
         const s = document.createElement("span"); s.className = "buddy-puff"; s.textContent = g; s.setAttribute("aria-hidden", "true");
-        s.style.left = (62 + i * 6) + "%"; s.style.top = "52%"; button.appendChild(s);
+        s.style.left = (56 + i * 7) + "%"; s.style.top = "62%"; root.appendChild(s);
         const dx = (i - 2) * 14 + (Math.random() * 8 - 4), dy = -50 - Math.random() * 30;
         s.animate([{ opacity: 0, transform: "translate(-50%,-50%) scale(.4)" }, { opacity: 1, transform: `translate(calc(-50% + ${dx * 0.4}px), calc(-50% + ${dy * 0.4}px)) scale(1.1)`, offset: 0.3 }, { opacity: 0, transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.8) rotate(${dx}deg)` }],
           { duration: 900, delay: i * 40, easing: "ease-out", fill: "backwards" }).onfinish = () => s.remove();
       });
     }
-    think(button, pickPep(), reduced.matches);
+    think(root, pickPep(), reduced.matches);
   }
 
+  /* Like Dr. Smiley's fitWave: when the name leaves room beside it, he moves up so his head
+     sits level with the name and no empty band opens up beside him. A long name keeps him
+     on the line below. */
+  let fitBound = false;
+  function fit() {
+    const greet = document.querySelector(".greet"); if (!greet) return;
+    const name = greet.querySelector(".greet-name"), root = greet.querySelector(".buddy");
+    const text = name.firstChild; if (!text) return;
+    root.style.removeProperty("--lift"); name.style.fontSize = "";
+    const range = document.createRange(); range.selectNodeContents(name);
+    let nr = range.getBoundingClientRect();
+    const br = root.getBoundingClientRect(), room = br.left - 10 - nr.left;
+    if (nr.width > room) {
+      // shrink the script name to fit beside him, but not below 38px
+      const size = parseFloat(getComputedStyle(name).fontSize) * room / nr.width;
+      if (size < 38) return;
+      name.style.fontSize = size.toFixed(1) + "px"; nr = range.getBoundingClientRect();
+    }
+    root.style.setProperty("--lift", Math.round(name.getBoundingClientRect().height * 0.85) + "px");
+  }
   window.Mascot = {
     src: ART,
-    mount(hero) {
-      const button = hero && hero.querySelector(".buddy");
-      if (!button) return;
-      button.onclick = () => hop(button);
-      if (!played) { played = true; hello(hero, button); }
-    },
-    leave() { stopOpening(); stopCloud(); }
+    greeting,
+    /* Wires the greeting renderHome just wrote. onPlay: the calculator Play button's action. afterHello: run
+       once the first hello has finished (or right away if it already played). */
+    mount({ onPlay, afterHello } = {}) {
+      const greet = document.querySelector(".greet"), root = greet && greet.querySelector(".buddy");
+      if (!root) return;
+      root.querySelector(".buddy-face").onclick = () => hop(root);
+      root.querySelector(".buddy-play").onclick = () => { if (onPlay) onPlay(); };
+      onDone = afterHello || null;
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      if (!fitBound) { fitBound = true; window.addEventListener("resize", fit, { passive: true }); }
+      if (!played) { played = true; hello(greet, root); }
+      else done();
+    }
   };
 })();
 
@@ -689,7 +907,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, guideSeen: false }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, guideSeen: false }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -867,19 +1085,11 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `
+  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
-      <div class="hero-main">
-        <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-        ${coach ? `<div class="coach">${coach}</div>` : ""}
-      </div>
-      <button class="buddy" id="buddy" type="button" aria-label="Your study buddy. Tap for a pep talk.">
-        <span class="buddy-halo"></span>
-        <span class="buddy-body"><img class="buddy-art" src="${window.Mascot ? window.Mascot.src : "art/mascot.webp"}" alt="" width="235" height="440" decoding="async"><span class="buddy-shine"></span></span>
-        <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
-        <span class="buddy-status" aria-live="polite"></span>
-      </button>
+      <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
+      <div class="coach">${coach}</div>
     </div>
     <div class="pills">
       <span class="pill">${ICON.fire}${sk} day${sk === 1 ? "" : "s"}</span>
@@ -937,8 +1147,20 @@ function renderHome() {
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));
-  if (window.Mascot) window.Mascot.mount($(".hero"));
+  if (window.Mascot) window.Mascot.mount({ onPlay: () => startDrill(null), afterHello: state.nameAsked ? null : () => { if (view === "home" && !$("#scrim")) askName(); } });
   mountTown();
+}
+/* Asked once, after the first hello: the greeting's name. Changeable in More. */
+function askName() {
+  state.nameAsked = true; save();
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="Your name"><div class="grab"></div>
+    <h3>What should your study buddy call you?</h3>
+    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="First name" aria-label="First name">
+    <div class="row"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" id="nameskip">Not now</button></div>
+    <p class="hint" style="margin:0">It stays on this device. Change it any time in More.</p></form></div>`;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+  $("#nameskip").onclick = closeLayer;
+  $("#nameform").onsubmit = e => { e.preventDefault(); const v = $("#namein").value.trim(); closeLayer(); if (v) { state.name = v; save(); renderHome(); } };
 }
 function mountTown() {
   const stage = $("#stage");
@@ -1177,6 +1399,9 @@ function renderMore() {
     <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
       <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
       <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
+      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
+      <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
       <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
@@ -1207,6 +1432,7 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
+  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
   $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };
@@ -1321,7 +1547,7 @@ if (state.examRun) renderExam(); else renderHome();
     float win = (1.0 - smoothstep(wx * 0.5 - fw.x, wx * 0.5 + fw.x, d.x)) * (1.0 - smoothstep(wy * 0.5 - fw.y, wy * 0.5 + fw.y, d.y));
     win = mix(win, wx * wy, farK);
     float busy = fh21(vec2(cell.y, vSeed * 7.13));
-    float lit = step(fh21(cell + vSeed * 31.7), mix(0.04, 0.62, busy * busy * busy));
+    float lit = step(fh21(cell + vSeed * 31.7), mix(0.04, 0.62, busy * busy * busy) * mix(1.0, 0.5, smoothstep(30.0, 150.0, v)));
     vec3 lc = mix(warm, cool, step(0.62, fh21(cell.yx * 1.31 + vSeed))) * (0.25 + 0.55 * fh21(cell * 1.7 + 3.1));
     em = mix(lit * lc, mix(warm, cool, 0.38) * 0.1, farK) * win;
     if (v < 5.0) { /* storefronts */
@@ -1330,7 +1556,15 @@ if (state.examRun) renderExam(); else renderHome();
       win = sh; em = vec3(1.0, 0.8, 0.55) * 0.9 * sh * step(0.25, fh21(vec2(floor(u / 5.0), vSeed)));
     }
     vec3 glassCol = mix(vec3(0.025, 0.03, 0.045), vec3(0.06, 0.085, 0.12), glass);
-    diffuseColor.rgb = mix(baseCol, glassCol, win);
+    vec3 wallCol = baseCol;
+    if (st > 1.5 && st < 2.5 && v > 5.0) { /* brownstone trim: stone lintels and sills, quoins up the corners */
+      float lint = step(abs(f.x - 0.5), wx * 0.5 + 0.07) * step(0.5 + wy * 0.5, f.y) * step(f.y, 0.5 + wy * 0.5 + 0.1);
+      float sill = step(abs(f.x - 0.5), wx * 0.5 + 0.05) * step(0.5 - wy * 0.5 - 0.05, f.y) * step(f.y, 0.5 - wy * 0.5);
+      float hw = abs(N.x) > 0.5 ? vHalf.y : vHalf.x;
+      float quoin = step(hw - 0.5 - 0.25 * mod(floor(v / 0.7), 2.0), abs(u));
+      wallCol = mix(baseCol, vec3(0.56, 0.5, 0.42), max(max(lint, sill) * (1.0 - farK), quoin * (1.0 - farK * 0.6)));
+    }
+    diffuseColor.rgb = mix(wallCol, glassCol, win);
     roughnessFactor = mix(0.85, 0.07, win);
     metalnessFactor = mix(0.0, 0.9, win * (0.35 + 0.65 * glass));
   } else { /* bare concrete frame: slab edges, columns, dark open floors, work lights */
@@ -1342,11 +1576,19 @@ if (state.examRun) renderExam(); else renderHome();
     diffuseColor.rgb = mix(vec3(0.018), vec3(0.52, 0.51, 0.49), conc);
     roughnessFactor = 0.92; metalnessFactor = 0.0;
   }
+  float tH = vTop - v;
+  if (st > 0.5 && st < 2.5 && vTop - vFOrg.y > 6.0 && vTop < 75.0 && tH < 1.9 && isRoof < 0.5) { /* pressed-metal cornice on the walk-ups */
+    diffuseColor.rgb = tH < 0.95 ? vec3(0.24, 0.22, 0.2) : vec3(0.5, 0.45, 0.38); em = vec3(0.0); roughnessFactor = 0.75; metalnessFactor = 0.0;
+  }
   if (isRoof > 0.5) { diffuseColor.rgb = vec3(0.11, 0.11, 0.12); em = vec3(0.0); roughnessFactor = 0.9; metalnessFactor = 0.0; ao = 1.0; }
   diffuseColor.rgb *= ao;
   float up = exp(-v / 30.0); /* at night walls are lit from the street: bright low down, dark higher up */
-  diffuseColor.rgb *= mix(1.0, 0.3 + 0.7 * up, uNight);
-  em += baseCol * (1.0 - isRoof) * up * vec3(0.5, 0.32, 0.45) * 0.35;
+  diffuseColor.rgb *= mix(1.0, 0.22 + 0.78 * up, uNight);
+  /* in the Times Square canyon the street light is the screens: magenta and cyan washing up the walls */
+  float inCy = step(-215.0, vFPos.z) * step(vFPos.z, 250.0) * (1.0 - smoothstep(22.0, 75.0, abs(vFPos.x)));
+  vec3 spill = mix(vec3(1.0, 0.1, 0.48), vec3(0.06, 0.7, 1.0), 0.5 + 0.5 * sin(vFPos.z * 0.043 + vFPos.x * 0.05)) * exp(-v / 24.0) * inCy;
+  em += (1.0 - isRoof) * (baseCol * up * vec3(0.5, 0.32, 0.45) * 0.3 * (1.0 - inCy) + (baseCol + 0.12) * spill * 0.75);
+  fEnvK = mix(1.0, 0.3, smoothstep(14.0, 90.0, v) * uNight);
   totalEmissiveRadiance += em * uNight;
 }`;
   function facadeMat(opts = {}) {
@@ -1355,17 +1597,18 @@ if (state.examRun) renderExam(); else renderHome();
       sh.uniforms.uNight = U.night;
       sh.vertexShader = sh.vertexShader.replace("#include <common>", `#include <common>
 attribute float aSeed; attribute float aStyle;
-varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle;`).replace("#include <begin_vertex>", `#include <begin_vertex>
+varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle; varying float vTop; varying vec2 vHalf;`).replace("#include <begin_vertex>", `#include <begin_vertex>
 { mat4 fm = modelMatrix;
 #ifdef USE_INSTANCING
   fm = modelMatrix * instanceMatrix;
 #endif
   vFPos = (fm * vec4(transformed, 1.0)).xyz; vFOrg = (fm * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
-  vFNrm = mat3(fm) * objectNormal; vSeed = aSeed; vStyle = aStyle; }`);
+  vFNrm = mat3(fm) * objectNormal; vSeed = aSeed; vStyle = aStyle;
+  vTop = (fm * vec4(0.0, 1.0, 0.0, 1.0)).y; vHalf = vec2(length(fm[0].xyz), length(fm[2].xyz)) * 0.5; }`);
       sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>
-uniform float uNight;
-varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle;
-${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + FACADE);
+uniform float uNight; float fEnvK = 1.0;
+varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle; varying float vTop; varying vec2 vHalf;
+${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + FACADE).replace("#include <lights_fragment_maps>", "#include <lights_fragment_maps>\n#ifdef USE_ENVMAP\nradiance *= fEnvK;\n#endif");
     };
     m.customProgramCacheKey = () => "facade";
     return m;
@@ -1376,8 +1619,9 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const CANYON = { z0: -205, z1: 245 }, PARK = { x0: -260, x1: 520, z1: -1100 };
   const RANGE = low ? 1500 : 2500, TDEPTH = 44;
   const PAL = { 0: [0x2b3542, 0x3a4553, 0x1f2731, 0x56606c, 0x2f3d4a, 0x44525e], 1: [0xb9ae99, 0x9d9485, 0xd0c6b1, 0x8b8579, 0xa79a86], 2: [0x8b4b37, 0x6f3c2d, 0xa1654b, 0x7b5b49, 0x5e4a3e], 3: [0x14181e, 0x20262e, 0x1a1f26] };
+  const AWN = [0x1f4d2b, 0x1d2a44, 0x5a1a1f, 0x262629, 0x3d5a3a, 0x6b2d1a, 0x2f4058];
   const CROWN_COLS = [0xffc861, 0xf4f1ea, 0x6fb6ff, 0xff4f8b, 0x8cffb0, 0xb48cff];
-  const towers = [], crowns = [], tanks = [], roofBoxes = [], avPts = [], walls = [];
+  const towers = [], crowns = [], tanks = [], roofBoxes = [], avPts = [], walls = [], escapes = [], rails = [], awnings = [];
   const addT = (x, y, z, w, h, d, style, seed, tint) => towers.push([x, y, z, w, h, d, style, seed, tint]);
   const density = (x, z) => Math.max(Math.exp(-((x - 300) ** 2) / 1000 ** 2 - ((z + 150) ** 2) / 1250 ** 2), 0.9 * Math.exp(-((x + 650) ** 2) / 320 ** 2 - ((z - 700) ** 2) / 260 ** 2));
   function building(x0, x1, z0, z1, o = {}) {
@@ -1385,7 +1629,8 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     let h = 10 + 26 * rnd() + dn * (0.15 + 0.85 * Math.pow(rnd(), 1.4)) * 260;
     if (o.minH) h = Math.max(h, o.minH + rnd() * (o.maxH - o.minH));
     if (o.maxCap) h = Math.min(h, o.maxCap);
-    const style = h > 130 ? pick([0, 0, 3, 1]) : h > 45 ? pick([1, 0, 1, 3, 2]) : pick([2, 2, 1]);
+    if (o.hk) h = 14 + rnd() * 11 + (rnd() < 0.07 ? 22 : 0);   /* Hell's Kitchen: five- and six-storey walk-ups */
+    const style = o.hk ? (rnd() < 0.8 ? 2 : 1) : h > 130 ? pick([0, 0, 3, 1]) : h > 45 ? pick([1, 0, 1, 3, 2]) : pick([2, 2, 1]);
     const tint = pick(PAL[style]), seed = rnd() * 1000;
     let top, wallH = h;
     if (h > 70 && w > 26 && d > 26 && rnd() < 0.75) {
@@ -1404,6 +1649,21 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     if (h > 125 && rnd() < 0.3) crowns.push([top[0], h, top[2], top[3] * 0.9, 6 + rnd() * 14, top[4] * 0.9, pick(CROWN_COLS), rnd() < 0.5 ? 0 : 1]);
     if (h > 240 && rnd() < 0.5) { const sp = 25 + rnd() * 45; addT(top[0], h, top[2], 1.4, sp, 1.4, 3, seed, 0x9aa3ad); avPts.push([top[0], h + sp + 0.5, top[2]]); }
     else if (h > 150) avPts.push([top[0], h + 0.8, top[2]]);
+    /* street fronts of the walk-ups: fire escapes up the brick, awnings over the shops */
+    if (h < 65 && !o.minH && Math.hypot(cx - 150, cz) < 950) for (const [is, nz] of [[o.nf, -1], [o.sf, 1]]) {
+      if (!is) continue; const face = nz < 0 ? z0 + 0.3 : z1 - 0.3, top = Math.min(wallH, h) - 2.5;
+      if (style === 2 && w > 7 && rnd() < (o.hk ? 0.75 : 0.6)) {
+        const fw = Math.min(w - 3, 4.5 + rnd() * 3), fx = x0 + 1.5 + fw / 2 + rnd() * Math.max(0, w - 3 - fw);
+        for (let y = 5.4; y < top; y += 3.3) {
+          escapes.push([fx, y, face + nz * 0.55, fw, 0.1, 1.1, 0]);
+          rails.push([fx, y + 0.5, face + nz * 1.08, fw, 1.0, 0.04, 0]);
+          if (y + 3.3 < top) { const len = Math.hypot(fw * 0.7, 3.3); escapes.push([fx, y + 1.65, face + nz * 0.3, len, 0.06, 0.4, Math.atan2(3.3, fw * 0.7) * (rnd() < 0.5 ? 1 : -1)]); }
+        }
+      }
+      if (style !== 3 && rnd() < 0.55) { let ax = x0 + 1.5 + rnd() * 3;
+        while (ax < x1 - 5) { const aw = Math.min(x1 - 1.5 - ax, 3.5 + rnd() * 4); if (rnd() < 0.7) awnings.push([ax + aw / 2, 3.75, face + nz * 0.75, aw, 0.09, 1.5, nz, pick(AWN)]); ax += aw + 1 + rnd() * 4; }
+      }
+    }
     return { h, wallH };
   }
   /* study tower slots: the first 44 m of each canyon block, two lots per block; Part 1 north, Part 2 middle, Part 3 south */
@@ -1424,14 +1684,15 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
         for (const [a, b, side] of [[z0, cz, -1], [cz, z1, 1]]) slots[part].push({ x0: sx0, x1: sx1, z0: a, z1: b, nx, side, wallX: k === 0 ? x0 : x1 });
         if (k === 0) xa = x0 + TDEPTH; else xb = x1 - TDEPTH;
       }
+      const hk = (k === -2 || k === -3) && z0 > -520 && z1 < 470;   /* the walk-up blocks west of the canyon */
       let x = xa;
       while (x < xb - 8) {
-        let lw = 18 + rnd() * 40; if (xb - (x + lw) < 16) lw = xb - x;
+        let lw = hk ? 7.5 + rnd() * 8 : 18 + rnd() * 40; if (xb - (x + lw) < (hk ? 7 : 16)) lw = xb - x;
         const lx0 = x, lx1 = x + lw; x += lw;
         const faces = canyon && !part && ((k === 0 && lx0 === x0) || (k === -1 && Math.abs(lx1 - x1) < 0.01));
-        const rows = !faces && rnd() < 0.45 ? [[z0, cz - 1], [cz + 1, z1]] : faces && rnd() < 0.5 ? [[z0, cz], [cz, z1]] : [[z0, z1]];
+        const rows = hk || (!faces && rnd() < 0.45) ? [[z0, cz - 1], [cz + 1, z1]] : faces && rnd() < 0.5 ? [[z0, cz], [cz, z1]] : [[z0, z1]];
         for (const [a, b] of rows) {
-          const info = building(lx0, lx1, a, b, faces ? { minH: 50, maxH: 105, maxCap: 110 } : part ? { maxCap: 115 } : {});
+          const info = building(lx0, lx1, a, b, Object.assign(faces ? { minH: 50, maxH: 105, maxCap: 110 } : part ? { maxCap: 115 } : {}, { nf: a === z0, sf: b === z1, hk }));
           if (faces) walls.push({ x: k === 0 ? lx0 : lx1, nx: k === 0 ? -1 : 1, z0: a, z1: b, h: info.wallH, n: a === z0, s: b === z1, depth: lw });
         }
       }
@@ -1512,6 +1773,17 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     b.crane.visible = !done && ((String(b.part) === currentPart && !viewTS) || !!fs);
   }
 
+  /* rooftop spectaculars: big signs on the low roofs along the canyon, at its edge and on the block corners facing up the canyon */
+  const roofSigns = [];
+  for (const wl of walls) {
+    if (wl.h <= 22 || wl.h > 75 || rnd() > 0.6) continue;
+    const corner = wl.n && rnd() < 0.6, h = 8 + rnd() * 9;
+    if (corner) { const w = Math.min(wl.depth - 4, 14 + rnd() * 12), x = wl.x - wl.nx * (w / 2 + 1.5), z = wl.z0 + 1.6;
+      addT(x, wl.h, z + 0.5, w, h + 2, 0.8, 3, rnd() * 1000, 0x14181e); roofSigns.push([x, wl.h + 2 + h / 2, z - 0.05, w - 0.4, h - 0.4, 0, -1]); }
+    else { const w = Math.min(wl.z1 - wl.z0 - 4, 16 + rnd() * 16), x = wl.x - wl.nx * 1.4, z = (wl.z0 + wl.z1) / 2 + (rnd() - 0.5) * (wl.z1 - wl.z0 - 4 - w);
+      addT(x - wl.nx * 0.5, wl.h, z, 0.8, h + 2, w, 3, rnd() * 1000, 0x14181e); roofSigns.push([x + wl.nx * 0.05, wl.h + 2 + h / 2, z, w - 0.4, h - 0.4, wl.nx, 0]); }
+  }
+
   /* ---------- build the instanced city ---------- */
   function instanced(list, geo, mat) {
     const n = list.length, im = new THREE.InstancedMesh(geo, mat, n), M = new THREE.Matrix4(), col = new THREE.Color();
@@ -1521,6 +1793,18 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     im.computeBoundingSphere(); return im;
   }
   scene.add(instanced(towers, unitBox.clone(), facadeMat()));
+  { /* fire escapes (platforms and stairs), their railings, awnings */
+    const M = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), V1 = new THREE.Vector3(), V2 = new THREE.Vector3(), col = new THREE.Color();
+    const flat = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), upright = new THREE.PlaneGeometry(1, 1);   /* thin parts are single quads */
+    const ironM = new THREE.MeshStandardMaterial({ color: 0x1c1d20, roughness: 0.6, metalness: 0.4, side: THREE.DoubleSide });
+    const bars = (() => { const c = document.createElement("canvas"); c.width = 64; c.height = 16; const x = c.getContext("2d"); x.fillStyle = "#000"; x.fillRect(0, 0, 64, 16); x.fillStyle = "#fff"; x.fillRect(0, 0, 64, 2); for (let i = 0; i < 64; i += 8) x.fillRect(i, 0, 2, 16); const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.repeat.set(5, 1); return t; })();
+    const railM = new THREE.MeshStandardMaterial({ color: 0x1c1d20, roughness: 0.6, metalness: 0.4, alphaMap: bars, alphaTest: 0.5, side: THREE.DoubleSide });
+    const make = (list, geo, mat, rot, colors) => { if (!list.length) return; const im = new THREE.InstancedMesh(geo, mat, list.length);
+      list.forEach((b, i) => { e.set(rot === "x" ? b[6] * 0.35 : 0, 0, rot === "z" ? b[6] : 0); q.setFromEuler(e); M.compose(V1.set(b[0], b[1], b[2]), q, V2.set(b[3], b[4], b[5])); im.setMatrixAt(i, M); if (colors) im.setColorAt(i, col.setHex(b[7])); });
+      im.computeBoundingSphere(); scene.add(im); return im; };
+    make(escapes, flat, ironM, "z"); make(rails, upright, railM, "z");
+    make(awnings, flat, new THREE.MeshStandardMaterial({ roughness: 0.85, side: THREE.DoubleSide }), "x", true);
+  }
   { const rm = new THREE.InstancedMesh(unitBox.clone(), new THREE.MeshStandardMaterial({ color: 0x5c5e63, roughness: 0.85 }), roofBoxes.length), M = new THREE.Matrix4(); roofBoxes.forEach((b, i) => { M.makeScale(b[3], b[4], b[5]); M.setPosition(b[0], b[1], b[2]); rm.setMatrixAt(i, M); }); rm.computeBoundingSphere(); scene.add(rm); }
   { /* rooftop water tanks */
     const parts = [new THREE.CylinderGeometry(2.4, 2.4, 4.4, 12).translate(0, 4.6, 0), new THREE.ConeGeometry(2.6, 1.8, 12).translate(0, 7.7, 0), new THREE.BoxGeometry(4, 2.4, 4).translate(0, 1.2, 0)].map(g => g.toNonIndexed());
@@ -1557,8 +1841,8 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   float park = step(-258.0, p.x) * step(p.x, 518.0) * step(p.y, -1102.0);
   vec2 fwp = fwidth(p); float farK = smoothstep(0.5, 3.0, max(fwp.x, fwp.y));
   vec3 col = vec3(0.07); float rough = 0.9;
-  if (street > 0.5) { col = vec3(0.19, 0.19, 0.2); rough = 0.7; }
-  if (plaza > 0.5) { col = vec3(0.3, 0.27, 0.31); rough = 0.35; }
+  if (street > 0.5) { col = vec3(0.15, 0.15, 0.16); rough = 0.6; }
+  if (plaza > 0.5) { col = vec3(0.17, 0.16, 0.18) * (0.85 + 0.3 * fh21(floor(p / 1.6))); rough = 0.3; }
   if (road > 0.5) { col = vec3(0.03, 0.032, 0.038); rough = 0.2; }
   float mark = 0.0;
   if (road > 0.5) {
@@ -1569,11 +1853,31 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   }
   if (park > 0.5) { col = vec3(0.035, 0.065, 0.03) * (0.7 + 0.6 * fh21(floor(p / 9.0))); rough = 1.0; mark = 0.0; street = 0.0; road = 0.0; }
   col = mix(col, vec3(0.62), mark);
+  if (park < 0.5 && street > 0.5 && farK < 0.98) { /* puddles, and leaves along the tree-lined streets */
+    float tsq = (ai == 0.0 && p.y > -235.0 && p.y < 275.0) || (abs(p.x) < 95.0 && p.y > -235.0 && p.y < 275.0) ? 1.0 : 0.0;
+    float pn = vnoise(p / 7.0) * 0.65 + vnoise(p / 2.3) * 0.35;
+    float puddle = smoothstep(0.64, 0.69, pn) * (1.0 - farK) * (1.0 - 0.6 * tsq);
+    col = mix(col, col * 0.45, puddle); rough = mix(rough, 0.12, puddle);
+    vec2 lp = p / 0.3, lc = floor(lp);
+    float near = onSt > 0.5 && onAve < 0.5 ? 1.0 : 0.25;
+    float dens = mix(0.03, 0.3, near * smoothstep(0.3, 0.75, vnoise(p / 5.0))) * (1.0 - road * 0.55) * (1.0 - tsq);
+    float leaf = step(1.0 - dens, fh21(lc + 17.0)) * step(length(fract(lp) - 0.5), 0.42) * (1.0 - farK) * (1.0 - puddle * 0.6);
+    vec3 lcol = mix(vec3(0.8, 0.36, 0.06), vec3(0.92, 0.68, 0.16), fh21(lc + 3.0)); lcol = mix(lcol, vec3(0.55, 0.1, 0.04), step(0.8, fh21(lc + 9.0)));
+    col = mix(col, lcol * 0.6, leaf); rough = mix(rough, 0.9, leaf);
+  }
   vec3 em = vec3(0.0);
   float along = onAve > 0.5 ? p.y : p.x;
   float curbD = onAve > 0.5 ? abs(dx - (avH - 4.5)) : abs(dz - 5.5);
   float pool = exp(-curbD * curbD / 20.0) * (0.5 + 0.5 * cos(6.2832 * along / 28.0));
-  em += vec3(1.0, 0.56, 0.24) * mix(pool, 0.7, farK) * 0.45 * street;
+  float inCy = (ai == 0.0 && p.y > -215.0 && p.y < 250.0) ? 1.0 : 0.0;
+  em += vec3(1.0, 0.56, 0.24) * mix(pool, 0.7, farK) * 0.45 * street * (1.0 - 0.7 * inCy);
+  if (inCy > 0.5 && dx < 18.0) { /* each screen throws its own color on the pavement in front of it */
+    float side = axd > 0.0 ? 3.0 : 7.0, sz = p.y / 15.0 + side, f = smoothstep(0.2, 0.8, fract(sz));
+    vec3 c0 = neonAt(fh21(vec2(floor(sz), side))), c1 = neonAt(fh21(vec2(floor(sz) + 1.0, side)));
+    float flick = 0.8 + 0.2 * sin(uTime * 0.9 + floor(sz) * 2.3);
+    em += mix(c0, c1, f) * exp(-(18.0 - dx) / 3.0) * 0.55 * flick * (0.55 + 0.45 * fh21(floor(p * 0.7))) * (1.0 - 0.6 * road);
+    em += mix(vec3(0.9, 0.1, 0.5), vec3(0.1, 0.55, 1.0), 0.5 + 0.5 * sin(p.y * 0.031)) * 0.018;
+  }
   if (road > 0.5 && park < 0.5 && !(aveRoad > 0.5 && stRoad > 0.5)) {
     float lanePos = 1000.0, t = 0.0, sd = 0.0, dir = 1.0;
     if (aveRoad > 0.5 && inC < 0.5) { lanePos = axd; t = p.y; sd = ai; dir = mod(ai, 2.0) < 0.5 ? 1.0 : -1.0; }
@@ -1589,19 +1893,40 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   diffuseColor.rgb = col; roughnessFactor = rough; metalnessFactor = 0.0;
   totalEmissiveRadiance += em * uNight;
 }`;
+  const VNOISE = "float vnoise(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fh21(i), fh21(i + vec2(1.0, 0.0)), f.x), mix(fh21(i + vec2(0.0, 1.0)), fh21(i + vec2(1.0, 1.0)), f.x), f.y); }";
+  const NEONAT = "vec3 neonAt(float h) { return h < 0.34 ? vec3(1.0, 0.08, 0.42) : h < 0.62 ? vec3(0.04, 0.68, 1.0) : h < 0.8 ? vec3(0.55, 0.12, 1.0) : h < 0.92 ? vec3(1.0, 0.5, 0.08) : vec3(0.9, 0.9, 1.0); }";
   const gMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
   gMat.onBeforeCompile = sh => {
     sh.uniforms.uNight = U.night; sh.uniforms.uTime = U.time;
     sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying vec3 vGPos;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvGPos = (modelMatrix * vec4(transformed, 1.0)).xyz;");
-    sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>\nuniform float uNight; uniform float uTime; varying vec3 vGPos;\n${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + GROUND);
+    sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>\nuniform float uNight; uniform float uTime; varying vec3 vGPos;\n${HASH}\n${VNOISE}\n${NEONAT}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + GROUND);
   };
   gMat.customProgramCacheKey = () => "ground";
   const plane = (x0, x1, z0, z1, m, y = 0) => { const o = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0).rotateX(-Math.PI / 2), m); o.position.set((x0 + x1) / 2, y, (z0 + z1) / 2); scene.add(o); return o; };
   plane(-1300, 2100, -5200, 3600, gMat); plane(-8000, -2300, -6000, 6000, gMat); plane(2900, 8000, -6000, 6000, gMat);
   plane(-12000, 12000, -12000, 12000, new THREE.MeshStandardMaterial({ color: 0x06101a, roughness: 0.1, metalness: 0.7 }), -1.2);
-  { const n = low ? 300 : 900, im = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshStandardMaterial({ color: 0x1f4a26, roughness: 1, flatShading: true }), n), M = new THREE.Matrix4(), q = new THREE.Quaternion();
-    for (let i = 0; i < n; i++) { const s = 4 + rnd() * 5; M.compose(new THREE.Vector3(PARK.x0 + 8 + rnd() * (PARK.x1 - PARK.x0 - 16), s * 0.9, PARK.z1 - 10 - rnd() * 2000), q, new THREE.Vector3(s, s * 0.85, s)); im.setMatrixAt(i, M); }
+  const FALL = [0xd9661a, 0xe88a1f, 0xc23a1a, 0xf0b429, 0xb8461d, 0x9c2f14, 0xe0a030, 0xcf7a22, 0x8a8f2a];
+  const leafM = new THREE.MeshStandardMaterial({ roughness: 0.95, flatShading: true });
+  { const n = low ? 300 : 900, im = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 0), leafM, n), M = new THREE.Matrix4(), q = new THREE.Quaternion(), col = new THREE.Color();
+    for (let i = 0; i < n; i++) { const s = 4 + rnd() * 5; M.compose(new THREE.Vector3(PARK.x0 + 8 + rnd() * (PARK.x1 - PARK.x0 - 16), s * 0.9, PARK.z1 - 10 - rnd() * 2000), q, new THREE.Vector3(s, s * 0.85, s)); im.setMatrixAt(i, M); im.setColorAt(i, col.setHex(rnd() < 0.2 ? 0x3f5a22 : pick(FALL)).multiplyScalar(0.8)); }
     im.computeBoundingSphere(); scene.add(im); }
+  { /* street trees on the cross streets: none in Times Square itself */
+    const list = [];
+    for (let j = -9; j <= 8; j++) for (const side of [-1, 1]) {
+      const z = j * ST + side * 6.7;
+      for (let x = -770; x < 840; x += (low ? 18 : 11) + rnd() * 6) {
+        const ai = Math.round(x / AVE);
+        if (Math.hypot(x - 40, z) > 860 || Math.abs(x - ai * AVE) < avHalf(ai) + 4 || (Math.abs(x) < 90 && z > CANYON.z0 - 30 && z < CANYON.z1 + 30) || rnd() < 0.15) continue;
+        list.push([x, z, 2.3 + rnd() * 1.1, pick(FALL)]);
+      }
+    }
+    const lump = (low ? [[0, 0, 0, 1]] : [[0, 0, 0, 1], [0.55, 0.32, 0.3, 0.74]]).map(([x, y, z, r]) => new THREE.IcosahedronGeometry(r, 0).translate(x, y, z).toNonIndexed());
+    const crownG = new THREE.BufferGeometry(); { const arr = new Float32Array(lump.reduce((a, g) => a + g.attributes.position.array.length, 0)); let o = 0; for (const g of lump) { arr.set(g.attributes.position.array, o); o += g.attributes.position.array.length; } crownG.setAttribute("position", new THREE.BufferAttribute(arr, 3)); crownG.computeVertexNormals(); }
+    const crownsM = new THREE.InstancedMesh(crownG, leafM, list.length), trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.13, 0.2, 1, 4, 1, true).translate(0, 0.5, 0), new THREE.MeshStandardMaterial({ color: 0x2b2018, roughness: 1 }), list.length);
+    const M = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), col = new THREE.Color();
+    list.forEach(([x, z, r, c], i) => { e.set(0, rnd() * 6.28, 0); q.setFromEuler(e); M.compose(new THREE.Vector3(x, 4.2 + r * 0.75, z), q, new THREE.Vector3(r, r * 0.95, r)); crownsM.setMatrixAt(i, M); crownsM.setColorAt(i, col.setHex(c));
+      M.compose(new THREE.Vector3(x, 0, z), new THREE.Quaternion(), new THREE.Vector3(1, 4.4 + r * 0.3, 1)); trunks.setMatrixAt(i, M); });
+    crownsM.computeBoundingSphere(); trunks.computeBoundingSphere(); scene.add(crownsM, trunks); }
 
   /* ---------- screens: one atlas, every panel scrolls on its own, all in one draw ---------- */
   const NEON = ["#ff2d78", "#00e5ff", "#ffcf3f", "#b43cff", "#10d9a0", "#ff6b35", "#ffffff", "#3d7bff", "#ff3b3b"];
@@ -1645,7 +1970,7 @@ void main() {
 #ifdef REFL
   vec2 l = fract(vec2(vL.x * rep.x + vA.y * uTime, 0.12));
   vec3 c = texture2D(map, vR.xy + l * vR.zw, 3.0).rgb;
-  float fade = pow(clamp(vL.y, 0.0, 1.0), 2.2) * (0.6 + 0.4 * sin(vL.x * 90.0)) * 0.3;
+  float fade = pow(clamp(vL.y, 0.0, 1.0), 2.2) * (0.45 + 0.55 * sin(vL.x * 90.0) * sin(vL.y * 23.0 + vL.x * 7.0)) * 0.34;
   gl_FragColor = vec4(c * fade * vA.w * uBright, 1.0);
 #else
   vec2 l = fract(vL * rep + vA.yz * uTime);
@@ -1682,27 +2007,29 @@ void main() {
     const cell = Math.floor(rnd() * ACOLS * AROWS), rect = [(cell % ACOLS) / ACOLS, 1 - (Math.floor(cell / ACOLS) + 1) / AROWS, 1 / ACOLS, 1 / AROWS];
     const aspect = (w / h) / (CW / CH), mv = rnd(), sx = mv < 0.45 ? (0.015 + rnd() * 0.05) * (rnd() < 0.5 ? -1 : 1) : 0, sy = mv > 0.8 ? 0.03 + rnd() * 0.04 : 0, br = 0.85 + rnd() * 0.6;
     quad(BBS, c, right, UP, w, h, rect, [aspect, sx, sy, br]);
-    if (c.y - h / 2 < 9) { const len = Math.min(13, 4 + h * 0.8), fc = new THREE.Vector3().copy(c).addScaledVector(nrm, len / 2 + 0.3); fc.y = 0.04; quad(RF, fc, right, new THREE.Vector3().copy(nrm).negate(), w, len, rect, [aspect, sx, 0, br]); }
+    if (c.y - h / 2 < 9) { const len = Math.min(12, 4 + h * 0.7), fc = new THREE.Vector3().copy(c).addScaledVector(nrm, len / 2 + 0.3); fc.y = 0.04; quad(RF, fc, right, new THREE.Vector3().copy(nrm).negate(), w, len, rect, [aspect, sx, 0, br]); }
   }
   for (const wl of walls) {
-    const nrm = new THREE.Vector3(wl.nx, 0, 0), south = (wl.z0 + wl.z1) / 2 > 60, top = Math.min(wl.h - 2, (south ? 22 : 12) + rnd() * (south ? 34 : 20));
-    let y = 4.8;
+    const nrm = new THREE.Vector3(wl.nx, 0, 0), top = wl.h <= 22 ? wl.h - 2 : Math.min(wl.h - 3, 36 + rnd() * 36);
+    let y = 4.8, row = 0;
     while (y < top - 2) {
-      const rh = Math.min(top - y, 3.2 + rnd() * 9); let z = wl.z0 + 0.4;
-      while (z < wl.z1 - 2.4) { const pw = Math.min(wl.z1 - 0.4 - z, 5 + rnd() * 17); billboard(new THREE.Vector3(wl.x + wl.nx * 0.2, y + rh / 2, z + pw / 2), nrm, pw - 0.3, rh - 0.3, rnd() < 0.08 ? { stat: Math.floor(rnd() * 5) } : {}); z += pw; }
+      const big = row++ > 0, rh = Math.min(top - y, big ? 8 + rnd() * 14 : 3.2 + rnd() * 3.5); let z = wl.z0 + 0.4;
+      while (z < wl.z1 - 2.4) { let pw = Math.min(wl.z1 - 0.4 - z, big ? 12 + rnd() * 30 : 5 + rnd() * 14); if (wl.z1 - 0.4 - z - pw < 6) pw = wl.z1 - 0.4 - z; billboard(new THREE.Vector3(wl.x + wl.nx * 0.2, y + rh / 2, z + pw / 2), nrm, pw - 0.3, rh - 0.3, rnd() < 0.08 ? { stat: Math.floor(rnd() * 5) } : {}); z += pw; }
       y += rh;
     }
     for (const [is, zf, nz] of [[wl.n, wl.z0, -1], [wl.s, wl.z1, 1]]) {
-      if (!is) continue; const span = Math.min(wl.depth - 2, 8 + rnd() * 10), x0 = wl.x - wl.nx * 0.4, n2 = new THREE.Vector3(0, 0, nz); let yy = 4.8;
-      while (yy < top - 2) { const rh = Math.min(top - yy, 4 + rnd() * 10); billboard(new THREE.Vector3(x0 - wl.nx * span / 2, yy + rh / 2, zf + nz * 0.2), n2, span, rh - 0.3); yy += rh; }
+      if (!is) continue; const span = Math.min(wl.depth - 2, 14 + rnd() * 22), x0 = wl.x - wl.nx * 0.4, n2 = new THREE.Vector3(0, 0, nz); let yy = 4.8;
+      while (yy < top - 2) { const rh = Math.min(top - yy, 6 + rnd() * 14); billboard(new THREE.Vector3(x0 - wl.nx * span / 2, yy + rh / 2, zf + nz * 0.2), n2, span, rh - 0.3); yy += rh; }
     }
   }
+  for (const [x, y, z, w, h, nx, nz] of roofSigns) billboard(new THREE.Vector3(x, y, z), new THREE.Vector3(nx, 0, nz), w, h);
   { let y = 7, k = 0;
     while (y < OTS.h - 6) {
       const rh = 7 + rnd() * 9;
       billboard(new THREE.Vector3(0, y + rh / 2, OTS.z0 - 0.2), new THREE.Vector3(0, 0, -1), 21.4, rh - 0.4, k % 2 === 0 ? { stat: k / 2 % 5 } : {});
       billboard(new THREE.Vector3(OTS.x1 + 0.2, y + rh / 2, 222), new THREE.Vector3(1, 0, 0), 19.4, rh - 0.4);
       billboard(new THREE.Vector3(OTS.x0 - 0.2, y + rh / 2, 222), new THREE.Vector3(-1, 0, 0), 19.4, rh - 0.4);
+      billboard(new THREE.Vector3(0, y + rh / 2, OTS.z1 + 0.2), new THREE.Vector3(0, 0, 1), 21.4, rh - 0.4);
       y += rh; k++;
     } }
   function storeMesh(s, mat) {
@@ -1732,7 +2059,7 @@ void main() {
   for (const s of stats) {
     drawStat(s); if (!s.quads.length) continue;
     const st = { p: [], l: [], r: [], a: [], i: [] };
-    for (const [c, right, w, h] of s.quads) quad(st, c, right, UP, w, h, [0, 0, 1, 1], [1, 0, 0, 1.7]);
+    for (const [c, right, w, h] of s.quads) quad(st, c, right, UP, w, h, [0, 0, 1, 1], [1, 0, 0, 1.35]);
     storeMesh(st, screenMat(s.tex));
   }
 
@@ -1775,19 +2102,30 @@ void main() {
   { const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(2.2, 2), new THREE.MeshStandardMaterial({ color: 0xbfd6ff, emissive: 0x9fc4ff, emissiveIntensity: 1.6, roughness: 0.2, metalness: 0.6 })); ball.position.set(0, OTS.h + 30, 222); scene.add(ball); }
 
   /* ---------- sky, haze, light, reflections ---------- */
-  const SKY = { night: { top: 0x04050d, mid: 0x161339, hor: 0x46294a }, day: { top: 0x2f63b8, mid: 0x7fa6d8, hor: 0xd9e3ee } };
-  const skyMat = new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, uniforms: { top: { value: new THREE.Color() }, mid: { value: new THREE.Color() }, hor: { value: new THREE.Color() } },
+  const SKY = { night: { top: 0x020309, mid: 0x0d0b24, hor: 0x2b1a3a }, day: { top: 0x4a78bd, mid: 0x9db8da, hor: 0xeee2d2 } };
+  const skyMat = new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, uniforms: { top: { value: new THREE.Color() }, mid: { value: new THREE.Color() }, hor: { value: new THREE.Color() }, uDay: { value: 0 } },
     vertexShader: "varying vec3 vD; void main(){ vD = normalize(position); vec4 p = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_Position = p.xyww; }",
-    fragmentShader: "uniform vec3 top; uniform vec3 mid; uniform vec3 hor; varying vec3 vD; void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c = mix(c, top, smoothstep(0.14, 0.65, h)); if (h < 0.0) c = hor; gl_FragColor = vec4(c, 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}" });
+    fragmentShader: `uniform vec3 top; uniform vec3 mid; uniform vec3 hor; uniform float uDay; varying vec3 vD;
+${HASH}
+${VNOISE}
+void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c = mix(c, top, smoothstep(0.14, 0.65, h)); if (h < 0.0) c = hor;
+  if (uDay > 0.01 && h > 0.0) { /* soft autumn clouds */
+    vec2 q = vD.xz / (h + 0.12) * 1.3; float n = vnoise(q) * 0.55 + vnoise(q * 2.2 + 5.1) * 0.3 + vnoise(q * 4.7 + 1.7) * 0.15;
+    float cl = smoothstep(0.42, 0.78, n) * smoothstep(0.02, 0.22, h);
+    c = mix(c, mix(vec3(0.74, 0.76, 0.8), vec3(1.0, 0.97, 0.92), smoothstep(0.5, 0.9, n)), cl * 0.9 * uDay); }
+  gl_FragColor = vec4(c, 1.0);
+#include <tonemapping_fragment>
+#include <colorspace_fragment>
+}` });
   const sky = new THREE.Mesh(new THREE.SphereGeometry(8000, 32, 16), skyMat); sky.renderOrder = -1; sky.frustumCulled = false; scene.add(sky);
   scene.fog = new THREE.FogExp2(SKY.night.hor, 0.00055);
   const hemi = new THREE.HemisphereLight(0x5560a0, 0x40281a, 0.3); scene.add(hemi);
-  const sun = new THREE.DirectionalLight(0x9fb0ff, 0.35); sun.position.set(-0.75, 0.6, 0.3); scene.add(sun);
+  const sun = new THREE.DirectionalLight(0x9fb0ff, 0.35); sun.position.set(-0.8, 0.45, 0.42); scene.add(sun);
   const pmrem = new THREE.PMREMGenerator(renderer);
   function envFor(night) {
     const s = new THREE.Scene(), geo = new THREE.SphereGeometry(50, 32, 16), cols = [], pos = geo.attributes.position;
     for (let i = 0; i < pos.count; i++) { const h = pos.getY(i) / 50, c = new THREE.Color();
-      if (night) c.setRGB(...(h > 0.1 ? [0.01, 0.01, 0.03] : h > -0.05 ? [0.1, 0.045, 0.08] : [0.09, 0.045, 0.02])); else c.setRGB(...(h > 0.1 ? [0.35, 0.55, 0.95] : h > -0.05 ? [1.4, 1.5, 1.6] : [0.35, 0.32, 0.28]));
+      if (night) c.setRGB(...(h > 0.1 ? [0.01, 0.01, 0.03] : h > -0.05 ? [0.1, 0.045, 0.08] : [0.09, 0.045, 0.02])); else c.setRGB(...(h > 0.1 ? [0.35, 0.55, 0.95] : h > -0.05 ? [1.55, 1.42, 1.25] : [0.36, 0.31, 0.26]));
       cols.push(c.r, c.g, c.b); }
     geo.setAttribute("color", new THREE.Float32BufferAttribute(cols, 3)); s.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
     if (night) for (let i = 0; i < 22; i++) { const a = rnd() * 6.28, p = new THREE.Mesh(new THREE.PlaneGeometry(6 + rnd() * 10, 4 + rnd() * 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(pick(NEON)).multiplyScalar(2.5 + rnd() * 2), side: THREE.DoubleSide })); p.position.set(Math.cos(a) * 40, -4 + rnd() * 16, Math.sin(a) * 40); p.lookAt(0, p.position.y, 0); s.add(p); }
@@ -1797,14 +2135,19 @@ void main() {
   const ENV = { night: envFor(true), day: envFor(false) };
 
   /* ---------- render pipeline: bloom makes the screens and windows glow; low mode renders straight ---------- */
-  let composer = null, bloom = null;
+  let composer = null, bloom = null, gradePass = null;
   if (!low) {
     composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: coarse ? 2 : 4 }));
     composer.addPass(new RenderPass(scene, camera));
     /* one bad pixel (NaN or infinity) would be smeared over the whole frame by the bloom blur and turn it black: zero it first */
-    composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } },
+    composer.addPass(gradePass = new ShaderPass({ uniforms: { tDiffuse: { value: null }, uN: { value: 1 } },
       vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-      fragmentShader: "uniform sampler2D tDiffuse; varying vec2 vUv; void main() { vec3 c = texture2D(tDiffuse, vUv).rgb; if (any(isnan(c)) || any(isinf(c))) c = vec3(0.0); gl_FragColor = vec4(min(max(c, vec3(0.0)), vec3(60.0)), 1.0); }" }));
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uN; varying vec2 vUv; void main() { vec3 c = texture2D(tDiffuse, vUv).rgb; if (any(isnan(c)) || any(isinf(c))) c = vec3(0.0); c = min(max(c, vec3(0.0)), vec3(60.0));
+  float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+  c = max(mix(vec3(l), c, 1.0 + 0.3 * uN), 0.0);
+  c *= mix(vec3(1.0), vec3(0.8, 0.97, 1.16), (1.0 - smoothstep(0.0, 0.14, l)) * 0.75 * uN);
+  c = max(c - 0.0045 * uN, 0.0);
+  gl_FragColor = vec4(c, 1.0); }` }));
     bloom = new UnrealBloomPass(new THREE.Vector2(2, 2), 0.55, 0.45, 0.9); composer.addPass(bloom); composer.addPass(new OutputPass());
   }
 
@@ -1815,10 +2158,10 @@ void main() {
     const k = skyK, L = (a, b) => a + (b - a) * k;
     for (const key of ["top", "mid", "hor"]) skyMat.uniforms[key].value.copy(ca.setHex(SKY.day[key])).lerp(cb.setHex(SKY.night[key]), k);
     scene.fog.color.copy(skyMat.uniforms.hor.value); scene.fog.density = L(0.00026, low ? 0.00085 : 0.00055);
-    U.night.value = k; hemi.intensity = L(1.15, 0.28); hemi.color.copy(ca.setHex(0xdfe8ff)).lerp(cb.setHex(0x5560a0), k); hemi.groundColor.copy(ca.setHex(0x6b5a48)).lerp(cb.setHex(0x40281a), k);
-    sun.intensity = L(2.6, 0.35); sun.color.copy(ca.setHex(0xfff1dd)).lerp(cb.setHex(0x9fb0ff), k);
+    U.night.value = k; skyMat.uniforms.uDay.value = 1 - k; if (gradePass) gradePass.uniforms.uN.value = k; hemi.intensity = L(1.15, 0.28); hemi.color.copy(ca.setHex(0xdfe8ff)).lerp(cb.setHex(0x5560a0), k); hemi.groundColor.copy(ca.setHex(0x6b5a48)).lerp(cb.setHex(0x40281a), k);
+    sun.intensity = L(2.8, 0.35); sun.color.copy(ca.setHex(0xffdcb0)).lerp(cb.setHex(0x9fb0ff), k);
     scene.environment = k > 0.5 ? ENV.night : ENV.day;
-    renderer.toneMappingExposure = L(0.9, 1.0); bbBright.value = L(0.95, 1.0); reflBright.value = L(0.25, 1.0);
+    renderer.toneMappingExposure = L(0.9, 1.0); bbBright.value = L(0.95, 0.82); reflBright.value = L(0.25, 1.0);
     stepM.emissiveIntensity = L(0.35, 1.4);
     if (bloom) { bloom.strength = L(0.25, 0.55); bloom.radius = L(0.3, 0.45); bloom.threshold = L(0.97, 0.9); }
     for (const d in B) B[d].crownM.emissiveIntensity = L(0.4, 1.6);
@@ -1860,8 +2203,8 @@ void main() {
     }
   }
 
-  /* ---------- camera: each part's towers are seen down the open canyon, so nothing blocks them ---------- */
-  const FOCUS = { ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400 }, 2: { t: [0, 105, 40], yaw: 0.5, pitch: 0.55, dist: 380 }, 3: { t: [0, 100, 120], yaw: -0.5, pitch: 0.55, dist: 360 } };
+  /* ---------- camera: each part is seen down the lit canyon: Part 1 from the north toward the screen tower, Parts 2 and 3 over the screen tower's shoulder ---------- */
+  const FOCUS = { ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: 0, pitch: 0.5, dist: 420 }, 3: { t: [0, 50, 110], yaw: 0, pitch: 0.62, dist: 380 } };
   const rig = { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400, off: 0, zoom: 1, anim: null };
   let aspect = 1;
   function placeCamera() {
@@ -2216,7 +2559,8 @@ void main() {
     celebrate(d) { if (B[d] && !reduce) { pending.push({ d, k: 0, at: performance.now() }); kick(); } },
     fullscreen(on) { if (on) openFs(); else closeFs(); }
   };
-  window.__townDebug = () => ({ nanTest: () => { reflBright.value = NaN; kick(); return true; }, lost, lostCount, fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
+  window.__townDebug = () => ({ rig(t, yaw, pitch, dist) { rig.anim = null; rig.off = 0; rig.zoom = 1; Object.assign(rig, { t, yaw, pitch, dist }); kick(); },
+    cam(pos, at) { fly = glide = null; camera.position.set(...pos); tgt.set(...at); look(); kick(); }, nanTest: () => { reflBright.value = NaN; kick(); return true; }, lost, lostCount, fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, tris: renderer.info.render.triangles, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
     /* where a tower sits on screen, for tests that tap it */
     screenOf(d) { const b = B[d]; if (!b || !stage) return null; v3.set(b.x, b.H * 0.85, b.z).project(camera); const r = canvas.getBoundingClientRect(); return { x: r.left + (v3.x + 1) / 2 * r.width, y: r.top + (1 - v3.y) / 2 * r.height }; } });
   applySky(); focusPart("1", true);
