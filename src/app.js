@@ -22,7 +22,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0 }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -216,7 +216,7 @@ function renderHome() {
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
     ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
       <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
-      <div><button class="btn primary" data-drill="${g.d}">Practise it</button></div></section>` : ""}
+      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <section class="card"><div class="pad spread"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
       <div class="areas">${partDomains(p).map(d => {
         const m = mastery(d), a = accuracy(d), due = BANK.filter(q => q.domain === d && isDue(q, Date.now())).length;
@@ -462,10 +462,21 @@ function renderMore() {
   view = "more";
   const flagged = BANK.filter(q => st(q.id).flag);
   const counts = [1, 2, 3].map(p => `Part ${p}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
+  /* daily reminder: one calendar file per half hour lives in reminders/ (made by tools/make_reminders.py) */
+  const REM_TIMES = []; for (let h = 5; h < 24; h++) for (const m of ["00", "30"]) REM_TIMES.push(String(h).padStart(2, "0") + m);
+  const fmtT = t => { const h = +t.slice(0, 2); return `${h % 12 || 12}:${t.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
+  const rem = state.reminder || {}, remPick = rem.pick || rem.time || "1900";
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
   <div class="stack" style="margin-top:0">
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
       <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
+      <p class="muted small" style="margin:0">Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating "EA practice" event, and the event links back to this app.</p>
+      <div class="row" style="align-items:center"><label for="remtime" class="small">Remind me at</label>
+        <select id="remtime" class="btn">${REM_TIMES.map(t => `<option value="${t}"${t === remPick ? " selected" : ""}>${fmtT(t)}</option>`).join("")}</select></div>
+      <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">Add to my calendar</a></div>
+      ${rem.at ? `<p class="small" style="margin:0"><b>You added a ${fmtT(rem.time)} reminder on ${new Date(rem.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}.</b></p>` : ""}
+      <p class="hint" style="margin:0">iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the "EA practice" event in Calendar, then add a new one here.</p></section>
     <section class="card" ><div class="pad spread"><h3>Flagged questions</h3><span class="hint">${flagged.length}</span></div>
       ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">Copy report for Jose</button></div><textarea id="flagfb" hidden readonly></textarea>
         ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
@@ -487,6 +498,8 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
+  $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
+  $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };
   if ($("#copyflags")) $("#copyflags").onclick = () => copyText(flagged.map(q => `[${q.id}] ${q.q}\nKeyed answer: ${q.choices[q.answer]}\nSource: ${q.source}\nNote: ${st(q.id).note || "(none)"}`).join("\n\n"), $("#flagfb"));
   $("#app").querySelectorAll("[data-unflag]").forEach(b => b.onclick = () => { setSt(b.dataset.unflag, { flag: false, note: "" }); updateFlagDot(); renderMore(); });
   $("#export").onclick = () => copyText(JSON.stringify(state), $("#exportfb"));

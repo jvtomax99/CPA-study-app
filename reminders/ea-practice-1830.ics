@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//EA Ledger Drill//Daily practice reminder//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ea-ledger-drill-daily-practice-1830@jvtomax99.github.io
+DTSTAMP:20261102T000000Z
+DTSTART:20261101T183000
+DTEND:20261101T184500
+RRULE:FREQ=DAILY
+SUMMARY:EA practice
+DESCRIPTION:Time for today's questions in EA Ledger Drill: https://jvtomax9
+ 9.github.io/CPA-study-app/
+URL:https://jvtomax99.github.io/CPA-study-app/
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:EA practice
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR

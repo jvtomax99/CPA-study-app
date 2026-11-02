@@ -10,6 +10,8 @@
 - `preview/canyon.html` is the standalone look preview (URL params view, sky, m, gfx); keep it as a sandbox for visual tweaks.
 - Test: `node tools/smoke.js`; `THREE_DIR` now points at the three@0.160.0 package folder (build/ and examples/), not build/.
 
+**Also new: daily practice reminder** (More > Daily reminder). The site has no server, so it can't send notifications by itself; instead the user picks a time and adds a daily repeating "EA practice" Calendar event with an alert. One static file per half hour (5:00 AM to 11:30 PM) lives in `reminders/`, made by `tools/make_reminders.py` (floating local time, links back to the app). Chosen time is saved in `state.reminder`. It can't skip days already practiced; that would need real push via a server.
+
 **Also new: home-screen app icon.** `manifest.webmanifest` plus `icons/` (stack of three books on blue, drawn by `tools/make_icons.js`; rerun it to change the art). The page head (in `tools/build.py`) links the manifest, apple-touch-icon and favicon and sets standalone mode. On iPhone a home-screen app keeps its own storage, separate from Safari, so progress moves over with Save/Load backup file.
 
 **Before that:** 3D town performance pass, committed and waiting for Jose's push. Not yet tried on a real phone.
