@@ -20,6 +20,7 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `src/town.js`: the 3D city (three.js 0.160 from jsDelivr)
 - `src/mascot.js`: the greeting at the top of Home (drawn night Midtown, your name, a tax quote of the day) and the study buddy in it: numbers spiral into him, he pops out of a gold-coin disc with a ring of numbers behind him, the calculator he holds pops out over the rim with PLAY lit up on its screen, and a thought cloud types a pep talk. Tap him for another; tap the calculator to drill. His picture is `art/buddy-bust.webp`. The name is asked once and can be changed in More.
 - `src/shell.html`: page markup and styles
+- `tools/blender/bank_tower.py`: models the Income tower (setback tiers, brass Art Deco crown with baked shading) in headless Blender and writes `art/bank-tower.glb`. Run it with the `bpy` package: `pip install bpy==5.2.3`, then `python tools/blender/bank_tower.py art/bank-tower.glb`. The town loads the model at start; if it can't (opened from a local file, or offline), that tower keeps its boxes.
 - `tools/make_reminders.py`: writes the daily-reminder calendar files in `reminders/`
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
 - `tools/smoke.js`: headless test of the greeting and study buddy, the town, drill, flagging, "I guessed", the session summary, exam sim and backup. Run `node tools/smoke.js` after building.
