@@ -264,7 +264,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {} }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0 }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -363,6 +363,30 @@ function pickNext(domain, part, exclude) {
 
 /* ---------- small UI helpers ---------- */
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600); }
+/* ---------- backup files ---------- */
+function backupAge() { return state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / DAY) : null; }
+function backupLine() { const a = backupAge(); return a == null ? "No backup file saved yet." : a === 0 ? "Last backup file: today." : a === 1 ? "Last backup file: yesterday." : `Last backup file: ${a} days ago.`; }
+function backupDue() { return state.log.length >= 10 && (backupAge() == null || backupAge() >= 7); }
+async function saveBackupFile() {
+  const now = Date.now(), name = `ea-ledger-progress-${new Date(now).toISOString().slice(0, 10)}.json`;
+  const data = JSON.stringify({ app: "ea-ledger-drill", version: 2, savedAt: now, state: Object.assign({}, state, { lastBackup: now }) });
+  let done = false;
+  try {
+    const file = new File([data], name, { type: "application/json" });
+    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "EA Ledger Drill backup" }); done = true; }
+  } catch (e) { if (e && e.name === "AbortError") return false; }
+  if (!done) {
+    try { const url = URL.createObjectURL(new Blob([data], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); done = true; } catch (e) {}
+  }
+  if (done) { state.lastBackup = now; save(); toast("Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email."); }
+  else toast("Couldn't save a file here. Use Copy backup instead.");
+  return done;
+}
+function readBackup(text) {
+  const o = JSON.parse(text), s = o && o.state && typeof o.state === "object" ? o.state : o;
+  if (!s || typeof s.items !== "object") throw new Error("shape");
+  return { state: s, savedAt: (o && o.savedAt) || s.lastBackup || 0 };
+}
 async function copyText(text, fb) {
   try { await navigator.clipboard.writeText(text); toast("Copied."); }
   catch (e) { if (fb) { fb.hidden = false; fb.value = text; fb.select(); } toast("Couldn't copy automatically. The text is selected below."); }
@@ -429,6 +453,9 @@ function renderHome() {
   </section>
   <p class="legend">Painted floors are mastered, and at dusk their windows light up. Cranes and scaffolding mark what's left. Cars on the street are reviews due. A finished building raises a gold flag. The big screens show your live numbers and 2025 tax facts. Tap a building to drill it.</p>
   <div class="stack">
+    ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
+      <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
+      <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
     ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
       <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
       <div><button class="btn primary" data-drill="${g.d}">Practise it</button></div></section>` : ""}
@@ -447,6 +474,7 @@ function renderHome() {
   $("#app").querySelectorAll(".ptab").forEach(b => b.onclick = () => { state.part = b.dataset.part; tsView = false; save(); renderHome(); });
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
+  if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
     const dusk = state.sky === "dusk";
@@ -685,10 +713,15 @@ function renderMore() {
         ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
         : `<p class="pad muted small" style="margin:0;padding-top:0">None. Tap "Flag as wrong" after answering a question that looks wrong, and it shows up here.</p>`}</section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Backup</h3>
-      <p class="muted small" style="margin:0">Progress lives in this browser only. Copy a backup and keep it somewhere safe, like a note to yourself.</p>
-      <div class="row"><button class="btn primary" id="export">Copy backup</button></div><textarea id="exportfb" hidden readonly></textarea>
-      <label for="importtext" class="hint">Restore: paste a backup here. It replaces the progress on this device.</label>
-      <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">Restore</button></div></section>
+      <p class="muted small" style="margin:0">Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.</p>
+      <p class="small" style="margin:0"><b>${backupLine()}</b></p>
+      <div class="row"><button class="btn primary" id="savefile">Save backup file</button><button class="btn" id="loadfile">Load backup file</button><input type="file" id="fileinput" accept=".json,application/json" hidden></div>
+      <div id="loadconfirm"></div>
+      <p class="hint" style="margin:0">On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.</p>
+      <details><summary class="small" style="cursor:pointer">Copy and paste instead</summary>
+        <div style="display:grid;gap:10px;margin-top:10px"><div class="row"><button class="btn" id="export">Copy backup</button></div><textarea id="exportfb" hidden readonly></textarea>
+        <label for="importtext" class="hint">Restore: paste a backup here. It replaces the progress on this device.</label>
+        <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">Restore</button></div></div></details></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Start over</h3><p class="muted small" style="margin:0">Erases every answer, review date, exam and flag on this device.</p>
       <div class="row" id="resetrow"><button class="btn danger" id="reset">Erase progress</button></div></section>
     <section class="card pad small muted" style="display:grid;gap:6px"><h3 style="color:var(--ink)">The question bank</h3><span>${BANK.length} questions · ${counts}</span>
@@ -699,7 +732,22 @@ function renderMore() {
   if ($("#copyflags")) $("#copyflags").onclick = () => copyText(flagged.map(q => `[${q.id}] ${q.q}\nKeyed answer: ${q.choices[q.answer]}\nSource: ${q.source}\nNote: ${st(q.id).note || "(none)"}`).join("\n\n"), $("#flagfb"));
   $("#app").querySelectorAll("[data-unflag]").forEach(b => b.onclick = () => { setSt(b.dataset.unflag, { flag: false, note: "" }); updateFlagDot(); renderMore(); });
   $("#export").onclick = () => copyText(JSON.stringify(state), $("#exportfb"));
-  $("#import").onclick = () => { try { const s = JSON.parse($("#importtext").value); if (!s || typeof s.items !== "object") throw 0; state = Object.assign(blank(), s); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
+  $("#savefile").onclick = async () => { if (await saveBackupFile()) renderMore(); };
+  $("#loadfile").onclick = () => $("#fileinput").click();
+  $("#fileinput").onchange = e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an EA Ledger Drill backup."); return; }
+      const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
+      const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
+      $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;
+      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); save(); updateFlagDot(); toast("Backup loaded."); renderMore(); };
+      $("#loadno").onclick = () => { $("#loadconfirm").innerHTML = ""; };
+    };
+    r.readAsText(f); e.target.value = "";
+  };
+  $("#import").onclick = () => { try { const s = JSON.parse($("#importtext").value); if (!s || typeof s.items !== "object") throw 0; s.examRun = null; state = Object.assign(blank(), s); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
   $("#reset").onclick = () => {
     $("#resetrow").innerHTML = `<span>Erase everything on this device?</span><button class="btn danger" id="ry">Yes, erase</button><button class="btn ghost" id="rn">Cancel</button>`;
     $("#ry").onclick = () => { state = blank(); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
