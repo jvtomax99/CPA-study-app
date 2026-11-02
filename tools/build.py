@@ -11,6 +11,8 @@ head = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="EA Ledger Drill: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
+<meta name="author" content="Chris Hidalgo">
+<meta name="copyright" content="© 2026 Chris Hidalgo. All rights reserved.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">

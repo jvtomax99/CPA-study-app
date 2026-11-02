@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="EA Ledger Drill: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
+<meta name="author" content="Chris Hidalgo">
+<meta name="copyright" content="© 2026 Chris Hidalgo. All rights reserved.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -118,6 +120,7 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .cta.play { background: linear-gradient(180deg, #ffd27a, var(--amber)); color: var(--amber-ink); box-shadow: 0 4px 0 var(--amber-deep), 0 10px 20px -10px rgba(0,0,0,0.5); }
 .cta.exam { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.24); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .legend { font-size: 13px; color: var(--ink-soft); margin: 12px 4px 0; }
+.rights { font-weight: 600; margin-top: 10px; }
 
 /* Shared blocks */
 .stack { display: grid; gap: 14px; margin-top: 18px; }
@@ -242,6 +245,7 @@ footer p { margin: 0; max-width: 70ch; }
   <footer>
     <p>Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.</p>
     <p>Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.</p>
+    <p class="rights">© 2026 Chris Hidalgo. All rights reserved.</p>
   </footer>
 </div>
 <div class="toast" id="toast" hidden></div>

@@ -21,3 +21,5 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
 - `tools/smoke.js`: headless test of the town, drill, flagging, exam sim and backup. Run `node tools/smoke.js` after building.
 - `docs/`: content outlines and the briefs used to write and fact-check questions. See `docs/HANDOFF.md`.
+
+© 2026 Chris Hidalgo. All rights reserved.
