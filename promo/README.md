@@ -5,7 +5,7 @@ It is not part of the app: nothing in `index.html` loads it. The finished video 
 `media/how-to-use.mp4` (with `media/how-to-use.jpg` as its poster), opened by **Watch the guide**
 on Home (a one-time card) and in More.
 
-It's a vertical 1080 x 1920 video at 30 fps, about 2 minutes 17 seconds. It opens and closes on
+It's a vertical 1080 x 1920 video at 30 fps, about 2 minutes 30 seconds. It opens and closes on
 adding the app to the Home Screen, because progress lives only on the device.
 
 ## Making it again
@@ -15,6 +15,7 @@ From the repo root, after `python3 tools/build.py`:
 ```
 node promo/tools/capture.cjs                     # screenshots of the real app -> promo/public/shots/
 python3 promo/tools/voice.py <model folder>      # narration -> promo/public/voice/, promo/src/timing.json
+python3 promo/tools/sfx.py 150                   # sound effects -> promo/public/sfx/, music bed -> promo/public/music.mp3
 cd promo
 npm install
 npm run studio                                   # preview, scrub the timeline
@@ -24,6 +25,13 @@ npm run finish                                   # level the voice, compress -> 
 
 - **Words:** `src/script.json`. Each scene's lines are spoken and shown as subtitles. After
   changing a line, run `voice.py` again: scene lengths follow the narration.
+- **Look:** styled after the Interpreter Hub promo. `src/Fx.tsx` has the pieces: the blurred night
+  city behind everything, neon type, the two-line headlines with a highlight box and a segmented bar,
+  word-by-word subtitles, whip-zoom cuts, light sweeps, star bursts, the 3D phone with its floor
+  reflection, UI cards lifted out of the screen, and the study buddy (`public/art/mascot.webp`, the
+  app's own `art/mascot.webp`) who hops on taps.
+- **Sound:** `tools/sfx.py` synthesizes the effects (whoosh, tick, pop, chime, buzz, hit) and, through
+  `tools/music.py`, an original lo-fi bed. Nothing is sampled or licensed.
 - **Pictures:** `src/HowTo.tsx` (one `case` per scene: which screenshots, camera moves, taps,
   highlight boxes, all timed from the line starts), `src/Phone.tsx` (the phone, screenshots, taps),
   `src/Mocks.tsx` (simplified drawings of Safari's and Chrome's Add to Home Screen steps; not

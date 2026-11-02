@@ -1,5 +1,5 @@
 import React from 'react';
-import {Easing, Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {Audio, Easing, Img, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 
 // The phone's screen in the video, and the screenshots' size (390 x 844 at 2x).
 export const SW = 600, SH = 1298;
@@ -61,12 +61,14 @@ export const Shot: React.FC<{src: string; h?: number; cams?: Cam[]; taps?: Tap[]
 export const TapRing: React.FC<{at: number; x: number; y: number}> = ({at, x, y}) => {
   const frame = useCurrentFrame();
   const t = frame - at;
-  if (t < -10 || t > 26) return null;
+  const click = <Sequence from={Math.max(0, at)} durationInFrames={8} layout="none" name="sfx:tick"><Audio src={staticFile('sfx/tick.wav')} volume={0.35} /></Sequence>;
+  if (t < -10 || t > 26) return click;
   const dot = interpolate(t, [-10, 0, 8, 26], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const press = interpolate(t, [-4, 0, 6], [1, 0.8, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const ring = interpolate(t, [0, 22], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <>
+      {click}
       <div style={{position: 'absolute', left: x - 34, top: y - 34, width: 68, height: 68, borderRadius: 34, background: 'rgba(22,28,43,0.42)', border: '4px solid #fff', boxShadow: '0 4px 14px rgba(0,0,0,0.35)', opacity: dot, transform: `scale(${press})`}} />
       {t >= 0 && <div style={{position: 'absolute', left: x - 34, top: y - 34, width: 68, height: 68, borderRadius: 34, border: `4px solid ${C.amber}`, opacity: 1 - ring, transform: `scale(${1 + ring * 1.6})`}} />}
     </>
