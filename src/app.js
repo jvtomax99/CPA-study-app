@@ -160,7 +160,7 @@ const ICON = {
   moon: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.6 1.4a6.6 6.6 0 1 0 4 10.9A5.6 5.6 0 0 1 10.6 1.4Z"/></svg>',
   sun: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M3 13l1.1-1.1M11.9 4.1 13 3"/></svg>'
 };
-function skyNow() { if (state.sky === "day" || state.sky === "dusk") return state.sky; const h = new Date().getHours(); return h >= 18 || h < 6 ? "dusk" : "day"; }
+function skyNow() { if (state.sky === "day" || state.sky === "dusk") return state.sky; return "dusk"; }
 
 /* ---------- Home: the town ---------- */
 function townData() {
@@ -209,7 +209,7 @@ function renderHome() {
       <button class="cta exam" id="examgo">Exam sim</button>
     </div>
   </section>
-  <p class="legend">Painted floors are mastered, and at dusk their windows light up. Cranes and scaffolding mark what's left. Cars on the street are reviews due. A finished building raises a gold flag. The big screens show your live numbers and 2025 tax facts. Tap a building to drill it.</p>
+  <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights a gold crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   <div class="stack">
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>

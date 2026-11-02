@@ -6,7 +6,7 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 
 - 600 multiple-choice questions, 200 per part, weighted to the official PSI content outline, each checked against the IRS source it cites
 - Spaced-repetition drill, a PSI-style exam sim (100 questions, 3.5 hours, three locked sections), daily goal and streak
-- A 3D Midtown Manhattan with Times Square at the center: each content area is a building that gets painted as it's mastered
+- A night Midtown Manhattan in 3D: each content area is a tower on the Times Square canyon that gets finished floor by floor as it's mastered
 - Progress is saved in the browser on the device. More > Backup saves and loads a backup file.
 - Slow devices switch the town to a lighter mode automatically. Add `?gfx=low` or `?gfx=high` to the URL to force it, or `?fps=1` to show a frame-rate meter.
 

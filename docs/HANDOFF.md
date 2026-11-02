@@ -1,13 +1,14 @@
 # Handoff: EA Ledger Drill
 
-**Working on now:** realistic night Midtown redesign of the 3D town. Step 1 (a standalone preview) is built; waiting for Jose to approve the look before it replaces the live town.
-- Preview: `preview/canyon.html` (self-contained, open directly; also published as a private Claude artifact). URL params: `view=canyon|aerial|tower`, `sky=day`, `m=0..100` (study tower mastery), `gfx=low`.
-- Approach (agreed): everything built in code, no Google 3D tiles (can't paint per floor, needs billing key, online only) and no downloaded models. Real proportions in meters, north is -z, Times Square canyon along x = 0.
-- Facade shader draws every window per pixel from world position (styles: glass curtain wall, stone, prewar brick, dark glass, construction frame), so ~10,000 tower blocks are one instanced draw. Lit windows only at night (`uNight`), street uplight gradient on walls.
-- Ground shader: streets, plaza, crosswalks, park, streetlight pools and moving traffic light streams. Screens: one 2048 atlas, every panel scrolls in its own way in one draw, plus fake wet-street reflections. Bloom via EffectComposer (off in low mode).
-- Study towers become real towers: finished cladding below the cut, bare concrete frame with work lights, orange netting, crane and hoist above; gold lit crown at 100%.
-- About 55 to 70 draw calls total. Not yet tried on a real phone.
-- Next if approved: port into src/town.js (needs an importmap in shell.html for the addons), place all 13 study towers with clear camera views, keep labels/tap-to-drill/cars-as-reviews/fireworks/day-dusk, re-run tools/smoke.js.
+**Working on now:** night Midtown 3D town, ported into the app and committed; waiting for Jose's push. Not yet tried on a real phone.
+- `src/town.js` was rewritten; its interface for app.js is unchanged (mount, unmount, update, highlight, setSky, setView, celebrate, labels, tap-to-drill). three.js addons load through an importmap that `tools/build.py` puts in the page head.
+- Layout (meters, north is -z, the Times Square canyon runs along x = 0): the 13 study towers line the canyon walls in 44 m deep lots. Part 1 = the two north blocks, Part 2 = the middle block, Part 3 = the block before the screen tower. Each part's camera looks down the open canyon at an angle so no building blocks its towers and the labels spread out.
+- A study tower is finished cladding below the cut and a bare concrete frame (work lights) above, with orange netting, a hoist and, for the current part, a crane. 100% lights a gold crown and fires fireworks. Tower height scales with the area's exam weight.
+- Facade shader draws every window per pixel (about 10,000 tower blocks in one instanced draw); ground shader does streets, plaza, park, streetlight pools and traffic streams; screens are one scrolling atlas plus five live-number canvases; bloom via EffectComposer, off in low mode. Cabs on the avenue = reviews due (up to 30).
+- Dusk is now the default sky (app.js skyNow); the Day button still switches. Legend text on the home screen was rewritten for towers.
+- About 140 to 170 draw calls (old town about 320 after the speed-up, 1,750 before it).
+- `preview/canyon.html` is the standalone look preview (URL params view, sky, m, gfx); keep it as a sandbox for visual tweaks.
+- Test: `node tools/smoke.js`; `THREE_DIR` now points at the three@0.160.0 package folder (build/ and examples/), not build/.
 
 **Before that:** 3D town performance pass, committed and waiting for Jose's push. Not yet tried on a real phone.
 - Draw calls per frame went from about 1,750 to about 320. Static meshes are merged into one mesh per material (`mergeStatic` in town.js), and `mat()` reuses materials with the same color, roughness and metalness.

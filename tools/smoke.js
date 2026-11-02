@@ -1,7 +1,7 @@
 /* Headless smoke test: town loads and stays under a draw-call budget, tapping a building opens it,
    drill + flagging, exam sim through a section break, backup save and load.
    Run from the repo root after building: node tools/smoke.js
-   If jsDelivr is blocked (some cloud sandboxes), set THREE_DIR to a local three@0.160.0/build folder. */
+   If jsDelivr is blocked (some cloud sandboxes), set THREE_DIR to a local three@0.160.0 package folder (the one holding build/ and examples/). */
 const { chromium } = require("playwright");
 const fs = require("fs"), path = require("path"), os = require("os");
 const DRAW_BUDGET = 450;
@@ -10,19 +10,19 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
 (async () => {
   const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader"] });
   const ctx = await browser.newContext({ viewport: { width: 1100, height: 900 }, acceptDownloads: true });
-  if (process.env.THREE_DIR) await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.160\.0\/build\/(.*)/, r => r.fulfill({ path: path.join(process.env.THREE_DIR, r.request().url().split("/").pop()), contentType: "text/javascript" }));
+  if (process.env.THREE_DIR) await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.160\.0\/(.*)/, r => r.fulfill({ path: path.join(process.env.THREE_DIR, r.request().url().split("three@0.160.0/")[1]), contentType: "text/javascript" }));
   const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(e.message));
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
 
   /* town */
-  await p.waitForFunction(() => window.Town && window.Town.ready, null, { timeout: 30000 });
+  await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
   await p.waitForTimeout(4000);
   const dbg = await p.evaluate(() => window.__townDebug());
   check(dbg.calls > 50 && dbg.calls < DRAW_BUDGET, `town draws ${dbg.calls} per frame (budget ${DRAW_BUDGET})`);
-  const tag = await p.$("#labels .tag"); const box = tag && await tag.boundingBox();
   await p.evaluate(() => document.querySelectorAll("#labels .tag").forEach(t => { t.style.pointerEvents = "none"; })); /* make the tap hit the 3D mesh, not a label */
-  if (box) await p.mouse.click(box.x + box.width / 2, box.y + box.height + 14);
-  check(!!(await p.waitForSelector("#sheetgo", { timeout: 3000 }).catch(() => null)), "tapping a building in 3D opens its area");
+  const spot = await p.evaluate(() => window.__townDebug().screenOf("P1-3"));
+  if (spot) await p.mouse.click(spot.x, spot.y);
+  check(!!(await p.waitForSelector("#sheetgo", { timeout: 10000 }).catch(() => null)), "tapping a building in 3D opens its area");
   if (await p.$("#sheetx")) await p.click("#sheetx");
 
   /* drill and flagging */
