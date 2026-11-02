@@ -74,8 +74,19 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(flagged === 1, "drill: flag as wrong saves the note");
   check(!!(await p.$(".choice")), "drill: moves on to the next question after flagging");
 
-  /* loss sorter: a linked question's explanation opens the figure in a sheet on that question's case */
-  await p.evaluate(() => { drill = { q: BANK.find(q => q.id === "p2d1b-023"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null }; renderDrill(); });
+  /* honest readiness: "I guessed" turns a right answer into a miss; leaving after 3 answers shows a session summary */
+  const ci = await p.evaluate(() => drill.perm.indexOf(drill.q.answer)), gid = await p.evaluate(() => drill.q.id);
+  await p.click(`.choice >> nth=${ci}`);
+  const logN = await p.evaluate(() => JSON.parse(localStorage.getItem("eaTaxTown.v2")).log.length);
+  await p.click("#guess");
+  const gs = await p.evaluate(id => { const s = JSON.parse(localStorage.getItem("eaTaxTown.v2")); return { it: s.items[id], last: s.log[s.log.length - 1], n: s.log.length }; }, gid);
+  check(gs.it.box === 0 && gs.it.right === 0 && gs.it.due - Date.now() < 6 * 60e3 && gs.last.g === 1 && !gs.last.ok && gs.n === logN && !(await p.$("#guess")), "drill: I guessed counts a right answer as a miss");
+  await p.click("#next"); await p.click(".choice >> nth=0");
+  await p.click("#back");
+  check(await p.evaluate(() => !!document.querySelector("#sumgo") && /was a guess, counted as a miss/.test(document.querySelector("#app .card .muted").textContent) && document.querySelectorAll("table.res tbody tr").length >= 1), "drill: leaving after 3 answers shows the session summary");
+
+  /* loss sorter: a linked question's explanation opens the figure in a sheet on that question's case (sess reset so Back goes home, not to the summary) */
+  await p.evaluate(() => { sess = null; drill = { q: BANK.find(q => q.id === "p2d1b-023"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
   await p.click(".choice >> nth=2"); await p.click("#machine");
   const fig = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
   await fig.waitForSelector("[data-deducted]");
@@ -90,6 +101,9 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#resumebrk");
   const run = await p.evaluate(() => JSON.parse(localStorage.getItem("eaTaxTown.v2")).examRun);
   check(run && run.sec === 1 && Object.keys(run.ans).length === 1, "exam: section 2 starts with the answer kept");
+  check(run && Array.isArray(run.fresh) && run.fresh.length > 90, "exam: the sim remembers which questions were new");
+  await p.click("#endsec"); await p.click("#yes"); await p.click("#resumebrk"); await p.click("#endsec"); await p.click("#yes");
+  check(await p.evaluate(() => /never seen/.test((document.querySelector(".fresh") || {}).textContent || "")), "exam: results show the score on never-seen questions");
 
   /* backup */
   await p.click("#morebtn");
