@@ -199,14 +199,40 @@ function areaCard(d, focus) {
       <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
   </section>`;
 }
+/* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
+const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad" };
+function elCar(p, lead) {
+  const c = LINE[p], id = lead ? "elB" : "elA", wx = lead ? [8, 42, 76, 110] : [8, 46, 84, 122], sx = lead ? [38, 72, 106] : [40, 78, 116];
+  return `<svg class="el-car" viewBox="0 0 180 46" aria-hidden="true">
+    <defs><linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f5f9"/><stop offset=".5" stop-color="#c3c9d3"/><stop offset="1" stop-color="#8e96a4"/></linearGradient>
+      <linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4cf"/><stop offset="1" stop-color="#f6c766"/></linearGradient></defs>
+    <path d="${lead ? "M2 8Q2 4 6 4H158Q171 4 176 13L178 20V36H2Z" : "M2 8Q2 4 6 4H174Q178 4 178 8V36H2Z"}" fill="url(#${id}s)"/>
+    <rect x="6" y="4.6" width="${lead ? 150 : 168}" height="1.6" rx=".8" fill="#fff" opacity=".7"/>
+    ${wx.map(x => `<rect x="${x}" y="10" width="28" height="12" rx="2.5" fill="url(#${id}w)"/><path d="M${x + 6} 10h7l-6 12h-7z" fill="#fff" opacity=".22"/>`).join("")}
+    ${sx.map(x => `<rect x="${x}" y="7" width="2" height="27" fill="#8a92a1" opacity=".5"/>`).join("")}
+    <rect x="2" y="25" width="176" height="3" fill="${c}"/><rect x="2" y="33" width="176" height="3" fill="#6f7787"/>
+    ${lead ? `<path d="M165 8.5L173 14.5V21H165Z" fill="#1b2236"/><circle cx="151" cy="16" r="7" fill="${c}"/>
+      <text x="151" y="19.6" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="700" font-size="10.5" fill="#fff">${p}</text>
+      <circle cx="175.5" cy="28" r="1.8" fill="#fff6cc"/>` : ""}
+    <rect x="12" y="36" width="156" height="3" fill="#17162b"/><rect x="18" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/><rect x="130" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/>
+    ${[25, 43, 137, 155].map(x => `<circle cx="${x}" cy="42" r="3.2" fill="#2b2945" stroke="#4a4770" stroke-width=".8"/>`).join("")}
+  </svg>`;
+}
+function elLine(p, r) {
+  const at = Math.min(1, Math.max(0, r || 0)).toFixed(3);
+  return `<div class="el${skyNow() === "day" ? " day" : ""}" aria-hidden="true"><div class="el-cols"><i></i></div><div class="el-deck"><i></i></div>
+    <div class="el-sign"><b>EXAM READY</b><i></i></div>
+    <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
+}
 function renderHome() {
   view = "home";
+  document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak();
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
+  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" })}${elLine(p, r)}</div>` : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
@@ -329,6 +355,15 @@ function towerSvg(m, prev) {
 }
 const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
 const pickLine = a => a[Math.floor(Math.random() * a.length)];
+/* Questions whose explanation links to the loss sorter (art/loss-sorter.html), with the case it opens on */
+const MACHINE = { "p2d1a-018": 0, "p2d1b-023": 1, "p2d1b-024": 2, "p2d2a-006": 3 };
+function openMachine(n) {
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet figsheet" role="dialog" aria-label="Loss sorter"><div class="grab"></div>
+    <div class="figbar"><b>Loss sorter</b><button class="btn ghost" id="figx" type="button">Close</button></div>
+    <iframe src="art/loss-sorter.html?case=${n}" title="Loss sorter: the basis, at-risk, passive and excess business loss limits in order"></iframe></div></div>`;
+  $("#figx").onclick = closeLayer;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+}
 const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
@@ -352,7 +387,7 @@ function renderDrill() {
     const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
     const sub = ok && !drill.guessed && drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line;
     after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? "Right, but a guess" : ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
-      <p>${figs(esc(q.explain))}</p>
+      <p>${figs(esc(q.explain))}</p>${MACHINE[q.id] != null ? `<button class="machine" id="machine" type="button">See it on the loss sorter ›</button>` : ""}
       <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
@@ -372,6 +407,7 @@ function renderDrill() {
   if ($("#next")) $("#next").onclick = nextQ;
   if ($("#guess")) $("#guess").onclick = markGuess;
   if ($("#summary")) $("#summary").onclick = renderSummary;
+  if ($("#machine")) $("#machine").onclick = () => openMachine(MACHINE[q.id]);
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
   if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
@@ -599,7 +635,7 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n ? ` · ${n} flagged` : ""; }
+function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";

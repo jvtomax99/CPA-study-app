@@ -23,6 +23,7 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `tools/blender/towers.py`: models the study towers in headless Blender, one design per facade style (glass with a sloped lit top, Art Deco limestone with a brass crown and spire, brick with pinnacles and a copper roof, dark glass with a lit steel lattice), and writes `art/tower-*.glb`. Run it with the `bpy` package: `pip install bpy==5.2.3`, then `python tools/blender/towers.py art`. The town fetches the models at start; a style whose model can't load (opened from a local file, or offline) keeps its boxes.
 - `tools/make_reminders.py`: writes the daily-reminder calendar files in `reminders/`
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
+- `tools/loss-sorter/`: the loss sorter, a drawn machine that sorts a loss through the basis, at-risk, passive and excess business loss limits in order. The drill links to it from the four questions it reproduces. Run `node tools/loss-sorter/build.mjs` to write `art/loss-sorter.html`, and `node tools/loss-sorter/test.mjs` to check its cases against the bank. Its drawing kit is from [Anatomy](https://github.com/wheresryan22/anatomy) (MIT).
 - `tools/smoke.js`: headless test of the greeting and study buddy, the town, drill, flagging, "I guessed", the session summary, exam sim and backup. Run `node tools/smoke.js` after building.
 - `docs/`: content outlines and the briefs used to write and fact-check questions. See `docs/HANDOFF.md`.
 
