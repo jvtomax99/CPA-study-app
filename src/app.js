@@ -86,6 +86,8 @@ function gap(p) {
 /* ---------- recording an answer ---------- */
 function record(q, ok, mode) {
   const s = st(q.id), now = Date.now();
+  /* first answer of the day: keep each area's mastery as it stood, so the daily summary can show what grew */
+  if (!state.day || state.day.k !== dayKey(now)) state.day = { k: dayKey(now), m: Object.fromEntries(Object.keys(DOMAINS).map(d => [d, mastery(d)])) };
   const wasDue = !s.seen || s.due <= now;
   let box = s.box, due = s.due;
   if (!ok) { box = 0; due = now + INTERVALS[0]; }
@@ -353,7 +355,7 @@ function renderDrill() {
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
         <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
-      : `<div class="actions"><button class="btn primary" id="next">Next question</button><button class="btn ghost" id="flag">Flag as wrong</button></div>`;
+      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">See today's summary</button>` : `<button class="btn primary" id="next">Next question</button>`}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
@@ -366,6 +368,7 @@ function renderDrill() {
   $("#back").onclick = renderHome;
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
+  if ($("#summary")) $("#summary").onclick = renderSummary;
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
   if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
@@ -378,8 +381,39 @@ function answerDrill(i) {
   record(drill.q, ok, "drill");
   drill.mAfter = mastery(drill.q.domain);
   drill.run = ok ? (drill.run || 0) + 1 : 0; drill.line = pickLine(ok ? PRAISE : CONSOLE);
-  if (before < state.goal && todayCount() >= state.goal) toast(`Daily goal done: ${state.goal} questions.`);
+  if (before < state.goal && todayCount() >= state.goal) drill.goalHit = true;
   renderDrill();
+}
+
+/* ---------- Daily summary: shown once the daily goal is reached in a drill ---------- */
+function todayStats() {
+  const k = dayKey(Date.now()), rows = state.log.filter(r => dayKey(r.t) === k);
+  let right = 0, run = 0, best = 0, ms = 0;
+  rows.forEach((r, i) => {
+    if (r.ok) { right++; run++; best = Math.max(best, run); } else run = 0;
+    ms += i ? Math.min(r.t - rows[i - 1].t, 3 * MIN) : 40e3; /* gaps over 3 minutes count as a break */
+  });
+  const areas = [...new Set(rows.map(r => byId[r.id] && byId[r.id].domain).filter(Boolean))];
+  return { n: rows.length, right, best, min: Math.max(1, Math.round(ms / MIN)), areas, missed: rows.length - right };
+}
+function renderSummary() {
+  view = "summary";
+  const t = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
+  const towers = t.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
+    return `<div class="sumtower">${towerSvg(now, was)}<b>${esc(DOMAINS[d].short)}</b><span class="${dm < 0 ? "dn" : ""}">${dm > 0 ? "+" : dm < 0 ? "−" : "±"}${Math.abs(dm)}%</span></div>`; }).join("");
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  <article class="sheet summary">
+    <div class="sumhead"><img class="sumbuddy" src="art/buddy-bust.webp" alt="">
+      <div><span class="k">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</span><h2>Daily goal done${state.name ? `, ${esc(state.name)}` : ""}.</h2>
+      <span class="sk">${ICON.fire}${sk} day${sk === 1 ? "" : "s"} in a row</span></div></div>
+    <div class="sumstats"><div><b>${t.n}</b><span>answered</span></div><div><b>${t.n ? pct(t.right / t.n) : 0}%</b><span>right</span></div><div><b>${t.min}</b><span>min</span></div><div><b>${t.best}</b><span>best run</span></div></div>
+    <div class="sumtowers"><h3>What you built today</h3><div class="row">${towers}</div></div>
+    <p class="summiss">${t.missed ? `You missed ${t.missed}. Each comes back in 5 minutes, then again tomorrow if you get it.` : "Nothing missed today."}</p>
+    <div class="actions"><button class="btn primary" id="keepgo">Keep going</button><button class="btn ghost" id="totown">Back to town</button></div>
+  </article>`;
+  $("#back").onclick = renderHome; $("#totown").onclick = renderHome;
+  $("#keepgo").onclick = () => { drill.goalHit = false; nextQ(); };
+  window.scrollTo(0, 0);
 }
 
 /* ---------- Exam sim ---------- */
@@ -588,7 +622,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && $("#scrim")) return closeLayer();
   if (view === "drill" && drill && drill.q) {
     if (drill.picked == null && i >= 0) { e.preventDefault(); answerDrill(i); }
-    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); nextQ(); }
+    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); drill.goalHit ? renderSummary() : nextQ(); }
   } else if (view === "exam" && state.examRun && !state.examRun.onBreak && i >= 0) {
     const btn = $("#app").querySelectorAll(".choice")[i]; if (btn) { e.preventDefault(); btn.click(); }
   }
