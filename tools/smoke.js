@@ -14,10 +14,20 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(e.message));
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
 
+  /* study buddy: the numbers spiral plays, he lands, a thought cloud types, a tap brings a new one */
+  check(!!(await p.waitForSelector(".buddy-canvas", { timeout: 15000 }).catch(() => null)), "buddy: the number spiral starts on Home");
+  await p.waitForFunction(() => !document.querySelector(".buddy-canvas") && !document.querySelector(".buddy-pending"), null, { timeout: 60000 }).catch(() => {});
+  check(await p.evaluate(() => { const i = document.querySelector(".buddy-art"); return !document.querySelector(".buddy-canvas") && i.naturalWidth > 0 && getComputedStyle(document.querySelector(".buddy-body")).opacity === "1"; }), "buddy: the spiral clears and he is standing");
+  await p.waitForFunction(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || ""), null, { timeout: 30000 }).catch(() => {});
+  check(await p.evaluate(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || "")), "buddy: his thought cloud types a pep talk");
+  await p.click("#buddy");
+  check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1 && !!document.querySelector(".buddy-status").textContent), "buddy: tapping him gives one new cloud");
+
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
   await p.waitForTimeout(4000);
   const dbg = await p.evaluate(() => window.__townDebug());
+  check(await p.evaluate(() => { const s = getComputedStyle(document.querySelector("#stage canvas")); return (s.webkitMaskImage || s.maskImage || "none") === "none" && getComputedStyle(document.querySelector(".hero")).getPropertyValue("--fh").trim() !== ""; }), "home town fades in by overlay, not a canvas mask");
   check(dbg.calls > 50 && dbg.calls < DRAW_BUDGET, `town draws ${dbg.calls} per frame (budget ${DRAW_BUDGET})`);
   await p.evaluate(() => document.querySelectorAll("#labels .tag").forEach(t => { t.style.pointerEvents = "none"; })); /* make the tap hit the 3D mesh, not a label */
   const spot = await p.evaluate(() => window.__townDebug().screenOf("P1-3"));
@@ -30,6 +40,8 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.waitForFunction(() => window.__townDebug().fs && document.querySelector(".town-fs canvas"), null, { timeout: 10000 }).catch(() => {});
   check(await p.evaluate(() => window.__townDebug().fs && !!document.querySelector(".town-fs canvas")), "3D button opens the city full screen");
   check(await p.evaluate(() => document.querySelectorAll(".town-fs .labels .tag").length) === 13, "full screen labels all 13 towers");
+  /* iPhone Safari blacks out a WebGL canvas below a CSS mask line once it moves to full screen: keep masks off the canvas */
+  check(await p.evaluate(() => { const s = getComputedStyle(document.querySelector(".town-fs canvas")); return (s.webkitMaskImage || s.maskImage || "none") === "none"; }), "the 3D canvas carries no CSS mask");
   await p.waitForTimeout(1500);
   const t0 = await p.evaluate(() => window.__townDebug().target);
   await p.mouse.move(550, 450); await p.mouse.down(); await p.mouse.move(450, 380, { steps: 6 }); await p.mouse.up();

@@ -177,6 +177,22 @@ function pushTown() {
   if (window.Town && window.Town.ready) window.Town.update(data);
   state.shown = Object.assign({}, data.mastery); save();
 }
+/* ---------- home cards ---------- */
+const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
+const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
+function areaCard(d) {
+  const D = DOMAINS[d], m = mastery(d), a = accuracy(d), qs = inBank(d), now = Date.now();
+  const due = qs.filter(q => isDue(q, now)).length;
+  const learned = qs.filter(q => st(q.id).box >= 3).length, unseen = qs.filter(q => !st(q.id).seen).length;
+  const meta = [`${examShare(d)}% of the exam`, esc(D.bld), a == null ? "not started" : pct(a) + "% right"];
+  if (due) meta.push(`<b>${due} due</b>`);
+  return `<section class="card area-card hue-${hueOf(d)}">
+    <button class="area-top" data-sheet="${d}"><i class="gem" aria-hidden="true"></i>
+      <span class="nm">${esc(D.name)}</span><span class="pct">${pct(m)}%</span><span class="area-meta">${meta.join(" · ")}</span></button>
+    <span class="meter"><i style="width:${pct(m)}%"></i></span>
+    <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
+  </section>`;
+}
 function renderHome() {
   view = "home";
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
@@ -187,8 +203,16 @@ function renderHome() {
   $("#app").innerHTML = `
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
-      <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-      <div class="coach">${coach}</div>
+      <div class="hero-main">
+        <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
+        ${coach ? `<div class="coach">${coach}</div>` : ""}
+      </div>
+      <button class="buddy" id="buddy" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+        <span class="buddy-halo"></span>
+        <span class="buddy-body"><img class="buddy-art" src="${window.Mascot ? window.Mascot.src : "art/mascot.webp"}" alt="" width="235" height="440" decoding="async"><span class="buddy-shine"></span></span>
+        <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
+        <span class="buddy-status" aria-live="polite"></span>
+      </button>
     </div>
     <div class="pills">
       <span class="pill">${ICON.fire}${sk} day${sk === 1 ? "" : "s"}</span>
@@ -198,6 +222,7 @@ function renderHome() {
     <div class="ptabs" role="tablist">
       ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}"><b>Part ${n}</b>${PARTS[n]}</button>`).join("")}
     </div>
+    <div class="stage-fade" aria-hidden="true"></div>
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
@@ -220,13 +245,8 @@ function renderHome() {
     ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
       <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
       <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
-    <section class="card"><div class="pad spread"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-      <div class="areas">${partDomains(p).map(d => {
-        const m = mastery(d), a = accuracy(d), due = BANK.filter(q => q.domain === d && isDue(q, Date.now())).length;
-        return `<button class="area" data-sheet="${d}"><span class="nm">${esc(DOMAINS[d].name)}</span><span class="pct">${pct(m)}%</span>
-          <span class="meter"><i style="width:${pct(m)}%"></i></span>
-          <span class="sub"><span>${DOMAINS[d].n} on exam</span><span>${a == null ? "not started" : pct(a) + "% right"}</span><span>${due} due</span><span>${inBank(d).length} in bank</span></span></button>`;
-      }).join("")}</div></section>
+    <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
+    ${partDomains(p).map(areaCard).join("")}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
@@ -250,6 +270,7 @@ function renderHome() {
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));
+  if (window.Mascot) window.Mascot.mount($(".hero"));
   mountTown();
 }
 function mountTown() {
