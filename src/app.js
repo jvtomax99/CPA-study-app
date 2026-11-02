@@ -360,6 +360,11 @@ const FIGURES = {
   "loss-sorter": { title: "Loss sorter", label: "Loss sorter: the basis, at-risk, passive and excess business loss limits in order", link: "See it on the loss sorter" },
   "basis-order": { title: "Basis order", label: "Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it", link: "See the basis order, step by step" },
 };
+/* What each figure shows, for the Figures card in More */
+const FIGURE_ABOUT = {
+  "loss-sorter": "A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss.",
+  "basis-order": "One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored.",
+};
 const MACHINE = { "p2d1a-018": [["loss-sorter", 0]], "p2d1b-023": [["loss-sorter", 1], ["basis-order", 1]], "p2d1b-024": [["basis-order", 0], ["loss-sorter", 2]], "p2d2a-006": [["loss-sorter", 3]] };
 function openMachine(fig, n) {
   const f = FIGURES[fig];
@@ -664,6 +669,9 @@ function renderMore() {
       <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">Add to my calendar</a></div>
       ${rem.at ? `<p class="small" style="margin:0"><b>You added a ${fmtT(rem.time)} reminder on ${new Date(rem.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}.</b></p>` : ""}
       <p class="hint" style="margin:0">iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the "EA practice" event in Calendar, then add a new one here.</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>Figures</h3>
+      <p class="muted small" style="margin:0">Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.</p>
+      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">Linked from ${Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length} questions</span><div><button class="btn" data-figure="${fig}">Open</button></div></div>`).join("")}</section>
     <section class="card" ><div class="pad spread"><h3>Flagged questions</h3><span class="hint">${flagged.length}</span></div>
       ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">Copy report for Jose</button></div><textarea id="flagfb" hidden readonly></textarea>
         ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
@@ -684,6 +692,7 @@ function renderMore() {
       <span>Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.</span></section>
   </div>`;
   $("#back").onclick = renderHome;
+  $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };

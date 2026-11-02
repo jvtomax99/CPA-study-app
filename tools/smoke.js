@@ -114,8 +114,16 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#endsec"); await p.click("#yes"); await p.click("#resumebrk"); await p.click("#endsec"); await p.click("#yes");
   check(await p.evaluate(() => /never seen/.test((document.querySelector(".fresh") || {}).textContent || "")), "exam: results show the score on never-seen questions");
 
-  /* backup */
+  /* figures: More lists every figure, and Open shows it in the same sheet the drill uses */
   await p.click("#morebtn");
+  check(await p.evaluate(() => document.querySelectorAll("[data-figure]").length === Object.keys(FIGURES).length), "figures: More lists every figure");
+  await p.click("[data-figure=basis-order]");
+  const mf = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await mf.waitForSelector("[data-out=deducted]");
+  check(await mf.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$8,000"), "figures: Open shows the basis order on its first case");
+  await p.click("#figx");
+
+  /* backup */
   const [dl] = await Promise.all([p.waitForEvent("download"), p.click("#savefile")]);
   const file = path.join(os.tmpdir(), "ea-smoke-backup.json"); await dl.saveAs(file);
   const saved = JSON.parse(fs.readFileSync(file, "utf8"));
