@@ -203,8 +203,16 @@ function renderHome() {
   $("#app").innerHTML = `
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
-      <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-      <div class="coach">${coach}</div>
+      <div class="hero-main">
+        <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
+        ${coach ? `<div class="coach">${coach}</div>` : ""}
+      </div>
+      <button class="buddy" id="buddy" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+        <span class="buddy-halo"></span>
+        <span class="buddy-body"><img class="buddy-art" src="${window.Mascot ? window.Mascot.src : "art/mascot.webp"}" alt="" width="235" height="440" decoding="async"><span class="buddy-shine"></span></span>
+        <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
+        <span class="buddy-status" aria-live="polite"></span>
+      </button>
     </div>
     <div class="pills">
       <span class="pill">${ICON.fire}${sk} day${sk === 1 ? "" : "s"}</span>
@@ -257,6 +265,7 @@ function renderHome() {
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));
+  if (window.Mascot) window.Mascot.mount($(".hero"));
   mountTown();
 }
 function mountTown() {

@@ -14,6 +14,15 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(e.message));
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
 
+  /* study buddy: the numbers spiral plays, he lands, a thought cloud types, a tap brings a new one */
+  check(!!(await p.waitForSelector(".buddy-canvas", { timeout: 15000 }).catch(() => null)), "buddy: the number spiral starts on Home");
+  await p.waitForFunction(() => !document.querySelector(".buddy-canvas") && !document.querySelector(".buddy-pending"), null, { timeout: 60000 }).catch(() => {});
+  check(await p.evaluate(() => { const i = document.querySelector(".buddy-art"); return !document.querySelector(".buddy-canvas") && i.naturalWidth > 0 && getComputedStyle(document.querySelector(".buddy-body")).opacity === "1"; }), "buddy: the spiral clears and he is standing");
+  await p.waitForFunction(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || ""), null, { timeout: 30000 }).catch(() => {});
+  check(await p.evaluate(() => /\w/.test((document.querySelector(".buddy-thought .bc-l1") || {}).textContent || "")), "buddy: his thought cloud types a pep talk");
+  await p.click("#buddy");
+  check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1 && !!document.querySelector(".buddy-status").textContent), "buddy: tapping him gives one new cloud");
+
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
   await p.waitForTimeout(4000);
