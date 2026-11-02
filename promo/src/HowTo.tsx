@@ -115,30 +115,30 @@ function Visual({s}: {s: Scene}) {
     case 'home':
       return (
         <PhoneStage>
-          <Shot src="home" cams={[{at: 0}, {at: at(s, 0, 0.8), x: 260, y: 330, z: 1.5}, {at: at(s, 1), x: 390, y: 640, z: 1.3}, {at: end(s, 1, -0.6), x: 390, y: 720, z: 1.2}]}
-            boxes={[{from: at(s, 0, 1.2), to: at(s, 1), x: 50, y: 200, w: 330, h: 200}, {from: at(s, 1, 0.2), to: at(s, 1, 2.3), x: 56, y: 570, w: 420, h: 160}, {from: at(s, 1, 2.4), to: s.dur, x: 56, y: 760, w: 668, h: 106}]}
-            taps={[{at: end(s, 1, -0.4), x: 370, y: 812}]} />
+          <Shot src="home" cams={[{at: 0}, {at: at(s, 0, 0.8), x: 260, y: 330, z: 1.5}, {at: at(s, 1), x: 390, y: 680, z: 1.3}, {at: end(s, 1, -0.6), x: 390, y: 780, z: 1.2}]}
+            boxes={[{from: at(s, 0, 1.2), to: at(s, 1), x: 44, y: 190, w: 320, h: 210}, {from: at(s, 1, 0.2), to: at(s, 1, 2.3), x: 48, y: 590, w: 440, h: 180}, {from: at(s, 1, 2.4), to: s.dur, x: 48, y: 782, w: 684, h: 112}]}
+            taps={[{at: end(s, 1, -0.4), x: 350, y: 838}]} />
         </PhoneStage>
       );
     case 'towers':
       return (
         <PhoneStage>
-          <Shot src="home" cams={[{at: 0, x: 390, y: 900, z: 1.1}, {at: 30, x: 380, y: 1150, z: 1.6}]} taps={[{at: at(s, 1, -0.2), x: 234, y: 1124}]} />
-          <FadeIn at={at(s, 1, 0.3)}><Shot src="area-sheet" boxes={[{from: at(s, 1, 0.9), to: s.dur, x: 34, y: 1360, w: 712, h: 300}]} /></FadeIn>
+          <Shot src="home" cams={[{at: 0, x: 390, y: 900, z: 1.1}, {at: 30, x: 380, y: 1150, z: 1.6}]} taps={[{at: at(s, 1, -0.2), x: 234, y: 1164}]} />
+          <FadeIn at={at(s, 1, 0.3)}><Shot src="area-sheet" boxes={[{from: at(s, 1, 0.9), to: s.dur, x: 34, y: 1250, w: 712, h: 420}]} /></FadeIn>
         </PhoneStage>
       );
     case 'views':
       return (
         <PhoneStage>
-          <Shot src="home" taps={[{at: 12, x: 480, y: 906}]} />
-          <FadeIn at={22}><Shot src="home-ts" cams={[{at: 22, x: 390, y: 1000, z: 1.0}, {at: 60, x: 390, y: 1150, z: 1.35}]} taps={[{at: at(s, 0, 2.6), x: 320, y: 906}]} /></FadeIn>
+          <Shot src="home" taps={[{at: 12, x: 480, y: 946}]} />
+          <FadeIn at={22}><Shot src="home-ts" cams={[{at: 22, x: 390, y: 1000, z: 1.0}, {at: 60, x: 390, y: 1150, z: 1.35}]} taps={[{at: at(s, 0, 2.6), x: 319, y: 946}]} /></FadeIn>
           <FadeIn at={at(s, 0, 3.0)}><Shot src="town-3d" cams={[{at: at(s, 0, 3.0), z: 1}, {at: at(s, 0, 3.4), z: 1.12, x: 420}]} /></FadeIn>
         </PhoneStage>
       );
     case 'drill':
       return (
         <PhoneStage>
-          <Shot src="home" taps={[{at: 6, x: 248, y: 1586}]} />
+          <Shot src="home" taps={[{at: 6, x: 248, y: 1627}]} />
           <FadeIn at={16}><Shot src="drill-q" taps={[{at: at(s, 0, 1.9), x: 380, y: 812}]} /></FadeIn>
           <FadeIn at={at(s, 0, 2.2)}><Shot src="drill-wrong-full" h={2672} cams={[{at: 0, y: 844}, {at: at(s, 0, 3.6), y: 1820}]} /></FadeIn>
         </PhoneStage>
@@ -188,8 +188,8 @@ function Visual({s}: {s: Scene}) {
     case 'more':
       return (
         <PhoneStage>
-          <Shot src="more-full" h={3592} cams={[{at: 0, y: 844}, {at: at(s, 0, 3.6), y: 844}, {at: at(s, 0, 4.4), y: 1950}]}
-            boxes={[{from: at(s, 0, 1.0), to: at(s, 0, 2.2), x: 20, y: 272, w: 740, h: 340}, {from: at(s, 0, 2.2), to: at(s, 0, 3.6), x: 20, y: 630, w: 740, h: 720}, {from: at(s, 0, 4.4), to: s.dur, x: 20, y: 1626, w: 740, h: 740}]} />
+          <Shot src="more-full" h={3982} cams={[{at: 0, y: 900}, {at: at(s, 0, 3.6), y: 900}, {at: at(s, 0, 4.4), y: 2391}]}
+            boxes={[{from: at(s, 0, 1.0), to: at(s, 0, 2.2), x: 20, y: 655, w: 740, h: 350}, {from: at(s, 0, 2.2), to: at(s, 0, 3.6), x: 20, y: 1014, w: 740, h: 728}, {from: at(s, 0, 4.4), to: s.dur, x: 20, y: 2007, w: 740, h: 768}]} />
         </PhoneStage>
       );
     case 'outro': {

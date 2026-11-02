@@ -25,6 +25,7 @@ const seed = require("./seed.cjs");
 
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
   await town();
+  await p.waitForTimeout(8000); /* let the study buddy finish his entrance */
   await shot("home");
 
   /* Times Square view */
