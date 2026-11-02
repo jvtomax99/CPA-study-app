@@ -103,9 +103,9 @@
   },
   {
     "id": "more",
-    "label": "More: goal, reminder, backup",
+    "label": "Menu: goal, reminder, backup",
     "lines": [
-      "Under More, set a daily goal, add a daily reminder to your calendar, and save a backup file every week or so."
+      "Open the menu to set a daily goal, add a daily reminder to your calendar, and save a backup file every week or so."
     ]
   },
   {

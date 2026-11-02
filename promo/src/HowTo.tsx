@@ -9,6 +9,8 @@ import layout from './layout.json';
 // Positions measured from the app by tools/capture.cjs, in screenshot pixels: [x, y, w, h].
 type R = number[];
 const G = layout.greet as Record<string, R>, HM = layout.home as Record<string, R>, MO = layout.more as Record<string, R>;
+const LY = layout as unknown as Record<string, Record<string, R>> & {wrong: {h: number}; flag: {h: number}};
+const [AR, DR, WR, FL, SU, EQ, LV, BK, RS] = ['area', 'drill', 'wrong', 'flag', 'setup', 'examq', 'leave', 'brk', 'res'].map((k) => LY[k]);
 const mid = (r: R) => ({x: r[0] + r[2] / 2, y: r[1] + r[3] / 2});
 const box = (r: R, from: number, to: number, pad = 10) => ({from, to, x: r[0] - pad, y: r[1] - pad, w: r[2] + 2 * pad, h: r[3] + 2 * pad});
 
@@ -229,7 +231,7 @@ function Visual({s}: {s: Scene}) {
     case 'towers':
       return (
         <PhoneScene s={s} bg="home-ts" ghost="13 towers" hops={[at(s, 1, -0.2)]}
-          pops={[{at: at(s, 1, 1.0), to: s.dur, src: 'area-sheet', x: 34, y: 1258, w: 712, h: 146, dx: 200, dy: -260, scale: 1.45}]}>
+          pops={[{at: at(s, 1, 1.0), to: s.dur, src: 'area-sheet', x: AR.stats[0], y: AR.stats[1], w: AR.stats[2], h: AR.stats[3], dx: 200, dy: -260, scale: 1.45}]}>
           <Shot src="home" cams={[{at: 0, x: 390, y: 900, z: 1.1}, {at: 30, x: 380, y: mid(HM.deductions).y, z: 1.6}]} taps={[{at: at(s, 1, -0.2), ...mid(HM.deductions)}]} />
           <FadeIn at={at(s, 1, 0.3)}><Shot src="area-sheet" /></FadeIn>
         </PhoneScene>
@@ -246,8 +248,8 @@ function Visual({s}: {s: Scene}) {
       return (
         <PhoneScene s={s} ghost="Play" hops={[6, at(s, 0, 1.9)]}>
           <Shot src="home" taps={[{at: 6, ...mid(HM.play)}]} />
-          <FadeIn at={16}><Shot src="drill-q" taps={[{at: at(s, 0, 1.9), x: 380, y: 812}]} /></FadeIn>
-          <FadeIn at={at(s, 0, 2.2)}><Shot src="drill-wrong-full" h={2672} cams={[{at: 0, y: 844}, {at: at(s, 0, 3.6), y: 1820}]} /></FadeIn>
+          <FadeIn at={16}><Shot src="drill-q" taps={[{at: at(s, 0, 1.9), ...mid(DR.a)}]} /></FadeIn>
+          <FadeIn at={at(s, 0, 2.2)}><Shot src="drill-wrong-full" h={LY.wrong.h} cams={[{at: 0, y: 844}, {at: at(s, 0, 3.6), y: WR.explain[1] + 600}]} /></FadeIn>
           <Sfx at={at(s, 0, 2.0)} name="buzz" volume={0.3} />
         </PhoneScene>
       );
@@ -261,32 +263,33 @@ function Visual({s}: {s: Scene}) {
     case 'flag':
       return (
         <PhoneScene s={s} ghost="Flag" color={PINK}>
-          <Shot src="drill-flag" h={2940} cams={[{at: 0, y: 1500}, {at: 8, y: 2096}]} boxes={[{from: at(s, 0, 0.6), to: s.dur, x: 36, y: 2040, w: 708, h: 380}]} />
+          <Shot src="drill-flag" h={LY.flag.h} cams={[{at: 0, y: FL.form[1] - 600}, {at: 8, y: mid(FL.form).y}]} boxes={[box(FL.form, at(s, 0, 0.6), s.dur, 6)]} />
         </PhoneScene>
       );
     case 'exam':
       return (
         <PhoneScene s={s} ghost="3:30:00" hops={[at(s, 0, 0.6), at(s, 1, -0.2), at(s, 1, 2.2)]}
-          pops={[{at: at(s, 0, 4.2), to: at(s, 1, 0.1), src: 'exam-q', x: 24, y: 176, w: 330, h: 110, dx: 380, dy: 40, scale: 2.0}]}>
-          <Shot src="exam-setup" taps={[{at: at(s, 0, 0.6), x: 206, y: 1004}]} boxes={[{from: at(s, 0, 1.4), to: at(s, 0, 3.6), x: 34, y: 560, w: 712, h: 260}]} />
-          <FadeIn at={at(s, 0, 3.7)}><Shot src="exam-q" taps={[{at: at(s, 1, -0.2), x: 166, y: 340}]} /></FadeIn>
-          <FadeIn at={at(s, 1, 0.2)}><Shot src="exam-leave" boxes={[{from: at(s, 1, 0.4), to: at(s, 1, 2.2), x: 22, y: 432, w: 736, h: 316}]} taps={[{at: at(s, 1, 2.2), x: 196, y: 672}]} /></FadeIn>
-          <FadeIn at={at(s, 1, 2.5)}><Shot src="exam-break" boxes={[{from: at(s, 1, 2.9), to: s.dur, x: 22, y: 180, w: 736, h: 530}]} /></FadeIn>
+          pops={[{at: at(s, 0, 4.2), to: at(s, 1, 0.1), src: 'exam-q', x: EQ.timer[0] - 8, y: EQ.timer[1] - 24, w: 330, h: EQ.timer[3] + 40, dx: 380, dy: 40, scale: 2.0}]}>
+          <Shot src="exam-setup" taps={[{at: at(s, 0, 0.6), ...mid(SU.start)}]} boxes={[box(SU.card, at(s, 0, 1.4), at(s, 0, 3.6), 6)]} />
+          <FadeIn at={at(s, 0, 3.7)}><Shot src="exam-q" taps={[{at: at(s, 1, -0.2), ...mid(EQ.finish)}]} /></FadeIn>
+          <FadeIn at={at(s, 1, 0.2)}><Shot src="exam-leave" boxes={[box(LV.confirm, at(s, 1, 0.4), at(s, 1, 2.2), 6)]} taps={[{at: at(s, 1, 2.2), ...mid(LV.yes)}]} /></FadeIn>
+          <FadeIn at={at(s, 1, 2.5)}><Shot src="exam-break" boxes={[box(BK.card, at(s, 1, 2.9), s.dur, 6)]} /></FadeIn>
         </PhoneScene>
       );
     case 'results':
       return (
         <PhoneScene s={s} ghost="72%" color={CYAN}
-          pops={[{at: at(s, 0, 0.4), to: s.dur, src: 'exam-results', x: 34, y: 280, w: 712, h: 300, dx: 160, dy: -120, scale: 1.3, color: CYAN}]}>
-          <Shot src="exam-results" cams={[{at: 0, y: 844}, {at: at(s, 0, 1.4), y: 1000, z: 1.0}]} boxes={[{from: at(s, 0, 1.6), to: s.dur, x: 22, y: 780, w: 736, h: 760}]} />
+          pops={[{at: at(s, 0, 0.4), to: s.dur, src: 'exam-results', x: RS.big[0], y: RS.big[1], w: RS.big[2], h: Math.min(RS.big[3], 320), dx: 160, dy: -120, scale: 1.3, color: CYAN}]}>
+          <Shot src="exam-results" cams={[{at: 0, y: 844}, {at: at(s, 0, 1.4), y: mid(RS.table).y, z: 1.0}]} boxes={[box(RS.table, at(s, 0, 1.6), s.dur, 6)]} />
           <Sfx at={at(s, 0, 0.4)} name="chime" volume={0.3} />
         </PhoneScene>
       );
     case 'more':
       return (
-        <PhoneScene s={s} ghost="Backup" hops={[at(s, 0, 4.4)]}>
-          <Shot src="more-full" h={layout.moreH} cams={[{at: 0, y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 3.6), y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 4.4), y: mid(MO.Backup).y}]}
-            boxes={[box(MO["Daily goal"], at(s, 0, 1.0), at(s, 0, 2.2)), box(MO["Daily reminder"], at(s, 0, 2.2), at(s, 0, 3.6)), box(MO.Backup, at(s, 0, 4.4), s.dur)]} />
+        <PhoneScene s={s} ghost="Backup" hops={[8, at(s, 0, 4.4)]}>
+          <Shot src="greet" taps={[{at: 8, ...mid(G.menu)}]} />
+          <FadeIn at={18}><Shot src="more-full" h={layout.moreH} cams={[{at: 0, y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 3.6), y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 4.4), y: mid(MO.Backup).y}]}
+            boxes={[box(MO["Daily goal"], at(s, 0, 1.0), at(s, 0, 2.2)), box(MO["Daily reminder"], at(s, 0, 2.2), at(s, 0, 3.6)), box(MO.Backup, at(s, 0, 4.4), s.dur)]} /></FadeIn>
         </PhoneScene>
       );
     default:
@@ -308,9 +311,9 @@ const IconCallouts: React.FC<{s: Scene}> = ({s}) => {
         {pill('Study in one place', C.amber, '#140c00')}
       </AbsoluteFill>}
       {b > 0 && <AbsoluteFill style={{background: `rgba(10,12,30,${0.6 * b})`, opacity: b, padding: '330px 30px 0', display: 'grid', alignContent: 'start', gap: 18}}>
-        {pill('In Safari: More › Save backup file')}
+        {pill('In Safari: Menu › Save backup file')}
         <div style={{textAlign: 'center', fontSize: 60, color: C.amber, lineHeight: 1}}>↓</div>
-        {pill('In the app: More › Load backup file')}
+        {pill('In the app: Menu › Load backup file')}
       </AbsoluteFill>}
     </>
   );

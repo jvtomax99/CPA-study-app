@@ -32,7 +32,13 @@ const seed = require("./seed.cjs");
     const e = typeof sel === "string" ? document.querySelector(sel) : [...document.querySelectorAll(sel[0])].find(x => x.textContent.includes(sel[1]));
     if (!e) return [k, null]; const b = e.getBoundingClientRect(); return [k, [Math.round(b.x * 2), Math.round(b.y * 2), Math.round(b.width * 2), Math.round(b.height * 2)]];
   })), sels);
-  const layout = { greet: await rects({ play: "#buddyplay", face: "#buddyface", streak: ".greet .pill, .greeting .pill, [class*=greet] [class*=pill]" }) };
+  const rr = (m, full) => p.evaluate(([m, full]) => Object.fromEntries(Object.entries(m).map(([k, s]) => {
+    const [sel, up] = s.split("^"); let e = document.querySelector(sel); if (e && up) e = e.closest(up);
+    if (!e) return [k, null]; const b = e.getBoundingClientRect(), oy = full ? scrollY : 0;
+    return [k, [Math.round(b.x * 2), Math.round((b.y + oy) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]];
+  })), [m, full]);
+  const pageH = () => p.evaluate(() => Math.round(document.documentElement.scrollHeight * 2));
+  const layout = { greet: await rects({ play: "#buddyplay", face: "#buddyface", streak: ".greet-pill", guide: "#greetguide", menu: "#morebtn" }) };
   /* then the tax city card at the top of the screen, as before */
   await p.evaluate(() => { const h = document.querySelector(".hero"); window.scrollTo(0, h.getBoundingClientRect().top + scrollY - 12); });
   await p.waitForTimeout(2500);
@@ -44,7 +50,7 @@ const seed = require("./seed.cjs");
   await p.click("#tsbtn"); await p.waitForTimeout(3000);
 
   /* tap a tower: the area sheet */
-  await p.evaluate(() => window.__townPick("P1-3")); await p.waitForTimeout(2500); await shot("area-sheet");
+  await p.evaluate(() => window.__townPick("P1-3")); await p.waitForTimeout(2500); await shot("area-sheet"); layout.area = await rr({ stats: ".stats3", sheet: ".bsheet" });
   await p.click("#sheetx"); await p.waitForTimeout(500);
 
   /* full-screen 3D */
@@ -56,13 +62,13 @@ const seed = require("./seed.cjs");
   await p.click("#play"); await p.waitForSelector(".choice");
   /* put a wrong choice at A and the keyed answer at C, so the video's tap on A shows a miss */
   await p.evaluate(() => { const a = drill.q.answer; drill.perm = [(a + 1) % 4, (a + 2) % 4, a, (a + 3) % 4]; renderDrill(); });
-  await p.waitForTimeout(400); await shot("drill-q");
+  await p.waitForTimeout(400); await shot("drill-q"); layout.drill = await rr({ a: '.choice[data-i="0"]' });
   /* `drill` is a top-level let in the app's script, visible to evaluate */
   const keyed = await p.evaluate(() => { try { return { perm: drill.perm, answer: drill.q.answer }; } catch (e) { return null; } });
   const wrongI = keyed ? keyed.perm.findIndex(o => o !== keyed.answer) : 1;
-  await p.click(`.choice[data-i="${wrongI}"]`); await p.waitForTimeout(400); await shot("drill-wrong-full", { fullPage: true });
+  await p.click(`.choice[data-i="${wrongI}"]`); await p.waitForTimeout(400); await shot("drill-wrong-full", { fullPage: true }); layout.wrong = Object.assign(await rr({ explain: ".explain", flag: "#flag" }, true), { h: await pageH() });
   await p.click("#flag"); await p.waitForTimeout(300);
-  await p.fill("#flagnote", "The 2025 figure looks off per Pub 501"); await shot("drill-flag", { fullPage: true });
+  await p.fill("#flagnote", "The 2025 figure looks off per Pub 501"); await shot("drill-flag", { fullPage: true }); layout.flag = Object.assign(await rr({ form: ".flagform" }, true), { h: await pageH() });
   await p.click("#flagx"); await p.waitForTimeout(200);
   await p.click("#next"); await p.waitForSelector(".choice:not([disabled])");
   const k2 = await p.evaluate(() => { try { return { perm: drill.perm, answer: drill.q.answer }; } catch (e) { return null; } });
@@ -71,7 +77,7 @@ const seed = require("./seed.cjs");
 
   /* exam sim: setup, a question, the break, results */
   await p.click("#back"); await p.waitForTimeout(800);
-  await p.click("#examgo"); await p.waitForTimeout(400); await shot("exam-setup");
+  await p.click("#examgo"); await p.waitForTimeout(400); await shot("exam-setup"); layout.setup = await rr({ card: "#start^section", start: "#start" });
   await p.click("#start"); await p.waitForSelector(".choice");
   /* answer the whole sim at about 72% right, then show question 7 of section 1 */
   await p.evaluate(() => {
@@ -80,12 +86,12 @@ const seed = require("./seed.cjs");
     E.idx = 6; save(); renderExam(); window.scrollTo(0, 0);
   });
   await p.click("#mark"); await p.waitForTimeout(200);
-  await p.evaluate(() => window.scrollTo(0, 0)); await shot("exam-q");
-  await p.click("#endsec"); await p.waitForTimeout(300); await shot("exam-leave");
-  await p.click("#yes"); await p.waitForTimeout(300); await shot("exam-break");
+  await p.evaluate(() => window.scrollTo(0, 0)); await shot("exam-q"); layout.examq = await rr({ timer: "#timer", finish: "#endsec" });
+  await p.click("#endsec"); await p.waitForTimeout(300); await shot("exam-leave"); layout.leave = await rr({ confirm: ".confirm", yes: "#yes" });
+  await p.click("#yes"); await p.waitForTimeout(300); await shot("exam-break"); layout.brk = await rr({ card: "#resumebrk^section" });
   /* finish fast: jump to section 3 and submit */
   await p.click("#resumebrk"); await p.click("#endsec"); await p.click("#yes"); await p.click("#resumebrk");
-  await p.click("#endsec"); await p.click("#yes"); await p.waitForTimeout(500); await shot("exam-results");
+  await p.click("#endsec"); await p.click("#yes"); await p.waitForTimeout(500); await shot("exam-results"); layout.res = Object.assign(await rr({ big: ".result-big^section", table: "table.res^section" }));
 
   /* More: goal, reminder, backup */
   await p.click("#back"); await p.waitForTimeout(800);
