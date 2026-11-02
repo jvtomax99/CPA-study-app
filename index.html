@@ -78,6 +78,7 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .appbar h1 { margin: 0; font: 700 27px/1.1 var(--f-sign); letter-spacing: -0.015em; text-wrap: balance; }
 .lines { display: flex; align-items: center; gap: 6px; margin: 8px 0 0; font: 500 13px/1 var(--f-sign); color: rgba(255,255,255,0.82); }
 .lines .t { margin-left: 6px; }
+@media (max-width: 350px) { .lines .ea { display: none; } }
 .bul { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; opacity: 0.4; transition: opacity 0.2s; }
 .bul.on { opacity: 1; box-shadow: 0 0 0 2px #111, 0 0 0 3.5px #fff; }
 .bul[data-part="1"] { background: #ee352e; } .bul[data-part="2"] { background: #00933c; } .bul[data-part="3"] { background: #b933ad; }
@@ -93,6 +94,34 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   background: radial-gradient(120% 70% at 50% 108%, var(--dusk-edge) 0%, var(--dusk-low) 32%, transparent 62%), linear-gradient(180deg, var(--dusk-top) 0%, var(--dusk-mid) 62%, var(--dusk-low) 100%);
   box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); }
 .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12); }
+/* The greeting and the town card join into one night scene over an elevated subway line. The train parks at the part's readiness
+   (0% at the left, 100% beside the EXAM READY sign) and pulls in when Home draws. */
+.nightline .greet { margin-bottom: 0; border-radius: 28px 28px 0 0; box-shadow: none; }
+.nightline + .hero { border-radius: 0 0 28px 28px; }
+.nightline + .hero::after { box-shadow: none; }
+.el { --el-end: #0b0a24; position: relative; height: 70px; overflow: hidden; background: linear-gradient(180deg, #090820, var(--el-end)); }
+.el.day { --el-end: var(--dusk-top); }
+.el-deck { position: absolute; left: 0; right: 0; bottom: 16px; height: 12px; overflow: hidden; border-top: 2px solid #77739c; border-bottom: 1px solid #2e2a52; background: linear-gradient(180deg, #2e2a52, #1d1a3a); }
+.el-cols { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; overflow: hidden; }
+.el-cols::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent, var(--el-end)); }
+/* Running in place: the train keeps its readiness spot while the girder stiffeners and columns stream past at the same speed (about 110px/s). Transforms only. */
+.el-deck i, .el-cols i { position: absolute; top: 0; bottom: 0; left: 0; width: calc(100% + var(--step)); animation: el-run var(--dur) linear infinite; }
+.el-deck i { --step: 23px; --dur: 0.21s; background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255,255,255,0.1) 22px 23px); }
+.el-cols i { --step: 66px; --dur: 0.6s; background: repeating-linear-gradient(90deg, transparent 0 58px, #221f42 58px 66px); }
+@keyframes el-run { to { transform: translateX(calc(-1 * var(--step))); } }
+.el-train { --tw: 294px; position: absolute; bottom: 27px; display: flex; align-items: flex-end; left: calc(70px + var(--r) * (100% - 162px) - var(--tw));
+  animation: el-in 1.8s cubic-bezier(0.2,0.7,0.2,1) 0.25s both; }
+@keyframes el-in { from { left: calc(-1 * var(--tw) - 70px); } }
+.el-car { width: 148px; height: auto; display: block; flex: none; filter: drop-shadow(0 6px 10px rgba(245,184,74,0.18)) drop-shadow(0 3px 4px rgba(0,0,0,0.5)); }
+.el-car + .el-car { margin-left: -2px; animation-delay: -0.3s; }
+.el-car { animation: el-bob 0.6s ease-in-out infinite alternate; }
+@keyframes el-bob { to { transform: translateY(-0.8px); } }
+.el-beam { flex: none; width: 64px; height: 18px; margin: 0 0 6px -6px; background: radial-gradient(ellipse 100% 60% at 0 50%, rgba(255,236,170,0.5), rgba(255,236,170,0) 70%); animation: el-flick 2.4s ease-in-out infinite alternate; }
+@keyframes el-flick { to { opacity: 0.7; } }
+.el-sign { position: absolute; right: 10px; bottom: 28px; display: grid; justify-items: center; }
+.el-sign b { background: #111; color: #fff; font: 700 9.5px/1 var(--f-sign); letter-spacing: 0.05em; padding: 5px 6px 4px; border-top: 1.5px solid #fff; white-space: nowrap; }
+.el-sign i { width: 2px; height: 12px; background: #77739c; }
+@media (prefers-reduced-motion: reduce) { .el-train, .el-car, .el-beam, .el-deck i, .el-cols i { animation: none; } }
 .hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px; padding: 20px 18px 0; align-items: start; }
 .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
 .ready { font-size: 52px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: var(--amber); margin-top: 6px; font-variant-numeric: tabular-nums; }
@@ -480,7 +509,7 @@ footer p { margin: 0; max-width: 70ch; }
   <header class="appbar">
     <div>
       <h1>EA Ledger Drill</h1>
-      <p class="lines"><span class="bul" data-part="1" aria-hidden="true">1</span><span class="bul" data-part="2" aria-hidden="true">2</span><span class="bul" data-part="3" aria-hidden="true">3</span><span class="t">Enrolled Agent · Tax Year 2025</span></p>
+      <p class="lines"><span class="bul" data-part="1" aria-hidden="true">1</span><span class="bul" data-part="2" aria-hidden="true">2</span><span class="bul" data-part="3" aria-hidden="true">3</span><span class="t"><span class="ea">Enrolled Agent · </span>Tax Year 2025</span></p>
     </div>
     <button class="menubtn" id="morebtn" aria-label="More"><i></i><span id="flagdot"></span></button>
   </header>
@@ -1194,6 +1223,31 @@ function areaCard(d, focus) {
       <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
   </section>`;
 }
+/* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
+const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad" };
+function elCar(p, lead) {
+  const c = LINE[p], id = lead ? "elB" : "elA", wx = lead ? [8, 42, 76, 110] : [8, 46, 84, 122], sx = lead ? [38, 72, 106] : [40, 78, 116];
+  return `<svg class="el-car" viewBox="0 0 180 46" aria-hidden="true">
+    <defs><linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f5f9"/><stop offset=".5" stop-color="#c3c9d3"/><stop offset="1" stop-color="#8e96a4"/></linearGradient>
+      <linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4cf"/><stop offset="1" stop-color="#f6c766"/></linearGradient></defs>
+    <path d="${lead ? "M2 8Q2 4 6 4H158Q171 4 176 13L178 20V36H2Z" : "M2 8Q2 4 6 4H174Q178 4 178 8V36H2Z"}" fill="url(#${id}s)"/>
+    <rect x="6" y="4.6" width="${lead ? 150 : 168}" height="1.6" rx=".8" fill="#fff" opacity=".7"/>
+    ${wx.map(x => `<rect x="${x}" y="10" width="28" height="12" rx="2.5" fill="url(#${id}w)"/><path d="M${x + 6} 10h7l-6 12h-7z" fill="#fff" opacity=".22"/>`).join("")}
+    ${sx.map(x => `<rect x="${x}" y="7" width="2" height="27" fill="#8a92a1" opacity=".5"/>`).join("")}
+    <rect x="2" y="25" width="176" height="3" fill="${c}"/><rect x="2" y="33" width="176" height="3" fill="#6f7787"/>
+    ${lead ? `<path d="M165 8.5L173 14.5V21H165Z" fill="#1b2236"/><circle cx="151" cy="16" r="7" fill="${c}"/>
+      <text x="151" y="19.6" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="700" font-size="10.5" fill="#fff">${p}</text>
+      <circle cx="175.5" cy="28" r="1.8" fill="#fff6cc"/>` : ""}
+    <rect x="12" y="36" width="156" height="3" fill="#17162b"/><rect x="18" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/><rect x="130" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/>
+    ${[25, 43, 137, 155].map(x => `<circle cx="${x}" cy="42" r="3.2" fill="#2b2945" stroke="#4a4770" stroke-width=".8"/>`).join("")}
+  </svg>`;
+}
+function elLine(p, r) {
+  const at = Math.min(1, Math.max(0, r || 0)).toFixed(3);
+  return `<div class="el${skyNow() === "day" ? " day" : ""}" aria-hidden="true"><div class="el-cols"><i></i></div><div class="el-deck"><i></i></div>
+    <div class="el-sign"><b>EXAM READY</b><i></i></div>
+    <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
+}
 function renderHome() {
   view = "home";
   document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
@@ -1202,7 +1256,7 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
+  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" })}${elLine(p, r)}</div>` : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
