@@ -8,7 +8,9 @@
    - the hello, once per app load: numbers and equations spiral in from the edges, lock
      into a ring around "A = L + E", pulse, then spin down into him with a flash and gold
      stars. He springs in, Play lights up on his calculator, his name is written in, and
-     a thought cloud types a pep talk. Tapping him gives a hop and a new pep talk.
+     a thought cloud types a pep talk. Tapping him gives a hop and a new pep talk;
+   - his face, after Dr. Smiley's: he blinks, now and then winks or smiles, smiles as he
+     lands, is startled then laughs when tapped, and dozes off when left alone.
    renderHome (app.js) puts Mascot.greeting(...) at the top and calls Mascot.mount(). */
 (() => {
   const TAU = Math.PI * 2;
@@ -146,7 +148,7 @@
             <span class="buddy-disc" aria-hidden="true"></span>
             <span class="buddy-fig">
               <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
-                <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
+                <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}">${FACE_WIN}<span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
               <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
               <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
@@ -402,7 +404,7 @@
     root.classList.add("buddy-entering", "buddy-wait");
     // Play lights up on his calculator just after he lands
     anim(root.querySelector(".bp-lcd"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
-    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); };
+    const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); faceDo("hello"); };
     const stop = () => {
       cancelAnimationFrame(frame); anims.forEach(a => a.cancel()); anims = [];
       if (!entered) land(); canvas.remove(); root.classList.remove("buddy-pending", "buddy-wait");
@@ -435,8 +437,82 @@
     frame = requestAnimationFrame(draw);
   }
 
+  /* ---------- his face (after Dr. Smiley's DR_FACE_SEQ) ----------
+     art/buddy-face.webp is a strip of his eyes and mouth, one frame per face in FACE.frames,
+     each built on the same picture as buddy-bust.webp so only lids, eyes and lips change:
+     the eyes are cut inside each lens rim (the bust's own rim always shows), the mouth where
+     it changed, and the rest of the frame is see-through ("rest" is see-through throughout).
+     Made by tools/buddy_face.py from the faces in docs/art/buddy-faces/; FACE.x/y/w/h is the
+     window it prints, in picture pixels (360 x 464). A frame change moves the strip outright,
+     never a fade. "encourage" and "doubt" are in the strip for the answer card, unused here. */
+  const FACE = { src: "art/buddy-face.webp", x: 114, y: 131, w: 160, h: 138,
+    frames: ["rest", "blink1", "blink2", "shut", "wink1", "wink2", "wink", "smile", "laugh1", "laugh", "surprised", "encourage", "doubt", "sleep"] };
+  /* Each expression: [frame, ms], a lead-in, a short peak and a slower way back; then rest.
+     A 0 holds that frame until something else plays. */
+  const BLINK = [["blink1", 45], ["blink2", 40], ["shut", 75], ["blink2", 45], ["blink1", 60]];
+  const FACE_SEQ = {
+    blink: BLINK,
+    blink2x: [...BLINK, ["rest", 150], ...BLINK],
+    wink: [["wink1", 50], ["wink2", 45], ["wink", 650], ["wink2", 55], ["wink1", 75]],
+    smile: [["smile", 1500]],
+    // as he lands in the hello: a smile, a wink, the smile again
+    hello: [["smile", 700], ["wink", 600], ["smile", 700]],
+    // tapped: startled for a moment, then a laugh
+    pet: [["blink1", 40], ["surprised", 420], ["blink1", 40], ["smile", 90], ["laugh1", 70], ["laugh", 950], ["laugh1", 80], ["smile", 450]],
+    doze: [["blink1", 160], ["blink2", 240], ["shut", 400], ["sleep", 0]],
+    wake: [["shut", 200], ["blink2", 160], ["blink1", 140], ["surprised", 380], ["blink1", 45], ["smile", 600]]
+  };
+  const DOZE_MS = 45000;  // no touch, key or scroll for this long on Home and he nods off
+  const pct = (v, of) => (v / of * 100).toFixed(3) + "%";
+  const FACE_WIN = `<span class="buddy-expr" aria-hidden="true" style="left:${pct(FACE.x, 360)};top:${pct(FACE.y, 464)};width:${pct(FACE.w, 360)};height:${pct(FACE.h, 464)};background-image:url(${FACE.src});background-size:${FACE.frames.length * 100}% 100%"></span>`;
+  const faceArt = new Image(); faceArt.decoding = "async"; faceArt.src = FACE.src;
+  const face = { el: null, timer: 0, idle: 0, asleep: false, busy: false, quietSince: 0, bound: false };
+  function showFrame(name) {
+    const k = FACE.frames.indexOf(name);
+    if (face.el && k >= 0) face.el.style.backgroundPosition = pct(k, FACE.frames.length - 1) + " 0";
+  }
+  // Plays one expression from the top, cutting in over whatever is playing; then rest.
+  function faceDo(name) {
+    clearTimeout(face.timer);
+    const seq = FACE_SEQ[name]; let i = 0;
+    face.busy = true;
+    const step = () => {
+      if (!face.el || !face.el.isConnected) return faceStop();
+      if (i >= seq.length) { face.busy = false; showFrame("rest"); return; }
+      const [f, ms] = seq[i++]; showFrame(f);
+      if (ms) face.timer = setTimeout(step, ms);
+    };
+    step();
+  }
+  function faceStop() { clearTimeout(face.timer); clearTimeout(face.idle); face.el = null; face.busy = face.asleep = false; }
+  // Now and then while he's on Home: mostly blinks, sometimes a double blink, a smile or a wink.
+  function faceIdle() {
+    clearTimeout(face.idle);
+    face.idle = setTimeout(() => {
+      if (!face.el || !face.el.isConnected) return faceStop();
+      if (!document.hidden && !reduced.matches && !running && !face.busy && !face.asleep) {
+        if (Date.now() - face.quietSince > DOZE_MS) { face.asleep = true; faceDo("doze"); }
+        else { const r = Math.random(); faceDo(r < 0.72 ? "blink" : r < 0.86 ? "blink2x" : r < 0.95 ? "smile" : "wink"); }
+      }
+      faceIdle();
+    }, 2600 + Math.random() * 3800);
+  }
+  function faceStart(root) {
+    faceStop();
+    face.el = root.querySelector(".buddy-expr"); face.quietSince = Date.now();
+    if (!face.bound) {
+      face.bound = true;
+      // Any touch, key or scroll counts as you being there, and wakes him if he dozed off.
+      const stir = () => { face.quietSince = Date.now(); if (face.asleep && face.el) { face.asleep = false; faceDo("wake"); } };
+      ["pointerdown", "keydown", "wheel", "scroll"].forEach(t => window.addEventListener(t, stir, { passive: true, capture: true }));
+    }
+    faceIdle();
+  }
+
   /* ---------- tap: a hop, a puff of numbers, a new pep talk ---------- */
   function hop(root) {
+    // with reduced motion, a smile that holds a moment, no blinking through it
+    faceDo(reduced.matches ? "smile" : "pet");
     const body = root.querySelector(".buddy-fig");
     if (!reduced.matches && body.animate) {
       body.animate([
@@ -485,6 +561,7 @@
       root.querySelector(".buddy-face").onclick = () => hop(root);
       root.querySelector(".buddy-play").onclick = () => { if (onPlay) onPlay(); };
       onDone = afterHello || null;
+      faceStart(root);
       fit();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
       if (!fitBound) { fitBound = true; window.addEventListener("resize", fit, { passive: true }); }

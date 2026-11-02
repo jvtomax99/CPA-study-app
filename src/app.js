@@ -39,6 +39,7 @@ function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catc
 let state = load();
 let view = "home";
 let drill = null;        // { domain|null, q, reason, perm, picked, flagging }
+let sess = null;         // the current drill session: { t, domain, rows: [{ id, ok, g, first }], m0: { area: mastery at its first answer } }
 let sheetOpen = null;
 let tsView = false;
 
@@ -86,6 +87,8 @@ function gap(p) {
 /* ---------- recording an answer ---------- */
 function record(q, ok, mode) {
   const s = st(q.id), now = Date.now();
+  /* first answer of the day: keep each area's mastery as it stood, so the daily summary can show what grew */
+  if (!state.day || state.day.k !== dayKey(now)) state.day = { k: dayKey(now), m: Object.fromEntries(Object.keys(DOMAINS).map(d => [d, mastery(d)])) };
   const wasDue = !s.seen || s.due <= now;
   let box = s.box, due = s.due;
   if (!ok) { box = 0; due = now + INTERVALS[0]; }
@@ -177,30 +180,111 @@ function pushTown() {
   if (window.Town && window.Town.ready) window.Town.update(data);
   state.shown = Object.assign({}, data.mastery); save();
 }
-/* ---------- home cards ---------- */
-const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
-const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
-function areaCard(d) {
-  const D = DOMAINS[d], m = mastery(d), a = accuracy(d), qs = inBank(d), now = Date.now();
-  const due = qs.filter(q => isDue(q, now)).length;
-  const learned = qs.filter(q => st(q.id).box >= 3).length, unseen = qs.filter(q => !st(q.id).seen).length;
-  const meta = [`${examShare(d)}% of the exam`, esc(D.bld), a == null ? "not started" : pct(a) + "% right"];
-  if (due) meta.push(`<b>${due} due</b>`);
-  return `<section class="card area-card hue-${hueOf(d)}">
-    <button class="area-top" data-sheet="${d}"><i class="gem" aria-hidden="true"></i>
-      <span class="nm">${esc(D.name)}</span><span class="pct">${pct(m)}%</span><span class="area-meta">${meta.join(" · ")}</span></button>
-    <span class="meter"><i style="width:${pct(m)}%"></i></span>
-    <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
-  </section>`;
+/* ---------- home: each part drawn as a subway strip map ---------- */
+/* Each area is a station on its part's line (LINE, below). The bullet at a station is a transfer to a real line, in that line's official color. */
+const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2" };
+const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
+  N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River" };
+const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
+/* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
+   Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
+const ART = new Set([]);
+/* Drawn building per area: s = shapes (b body, t trim), w = windows [x, y, w, h], lit bottom-up with mastery */
+const grid = (x0, y0, cols, rows, dx, dy, w, h) => { const a = []; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) a.push([x0 + c * dx, y0 + r * dy, w, h]); return a; };
+const BLD = {
+  "P1-1": { s: '<rect class="b" x="8" y="26" width="44" height="48"/><rect class="t" x="6" y="23" width="48" height="4" rx="1"/><rect class="t" x="10" y="46" width="40" height="5"/><path class="t" d="M8 56h44l-2 6H10z"/><rect class="b" x="26" y="64" width="8" height="10" opacity=".6"/>',
+    w: [[11,64,13,9],[36,64,13,9]].concat(grid(12, 29, 3, 2, 14.5, 8, 7, 6)) },
+  "P1-2": { s: '<path class="t" d="M4 28L30 14L56 28Z"/><rect class="t" x="5" y="28" width="50" height="3"/><rect class="b" x="7" y="31" width="46" height="37"/><rect class="t" x="9" y="31" width="3.5" height="37"/><rect class="t" x="20.5" y="31" width="3.5" height="37"/><rect class="t" x="36" y="31" width="3.5" height="37"/><rect class="t" x="47.5" y="31" width="3.5" height="37"/><rect class="t" x="5" y="68" width="50" height="2.5"/><rect class="t" x="3" y="71" width="54" height="3"/>',
+    w: [[14,56,5,9],[26,56,8,12],[41,56,5,9],[14,44,5,9],[27,44,6,9],[41,44,5,9],[14,34,5,7],[27,34,6,7],[41,34,5,7]] },
+  "P1-3": { s: '<rect class="b" x="3" y="24" width="18" height="50"/><rect class="b" x="21" y="20" width="18" height="54"/><rect class="b" x="39" y="26" width="18" height="48"/><rect class="t" x="2" y="22" width="20" height="3"/><rect class="t" x="20" y="18" width="20" height="3"/><rect class="t" x="38" y="24" width="20" height="3"/><path class="t" d="M5 74l6-7h3v7zM23 74l6-7h3v7zM41 74l6-7h3v7z"/>',
+    w: grid(6, 35, 6, 3, 0, 10, 4, 6).map((w, i) => [[6, 13, 24, 31, 42, 49][i % 6], w[1], 4, 6]).concat([[24,26,4,5],[31,26,4,5]]) },
+  "P1-4": { s: '<rect class="t" x="35" y="6" width="10" height="9" rx="1"/><path class="t" d="M34 6l6-4 6 4z"/><rect class="t" x="36" y="15" width="1.5" height="5"/><rect class="t" x="42.5" y="15" width="1.5" height="5"/><rect class="b" x="12" y="20" width="36" height="54"/><rect class="t" x="10" y="18" width="40" height="3"/>' + [30, 40, 50, 60].map(y => `<rect class="t" x="10" y="${y + 6}" width="18" height="1.4"/><path class="t" d="M12 ${y + 6}L26 ${y - 4}L27.2 ${y - 3.2}L13.2 ${y + 6.8}z"/>`).join(""),
+    w: grid(16, 24, 2, 5, 8, 10, 6, 6).concat(grid(38, 24, 1, 5, 0, 10, 6, 6)) },
+  "P1-5": { s: '<rect class="b" x="10" y="22" width="40" height="52"/><rect class="b" x="17" y="10" width="26" height="13"/><rect class="t" x="16" y="8" width="28" height="2.5"/><rect class="t" x="9" y="20" width="42" height="2.5"/><rect class="t" x="29" y="2" width="1.5" height="6"/>',
+    w: grid(13, 27.6, 4, 7, 9.2, 6.4, 7.6, 4).concat(grid(19.5, 13, 3, 1, 7.5, 0, 6, 4)) },
+  "P1-6": { s: '<rect class="t" x="11" y="12" width="4" height="10"/><rect class="t" x="45" y="12" width="4" height="10"/><path class="t" d="M6 34L11 20H49L54 34Z"/><rect class="b" x="6" y="34" width="48" height="40"/><rect class="t" x="4" y="32" width="52" height="3"/><path class="t" d="M24 74v-11a6 6 0 0 1 12 0v11z"/>',
+    w: [[18,25,5,6],[27.5,25,5,6],[37,25,5,6],[10,38,6,8],[19,38,6,8],[27,38,6,8],[35,38,6,8],[44,38,6,8],[10,52,6,9],[19,52,6,9],[35,52,6,9],[44,52,6,9]] },
+  /* Midtown tower: art deco setbacks and a spire */
+  "P2-1": { s: '<rect class="t" x="29.2" y="0" width="1.6" height="10"/><rect class="b" x="24" y="10" width="12" height="9"/><rect class="b" x="19" y="19" width="22" height="12"/><rect class="b" x="14" y="31" width="32" height="43"/><rect class="t" x="23" y="9" width="14" height="2"/><rect class="t" x="18" y="18" width="24" height="2"/><rect class="t" x="13" y="30" width="34" height="2"/>',
+    w: grid(17, 35, 4, 6, 7, 6.4, 4.5, 4).concat(grid(22, 22, 3, 1, 6, 0, 4, 5), [[27.5,13,5,4]]) },
+  /* loft building: cast-iron front, big windows */
+  "P2-2": { s: '<rect class="b" x="5" y="24" width="50" height="50"/><rect class="t" x="3" y="21" width="54" height="4"/><rect class="t" x="5" y="36" width="50" height="1.5"/><rect class="t" x="5" y="48" width="50" height="1.5"/><rect class="t" x="5" y="60" width="50" height="1.5"/>',
+    w: grid(8, 27, 4, 4, 12, 12, 9, 7.5) },
+  /* rooftop farm: low block with a greenhouse and planters on the roof */
+  "P2-3": { s: '<path class="t" d="M14 40V32L24 26L34 32V40Z" opacity=".85"/><rect class="t" x="38" y="35" width="14" height="5" rx="1"/><path class="t" d="M40 35c1-4 3-4 4 0M46 35c1-5 3-5 4 0"/><rect class="b" x="6" y="40" width="48" height="34"/><rect class="t" x="4" y="38" width="52" height="3"/>',
+    w: grid(10, 45, 4, 3, 11.5, 9.5, 7, 6).concat([[18,33,4,5],[26,33,4,5]]) },
+  /* practitioner's office: four floors and a door canopy */
+  "P3-1": { s: '<rect class="b" x="12" y="24" width="36" height="50"/><rect class="t" x="10" y="21" width="40" height="4"/><rect class="t" x="22" y="62" width="16" height="2.5"/><rect class="b" x="26" y="65" width="8" height="9" opacity=".6"/>',
+    w: grid(16, 28, 3, 4, 10.5, 8.5, 7, 5.5).concat([[16,65,6,6],[38,65,6,6]]) },
+  /* courthouse: colonnade with a stepped tower */
+  "P3-2": { s: '<path class="t" d="M23 18L30 8L37 18Z"/><rect class="b" x="21" y="18" width="18" height="24"/><path class="t" d="M3 46L30 38L57 46Z"/><rect class="b" x="5" y="46" width="50" height="23"/>' + [7, 15, 23, 33, 41, 49].map(x => `<rect class="t" x="${x}" y="46" width="3" height="23"/>`).join("") + '<rect class="t" x="3" y="69" width="54" height="2.5"/><rect class="t" x="1" y="71.5" width="58" height="2.5"/>',
+    w: [[11.5,52,2.5,12],[19.5,52,2.5,12],[28,52,4,15],[37.5,52,2.5,12],[45.5,52,2.5,12]].concat(grid(24, 22, 2, 3, 7, 6.5, 5, 4)) },
+  /* collections office: a plain slab of narrow windows */
+  "P3-3": { s: '<rect class="b" x="9" y="16" width="42" height="58"/><rect class="t" x="8" y="14" width="44" height="3"/><rect class="t" x="9" y="66" width="42" height="1.5"/>',
+    w: grid(12, 20, 6, 7, 6.4, 6.4, 3.6, 4.2) },
+  /* post office: a long colonnade with a flagpole */
+  "P3-4": { s: '<rect class="t" x="29.3" y="14" width="1.4" height="20"/><path class="t" d="M30.7 14h9v6h-9z" opacity=".9"/><rect class="b" x="2" y="38" width="56" height="31"/><rect class="t" x="1" y="35" width="58" height="4"/>' + [4, 12, 20, 28, 36, 44, 52].map(x => `<rect class="t" x="${x}" y="44" width="3" height="25"/>`).join("") + '<rect class="t" x="1" y="69" width="58" height="2.5"/><rect class="t" x="0" y="71.5" width="60" height="2.5"/>',
+    w: grid(8, 48, 6, 1, 8, 0, 3, 16).concat(grid(8, 40, 6, 1, 8, 0, 3, 2.5)) }
+};
+function bldSvg(d, m) {
+  const B = BLD[d], order = B.w.map((w, i) => i).sort((a, b) => B.w[b][1] - B.w[a][1] || B.w[a][0] - B.w[b][0]);
+  const on = new Set(order.slice(0, Math.floor(m * B.w.length + 1e-9)));
+  return `<svg class="bld" viewBox="0 0 60 76" aria-hidden="true">${B.s}${B.w.map((w, i) => `<rect class="w${on.has(i) ? " on" : ""}" x="${w[0]}" y="${w[1]}" width="${w[2]}" height="${w[3]}" rx=".5"/>`).join("")}</svg>`;
+}
+const stopsLine = m => `<span class="stops" aria-hidden="true"><i style="width:calc((100% - 10px) * ${m})"></i>${[0, 0.25, 0.5, 0.75, 1].map(x => `<b class="${m > 0 && m + 1e-9 >= x ? "on" : ""}" style="left:calc(5px + (100% - 10px) * ${x})"></b>`).join("")}</span>`;
+function stripMap(p, focus) {
+  const now = Date.now();
+  const rows = partDomains(p).map(d => {
+    const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = Math.round(D.n / 85 * 100);
+    const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : bldSvg(d, m);
+    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : "Not started"}</span></span>`;
+    const where = `<span class="hood">${esc(D.bld.replace(/^the /, ""))}</span><span>${share}% of exam</span>${due ? `<b>${due} due</b>` : ""}`;
+    if (d === focus) return `<div class="srow"><span class="sdot"></span><div class="sbox">
+      <div class="shd">${routeBullet(ROUTE[d])}<span>Next stop</span></div>
+      <div class="snm">${esc(D.name)}</div><div class="swhere">${where}</div>${prog}
+      <button class="sgo" data-drill="${d}">Practice <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
+      <span class="sart" aria-hidden="true">${art}</span></div></div>`;
+    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="Practice ${esc(D.name)}, ${pct(m)}% mastered"><span class="sdot"></span>
+      <span class="stxt"><span class="snm">${esc(D.name)}</span><span class="swhere">${routeBullet(ROUTE[d])}${where}</span>${prog}</span>
+      <span class="sart" aria-hidden="true">${art}</span></button>`;
+  }).join("");
+  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${RIVER[p]}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
+}
+/* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
+const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad" };
+function elCar(p, lead) {
+  const c = LINE[p], id = lead ? "elB" : "elA", wx = lead ? [8, 42, 76, 110] : [8, 46, 84, 122], sx = lead ? [38, 72, 106] : [40, 78, 116];
+  return `<svg class="el-car" viewBox="0 0 180 46" aria-hidden="true">
+    <defs><linearGradient id="${id}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f5f9"/><stop offset=".5" stop-color="#c3c9d3"/><stop offset="1" stop-color="#8e96a4"/></linearGradient>
+      <linearGradient id="${id}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4cf"/><stop offset="1" stop-color="#f6c766"/></linearGradient></defs>
+    <path d="${lead ? "M2 8Q2 4 6 4H158Q171 4 176 13L178 20V36H2Z" : "M2 8Q2 4 6 4H174Q178 4 178 8V36H2Z"}" fill="url(#${id}s)"/>
+    <rect x="6" y="4.6" width="${lead ? 150 : 168}" height="1.6" rx=".8" fill="#fff" opacity=".7"/>
+    ${wx.map(x => `<rect x="${x}" y="10" width="28" height="12" rx="2.5" fill="url(#${id}w)"/><path d="M${x + 6} 10h7l-6 12h-7z" fill="#fff" opacity=".22"/>`).join("")}
+    ${sx.map(x => `<rect x="${x}" y="7" width="2" height="27" fill="#8a92a1" opacity=".5"/>`).join("")}
+    <rect x="2" y="25" width="176" height="3" fill="${c}"/><rect x="2" y="33" width="176" height="3" fill="#6f7787"/>
+    ${lead ? `<path d="M165 8.5L173 14.5V21H165Z" fill="#1b2236"/><circle cx="151" cy="16" r="7" fill="${c}"/>
+      <text x="151" y="19.6" text-anchor="middle" font-family="Helvetica Neue, Inter, sans-serif" font-weight="700" font-size="10.5" fill="#fff">${p}</text>
+      <circle cx="175.5" cy="28" r="1.8" fill="#fff6cc"/>` : ""}
+    <rect x="12" y="36" width="156" height="3" fill="#17162b"/><rect x="18" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/><rect x="130" y="37" width="32" height="5" rx="2.5" fill="#0f0e1d"/>
+    ${[25, 43, 137, 155].map(x => `<circle cx="${x}" cy="42" r="3.2" fill="#2b2945" stroke="#4a4770" stroke-width=".8"/>`).join("")}
+  </svg>`;
+}
+function elLine(p, r) {
+  const at = Math.min(1, Math.max(0, r || 0)).toFixed(3);
+  return `<div class="el${skyNow() === "day" ? " day" : ""}" aria-hidden="true"><div class="el-cols"><i></i></div><div class="el-deck"><i></i></div>
+    <div class="el-sign"><b>EXAM READY</b><i></i></div>
+    <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
 }
 function renderHome() {
   view = "home";
+  document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak();
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` }) : ""}
+  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
@@ -226,16 +310,13 @@ function renderHome() {
       <button class="cta exam" id="examgo">Exam sim</button>
     </div>
   </section>
-  <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights a gold crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
+  <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   <div class="stack">
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
-    ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
-      <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
-      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-    ${partDomains(p).map(areaCard).join("")}
+    ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
@@ -316,48 +397,91 @@ function closeGuide() { const v = $("#guidevid"); if (v) v.pause(); closeLayer()
 function closeLayer() { $("#layer").innerHTML = ""; if (window.Town && window.Town.highlight) window.Town.highlight(null); }
 
 /* ---------- Drill ---------- */
-function startDrill(domain) {
+function startDrill(domain, keep) {
   if (window.Town && window.Town.unmount) window.Town.unmount();
+  if (!keep || !sess) sess = { t: Date.now(), domain, rows: [], m0: {} };
   drill = pickNext(domain, state.part, null); if (drill) drill.domain = domain;
   drill = drill || { domain, q: null };
   renderDrill(); window.scrollTo(0, 0);
 }
-function nextQ() { const d = drill.domain; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; renderDrill(); }
+function nextQ() { const d = drill.domain, run = drill.run || 0; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; drill.run = run; renderDrill(); }
+/* The area's tower on the question card: 12 floors of 3 windows, lit up to the area's mastery.
+   After an answer, windows that just lit glow in and windows that just went dark flicker out. */
+function towerSvg(m, prev) {
+  const F = 12, W = 3, N = F * W, lit = Math.floor(m * N + 1e-9), was = prev == null ? lit : Math.floor(prev * N + 1e-9);
+  let w = "";
+  for (let i = 0; i < N; i++) {
+    const f = Math.floor(i / W), x = 10 + (i % W) * 9.5, y = 73 - (f + 1) * 5;
+    const c = i < lit ? (i >= was ? "on pop" : "on") : (i < was ? "drop" : "off");
+    w += `<rect class="${c}" x="${x}" y="${y + 1.2}" width="7" height="2.8" rx="0.6" style="--d:${(i - Math.min(lit, was)) * 60}ms"/>`;
+  }
+  return `<svg class="dtower" viewBox="0 0 48 80" aria-hidden="true"><rect class="spire${m >= 0.999 ? " gold" : ""}" x="22.5" y="3" width="3" height="10" rx="1"/><rect class="body" x="7" y="12" width="34" height="62" rx="1.5"/>${w}<rect class="base" x="2" y="74" width="44" height="3" rx="1"/></svg>`;
+}
+const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
+const pickLine = a => a[Math.floor(Math.random() * a.length)];
+/* Questions whose explanation links to a drawn figure in art/, with the case each one opens on */
+const FIGURES = {
+  "loss-sorter": { title: "Loss sorter", label: "Loss sorter: the basis, at-risk, passive and excess business loss limits in order", link: "See it on the loss sorter" },
+  "basis-order": { title: "Basis order", label: "Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it", link: "See the basis order, step by step" },
+};
+/* What each figure shows, for the Figures card in More */
+const FIGURE_ABOUT = {
+  "loss-sorter": "A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss.",
+  "basis-order": "One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored.",
+};
+const MACHINE = { "p2d1a-018": [["loss-sorter", 0]], "p2d1b-023": [["loss-sorter", 1], ["basis-order", 1]], "p2d1b-024": [["basis-order", 0], ["loss-sorter", 2]], "p2d2a-006": [["loss-sorter", 3]] };
+function openMachine(fig, n) {
+  const f = FIGURES[fig];
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet figsheet" role="dialog" aria-label="${f.title}"><div class="grab"></div>
+    <div class="figbar"><b>${f.title}</b><button class="btn ghost" id="figx" type="button">Close</button></div>
+    <iframe src="art/${fig}.html?case=${n}" title="${f.label}"></iframe></div></div>`;
+  $("#figx").onclick = closeLayer;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+}
+const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
   const scope = drill.domain ? DOMAINS[drill.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
   const top = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>`;
   if (!drill.q) {
     $("#app").innerHTML = top + `<div class="sheet pad"><p>No questions available in ${esc(scope)}. They may all be flagged.</p></div>`;
-    $("#back").onclick = renderHome; return;
+    $("#back").onclick = leaveDrill; return;
   }
   const q = drill.q, D = DOMAINS[q.domain], answered = drill.picked != null, s = st(q.id);
   const reason = { review: ["review", "Due for review"], new: ["new", "New question"], ahead: ["", "Reviewing early"] }[drill.reason];
   const choices = drill.perm.map((o, i) => {
     let c = "choice";
     if (answered) c += o === q.answer ? " right" : o === drill.picked ? " wrong" : " dim";
-    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${"ABCD"[i]}</span><span>${esc(q.choices[o])}</span></button>`;
+    const mark = answered && o === q.answer ? "✓" : answered && o === drill.picked ? "✕" : "ABCD"[i];
+    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${mark}</span><span>${esc(q.choices[o])}</span></button>`;
   }).join("");
   let after = "";
   if (answered) {
     const ok = drill.picked === q.answer, cpa = (q.cpa || []).map(t => CPA[t] || t).join("; ");
-    after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}">${ok ? "Correct" : "Not quite. The answer is " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</div>
-      <p>${esc(q.explain)}</p>
-      <div class="meta"><span><b>Source:</b> ${esc(q.source)}</span>${cpa ? `<span><b>Also counts for CPA:</b> ${esc(cpa)}</span>` : ""}<span><b>Mastery here:</b> ${pct(mastery(q.domain))}%</span></div></div>`;
+    const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
+    const sub = ok && !drill.guessed && drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line;
+    after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? "Right, but a guess" : ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
+      <p>${figs(esc(q.explain))}</p>${(MACHINE[q.id] || []).map(([fig, n]) => `<button class="machine" type="button" data-fig="${fig}" data-case="${n}">${FIGURES[fig].link} ›</button>`).join("")}
+      <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
         <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
-      : `<div class="actions"><button class="btn primary" id="next">Next question</button><button class="btn ghost" id="flag">Flag as wrong</button></div>`;
+      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">See today's summary</button>` : `<button class="btn primary" id="next">Next question</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="Counts this as a miss, so it comes back soon">I guessed</button>` : ""}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
   }
   $("#app").innerHTML = top + `
-    <article class="sheet">
-      <div class="sheet-head"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]}</span><span class="d">${esc(D.name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
+    <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
+      <div class="dhead"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]} · TY 2025</span><span class="d">${esc(D.name)}</span>
+        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
+        ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
       <div class="choices">${choices}</div>${after}
-    </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, Enter for the next question.</p>`}`;
-  $("#back").onclick = renderHome;
+    </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.</p>`}`;
+  $("#back").onclick = leaveDrill;
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
+  if ($("#guess")) $("#guess").onclick = markGuess;
+  if ($("#summary")) $("#summary").onclick = renderSummary;
+  document.querySelectorAll(".explain .machine").forEach(b => (b.onclick = () => openMachine(b.dataset.fig, Number(b.dataset.case))));
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
   if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
@@ -365,10 +489,91 @@ function renderDrill() {
 function answerDrill(i) {
   if (!drill.q || drill.picked != null) return;
   drill.picked = drill.perm[i];
-  const before = todayCount();
-  record(drill.q, drill.picked === drill.q.answer, "drill");
-  if (before < state.goal && todayCount() >= state.goal) toast(`Daily goal done: ${state.goal} questions.`);
+  const before = todayCount(), ok = drill.picked === drill.q.answer;
+  drill.mBefore = mastery(drill.q.domain);
+  drill.prev = Object.assign({}, st(drill.q.id));
+  if (sess) { if (!(drill.q.domain in sess.m0)) sess.m0[drill.q.domain] = drill.mBefore; drill.row = { id: drill.q.id, ok, g: false, first: !drill.prev.seen }; sess.rows.push(drill.row); }
+  record(drill.q, ok, "drill");
+  drill.mAfter = mastery(drill.q.domain);
+  drill.run = ok ? (drill.run || 0) + 1 : 0; drill.line = pickLine(ok ? PRAISE : CONSOLE);
+  if (before < state.goal && todayCount() >= state.goal) drill.goalHit = true;
   renderDrill();
+}
+/* "I guessed": a right answer that was luck is scheduled as a miss, so it comes back in 5 minutes and doesn't add to mastery.
+   It undoes the right answer (item state and log entry) and records a miss in its place, marked g in the log. */
+function markGuess() {
+  const q = drill.q; if (!q || drill.picked !== q.answer || drill.guessed) return;
+  state.items[q.id] = drill.prev;
+  const last = state.log[state.log.length - 1]; if (last && last.id === q.id) state.log.pop();
+  record(q, false, "drill"); state.log[state.log.length - 1].g = 1; save();
+  drill.guessed = true; drill.mAfter = mastery(q.domain); drill.run = 0;
+  drill.line = "Counted as a miss, so it comes back in 5 minutes.";
+  if (drill.row) drill.row.g = true;
+  renderDrill();
+}
+function leaveDrill() { if (sess && sess.rows.length >= 3) renderSession(); else renderHome(); }
+/* Session summary (renderSession; the daily summary is renderSummary), shown when leaving a drill after 3 or more answers. Guesses count as misses.
+   "New" means never answered before this session's first try, the closest thing in Drill to an exam-day number. */
+function renderSession() {
+  view = "session";
+  const S = sess, rows = S.rows, n = rows.length, good = r => r.ok && !r.g;
+  const right = rows.filter(good).length, guessed = rows.filter(r => r.g).length;
+  const fresh = rows.filter(r => r.first), rev = rows.filter(r => !r.first);
+  const mins = Math.max(1, Math.round((Date.now() - S.t) / MIN));
+  const scope = S.domain ? DOMAINS[S.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
+  const missed = [...new Map(rows.filter(r => !good(r)).map(r => [r.id, r])).values()];
+  const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${list.filter(good).length} of ${list.length}</b><span class="small muted">${pct(list.filter(good).length / list.length)}% right</span></div>` : "";
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  <section class="card pad" style="display:grid;gap:10px">
+    <div class="eyebrow" style="color:var(--ink-soft)">Session · ${esc(scope)} · ${mins} min</div>
+    <div class="result-big">${pct(right / n)}%</div>
+    <div class="muted">${right} of ${n} right.${guessed ? ` ${guessed} more ${guessed === 1 ? "was a guess, counted as a miss" : "were guesses, counted as misses"}.` : ""}</div>
+    <div class="sessstats">${stat("New questions", fresh)}${stat("Reviews", rev)}</div>
+    ${fresh.length ? `<p class="hint" style="margin:0">Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.</p>` : ""}
+  </section>
+  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>Mastery</h2></div>
+    <table class="res"><thead><tr><th style="padding-left:16px">Area</th><th style="text-align:right">Now</th><th style="text-align:right;padding-right:16px">Change</th></tr></thead>
+    <tbody>${Object.keys(S.m0).sort().map(d => { const dm = (mastery(d) - S.m0[d]) * 100, z = Math.abs(dm) < 0.05; return `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${pct(mastery(d))}%</td><td class="n" style="padding-right:16px;color:${z ? "var(--ink-soft)" : dm > 0 ? "var(--good)" : "var(--bad)"}">${z ? "no change" : (dm > 0 ? "+" : "−") + Math.abs(dm).toFixed(1) + "%"}</td></tr>`; }).join("")}</tbody></table></section>
+  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>Missed or guessed</h2><span class="hint">${missed.length}</span></div>
+    ${missed.map(r => { const q = byId[r.id]; return `<details class="miss"><summary>${esc(q.q)}</summary><div class="body">
+      ${r.g ? `<span class="hint">You got this one right by guessing.</span>` : ""}<span style="color:var(--good)"><b>Correct:</b> ${esc(q.choices[q.answer])}</span>
+      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">None. Every answer was right without guessing.</p>`}
+  </section>
+  <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">Keep drilling</button><button class="btn" id="sumhome">Back to town</button></div>`;
+  $("#back").onclick = renderHome; $("#sumhome").onclick = renderHome;
+  $("#sumgo").onclick = () => startDrill(S.domain, true);
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Daily summary: shown once the daily goal is reached in a drill ---------- */
+function todayStats() {
+  const k = dayKey(Date.now()), rows = state.log.filter(r => dayKey(r.t) === k);
+  let right = 0, run = 0, best = 0, ms = 0;
+  rows.forEach((r, i) => {
+    if (r.ok) { right++; run++; best = Math.max(best, run); } else run = 0;
+    ms += i ? Math.min(r.t - rows[i - 1].t, 3 * MIN) : 40e3; /* gaps over 3 minutes count as a break */
+  });
+  const areas = [...new Set(rows.map(r => byId[r.id] && byId[r.id].domain).filter(Boolean))];
+  return { n: rows.length, right, best, min: Math.max(1, Math.round(ms / MIN)), areas, missed: rows.length - right };
+}
+function renderSummary() {
+  view = "summary";
+  const t = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
+  const towers = t.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
+    return `<div class="sumtower">${towerSvg(now, was)}<b>${esc(DOMAINS[d].short)}</b><span class="${dm < 0 ? "dn" : ""}">${dm > 0 ? "+" : dm < 0 ? "−" : "±"}${Math.abs(dm)}%</span></div>`; }).join("");
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  <article class="sheet summary">
+    <div class="sumhead"><img class="sumbuddy" src="art/buddy-bust.webp" alt="">
+      <div><span class="k">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</span><h2>Daily goal done${state.name ? `, ${esc(state.name)}` : ""}.</h2>
+      <span class="sk">${ICON.fire}${sk} day${sk === 1 ? "" : "s"} in a row</span></div></div>
+    <div class="sumstats"><div><b>${t.n}</b><span>answered</span></div><div><b>${t.n ? pct(t.right / t.n) : 0}%</b><span>right</span></div><div><b>${t.min}</b><span>min</span></div><div><b>${t.best}</b><span>best run</span></div></div>
+    <div class="sumtowers"><h3>What you built today</h3><div class="row">${towers}</div></div>
+    <p class="summiss">${t.missed ? `You missed ${t.missed}. Each comes back in 5 minutes, then again tomorrow if you get it.` : "Nothing missed today."}</p>
+    <div class="actions"><button class="btn primary" id="keepgo">Keep going</button><button class="btn ghost" id="totown">Back to town</button></div>
+  </article>`;
+  $("#back").onclick = renderHome; $("#totown").onclick = renderHome;
+  $("#keepgo").onclick = () => { drill.goalHit = false; nextQ(); };
+  window.scrollTo(0, 0);
 }
 
 /* ---------- Exam sim ---------- */
@@ -383,7 +588,7 @@ function buildExam(p) {
   while (ids.length < total && rest.length) ids.push(rest.pop().id);
   ids = shuffle(ids.slice(0, total));
   const n = ids.length, s1 = Math.round(n * 0.34), s2 = Math.round(n * 0.67);
-  return { part: p, ids, perms: Object.fromEntries(ids.map(id => [id, shuffle([0, 1, 2, 3])])), ans: {}, marked: {},
+  return { part: p, ids, fresh: ids.filter(id => !st(id).seen), perms: Object.fromEntries(ids.map(id => [id, shuffle([0, 1, 2, 3])])), ans: {}, marked: {},
     sections: [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
     dur: Math.round(210 * MIN * n / 100), confirm: false };
 }
@@ -469,10 +674,19 @@ function finishExam(timeUp) {
     per[q.domain] = per[q.domain] || { n: 0, r: 0 }; per[q.domain].n++; if (ok) { per[q.domain].r++; right++; }
     if (E.ans[id] != null) record(q, ok, "exam");
   }
-  const res = { t: Date.now(), part: E.part, n: E.ids.length, right, score: right / E.ids.length, per, timeUp,
+  const fresh = E.fresh ? { n: E.fresh.length, right: E.fresh.filter(id => E.ans[id] === byId[id].answer).length } : null;
+  const res = { t: Date.now(), part: E.part, n: E.ids.length, right, score: right / E.ids.length, per, timeUp, fresh,
     missed: E.ids.filter(id => E.ans[id] !== byId[id].answer).map(id => ({ id, picked: E.ans[id] == null ? null : E.ans[id] })) };
   state.exams.push(res); if (state.exams.length > 30) state.exams = state.exams.slice(-30);
   state.examRun = null; save(); renderResults(res);
+}
+/* Questions you'd drilled before the sim can be answered from memory, so the score on never-seen ones is the honest number. */
+function freshLine(res) {
+  const f = res.fresh; if (!f) return "";
+  const seenN = res.n - f.n, seenR = res.right - f.right;
+  if (!f.n) return `<div class="fresh">You had practiced every question in this sim before, so this score partly measures memory of the answers.</div>`;
+  if (f.n < 10) return `<div class="fresh">Only ${f.n} of these questions were new to you (${f.right} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.</div>`;
+  return `<div class="fresh"><b>${pct(f.right / f.n)}%</b> on the ${f.n} questions you'd never seen${seenN ? `, ${pct(seenR / seenN)}% on the ${seenN} you'd practiced` : ""}. The never-seen score is the better read on exam day.</div>`;
 }
 function renderResults(res) {
   view = "results";
@@ -480,6 +694,7 @@ function renderResults(res) {
   <section class="card pad" style="display:grid;gap:8px">
     <div class="eyebrow" style="color:var(--ink-soft)">Part ${res.part} exam sim${res.timeUp ? " · time ran out" : ""}</div>
     <div class="result-big">${pct(res.score)}%</div><div class="muted">${res.right} of ${res.n} correct</div>
+    ${freshLine(res)}
     <p class="hint" style="margin:4px 0 0">The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.</p>
   </section>
   <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>By content area</h2></div>
@@ -494,7 +709,7 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n ? ` · ${n} flagged` : ""; }
+function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
@@ -521,6 +736,9 @@ function renderMore() {
       <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">Add to my calendar</a></div>
       ${rem.at ? `<p class="small" style="margin:0"><b>You added a ${fmtT(rem.time)} reminder on ${new Date(rem.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}.</b></p>` : ""}
       <p class="hint" style="margin:0">iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the "EA practice" event in Calendar, then add a new one here.</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>Figures</h3>
+      <p class="muted small" style="margin:0">Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.</p>
+      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">Linked from ${Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length} questions</span><div><button class="btn" data-figure="${fig}">Open</button></div></div>`).join("")}</section>
     <section class="card" ><div class="pad spread"><h3>Flagged questions</h3><span class="hint">${flagged.length}</span></div>
       ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">Copy report for Jose</button></div><textarea id="flagfb" hidden readonly></textarea>
         ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
@@ -542,6 +760,7 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
+  $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
@@ -581,7 +800,8 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && $("#scrim")) return $("#guidevid") ? closeGuide() : closeLayer();
   if (view === "drill" && drill && drill.q) {
     if (drill.picked == null && i >= 0) { e.preventDefault(); answerDrill(i); }
-    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); nextQ(); }
+    else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); drill.goalHit ? renderSummary() : nextQ(); }
+    else if (drill.picked != null && !drill.flagging && k === "g") { e.preventDefault(); markGuess(); }
   } else if (view === "exam" && state.examRun && !state.examRun.onBreak && i >= 0) {
     const btn = $("#app").querySelectorAll(".choice")[i]; if (btn) { e.preventDefault(); btn.click(); }
   }

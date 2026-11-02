@@ -25,6 +25,7 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(await p.evaluate(() => document.querySelector(".greet-name").textContent === "Sam" && !document.querySelector("#scrim")), "greeting: says hello with the saved name");
   await p.click("#buddyface", { force: true });
   check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1), "buddy: tapping him gives one new cloud");
+  check(await p.evaluate(() => { const e = document.querySelector(".buddy-expr"); return !!e && e.style.backgroundPosition !== "" && !/^0(\.000)?% /.test(e.style.backgroundPosition); }), "buddy: tapping him changes his face");
   await p.click("#buddyplay", { force: true });
   check(!!(await p.$(".choice")), "buddy: Play on his calculator starts a drill");
   await p.click("#back"); await p.waitForSelector("#stage");
@@ -84,6 +85,35 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(flagged === 1, "drill: flag as wrong saves the note");
   check(!!(await p.$(".choice")), "drill: moves on to the next question after flagging");
 
+  /* honest readiness: "I guessed" turns a right answer into a miss; leaving after 3 answers shows a session summary */
+  const ci = await p.evaluate(() => drill.perm.indexOf(drill.q.answer)), gid = await p.evaluate(() => drill.q.id);
+  await p.click(`.choice >> nth=${ci}`);
+  const logN = await p.evaluate(() => JSON.parse(localStorage.getItem("eaTaxTown.v2")).log.length);
+  await p.click("#guess");
+  const gs = await p.evaluate(id => { const s = JSON.parse(localStorage.getItem("eaTaxTown.v2")); return { it: s.items[id], last: s.log[s.log.length - 1], n: s.log.length }; }, gid);
+  check(gs.it.box === 0 && gs.it.right === 0 && gs.it.due - Date.now() < 6 * 60e3 && gs.last.g === 1 && !gs.last.ok && gs.n === logN && !(await p.$("#guess")), "drill: I guessed counts a right answer as a miss");
+  await p.click("#next"); await p.click(".choice >> nth=0");
+  await p.click("#back");
+  check(await p.evaluate(() => !!document.querySelector("#sumgo") && /was a guess, counted as a miss/.test(document.querySelector("#app .card .muted").textContent) && document.querySelectorAll("table.res tbody tr").length >= 1), "drill: leaving after 3 answers shows the session summary");
+
+  /* loss sorter: a linked question's explanation opens the figure in a sheet on that question's case (sess reset so Back goes home, not to the summary) */
+  await p.evaluate(() => { sess = null; drill = { q: BANK.find(q => q.id === "p2d1b-023"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
+  await p.click(".choice >> nth=2"); await p.click(".machine[data-fig=loss-sorter]");
+  const fig = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await fig.waitForSelector("[data-deducted]");
+  check(await fig.evaluate(() => document.querySelector("[data-deducted]").textContent === "$18,000" && /^Jo/.test(document.querySelector("[aria-pressed=true]").textContent)), "loss sorter: opens on Jo's case and deducts $18,000");
+  await p.click("#figx");
+  check(!(await p.$("#scrim")), "loss sorter: Close shuts the sheet");
+  /* basis order: Ray's question opens it on his case; stepping to the end shows the $8,000 the bank gives, and the election gives $10,000 */
+  await p.evaluate(() => { drill = { q: BANK.find(q => q.id === "p2d1b-024"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
+  await p.click(".choice >> nth=1"); await p.click(".machine[data-fig=basis-order]");
+  const bo = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await bo.waitForSelector("[data-out=deducted]"); await bo.focus(".iso-stage"); await bo.press(".iso-stage", "End");
+  check(await bo.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$8,000" && document.querySelector("[data-out=suspended]").textContent === "$4,000" && /^Ray$/.test(document.querySelector("[aria-pressed=true]").textContent)), "basis order: opens on Ray's case and deducts $8,000");
+  await bo.click("[data-in=election]");
+  check(await bo.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$10,000"), "basis order: the election deducts $10,000");
+  await p.click("#figx");
+
   /* exam sim */
   await p.click("#back"); await p.click("#examgo"); await p.click("#start");
   await p.click(".choice >> nth=1"); await p.click("#endsec"); await p.click("#yes");
@@ -91,9 +121,20 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#resumebrk");
   const run = await p.evaluate(() => JSON.parse(localStorage.getItem("eaTaxTown.v2")).examRun);
   check(run && run.sec === 1 && Object.keys(run.ans).length === 1, "exam: section 2 starts with the answer kept");
+  check(run && Array.isArray(run.fresh) && run.fresh.length > 90, "exam: the sim remembers which questions were new");
+  await p.click("#endsec"); await p.click("#yes"); await p.click("#resumebrk"); await p.click("#endsec"); await p.click("#yes");
+  check(await p.evaluate(() => /never seen/.test((document.querySelector(".fresh") || {}).textContent || "")), "exam: results show the score on never-seen questions");
+
+  /* figures: More lists every figure, and Open shows it in the same sheet the drill uses */
+  await p.click("#morebtn");
+  check(await p.evaluate(() => document.querySelectorAll("[data-figure]").length === Object.keys(FIGURES).length), "figures: More lists every figure");
+  await p.click("[data-figure=basis-order]");
+  const mf = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await mf.waitForSelector("[data-out=deducted]");
+  check(await mf.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$8,000"), "figures: Open shows the basis order on its first case");
+  await p.click("#figx");
 
   /* backup */
-  await p.click("#morebtn");
   const [dl] = await Promise.all([p.waitForEvent("download"), p.click("#savefile")]);
   const file = path.join(os.tmpdir(), "ea-smoke-backup.json"); await dl.saveAs(file);
   const saved = JSON.parse(fs.readFileSync(file, "utf8"));

@@ -1,6 +1,8 @@
 (async () => {
   /* ---------- load three.js and the bloom passes (resolved through the importmap in the page head) ---------- */
   let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass;
+  /* hand-modeled study towers, one per facade style (made in Blender by tools/blender/towers.py), fetched while three.js loads */
+  const MODEL_FILES = ["glass", "deco", "brick", "dark"].map(n => fetch(`art/tower-${n}.glb`).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null));
   try {
     const mods = await Promise.race([
       Promise.all([import("three"), import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"), import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js"), import("three/addons/postprocessing/ShaderPass.js")]),
@@ -11,6 +13,12 @@
     if (!probe.getContext("webgl2")) throw new Error("no webgl2");
   } catch (e) { window.__townFail && window.__townFail(); return; }
 
+  /* a style whose model didn't load (opened from a local file, or offline) keeps its boxes */
+  const MODELS = {};
+  try {
+    const { GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js"), gl = new GLTFLoader();
+    await Promise.all(MODEL_FILES.map((f, st) => f.then(buf => buf && gl.parseAsync(buf, "")).then(g => { if (g) MODELS[st] = g.scene; }, () => {})));
+  } catch (e) { /* no models: boxes everywhere */ }
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   /* graphics level: ?gfx=low or ?gfx=high forces it; otherwise a slow device drops to low on its own and remembers for 7 days */
   const GFXKEY = "eaTaxTown.gfx", QS = new URLSearchParams(location.search), gfxForced = QS.get("gfx");
@@ -260,13 +268,23 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); scene.add(g);
       const below = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0), above = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const clad = facadeMat({ color: def.tint, clippingPlanes: [below] }), frame = facadeMat({ clippingPlanes: [above] });
-      for (const [pw, ph, pd, y0] of [[w, H * 0.7, dd, 0], [w - 10, H * 0.3, dd - 8, H * 0.7]]) {
+      const mdl = MODELS[def.style];
+      let topW = w - 10, topD = dd - 8; /* footprint of the top floors, where the netting goes */
+      if (mdl) {
+        const geoOf = (name, style) => { const geo = mdl.getObjectByName(name).geometry.clone().scale(1, H, 1), n = geo.attributes.position.count; /* tiers come at unit height */
+          geo.setAttribute("aSeed", new THREE.BufferAttribute(new Float32Array(n).fill(seed), 1));
+          geo.setAttribute("aStyle", new THREE.BufferAttribute(new Float32Array(n).fill(style), 1)); return geo; };
+        const bg = geoOf("Body", def.style), pa = bg.attributes.position; topW = topD = 0;
+        for (let k = 0; k < pa.count; k++) if (pa.getY(k) > H - 1) { topW = Math.max(topW, 2 * Math.abs(pa.getX(k))); topD = Math.max(topD, 2 * Math.abs(pa.getZ(k))); }
+        const mc = new THREE.Mesh(bg, clad); mc.userData.d = d; g.add(mc); pickables.push(mc);
+        const mf = new THREE.Mesh(geoOf("Frame", 4), frame); mf.userData.d = d; g.add(mf); pickables.push(mf);
+      } else for (const [pw, ph, pd, y0] of [[w, H * 0.7, dd, 0], [w - 10, H * 0.3, dd - 8, H * 0.7]]) {
         const mc = new THREE.Mesh(soloBox(pw, ph, pd, def.style, seed), clad); mc.position.y = y0; mc.userData.d = d; g.add(mc); pickables.push(mc);
         const mf = new THREE.Mesh(soloBox(pw - 0.5, ph, pd - 0.5, 4, seed), frame); mf.position.y = y0; mf.userData.d = d; g.add(mf); pickables.push(mf);
       }
       const nm = netM.clone(); nm.clippingPlanes = [above];
-      const net = new THREE.Mesh(new THREE.BoxGeometry(w - 9, 15, dd - 7).translate(0, H - 7, 0), nm); g.add(net);
-      const hoist = new THREE.Mesh(new THREE.BoxGeometry(2.2, H, 2.4).translate(0, H / 2, 0), yellowM); hoist.position.set(0, 0, (dd / 2 + 1.3) * lot.side); g.add(hoist);
+      const net = new THREE.Mesh(new THREE.BoxGeometry(topW + 1, 15, topD + 1).translate(0, H - 7, 0), nm); g.add(net);
+      const hoist = new THREE.Mesh(new THREE.BoxGeometry(2.2, H, 2.4).translate(0, H / 2, 0), yellowM); hoist.position.set(0, 0, ((mdl ? topD : dd) / 2 + 1.3) * lot.side); g.add(hoist);
       const crane = new THREE.Group(); crane.position.set(lot.nx * -4, H, 0); g.add(crane);
       crane.add(new THREE.Mesh(new THREE.BoxGeometry(2, 26, 2).translate(0, 13, 0), yellowM));
       const jib = new THREE.Group(); jib.position.y = 26; crane.add(jib);
@@ -276,8 +294,17 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       const tip = new THREE.Mesh(new THREE.SphereGeometry(0.7, 8, 6), redLightM); tip.position.set(38, 2, 0); jib.add(tip);
       jib.rotation.y = rnd() * 6.28;
       const crownM = new THREE.MeshStandardMaterial({ color: 0x8a6a2a, emissive: 0xffc04a, emissiveIntensity: 0.5 });
-      const crown = new THREE.Mesh(new THREE.BoxGeometry(w - 16, 9, dd - 13).translate(0, H + 4.5, 0), crownM); g.add(crown);
-      B[d] = { id: d, part: p, g, H, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
+      let crown;
+      if (mdl) { /* the modeled crown: baked metal, lamps that glow like the old gold box in the model's color, a red mast light */
+        crown = new THREE.Group(); crown.position.y = H; crown.rotation.y = lot.nx > 0 ? Math.PI : 0; /* a sloped top faces the canyon */
+        const shell = mdl.getObjectByName("Crown"), glow = mdl.getObjectByName("Glow");
+        crown.add(new THREE.Mesh(shell.geometry, shell.material));
+        crownM.emissive.copy(glow.material.emissive).multiplyScalar(glow.material.emissiveIntensity / 4); crown.add(new THREE.Mesh(glow.geometry, crownM));
+        crown.add(new THREE.Mesh(mdl.getObjectByName("Beacon").geometry, redLightM));
+      } else crown = new THREE.Mesh(new THREE.BoxGeometry(w - 16, 9, dd - 13).translate(0, H + 4.5, 0), crownM);
+      g.add(crown);
+      const top = mdl ? new THREE.Box3().setFromObject(crown).max.y : H + 8; /* highest point when finished: labels and fireworks clear it */
+      B[d] = { id: d, part: p, g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
       walls.push({ x: lot.wallX, nx: lot.nx, z0: lot.z0, z1: lot.z1, h: 22, n: false, s: false, depth: TDEPTH });
     });
     for (let i = ids.length; i < slots[p].length; i++) { const l = slots[p][i]; building(l.x0, l.x1, l.z0, l.z1, { maxCap: 140 }); }
@@ -715,7 +742,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     }
     for (let j = pending.length - 1; j >= 0; j--) {
       const q = pending[j]; if (now < q.at) continue; pending.splice(j, 1);
-      const b = B[q.d]; if (!b) continue; const top = b.H + 40;
+      const b = B[q.d]; if (!b) continue; const top = Math.max(b.H + 40, b.top + 14);
       [[0, 0], [-14, 8], [12, 5], [3, 14]].forEach(([dx, dy], i) => setTimeout(() => { burst(b.x + dx * 0.4, top + dy, b.z + dx, i + q.k); kick(); }, i * 320));
     }
   }
@@ -753,12 +780,16 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   function updateLabelText() {
     for (const d in tagEls) { tagEls[d].querySelector("i").textContent = Math.round(B[d].target * 100) + "%"; tagEls[d].classList.toggle("focus", d === focusD || d === highlightD); tagEls[d].classList.toggle("done", B[d].target >= 0.999); }
   }
+  let barK = "", barY = 0; /* bottom of the buttons over the canvas, measured once per view and size */
+  function barBottom(w, h) { const k = (fs ? "fs" : "home") + w + "x" + h; if (k !== barK) { const bar = stage.querySelector(".stagebtns, .fs-top"); barK = k; barY = bar ? bar.offsetTop + bar.offsetHeight + 4 : 0; } return barY; }
   function placeLabels() {
     if (!stage) return; const hideL = viewTS && !fs; if (labels) labels.style.visibility = hideL ? "hidden" : ""; if (hideL) return; const w = stage.clientWidth, h = stage.clientHeight;
-    const items = [];
+    const items = [], minY = barBottom(w, h);
     for (const d in tagEls) {
-      const b = B[d]; v3.set(b.x, b.H + 12, b.z).project(camera);
-      const el = tagEls[d]; if (!el._w) { el._w = el.offsetWidth || 90; el._h = el.offsetHeight || 26; }
+      const b = B[d], el = tagEls[d]; if (!el._w) { el._w = el.offsetWidth || 90; el._h = el.offsetHeight || 26; }
+      /* a finished modeled tower's label goes above its mast if that stays clear of the buttons over the canvas, else mid-crown, else at the roofline like the rest; keeps room for one label stacked above it */
+      const hs = b.m >= 0.999 && b.top > b.H + 12 ? [b.top + 4, (b.H + b.top) / 2, b.H + 12] : [b.H + 12];
+      for (const y of hs) { v3.set(b.x, y, b.z).project(camera); if ((1 - v3.y) / 2 * h - 2 * el._h - 4 >= minY) break; }
       items.push({ el, x: (v3.x + 1) / 2 * w, y: (1 - v3.y) / 2 * h, on: v3.z < 1 && (!fs || (Math.abs(v3.x) < 1.02 && v3.y < 1.02 && v3.y > -1.02)) });
     }
     items.sort((a, b) => b.y - a.y);
