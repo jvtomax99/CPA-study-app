@@ -96,7 +96,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .ptab[aria-selected="true"] { background: #fff; color: #1b1f30; border-color: #fff; }
 .ptab[aria-selected="true"] b { color: #8a4f72; }
 .stage { position: relative; height: 380px; margin-top: 4px; touch-action: none; user-select: none; -webkit-user-select: none; }
-.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%); mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* The 3D picture fades into the card at its top edge. The fade is a copy of the card's own background laid over the
+   canvas, never a mask on the canvas itself: iPhone Safari keeps a canvas mask after the canvas moves to full screen
+   and blacks out everything below the 9% line. town.js sets --ft (stage top) and --fh (fade height) in pixels. */
+.stage-fade { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: inherit;
+  -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--ft, 0px) - 2px), #000 calc(var(--ft, 0px) - 2px), #000 var(--ft, 0px), transparent calc(var(--ft, 0px) + var(--fh, 0px)));
+  mask-image: linear-gradient(to bottom, transparent calc(var(--ft, 0px) - 2px), #000 calc(var(--ft, 0px) - 2px), #000 var(--ft, 0px), transparent calc(var(--ft, 0px) + var(--fh, 0px))); }
+.stage .labels { z-index: 2; }
 .shadow-under { position: absolute; left: 10%; right: 10%; bottom: 6%; height: 18%; border-radius: 50%; background: radial-gradient(closest-side, rgba(10,8,30,0.45), transparent); filter: blur(6px); pointer-events: none; }
 .labels { position: absolute; inset: 0; pointer-events: none; transition: opacity 260ms; }
 .tag { position: absolute; left: 0; top: 0; transform: translate(-50%, -100%); background: var(--chip); color: var(--chip-ink); border-radius: 999px; padding: 5px 10px; font-size: 12.5px; font-weight: 700; white-space: nowrap; pointer-events: auto; cursor: pointer; border: 0; box-shadow: 0 6px 14px -8px rgba(0,0,0,0.6); transition: opacity 160ms; }
@@ -466,6 +473,7 @@ function renderHome() {
     <div class="ptabs" role="tablist">
       ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}"><b>Part ${n}</b>${PARTS[n]}</button>`).join("")}
     </div>
+    <div class="stage-fade" aria-hidden="true"></div>
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
@@ -1661,6 +1669,8 @@ void main() {
     if (!stage) return; const w = stage.clientWidth || 360, h = stage.clientHeight || 360;
     renderer.setSize(w, h, false); aspect = w / h; camera.aspect = aspect; camera.fov = aspect < 1.2 ? 58 : 48; camera.updateProjectionMatrix();
     if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
+    const hero = stage.parentElement; /* the home card's top fade (see .stage-fade): where the stage starts and 9% of its height */
+    if (hero && stage.classList.contains("stage")) { hero.style.setProperty("--ft", stage.offsetTop + "px"); hero.style.setProperty("--fh", Math.round(h * 0.09) + "px"); }
     kick();
   }
   /* iOS may take the 3D drawing away to save memory (switching apps, in-app browsers). Wait for it to come back;
@@ -1737,7 +1747,7 @@ void main() {
     mount(el) {
       stage = el; labels = el.querySelector(".labels");
       el.insertBefore(canvas, labels); if (meter) el.appendChild(meter);
-      if (io) { io.disconnect(); io.observe(el); } if (ro) { ro.disconnect(); ro.observe(el); }
+      if (io) { io.disconnect(); io.observe(el); } if (ro) { ro.disconnect(); ro.observe(el); if (el.parentElement && el.classList.contains("stage")) ro.observe(el.parentElement); }
       resize(); buildLabels(); kick();
     },
     unmount() { if (io) io.disconnect(); if (ro) ro.disconnect(); if (canvas.parentNode) canvas.parentNode.removeChild(canvas); stage = null; labels = null; },

@@ -198,6 +198,7 @@ function renderHome() {
     <div class="ptabs" role="tablist">
       ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}"><b>Part ${n}</b>${PARTS[n]}</button>`).join("")}
     </div>
+    <div class="stage-fade" aria-hidden="true"></div>
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>

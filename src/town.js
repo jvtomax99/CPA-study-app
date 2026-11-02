@@ -845,6 +845,8 @@ void main() {
     if (!stage) return; const w = stage.clientWidth || 360, h = stage.clientHeight || 360;
     renderer.setSize(w, h, false); aspect = w / h; camera.aspect = aspect; camera.fov = aspect < 1.2 ? 58 : 48; camera.updateProjectionMatrix();
     if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
+    const hero = stage.parentElement; /* the home card's top fade (see .stage-fade): where the stage starts and 9% of its height */
+    if (hero && stage.classList.contains("stage")) { hero.style.setProperty("--ft", stage.offsetTop + "px"); hero.style.setProperty("--fh", Math.round(h * 0.09) + "px"); }
     kick();
   }
   /* iOS may take the 3D drawing away to save memory (switching apps, in-app browsers). Wait for it to come back;
@@ -921,7 +923,7 @@ void main() {
     mount(el) {
       stage = el; labels = el.querySelector(".labels");
       el.insertBefore(canvas, labels); if (meter) el.appendChild(meter);
-      if (io) { io.disconnect(); io.observe(el); } if (ro) { ro.disconnect(); ro.observe(el); }
+      if (io) { io.disconnect(); io.observe(el); } if (ro) { ro.disconnect(); ro.observe(el); if (el.parentElement && el.classList.contains("stage")) ro.observe(el.parentElement); }
       resize(); buildLabels(); kick();
     },
     unmount() { if (io) io.disconnect(); if (ro) ro.disconnect(); if (canvas.parentNode) canvas.parentNode.removeChild(canvas); stage = null; labels = null; },
