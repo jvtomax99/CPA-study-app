@@ -105,6 +105,25 @@
   }
 
   /* ---------- the greeting markup ---------- */
+  /* PLAY on the calculator's screen, drawn as SVG in his figure's own units (S = 1000 across), so it
+     lands on the same pixels in every browser. The screen's corners, measured on the picture
+     (695,672 862,730 842,783 672,718 in the full figure), pulled 6% in toward their centre so the
+     glass sits inside the bezel. The words are centred on the screen and turned with it (19.5deg);
+     textLength fixes their width whatever font the device has. */
+  const LCD = (() => {
+    const C = [[695, 672], [862, 730], [842, 783], [672, 718]].map(([x, y]) => [(x - 110) / 0.8, (y - 30) / 0.8]);
+    const cx = C.reduce((a, p) => a + p[0], 0) / 4, cy = C.reduce((a, p) => a + p[1], 0) / 4;
+    const pts = C.map(([x, y]) => `${(cx + 0.94 * (x - cx)).toFixed(1)},${(cy + 0.94 * (y - cy)).toFixed(1)}`).join(" ");
+    const r = n => n.toFixed(1);
+    return `<defs><linearGradient id="bpG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecfff3"/><stop offset="1" stop-color="#a4eac0"/></linearGradient>
+      <filter id="bpB" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+      <polygon class="bp-glow" points="${pts}" fill="#9be3b8" filter="url(#bpB)"/>
+      <polygon points="${pts}" fill="url(#bpG)" stroke="#0b3a21" stroke-opacity=".35" stroke-width="2"/>
+      <g transform="rotate(19.5 ${r(cx)} ${r(cy)})" fill="#0b3a21">
+        <path d="M${r(cx - 80)} ${r(cy - 14)}V${r(cy + 14)}L${r(cx - 56)} ${r(cy)}Z"/>
+        <text x="${r(cx - 42)}" y="${r(cy + 16.5)}" textLength="122" lengthAdjust="spacingAndGlyphs" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="46">PLAY</text>
+      </g>`;
+  })();
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
   function greeting({ name, pill }) {
     const now = new Date(), h = now.getHours();
@@ -130,7 +149,7 @@
                 <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
               <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
-              <span class="bp-lcd" aria-hidden="true"><span class="bp-txt"><svg viewBox="0 0 16 16"><path d="M4 3v10l9-5z" fill="currentColor"/></svg>PLAY</span></span>
+              <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
             </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
             <span class="buddy-status" aria-live="polite"></span>

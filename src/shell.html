@@ -134,22 +134,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.78); top: calc(var(--s) * 1.0); width: calc(var(--s) * 0.5); height: calc(var(--s) * 0.56); transform: translate(-50%, -50%) rotate(19.5deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
 .buddy-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .buddy-play:active { scale: 0.94; }
-/* The calculator's screen, measured on the picture (corners 695,672 862,730 842,783 672,718 in
-   the full figure, so .731,.803 .940,.875 .915,.941 .703,.860 in S). The box is those corners'
-   bounding box; the lit glass is the corners themselves pulled 6% in toward the centre, so it
-   fills the screen inside its bezel exactly. The words sit on the screen's centre, upright along
-   its 19.5deg tilt. Drawn in his figure's frame, so it moves with him. */
-.bp-lcd { position: absolute; z-index: 3; left: calc(var(--s) * 0.7025); top: calc(var(--s) * 0.8025); width: calc(var(--s) * 0.2375); height: calc(var(--s) * 0.13875); pointer-events: none;
-  filter: drop-shadow(0 0 3px rgba(155,227,184,0.95)); }
-.bp-lcd::before { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, #e9fef1, #a8ecc4);
-  clip-path: polygon(14.40% 2.90%, 97.02% 51.30%, 87.13% 96.18%, 2.60% 41.86%); }
-.bp-txt { position: absolute; left: 50.39%; top: 48.42%; transform: translate(-50%, -50%) rotate(19.5deg); display: flex; align-items: center; gap: calc(var(--s) * 0.012);
-  color: #0b3a21; font: 800 calc(var(--s) * 0.046)/1 var(--f-ui); letter-spacing: 0.05em; padding-left: 0.05em; white-space: nowrap; }
-.bp-txt svg { width: calc(var(--s) * 0.034); height: calc(var(--s) * 0.034); }
+/* PLAY on the calculator's screen: an SVG over his whole figure, in the figure's own units (see LCD
+   in mascot.js). It pops in from the screen's centre (82.2%, 67.5% of the figure). */
+.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82.2% 67.5%; }
 .buddy-wait .bp-lcd { opacity: 0; }
-.buddy-play:active ~ .bp-lcd { filter: brightness(0.9); }
-@keyframes bpGlow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(155,227,184,0.95)); } 50% { filter: brightness(1.12) drop-shadow(0 0 6px rgba(155,227,184,0.9)); } }
-@media (prefers-reduced-motion: no-preference) { .bp-lcd { animation: bpGlow 2.6s ease-in-out infinite; } }
+.buddy-play:active ~ .bp-lcd { opacity: 0.85; }
+@keyframes bpGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.bp-glow { opacity: 0.75; }
+@media (prefers-reduced-motion: no-preference) { .bp-glow { animation: bpGlow 2.6s ease-in-out infinite; } }
 .buddy-thought { position: absolute; left: 0; top: 0; width: 136px; height: 76px; opacity: 0; pointer-events: none; z-index: 35; }
 .buddy-cloudsvg { position: absolute; left: -30px; top: -20px; width: 180px; height: 110px; overflow: visible; }
 .buddy-cloudsvg .bc-text { fill: #0f4d2e; font: 700 12.5px var(--f-ui); letter-spacing: -0.01em; }
