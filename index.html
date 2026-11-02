@@ -816,13 +816,13 @@ if (state.examRun) renderExam(); else renderHome();
 <script type="module">
 (async () => {
   /* ---------- load three.js and the bloom passes (resolved through the importmap in the page head) ---------- */
-  let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass;
+  let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass;
   try {
     const mods = await Promise.race([
-      Promise.all([import("three"), import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"), import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js")]),
+      Promise.all([import("three"), import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"), import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js"), import("three/addons/postprocessing/ShaderPass.js")]),
       new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 20000))
     ]);
-    [THREE, { EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }] = mods;
+    [THREE, { EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }, { ShaderPass }] = mods;
     const probe = document.createElement("canvas");
     if (!probe.getContext("webgl2")) throw new Error("no webgl2");
   } catch (e) { window.__townFail && window.__townFail(); return; }
@@ -1204,7 +1204,7 @@ void main() {
 #ifdef REFL
   vec2 l = fract(vec2(vL.x * rep.x + vA.y * uTime, 0.12));
   vec3 c = texture2D(map, vR.xy + l * vR.zw, 3.0).rgb;
-  float fade = pow(vL.y, 2.2) * (0.6 + 0.4 * sin(vL.x * 90.0)) * 0.3;
+  float fade = pow(clamp(vL.y, 0.0, 1.0), 2.2) * (0.6 + 0.4 * sin(vL.x * 90.0)) * 0.3;
   gl_FragColor = vec4(c * fade * vA.w * uBright, 1.0);
 #else
   vec2 l = fract(vL * rep + vA.yz * uTime);
@@ -1358,8 +1358,12 @@ void main() {
   /* ---------- render pipeline: bloom makes the screens and windows glow; low mode renders straight ---------- */
   let composer = null, bloom = null;
   if (!low) {
-    composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: 4 }));
+    composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(2, 2, { type: THREE.HalfFloatType, samples: coarse ? 2 : 4 }));
     composer.addPass(new RenderPass(scene, camera));
+    /* one bad pixel (NaN or infinity) would be smeared over the whole frame by the bloom blur and turn it black: zero it first */
+    composer.addPass(new ShaderPass({ uniforms: { tDiffuse: { value: null } },
+      vertexShader: "varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+      fragmentShader: "uniform sampler2D tDiffuse; varying vec2 vUv; void main() { vec3 c = texture2D(tDiffuse, vUv).rgb; if (any(isnan(c)) || any(isinf(c))) c = vec3(0.0); gl_FragColor = vec4(min(max(c, vec3(0.0)), vec3(60.0)), 1.0); }" }));
     bloom = new UnrealBloomPass(new THREE.Vector2(2, 2), 0.55, 0.45, 0.9); composer.addPass(bloom); composer.addPass(new OutputPass());
   }
 
@@ -1659,12 +1663,32 @@ void main() {
     if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
     kick();
   }
+  /* iOS may take the 3D drawing away to save memory (switching apps, in-app browsers). Wait for it to come back;
+     if it doesn't, say so and offer a restart instead of leaving a black box. Progress is saved either way. */
+  let lost = false, lostCount = 0, lostTimer = 0, lostEl = null;
+  function lostMsg(show) {
+    if (show && stage && !lostEl) {
+      lostEl = document.createElement("div"); lostEl.className = "stage-msg town-lost";
+      lostEl.innerHTML = `<div style="display:grid;gap:10px;justify-items:center"><span>The 3D view was paused by your phone to save memory.</span><button class="sky" type="button">Restart 3D</button></div>`;
+      lostEl.querySelector("button").onclick = () => location.reload();
+      stage.appendChild(lostEl);
+    }
+    if (!show && lostEl) { lostEl.remove(); lostEl = null; }
+    if (labels) labels.style.display = show ? "none" : "";
+  }
+  canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); lost = true; lostCount++; clearTimeout(lostTimer); lostTimer = setTimeout(() => { if (lost) lostMsg(true); }, 1500); });
+  canvas.addEventListener("webglcontextrestored", () => {
+    lost = false; clearTimeout(lostTimer); lostMsg(false);
+    ENV.night = envFor(true); ENV.day = envFor(false); applySky();   /* the reflections lived on the GPU; draw them again */
+    for (const s of stats) s.tex.needsUpdate = true;
+    kick();
+  });
   /* low graphics: no crowd, bloom or wet-street reflections, 1x pixels, 30 frames a second */
   function applyLow() { crowd.mesh.visible = !low; reflMesh.visible = !low; renderer.setPixelRatio(dprFor()); resize(); }
   const perf = { t0: performance.now(), sum: 0, n: 0, fps: 0, fpsN: 0, fpsT: 0 };
   const meter = QS.get("fps") ? Object.assign(document.createElement("div"), { style: "position:absolute;left:8px;bottom:6px;z-index:5;font:600 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 6px;border-radius:6px;pointer-events:none" }) : null;
   function sampleFrame(now, raw) {
-    perf.fpsN++; if (now - perf.fpsT > 500) { perf.fps = Math.round(perf.fpsN * 1000 / (now - perf.fpsT)); perf.fpsN = 0; perf.fpsT = now; if (meter) meter.textContent = `${perf.fps} fps · ${renderer.info.render.calls} draws · ${low ? "low" : "high"} · ${renderer.getPixelRatio()}x`; }
+    perf.fpsN++; if (now - perf.fpsT > 500) { perf.fps = Math.round(perf.fpsN * 1000 / (now - perf.fpsT)); perf.fpsN = 0; perf.fpsT = now; if (meter) meter.textContent = `${perf.fps} fps · ${renderer.info.render.calls} draws · ${low ? "low" : "high"} · ${renderer.getPixelRatio()}x${lostCount ? ` · lost ${lostCount}` : ""}`; }
     if (gfxForced || low || now - perf.t0 < 2500 || raw > 250) return;
     perf.sum += raw; perf.n++;
     if (perf.sum < 3000) return;
@@ -1673,7 +1697,7 @@ void main() {
   }
   const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), V = new THREE.Vector3(), Sv = new THREE.Vector3();
   function frame(now) {
-    if (!stage || document.hidden || !visible) { running = false; return; }
+    if (!stage || document.hidden || !visible || lost) { running = false; return; }
     if (low && !wantFrame && now - lastDraw < 30) { requestAnimationFrame(frame); return; }
     const raw = now - lastT; lastDraw = now; sampleFrame(now, raw);
     const dt = Math.min(0.05, raw / 1000); lastT = now; U.time.value = now / 1000;
@@ -1749,7 +1773,7 @@ void main() {
     celebrate(d) { if (B[d] && !reduce) { pending.push({ d, k: 0, at: performance.now() }); kick(); } },
     fullscreen(on) { if (on) openFs(); else closeFs(); }
   };
-  window.__townDebug = () => ({ fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
+  window.__townDebug = () => ({ nanTest: () => { reflBright.value = NaN; kick(); return true; }, lost, lostCount, fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
     /* where a tower sits on screen, for tests that tap it */
     screenOf(d) { const b = B[d]; if (!b || !stage) return null; v3.set(b.x, b.H * 0.85, b.z).project(camera); const r = canvas.getBoundingClientRect(); return { x: r.left + (v3.x + 1) / 2 * r.width, y: r.top + (1 - v3.y) / 2 * r.height }; } });
   applySky(); focusPart("1", true);
