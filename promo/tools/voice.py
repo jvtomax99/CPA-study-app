@@ -1,5 +1,5 @@
 """Narration for the how-to video, from promo/src/script.json.
-Voice: Kokoro-82M (Apache 2.0, runs offline), voice af_heart. Setup:
+Voice: Kokoro-82M (Apache 2.0, runs offline), voice am_michael at 1.08x (picked from samples, 2026-11-02). Setup:
   pip install kokoro-onnx soundfile
   download kokoro-v1.0.onnx and voices-v1.0.bin from
   https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0
@@ -9,7 +9,7 @@ import json, os, sys
 import soundfile as sf
 from kokoro_onnx import Kokoro
 
-VOICE, SPEED = "af_heart", 1.0
+VOICE, SPEED = "am_michael", 1.08
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 models = sys.argv[1]
 k = Kokoro(os.path.join(models, "kokoro-v1.0.onnx"), os.path.join(models, "voices-v1.0.bin"))

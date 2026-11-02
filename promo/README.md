@@ -31,7 +31,7 @@ npm run finish                                   # level the voice, compress -> 
 - **Screenshots:** `tools/capture.cjs` seeds a learner (`tools/seed.cjs`: Part 1 partly built,
   a 7-day streak) and saves each screen at iPhone size (390 x 844 at 2x). Re-run it after a
   visible change to the app. If jsDelivr is blocked, set `THREE_DIR` as for `tools/smoke.js`.
-- **Voice:** Kokoro-82M (Apache 2.0), voice `af_heart`, run offline. `pip install kokoro-onnx
+- **Voice:** Kokoro-82M (Apache 2.0), voice `am_michael` at 1.08x speed, run offline. `pip install kokoro-onnx
   soundfile`, then download `kokoro-v1.0.onnx` and `voices-v1.0.bin` from
   https://github.com/thewh1teagle/kokoro-onnx/releases/tag/model-files-v1.0 into one folder.
   Acronyms are written spaced out in the script ("E A", "I R S") so it spells them; subtitles
