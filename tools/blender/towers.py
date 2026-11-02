@@ -154,13 +154,14 @@ def dark(c, g, tw, td):
         for sx in (-1, 1): box(c, sx * hx - 0.18, sx * hx + 0.18, y - 0.18, y + 0.18, 0, H)
     for z in np.arange(3.0, H - 1, 3.0): ring(c, hx, hy, z, t=0.35, h=0.35)
     ring(c, hx, hy, H - 0.7, t=0.7, h=0.7)
+    box(c, -hx, hx, -hy, hy, H - 0.9, H - 0.5)                            # steel roof plate: by day the lit core's top would show as a bare slab
     prism(c, 0.7, H, H + 30, n=6, r_top=0.15)
     return H + 30
 
 
 STYLES = {
     "glass": dict(tiers=[(1.00, 1.00, 4.0, 0.00, 0.55), (0.84, 0.86, 3.0, 0.55, 0.80), (0.70, 0.74, 2.5, 0.80, 1.00)], crown=glass,
-                  mat=((0.07, 0.10, 0.15), 0.9, 0.12), glow=(0.55, 0.85, 1.0)),
+                  mat=((0.20, 0.27, 0.34), 0.6, 0.2), glow=(0.55, 0.85, 1.0)),  # blue-grey like the glass facades, not black by day
     "deco": dict(tiers=[(1.00, 1.00, 0.0, 0.00, 0.42), (0.80, 0.78, 0.0, 0.42, 0.64), (0.62, 0.60, 0.0, 0.64, 0.84), (0.46, 0.44, 0.0, 0.84, 1.00)], crown=deco,
                  mat=((0.78, 0.60, 0.33), 0.85, 0.32), glow=(1.0, 0.75, 0.29)),
     "brick": dict(tiers=[(1.00, 1.00, 0.0, 0.00, 0.60), (0.78, 0.80, 0.0, 0.60, 0.85), (0.60, 0.62, 0.0, 0.85, 1.00)], crown=brick,
