@@ -180,17 +180,20 @@ function pushTown() {
 /* ---------- home cards ---------- */
 const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
 const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
-function areaCard(d) {
-  const D = DOMAINS[d], m = mastery(d), a = accuracy(d), qs = inBank(d), now = Date.now();
+/* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
+   Add the id here once its file is in; until then the card shows the area's tower, lit to mastery. */
+const ART = new Set([]);
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+function areaCard(d, focus) {
+  const D = DOMAINS[d], m = mastery(d), qs = inBank(d), now = Date.now();
   const due = qs.filter(q => isDue(q, now)).length;
-  const learned = qs.filter(q => st(q.id).box >= 3).length, unseen = qs.filter(q => !st(q.id).seen).length;
-  const meta = [`${examShare(d)}% of the exam`, esc(D.bld), a == null ? "not started" : pct(a) + "% right"];
-  if (due) meta.push(`<b>${due} due</b>`);
-  return `<section class="card area-card hue-${hueOf(d)}">
-    <button class="area-top" data-sheet="${d}"><i class="gem" aria-hidden="true"></i>
-      <span class="nm">${esc(D.name)}</span><span class="pct">${pct(m)}%</span><span class="area-meta">${meta.join(" · ")}</span></button>
-    <span class="meter"><i style="width:${pct(m)}%"></i></span>
-    <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
+  const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : towerSvg(m);
+  return `<section class="card area-card hue-${hueOf(d)}${focus ? " focus" : ""}">
+    <button class="area-top" data-sheet="${d}"><span class="area-art" aria-hidden="true">${art}</span>
+      <span class="area-txt"><span class="nm">${esc(D.name)}</span><span class="bld">${esc(cap(D.bld))}</span>
+        <span class="area-meta"><span>${examShare(d)}% of exam</span> · <span>${qs.length} questions</span>${due ? ` · <b>${due} due</b>` : ""}</span></span></button>
+    <div class="area-side">${focus && m === 0 ? `<span class="start">Start here</span>` : `<span class="pct">${pct(m)}%</span>`}
+      <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
   </section>`;
 }
 function renderHome() {
@@ -231,11 +234,8 @@ function renderHome() {
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
-    ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
-      <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
-      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-    ${partDomains(p).map(areaCard).join("")}
+    ${partDomains(p).map(d => areaCard(d, g && g.m < 0.999 && g.d === d)).join("")}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
