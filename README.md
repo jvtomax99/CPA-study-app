@@ -17,11 +17,11 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `src/questions.json`: the question bank
 - `src/app.js`: drill, exam sim, progress, backup
 - `src/town.js`: the 3D city (three.js 0.160 from jsDelivr)
-- `src/mascot.js`: the study buddy on the home card (numbers spiral into him, he springs in, a thought cloud types a pep talk; tap him for another). His picture is `art/mascot.webp`.
+- `src/mascot.js`: the greeting at the top of Home (drawn night Midtown, your name, a tax quote of the day) and the study buddy in it: numbers spiral into him, he pops out of a gold-coin disc with a ring of numbers behind him, his Play badge swings on a lanyard, and a thought cloud types a pep talk. Tap him for another; tap Play to drill. His picture is `art/buddy-bust.webp`. The name is asked once and can be changed in More.
 - `src/shell.html`: page markup and styles
 - `tools/make_reminders.py`: writes the daily-reminder calendar files in `reminders/`
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
-- `tools/smoke.js`: headless test of the study buddy, the town, drill, flagging, exam sim and backup. Run `node tools/smoke.js` after building.
+- `tools/smoke.js`: headless test of the greeting and study buddy, the town, drill, flagging, exam sim and backup. Run `node tools/smoke.js` after building.
 - `docs/`: content outlines and the briefs used to write and fact-check questions. See `docs/HANDOFF.md`.
 
 © 2026 Chris Hidalgo. All rights reserved.
