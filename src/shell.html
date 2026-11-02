@@ -73,7 +73,7 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .coach b { color: #b3485e; font-weight: 700; }
 /* Greeting with the study buddy (src/mascot.js), after Dr. Smiley's in the Interp app: a drawn night
    Midtown, the name in Parisienne, the quote in Lora italic, the buddy popping out of a gold-coin disc
-   with a ring of numbers turning behind him and a Play badge on his lanyard. --s is his picture's size;
+   with a ring of numbers turning behind him and Play on the calculator he holds. --s is his picture's size;
    every part of him is placed in fractions of it, matching DISC in mascot.js (centre .48,.80, radius .34). */
 .greet { --s: 136px; position: relative; isolation: isolate; border-radius: 28px; overflow: hidden; color: #fff; background: #0b0a24; margin-bottom: 14px; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); }
 .greet-sky { position: absolute; inset: 0; z-index: -2; background-size: cover; background-position: 50% 100%; }
@@ -93,11 +93,12 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .greet-quote { margin: 6px 0 0; padding: 0; max-width: 26em; font: italic 500 19px/1.34 "Lora", Georgia, serif; text-wrap: balance; text-shadow: 0 1px 2px rgba(4,4,28,0.55), 0 2px 16px rgba(4,4,28,0.45); }
 .greet-quote cite { display: flex; align-items: center; gap: 9px; margin-top: 8px; font: normal 650 11.5px/1.5 var(--f-ui); letter-spacing: 0.16em; text-transform: uppercase; text-shadow: 0 1px 3px rgba(4,4,28,0.7); }
 .greet-quote cite::before { content: ""; flex: none; width: 18px; height: 2px; border-radius: 2px; background: currentColor; opacity: 0.85; }
-.buddy { position: relative; isolation: isolate; width: var(--s); height: calc(var(--s) * 1.52); margin-top: calc(-14px - var(--lift, 0px)); }
-.buddy-face { position: absolute; left: 0; top: 0; z-index: 2; width: var(--s); height: calc(var(--s) * 464 / 360); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 40%; }
+.buddy { position: relative; isolation: isolate; width: var(--s); height: calc(var(--s) * 1.3); margin-top: calc(-14px - var(--lift, 0px)); }
+.buddy-fig { position: absolute; left: 0; top: 0; z-index: 2; width: var(--s); height: calc(var(--s) * 464 / 360); transform-origin: 48% 85%; }
+.buddy-face { position: absolute; left: 0; top: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 40%; }
 .buddy-face:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .buddy-body { position: absolute; inset: 0; transform-origin: 48% 85%; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(11,10,36,0.45)) drop-shadow(0 6px 8px rgba(11,10,36,0.35)); }
-.buddy-art { display: block; width: 100%; height: 100%; transform-origin: 48% 85%; }
+.buddy-art { display: block; width: 100%; height: 100%; }
 .buddy-shine { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: linear-gradient(110deg, transparent 34%, rgba(255,255,255,0.08) 44%, rgba(255,255,255,0.5) 48%, rgba(255,255,255,0.12) 52%, transparent 58%); background-size: 300% 100%; background-position: 100% 0;
   -webkit-mask: url(art/buddy-bust.webp) center / contain no-repeat; mask: url(art/buddy-bust.webp) center / contain no-repeat; }
 .buddy-disc { position: absolute; z-index: 1; left: calc(var(--s) * 0.14); top: calc(var(--s) * 0.46); width: calc(var(--s) * 0.68); height: calc(var(--s) * 0.68); border-radius: 50%; pointer-events: none;
@@ -115,30 +116,30 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   .buddy-ring { animation: buddyRingTurn 24s linear infinite; }
   .buddy-ring .rg i { animation: buddyRingUnturn 24s linear infinite, buddyGlyphGlow 18s ease-in-out infinite; animation-delay: 0s, calc(var(--i) * 1.5s); }
 }
-.buddy-cords { position: absolute; left: 0; top: 0; z-index: 3; width: var(--s); height: calc(var(--s) * 1.5); overflow: visible; pointer-events: none; }
-.buddy-cords path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.buddy-cords .c0 { stroke: #0e3320; stroke-width: 4; }
-.buddy-cords .c1 { stroke: #2e8b57; stroke-width: 2.4; }
-.buddy-cords .c2 { stroke: rgba(200,255,220,0.55); stroke-width: 0.8; transform: translate(-0.5px, -0.4px); }
-.buddy-cords .clip { fill: #e6c66b; stroke: #4d3409; stroke-width: 0.9; }
-.buddy-tag { position: absolute; z-index: 4; left: 48%; top: calc(var(--s) * 1.25); transform: translateX(-50%); transform-origin: 50% calc(var(--s) * -0.45); height: 30px; display: inline-flex; align-items: center; gap: 7px; padding: 0 13px 0 5px; border: 0; border-radius: 9px; cursor: pointer;
-  background: rgba(255,255,255,0.97); color: #133f28; font: 750 15px/1 var(--f-ui); letter-spacing: 0.01em; white-space: nowrap; box-shadow: 0 0 0 1px rgba(255,255,255,0.55), 0 4px 10px rgba(8,8,36,0.4); transition: opacity 0.3s, scale 0.16s; }
-.buddy-tag:active { scale: 0.94; }
-.buddy-tag-mark { width: 21px; height: 21px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(180deg, #3aa56e, #1d6a43); }
-.buddy-tag-mark svg { width: 15px; height: 15px; }
 .buddy-glint { position: absolute; z-index: 5; color: #fff4cf; opacity: 0; pointer-events: none; font-size: 18px; line-height: 1; text-shadow: 0 0 8px #ffe2a3; }
 .buddy-glint.a { left: 4%; top: 8%; }
 .buddy-glint.b { right: -2%; top: 42%; font-size: 13px; }
 .buddy-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.buddy-pending .buddy-body, .buddy-pending .buddy-disc, .buddy-pending .buddy-ring, .buddy-pending .buddy-cords, .buddy-pending .buddy-tag,
-.buddy-wait .buddy-cords, .buddy-wait .buddy-tag { opacity: 0; }
+.buddy-pending .buddy-fig, .buddy-pending .buddy-disc, .buddy-pending .buddy-ring,
+.buddy-wait .buddy-play { opacity: 0; }
 .buddy-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; pointer-events: none; }
 .buddy-puff { position: absolute; z-index: 5; pointer-events: none; font: 800 15px var(--f-ui); color: var(--amber); text-shadow: 0 1px 0 rgba(11,10,36,0.6), 0 0 8px rgba(255,210,122,0.6); }
 .buddy-puff:nth-child(odd) { color: #9be3b8; }
 @keyframes buddyBreathe { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.4%; } }
 @keyframes buddyDrift { 0%, 100% { rotate: 0deg; } 30% { rotate: 0.8deg; } 65% { rotate: -0.6deg; } }
-@media (prefers-reduced-motion: no-preference) { .buddy-art { animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
-.buddy-entering .buddy-art { animation: none; }
+@media (prefers-reduced-motion: no-preference) { .buddy-fig { animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
+.buddy-entering .buddy-fig { animation: none; }
+/* Play on his calculator: a tap area over the whole calculator, turned to match it (14deg), showing
+   with a glowing mint Play key on its face. */
+.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.78); top: calc(var(--s) * 1.0); width: calc(var(--s) * 0.5); height: calc(var(--s) * 0.56); transform: translate(-50%, -50%) rotate(14deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
+.buddy-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.buddy-play:active { scale: 0.94; }
+.bp-key { position: absolute; left: 50%; top: 54%; translate: -50% -50%; display: inline-flex; align-items: center; gap: 3px; padding: 4px 9px 4px 6px; border-radius: 8px; white-space: nowrap;
+  background: linear-gradient(180deg, #b6f5cf, #4fc387); color: #0b3a21; font: 800 13.5px/1 var(--f-ui); letter-spacing: 0.01em;
+  box-shadow: 0 2px 0 #1d7448, 0 0 0 1.5px rgba(255,255,255,0.85), 0 0 14px rgba(155,227,184,0.85); }
+.bp-key svg { width: 12px; height: 12px; }
+@keyframes bpGlow { 0%, 100% { filter: none; } 50% { filter: brightness(1.12) drop-shadow(0 0 6px rgba(155,227,184,0.9)); } }
+@media (prefers-reduced-motion: no-preference) { .bp-key { animation: bpGlow 2.6s ease-in-out infinite; } }
 .buddy-thought { position: absolute; left: 0; top: 0; width: 136px; height: 76px; opacity: 0; pointer-events: none; z-index: 35; }
 .buddy-cloudsvg { position: absolute; left: -30px; top: -20px; width: 180px; height: 110px; overflow: visible; }
 .buddy-cloudsvg .bc-text { fill: #0f4d2e; font: 700 12.5px var(--f-ui); letter-spacing: -0.01em; }

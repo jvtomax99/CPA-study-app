@@ -4,11 +4,10 @@
      person's name in Parisienne, a tax quote of the day in Lora italic;
    - the buddy as a bust popping out of a gold-coin disc, with a ring of numbers turning
      behind it (Dr. Smiley's ring is the Hackensack mark's sixteen squares);
-   - a "Play" badge on a lanyard round his neck, a small spring simulation so it swings
-     and settles like a real one (Dr. Smiley's "Ask" badge);
+   - a "Play" button on the calculator he holds (where Dr. Smiley has his "Ask" badge);
    - the hello, once per app load: numbers and equations spiral in from the edges, lock
      into a ring around "A = L + E", pulse, then spin down into him with a flash and gold
-     stars. He springs in, the badge is released and swings, his name is written in, and
+     stars. He springs in, Play lights up on his calculator, his name is written in, and
      a thought cloud types a pep talk. Tapping him gives a hop and a new pep talk.
    renderHome (app.js) puts Mascot.greeting(...) at the top and calls Mascot.mount(). */
 (() => {
@@ -126,11 +125,12 @@
           <div class="buddy" id="buddy">
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
-            <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
-              <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
-            </button>
-            <svg class="buddy-cords" viewBox="0 0 100 150" aria-hidden="true" focusable="false"><path class="c0"/><path class="c1"/><path class="c2"/><rect class="clip" x="45" y="122" width="6" height="5" rx="1.5"/></svg>
-            <button class="buddy-tag" id="buddyplay" type="button" aria-label="Play: start a drill"><span class="buddy-tag-mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 4.5v7l5.5-3.5z" fill="currentColor"/></svg></span>Play</button>
+            <span class="buddy-fig">
+              <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+                <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
+              </button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"><span class="bp-key"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></svg>Play</span></button>
+            </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
             <span class="buddy-status" aria-live="polite"></span>
           </div>
@@ -139,51 +139,6 @@
       </div>
     </section>`;
   }
-
-  /* ---------- the Play badge: a pendulum on a soft lanyard (Dr. Smiley's askBadge) ----------
-     Units are the cord drawing's (viewBox 100 x 140 over his box): the pivot is behind his
-     collar at 48,80; the clip hangs 44 below it, under the calculator. A spring pulls the badge back to hanging
-     straight, friction settles it, a breeze keeps it alive for a few seconds after he lands
-     or is tapped, then the loop stops. Under Reduce Motion it hangs still. */
-  const badge = (() => {
-    const P = { x: 48, y: 80 }, A = { x: 41, y: 79 }, B = { x: 56, y: 79 }, DROP = 44;
-    const K = 42, C = 3.2, REST_LIMIT = 8, BREEZE_S = 3, BREEZE_FADE = 0.8;
-    let root = null, tag = null, cords = [], clip = null, raf = 0, last = 0, theta = 0, omega = 0, t0 = 0, released = -1e9, deg = 0;
-    const rot = (x, y, a) => { const c = Math.cos(a), s = Math.sin(a); return { x: P.x + x * c - y * s, y: P.y + x * s + y * c }; };
-    const f = n => Math.round(n * 100) / 100;
-    function draw() {
-      const a = deg * Math.PI / 180, L = rot(-2.5, DROP, a), Rr = rot(2.5, DROP, a);
-      const cord = (S, E) => `M${f(S.x)} ${f(S.y)} Q${f(S.x + (E.x - S.x) * 0.15)} ${f(S.y + (E.y - S.y) * 0.72)} ${f(E.x)} ${f(E.y)}`;
-      const d = cord(A, L) + " " + cord(B, Rr);
-      cords.forEach(c => c.setAttribute("d", d));
-      if (clip) clip.setAttribute("transform", `rotate(${f(deg)} ${P.x} ${P.y})`);
-      if (tag) tag.style.rotate = f(deg) + "deg";
-    }
-    function frame(now) {
-      raf = 0;
-      if (!root || !root.isConnected) { root = null; return; }
-      const dt = last ? Math.min(0.033, Math.max(0, (now - last) / 1000)) : 0; last = now;
-      const t = (now - t0) / 1000, calm = (now - Math.max(t0, released)) / 1000 - BREEZE_S;
-      const gust = calm <= 0 ? 1 : Math.exp(-calm / BREEZE_FADE);
-      const target = gust * (2.2 * Math.sin(t * 1.745) + 0.8 * Math.sin(t * 3.3 + 1));
-      omega += (-K * (theta - target) - C * omega) * dt; theta += omega * dt;
-      if (gust < 0.005 && Math.abs(theta) < 0.02 && Math.abs(omega) < 0.05) { theta = omega = deg = 0; draw(); return; }
-      const lim = REST_LIMIT + 30 * Math.exp(-Math.max(0, now - released) / 650);
-      deg = lim * Math.tanh(theta / lim); draw();
-      if (!document.hidden) raf = requestAnimationFrame(frame);
-    }
-    function run() { if (raf || !root || reduced.matches || document.hidden) return; last = 0; raf = requestAnimationFrame(frame); }
-    document.addEventListener("visibilitychange", () => { if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = 0; } else run(); });
-    return {
-      attach(el, still) {
-        root = el; tag = el.querySelector(".buddy-tag"); cords = [...el.querySelectorAll(".buddy-cords path")]; clip = el.querySelector(".buddy-cords .clip");
-        t0 = performance.now(); theta = omega = deg = 0; draw();
-        if (raf) { cancelAnimationFrame(raf); raf = 0; }
-        if (!still) run();
-      },
-      swing(start) { theta = start; omega = 0; released = performance.now(); run(); }
-    };
-  })();
 
   /* ---------- thought cloud (Dr. Smiley's "Sparkle Float", in cream and mint) ---------- */
   const BUMPS = [[26,46,19],[46,30,22],[72,24,25],[99,31,21],[117,47,16],[96,56,19],[64,59,20],[34,58,15]];
@@ -286,7 +241,7 @@
   /* ---------- the hello: numbers and equations spiral into him ---------- */
   const TOKENS = ["7", "$", "%", "+", "3", "÷", "=", "9", "×", "1040", "Σ", "−", "0", "W-2"];
   const TOKEN_INK = ["#FFD27A", "#FFFFFF", "#9BE3B8"];
-  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, BADGE_AT = FACE_AT + 350, PEN_AT = 2650, CLOUD_AT = 2880, END = 4300;
+  const RING = 70, OPEN_END = 3400, FACE_AT = 2380, ENTER_MS = 460, PLAY_AT = FACE_AT + 380, PEN_AT = 2650, CLOUD_AT = 2880, END = 4300;
   const sprite = rgb => { const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d");
     const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(0.35, `rgba(${rgb},.4)`); gr.addColorStop(1, `rgba(${rgb},0)`);
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c; };
@@ -305,17 +260,17 @@
   const done = () => { const f = onDone; onDone = null; if (f) setTimeout(f, 1200); };
 
   async function hello(greet, root) {
-    const body = root.querySelector(".buddy-body");
+    const body = root.querySelector(".buddy-fig");
     root.classList.add("buddy-pending");
-    try { await art.decode(); } catch (e) { root.classList.remove("buddy-pending"); badge.attach(root, true); done(); return; }
+    try { await art.decode(); } catch (e) { root.classList.remove("buddy-pending"); done(); return; }
     if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 600))]);
     if (!root.isConnected) return;
-    if (reduced.matches || document.hidden || !root.animate) { root.classList.remove("buddy-pending"); badge.attach(root, true); think(root, pickPep(), true); done(); return; }
+    if (reduced.matches || document.hidden || !root.animate) { root.classList.remove("buddy-pending"); think(root, pickPep(), true); done(); return; }
 
     const canvas = document.createElement("canvas");
     canvas.className = "buddy-canvas"; canvas.setAttribute("aria-hidden", "true");
     const ctx = canvas.getContext("2d");
-    if (!ctx) { root.classList.remove("buddy-pending"); badge.attach(root, true); done(); return; }
+    if (!ctx) { root.classList.remove("buddy-pending"); done(); return; }
     greet.appendChild(canvas);
     const box = greet.getBoundingClientRect(), face = root.querySelector(".buddy-face").getBoundingClientRect();
     const w = box.width, h = box.height, bx = face.left - box.left + face.width * 0.5, by = face.top - box.top + face.width * 0.6;
@@ -423,9 +378,10 @@
     // the name is written in, left to right, once he has landed
     anim(greet.querySelector(".greet-name"), [{ clipPath: "inset(-20% 100% -20% 0)", opacity: 0.6 }, { clipPath: "inset(-20% 0% -20% 0)", opacity: 1 }], { duration: 1100, delay: PEN_AT, fill: "backwards", easing: "cubic-bezier(.45,.1,.4,1)" });
 
-    let frame = 0, last = null, elapsed = 0, entered = false, thought = false, badgeOut = false;
+    let frame = 0, last = null, elapsed = 0, entered = false, thought = false;
     root.classList.add("buddy-entering", "buddy-wait");
-    badge.attach(root, true);
+    // Play lights up on his calculator just after he lands
+    anim(root.querySelector(".buddy-play"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
     const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); };
     const stop = () => {
       cancelAnimationFrame(frame); anims.forEach(a => a.cancel()); anims = [];
@@ -449,7 +405,7 @@
       last = now;
       anims.forEach(a => { a.currentTime = elapsed; });
       place(elapsed);
-      if (elapsed >= BADGE_AT && !badgeOut) { badgeOut = true; root.classList.remove("buddy-wait"); badge.swing(-38); }
+      if (elapsed >= PLAY_AT) root.classList.remove("buddy-wait");
       if (elapsed >= CLOUD_AT && !thought) { thought = true; think(root, pickPep()); }
       if (elapsed < OPEN_END) drawOpening(elapsed);
       else if (!canvas.hidden) canvas.hidden = true;
@@ -459,15 +415,14 @@
     frame = requestAnimationFrame(draw);
   }
 
-  /* ---------- tap: a hop, a puff of numbers, a new pep talk; the badge swings ---------- */
+  /* ---------- tap: a hop, a puff of numbers, a new pep talk ---------- */
   function hop(root) {
-    const body = root.querySelector(".buddy-body");
+    const body = root.querySelector(".buddy-fig");
     if (!reduced.matches && body.animate) {
       body.animate([
         { transform: "none" }, { transform: "translateY(2px) scale(1.06,.92)", offset: 0.15 },
         { transform: "translateY(-12px) scale(.96,1.05)", offset: 0.45 }, { transform: "translateY(1px) scale(1.05,.95)", offset: 0.75 }, { transform: "none" }
       ], { duration: 620, easing: "ease-out" });
-      badge.swing(Math.random() < 0.5 ? -22 : 22);
       ["+", "$", "%", "=", "7"].forEach((g, i) => {
         const s = document.createElement("span"); s.className = "buddy-puff"; s.textContent = g; s.setAttribute("aria-hidden", "true");
         s.style.left = (56 + i * 7) + "%"; s.style.top = "62%"; root.appendChild(s);
@@ -502,19 +457,19 @@
   window.Mascot = {
     src: ART,
     greeting,
-    /* Wires the greeting renderHome just wrote. onPlay: the badge's action. afterHello: run
+    /* Wires the greeting renderHome just wrote. onPlay: the calculator Play button's action. afterHello: run
        once the first hello has finished (or right away if it already played). */
     mount({ onPlay, afterHello } = {}) {
       const greet = document.querySelector(".greet"), root = greet && greet.querySelector(".buddy");
       if (!root) return;
       root.querySelector(".buddy-face").onclick = () => hop(root);
-      root.querySelector(".buddy-tag").onclick = () => { if (onPlay) onPlay(); };
+      root.querySelector(".buddy-play").onclick = () => { if (onPlay) onPlay(); };
       onDone = afterHello || null;
       fit();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
       if (!fitBound) { fitBound = true; window.addEventListener("resize", fit, { passive: true }); }
       if (!played) { played = true; hello(greet, root); }
-      else { badge.attach(root, false); done(); }
+      else done();
     }
   };
 })();
