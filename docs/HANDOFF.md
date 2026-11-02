@@ -10,6 +10,8 @@
 - `preview/canyon.html` is the standalone look preview (URL params view, sky, m, gfx); keep it as a sandbox for visual tweaks.
 - Test: `node tools/smoke.js`; `THREE_DIR` now points at the three@0.160.0 package folder (build/ and examples/), not build/.
 
+**Also new: home-screen app icon.** `manifest.webmanifest` plus `icons/` (stack of three books on blue, drawn by `tools/make_icons.js`; rerun it to change the art). The page head (in `tools/build.py`) links the manifest, apple-touch-icon and favicon and sets standalone mode. On iPhone a home-screen app keeps its own storage, separate from Safari, so progress moves over with Save/Load backup file.
+
 **Before that:** 3D town performance pass, committed and waiting for Jose's push. Not yet tried on a real phone.
 - Draw calls per frame went from about 1,750 to about 320. Static meshes are merged into one mesh per material (`mergeStatic` in town.js), and `mat()` reuses materials with the same color, roughness and metalness.
 - The shadow map is redrawn only when the sun or camera moves, the paint moves or the view changes. Moving things (cars, bus, walkers, pigeons, crane jibs, flags) no longer cast shadows.
