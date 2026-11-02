@@ -25,6 +25,7 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(await p.evaluate(() => document.querySelector(".greet-name").textContent === "Sam" && !document.querySelector("#scrim")), "greeting: says hello with the saved name");
   await p.click("#buddyface", { force: true });
   check(await p.evaluate(() => document.querySelectorAll(".buddy-thought").length === 1), "buddy: tapping him gives one new cloud");
+  check(await p.evaluate(() => { const e = document.querySelector(".buddy-expr"); return !!e && e.style.backgroundPosition !== "" && !/^0(\.000)?% /.test(e.style.backgroundPosition); }), "buddy: tapping him changes his face");
   await p.click("#buddyplay", { force: true });
   check(!!(await p.$(".choice")), "buddy: Play on his calculator starts a drill");
   await p.click("#back"); await p.waitForSelector("#stage");

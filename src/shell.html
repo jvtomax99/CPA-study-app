@@ -140,6 +140,8 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .buddy-face:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .buddy-body { position: absolute; inset: 0; transform-origin: 48% 85%; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(11,10,36,0.45)) drop-shadow(0 6px 8px rgba(11,10,36,0.35)); }
 .buddy-art { display: block; width: 100%; height: 100%; }
+/* his face: a window over the picture onto the strip of eye and mouth frames (FACE in mascot.js places it) */
+.buddy-expr { position: absolute; pointer-events: none; background-repeat: no-repeat; background-position: 0 0; }
 .buddy-shine { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: linear-gradient(110deg, transparent 34%, rgba(255,255,255,0.08) 44%, rgba(255,255,255,0.5) 48%, rgba(255,255,255,0.12) 52%, transparent 58%); background-size: 300% 100%; background-position: 100% 0;
   -webkit-mask: url(art/buddy-bust.webp) center / contain no-repeat; mask: url(art/buddy-bust.webp) center / contain no-repeat; }
 .buddy-disc { position: absolute; z-index: 1; left: calc(var(--s) * 0.14); top: calc(var(--s) * 0.46); width: calc(var(--s) * 0.68); height: calc(var(--s) * 0.68); border-radius: 50%; pointer-events: none;
