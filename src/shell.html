@@ -332,6 +332,7 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
 .drillsheet .verdict { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; font-weight: 400; }
 .drillsheet .verdict.ok { background: var(--good-soft); color: var(--good); }
 .drillsheet .verdict.no { background: var(--bad-soft); color: var(--bad); }
+.drillsheet .verdict.gs { background: var(--warn-soft); color: var(--warn); }
 .drillsheet .vbuddy { width: 44px; height: 56px; object-fit: cover; object-position: top; margin: -14px 0 -8px; transform-origin: 50% 90%; }
 .drillsheet .vt { display: grid; gap: 1px; min-width: 0; }
 .drillsheet .vt b { font-size: 15.5px; font-weight: 800; }
@@ -376,6 +377,11 @@ textarea { min-height: 100px; resize: vertical; font-size: 14px; }
 .progressbar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
 .progressbar i { display: block; height: 100%; background: var(--amber); }
 .confirm { border: 1px solid var(--warn); background: var(--warn-soft); border-radius: 14px; padding: 14px; display: grid; gap: 10px; }
+.sumstats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.sumstats div { display: grid; gap: 2px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 12px; }
+.sumstats b { font-size: 22px; font-variant-numeric: tabular-nums; }
+.fresh { background: var(--good-soft); border-radius: var(--r-md); padding: 10px 12px; font-size: 14px; line-height: 1.45; }
+.fresh b { font-size: 18px; font-variant-numeric: tabular-nums; }
 .result-big { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
 table.res { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.res th { text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); padding: 8px 6px; border-bottom: 1px solid var(--line); }
