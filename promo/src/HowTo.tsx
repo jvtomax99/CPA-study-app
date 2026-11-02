@@ -4,6 +4,13 @@ import {C, FONT, FadeIn, IW, SW, Shot} from './Phone';
 import {ChromeSteps, HomeScreen, SafariSteps} from './Mocks';
 import {Backdrop, Buddy, Burst, CYAN, GhostText, Headline, Kicker, MusicBed, Neon, PINK, Phone3D, Pop, PopCard, Sfx, Sweep, WhipIn, WordSubs, clamp} from './Fx';
 import {SCENES, Scene, TOTAL} from './timeline';
+import layout from './layout.json';
+
+// Positions measured from the app by tools/capture.cjs, in screenshot pixels: [x, y, w, h].
+type R = number[];
+const G = layout.greet as Record<string, R>, HM = layout.home as Record<string, R>, MO = layout.more as Record<string, R>;
+const mid = (r: R) => ({x: r[0] + r[2] / 2, y: r[1] + r[3] / 2});
+const box = (r: R, from: number, to: number, pad = 10) => ({from, to, x: r[0] - pad, y: r[1] - pad, w: r[2] + 2 * pad, h: r[3] + 2 * pad});
 
 // Inter, from public/fonts (OFL), loaded before the first frame.
 const fontHandle = delayRender('Inter');
@@ -26,7 +33,7 @@ const HEAD: Record<string, [string, string]> = {
   ios: ['On iPhone,', 'Add to Home Screen.'],
   android: ['On Android,', 'Install the App.'],
   icon: ['Then Always', 'Open It From Here.'],
-  home: ['Your Tax City.', 'How Ready You Are.'],
+  home: ['Your Buddy Says Hi.', 'Your Tax City Waits.'],
   towers: ['Every Tower', 'Is an Exam Area.'],
   views: ['Times Square.', 'The Whole City in 3D.'],
   drill: ['Tap Play.', 'Learn Why.'],
@@ -175,7 +182,7 @@ const Outro: React.FC<{s: Scene}> = ({s}) => {
         <div style={{marginTop: 40, display: 'inline-block', background: C.amber, color: '#140c00', fontFamily: FONT, fontWeight: 900, fontSize: 64, padding: '12px 30px', borderRadius: 14, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)`, boxShadow: `0 0 40px ${C.amber}88`}}>Always Open It There.</div>
         <div style={{marginTop: 50, opacity: l2}}><span style={{fontFamily: '"DejaVu Sans Mono", monospace', fontSize: 36, color: '#fff', background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.3)', padding: '12px 26px', borderRadius: 40}}>jvtomax99.github.io/CPA-study-app</span></div>
       </div>
-      <Buddy enter={at(s, 0, 3.4)} hops={[at(s, 0, 4.2)]} x={820} y={1390} h={290} />
+      <Buddy enter={at(s, 0, 3.4)} hops={[at(s, 0, 4.2)]} x={850} y={1450} h={250} />
       <Sfx at={4} name="hit" volume={0.5} />
       <Sfx at={6} name="chime" volume={0.4} />
     </AbsoluteFill>
@@ -211,34 +218,34 @@ function Visual({s}: {s: Scene}) {
       );
     case 'home':
       return (
-        <PhoneScene s={s} ghost="61% ready" hops={[end(s, 1, -0.4)]}
-          pops={[{at: at(s, 0, 1.4), to: at(s, 1), src: 'home', x: 44, y: 190, w: 330, h: 210, dx: 330, dy: -40, scale: 1.7},
-                 {at: at(s, 1, 0.3), to: s.dur, src: 'home', x: 48, y: 590, w: 440, h: 180, dx: 260, dy: -60, scale: 1.5}]}>
-          <Shot src="home" cams={[{at: 0}, {at: at(s, 0, 0.8), x: 260, y: 330, z: 1.5}, {at: at(s, 1), x: 390, y: 680, z: 1.3}, {at: end(s, 1, -0.6), x: 390, y: 780, z: 1.2}]}
-            boxes={[{from: at(s, 1, 2.4), to: s.dur, x: 48, y: 782, w: 684, h: 112}]}
-            taps={[{at: end(s, 1, -0.4), x: 350, y: 838}]} />
+        <PhoneScene s={s} ghost="Hello Alex" hops={[at(s, 0, 1.0), end(s, 0, -0.6), end(s, 2, -0.4)]}
+          pops={[{at: at(s, 1, 1.4), to: at(s, 2), src: 'home', x: HM.ready[0], y: HM.ready[1], w: 330, h: HM.ready[3], dx: 330, dy: -20, scale: 1.7},
+                 {at: at(s, 2, 0.3), to: s.dur, src: 'home', x: HM.pills[0], y: HM.pills[1], w: 440, h: HM.pills[3], dx: 260, dy: -60, scale: 1.5}]}>
+          <Shot src="greet" boxes={[box(G.face, at(s, 0, 0.6), end(s, 0, -1.0))]} taps={[{at: end(s, 0, -0.6), ...mid(G.play)}]} />
+          <FadeIn at={at(s, 1, -0.2)}><Shot src="home" cams={[{at: 0}, {at: at(s, 1, 0.8), x: 260, y: mid(HM.ready).y + 40, z: 1.5}, {at: at(s, 2), x: 390, y: mid(HM.pills).y + 80, z: 1.3}, {at: end(s, 2, -0.6), x: 390, y: mid(HM.tabs).y, z: 1.2}]}
+            boxes={[box(HM.tabs, at(s, 2, 2.4), s.dur, 6)]} taps={[{at: end(s, 2, -0.4), ...mid(HM.part2)}]} /></FadeIn>
         </PhoneScene>
       );
     case 'towers':
       return (
         <PhoneScene s={s} bg="home-ts" ghost="13 towers" hops={[at(s, 1, -0.2)]}
           pops={[{at: at(s, 1, 1.0), to: s.dur, src: 'area-sheet', x: 34, y: 1258, w: 712, h: 146, dx: 200, dy: -260, scale: 1.45}]}>
-          <Shot src="home" cams={[{at: 0, x: 390, y: 900, z: 1.1}, {at: 30, x: 380, y: 1150, z: 1.6}]} taps={[{at: at(s, 1, -0.2), x: 234, y: 1164}]} />
+          <Shot src="home" cams={[{at: 0, x: 390, y: 900, z: 1.1}, {at: 30, x: 380, y: mid(HM.deductions).y, z: 1.6}]} taps={[{at: at(s, 1, -0.2), ...mid(HM.deductions)}]} />
           <FadeIn at={at(s, 1, 0.3)}><Shot src="area-sheet" /></FadeIn>
         </PhoneScene>
       );
     case 'views':
       return (
         <PhoneScene s={s} bg="home-ts" ghost="Times Square" hops={[12, at(s, 0, 2.6)]} color={CYAN}>
-          <Shot src="home" taps={[{at: 12, x: 480, y: 946}]} />
-          <FadeIn at={22}><Shot src="home-ts" cams={[{at: 22, x: 390, y: 1000, z: 1.0}, {at: 60, x: 390, y: 1150, z: 1.35}]} taps={[{at: at(s, 0, 2.6), x: 319, y: 946}]} /></FadeIn>
+          <Shot src="home" taps={[{at: 12, ...mid(HM.ts)}]} />
+          <FadeIn at={22}><Shot src="home-ts" cams={[{at: 22, x: 390, y: 1000, z: 1.0}, {at: 60, x: 390, y: 1150, z: 1.35}]} taps={[{at: at(s, 0, 2.6), ...mid(HM.fs)}]} /></FadeIn>
           <FadeIn at={at(s, 0, 3.0)}><Shot src="town-3d" cams={[{at: at(s, 0, 3.0), z: 1}, {at: at(s, 0, 3.4), z: 1.12, x: 420}]} /></FadeIn>
         </PhoneScene>
       );
     case 'drill':
       return (
         <PhoneScene s={s} ghost="Play" hops={[6, at(s, 0, 1.9)]}>
-          <Shot src="home" taps={[{at: 6, x: 248, y: 1627}]} />
+          <Shot src="home" taps={[{at: 6, ...mid(HM.play)}]} />
           <FadeIn at={16}><Shot src="drill-q" taps={[{at: at(s, 0, 1.9), x: 380, y: 812}]} /></FadeIn>
           <FadeIn at={at(s, 0, 2.2)}><Shot src="drill-wrong-full" h={2672} cams={[{at: 0, y: 844}, {at: at(s, 0, 3.6), y: 1820}]} /></FadeIn>
           <Sfx at={at(s, 0, 2.0)} name="buzz" volume={0.3} />
@@ -278,8 +285,8 @@ function Visual({s}: {s: Scene}) {
     case 'more':
       return (
         <PhoneScene s={s} ghost="Backup" hops={[at(s, 0, 4.4)]}>
-          <Shot src="more-full" h={3982} cams={[{at: 0, y: 900}, {at: at(s, 0, 3.6), y: 900}, {at: at(s, 0, 4.4), y: 2391}]}
-            boxes={[{from: at(s, 0, 1.0), to: at(s, 0, 2.2), x: 20, y: 655, w: 740, h: 350}, {from: at(s, 0, 2.2), to: at(s, 0, 3.6), x: 20, y: 1014, w: 740, h: 728}, {from: at(s, 0, 4.4), to: s.dur, x: 20, y: 2007, w: 740, h: 768}]} />
+          <Shot src="more-full" h={layout.moreH} cams={[{at: 0, y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 3.6), y: mid(MO["Daily goal"]).y + 300}, {at: at(s, 0, 4.4), y: mid(MO.Backup).y}]}
+            boxes={[box(MO["Daily goal"], at(s, 0, 1.0), at(s, 0, 2.2)), box(MO["Daily reminder"], at(s, 0, 2.2), at(s, 0, 3.6)), box(MO.Backup, at(s, 0, 4.4), s.dur)]} />
         </PhoneScene>
       );
     default:

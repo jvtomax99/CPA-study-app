@@ -25,7 +25,18 @@ const seed = require("./seed.cjs");
 
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
   await town();
-  await p.waitForTimeout(8000); /* let the study buddy finish his entrance */
+  await p.waitForTimeout(12000); /* let the study buddy finish his hello */
+  await shot("greet");
+  /* positions the video taps and highlights, in screenshot pixels (viewport x 2) */
+  const rects = sels => p.evaluate(m => Object.fromEntries(Object.entries(m).map(([k, sel]) => {
+    const e = typeof sel === "string" ? document.querySelector(sel) : [...document.querySelectorAll(sel[0])].find(x => x.textContent.includes(sel[1]));
+    if (!e) return [k, null]; const b = e.getBoundingClientRect(); return [k, [Math.round(b.x * 2), Math.round(b.y * 2), Math.round(b.width * 2), Math.round(b.height * 2)]];
+  })), sels);
+  const layout = { greet: await rects({ play: "#buddyplay", face: "#buddyface", streak: ".greet .pill, .greeting .pill, [class*=greet] [class*=pill]" }) };
+  /* then the tax city card at the top of the screen, as before */
+  await p.evaluate(() => { const h = document.querySelector(".hero"); window.scrollTo(0, h.getBoundingClientRect().top + scrollY - 12); });
+  await p.waitForTimeout(2500);
+  layout.home = await rects({ ready: ".hero-top > div:first-child", pills: ".pills", tabs: ".ptabs", part2: ".ptab[data-part='2']", ts: "#tsbtn", fs: "#fsbtn", play: "#play", deductions: ["#labels .tag", "Deductions"] });
   await shot("home");
 
   /* Times Square view */
@@ -79,6 +90,10 @@ const seed = require("./seed.cjs");
   /* More: goal, reminder, backup */
   await p.click("#back"); await p.waitForTimeout(800);
   await p.click("#morebtn"); await p.waitForTimeout(400); await shot("more-full", { fullPage: true });
+  layout.more = await p.evaluate(() => Object.fromEntries([...document.querySelectorAll("#app .stack > section")].map(e => { const b = e.getBoundingClientRect(); return [(e.querySelector("h3,h2") || e).textContent.trim(), [Math.round(b.x * 2), Math.round((b.y + scrollY) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]]; })));
+  layout.moreH = await p.evaluate(() => Math.round(document.documentElement.scrollHeight * 2));
+  fs.writeFileSync(path.resolve("promo/src/layout.json"), JSON.stringify(layout, null, 1) + "\n");
+  console.log(JSON.stringify(layout));
 
   await browser.close();
 })().catch(e => { console.error(e); process.exit(1); });

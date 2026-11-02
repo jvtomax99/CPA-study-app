@@ -161,8 +161,8 @@ export const Buddy: React.FC<{hops?: number[]; enter?: number; x?: number; y?: n
   const bob = Math.sin(frame / 11) * 6;
   const sq = 1 + hop * 0.06;
   return (
-    <div style={{position: 'absolute', left: x, top: y - hop * 60 + bob + (1 - inP) * 420, width: (h * 235) / 440, height: h, transform: `rotate(${Math.sin(frame / 23) * 3 - hop * 6}deg) scale(${1 / sq}, ${sq})`, transformOrigin: 'bottom center', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.6)) drop-shadow(0 0 22px rgba(245,184,74,0.35))'}}>
-      <Img src={staticFile('art/mascot.webp')} style={{width: '100%', height: '100%'}} />
+    <div style={{position: 'absolute', left: x, top: y - hop * 60 + bob + (1 - inP) * 420, width: (h * 360) / 464, height: h, transform: `rotate(${Math.sin(frame / 23) * 3 - hop * 6}deg) scale(${1 / sq}, ${sq})`, transformOrigin: 'bottom center', filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.6)) drop-shadow(0 0 22px rgba(245,184,74,0.35))'}}>
+      <Img src={staticFile('art/buddy-bust.webp')} style={{width: '100%', height: '100%'}} />
     </div>
   );
 };

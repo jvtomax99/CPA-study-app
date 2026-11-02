@@ -1,57 +1,118 @@
 [
-  { "id": "intro", "label": "", "lines": [
-    "Here's how to use E A Ledger Drill, in about two minutes."
-  ]},
-  { "id": "why", "label": "Step 1 · Add it to your Home Screen", "lines": [
-    "First, the most important step. Add the app to your Home Screen before you study.",
-    "Your progress is saved on your phone, not in an account.",
-    "Safari can erase a website's saved data after a week without a visit. A Home Screen app keeps its own storage, so your progress stays put."
-  ]},
-  { "id": "ios", "label": "iPhone · Safari", "lines": [
-    "On iPhone, open the app in Safari.",
-    "Tap Share. On iOS 26, it's under the three-dot button.",
-    "Scroll down, and tap Add to Home Screen.",
-    "Leave Open as Web App switched on, and tap Add."
-  ]},
-  { "id": "android", "label": "Android · Chrome", "lines": [
-    "On Android, open it in Chrome. Tap the three-dot menu, then Add to Home screen, or Install app."
-  ]},
-  { "id": "icon", "label": "Always open it from the icon", "lines": [
-    "From then on, always open it from the E A Drill icon.",
-    "Safari and the Home Screen app keep separate progress.",
-    "Already studied in Safari? Save a backup file there, then load it in the app."
-  ]},
-  { "id": "home", "label": "Your tax city", "lines": [
-    "This is your tax city. The big number is how ready you are for this part.",
-    "Below it are your streak, reviews due, and today's goal. Switch parts here."
-  ]},
-  { "id": "towers", "label": "Towers are exam areas", "lines": [
-    "Each tower is one exam area. Floors fill in as you master it, and cabs on the avenue are reviews waiting for you.",
-    "Tap a tower to see its numbers, and drill just that area."
-  ]},
-  { "id": "views", "label": "Times Square and 3D", "lines": [
-    "Times Square takes you down the canyon, and 3D opens the whole city full screen."
-  ]},
-  { "id": "drill", "label": "Play: the drill", "lines": [
-    "Tap Play to drill. Pick an answer, and you'll see right away if you got it, with an explanation and the I R S source."
-  ]},
-  { "id": "spacing", "label": "Spaced review", "lines": [
-    "Miss one, and it comes back in five minutes. Get it right, and it waits longer each time, from a day up to five weeks."
-  ]},
-  { "id": "flag", "label": "Flag a question", "lines": [
-    "If a question looks wrong, flag it, and leave a note."
-  ]},
-  { "id": "exam", "label": "Exam sim", "lines": [
-    "Exam sim has the real test's shape: a hundred questions, three and a half hours, in three sections.",
-    "Once you leave a section, you can't go back. The break between sections stops the clock."
-  ]},
-  { "id": "results", "label": "Your results", "lines": [
-    "At the end, you see your score by area, and every question you missed."
-  ]},
-  { "id": "more", "label": "More: goal, reminder, backup", "lines": [
-    "Under More, set a daily goal, add a daily reminder to your calendar, and save a backup file every week or so."
-  ]},
-  { "id": "outro", "label": "", "lines": [
-    "One more time: add it to your Home Screen, and always open it from there. Now go build your city."
-  ]}
+  {
+    "id": "intro",
+    "label": "",
+    "lines": [
+      "Here's how to use E A Ledger Drill, in about two minutes."
+    ]
+  },
+  {
+    "id": "why",
+    "label": "Step 1 · Add it to your Home Screen",
+    "lines": [
+      "First, the most important step. Add the app to your Home Screen before you study.",
+      "Your progress is saved on your phone, not in an account.",
+      "Safari can erase a website's saved data after a week without a visit. A Home Screen app keeps its own storage, so your progress stays put."
+    ]
+  },
+  {
+    "id": "ios",
+    "label": "iPhone · Safari",
+    "lines": [
+      "On iPhone, open the app in Safari.",
+      "Tap Share. On iOS 26, it's under the three-dot button.",
+      "Scroll down, and tap Add to Home Screen.",
+      "Leave Open as Web App switched on, and tap Add."
+    ]
+  },
+  {
+    "id": "android",
+    "label": "Android · Chrome",
+    "lines": [
+      "On Android, open it in Chrome. Tap the three-dot menu, then Add to Home screen, or Install app."
+    ]
+  },
+  {
+    "id": "icon",
+    "label": "Always open it from the icon",
+    "lines": [
+      "From then on, always open it from the E A Drill icon.",
+      "Safari and the Home Screen app keep separate progress.",
+      "Already studied in Safari? Save a backup file there, then load it in the app."
+    ]
+  },
+  {
+    "id": "home",
+    "label": "Your tax city",
+    "lines": [
+      "Up top, your study buddy says hello. Tap Play on his calculator to jump straight into a drill.",
+      "This is your tax city. The big number is how ready you are for this part.",
+      "Below it are your streak, reviews due, and today's goal. Switch parts here."
+    ]
+  },
+  {
+    "id": "towers",
+    "label": "Towers are exam areas",
+    "lines": [
+      "Each tower is one exam area. Floors fill in as you master it, and cabs on the avenue are reviews waiting for you.",
+      "Tap a tower to see its numbers, and drill just that area."
+    ]
+  },
+  {
+    "id": "views",
+    "label": "Times Square and 3D",
+    "lines": [
+      "Times Square takes you down the canyon, and 3D opens the whole city full screen."
+    ]
+  },
+  {
+    "id": "drill",
+    "label": "Play: the drill",
+    "lines": [
+      "Tap Play to drill. Pick an answer, and you'll see right away if you got it, with an explanation and the I R S source."
+    ]
+  },
+  {
+    "id": "spacing",
+    "label": "Spaced review",
+    "lines": [
+      "Miss one, and it comes back in five minutes. Get it right, and it waits longer each time, from a day up to five weeks."
+    ]
+  },
+  {
+    "id": "flag",
+    "label": "Flag a question",
+    "lines": [
+      "If a question looks wrong, flag it, and leave a note."
+    ]
+  },
+  {
+    "id": "exam",
+    "label": "Exam sim",
+    "lines": [
+      "Exam sim has the real test's shape: a hundred questions, three and a half hours, in three sections.",
+      "Once you leave a section, you can't go back. The break between sections stops the clock."
+    ]
+  },
+  {
+    "id": "results",
+    "label": "Your results",
+    "lines": [
+      "At the end, you see your score by area, and every question you missed."
+    ]
+  },
+  {
+    "id": "more",
+    "label": "More: goal, reminder, backup",
+    "lines": [
+      "Under More, set a daily goal, add a daily reminder to your calendar, and save a backup file every week or so."
+    ]
+  },
+  {
+    "id": "outro",
+    "label": "",
+    "lines": [
+      "One more time: add it to your Home Screen, and always open it from there. Now go build your city."
+    ]
+  }
 ]
