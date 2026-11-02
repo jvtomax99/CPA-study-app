@@ -18,14 +18,23 @@
   const art = new Image(); art.decoding = "async"; art.src = ART;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* Bust geometry, as fractions of his square picture (art/buddy-bust.webp, cut from the
-     full figure): the disc sits round his shoulders, his head pops out above its centre. */
-  const DISC = { x: 0.48, y: 0.80, r: 0.34 };
-  // Clip for the picture: everything above the disc's centre line, only the disc below it.
+  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, cut from the
+     full figure; it is S wide and ART_H * S tall, reaching below the calculator so his body
+     fills the whole disc). The disc sits round his shoulders; his head pops out above its
+     centre line, and so does the calculator he holds, over the disc's lower right rim. */
+  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360;
+  // The calculator and his hand, measured on the picture, from where its left edge meets the
+  // disc round to the top-right corner (clockwise in reverse: bottom, right side, top).
+  const CALC = [[0.5475, 1.2], [0.8625, 1.269], [0.9625, 1.2125], [0.975, 1.0875], [1.006, 0.9125], [1.01, 0.8]];
+  // Clip for the picture: above the disc's centre line, the disc below it, plus the calculator.
   const FACE_CLIP = (() => {
-    const pts = ["-40% -40%", "140% -40%", "140% 80%"];
-    for (let a = 0; a <= 180; a += 10) { const r = a * Math.PI / 180; pts.push(`${((DISC.x + DISC.r * Math.cos(r)) * 100).toFixed(2)}% ${((DISC.y + DISC.r * Math.sin(r)) * 100).toFixed(2)}%`); }
-    pts.push("-40% 80%");
+    const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
+    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, DISC.y)];
+    for (let i = CALC.length - 1; i >= 0; i--) pts.push(P(CALC[i][0], CALC[i][1]));
+    // round the disc from where the calculator's left edge meets it, to the left rim
+    const a0 = Math.acos((0.5375 - DISC.x) / DISC.r);
+    for (let k = 0; k <= 10; k++) { const a = a0 + (Math.PI - a0) * k / 10; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
+    pts.push(P(-0.4, DISC.y));
     return `polygon(${pts.join(",")})`;
   })();
 
@@ -118,9 +127,9 @@
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
             <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
-              <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="360" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
+              <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
             </button>
-            <svg class="buddy-cords" viewBox="0 0 100 140" aria-hidden="true" focusable="false"><path class="c0"/><path class="c1"/><path class="c2"/><rect class="clip" x="45" y="109" width="6" height="5" rx="1.5"/></svg>
+            <svg class="buddy-cords" viewBox="0 0 100 150" aria-hidden="true" focusable="false"><path class="c0"/><path class="c1"/><path class="c2"/><rect class="clip" x="45" y="122" width="6" height="5" rx="1.5"/></svg>
             <button class="buddy-tag" id="buddyplay" type="button" aria-label="Play: start a drill"><span class="buddy-tag-mark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 4.5v7l5.5-3.5z" fill="currentColor"/></svg></span>Play</button>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
             <span class="buddy-status" aria-live="polite"></span>
@@ -133,11 +142,11 @@
 
   /* ---------- the Play badge: a pendulum on a soft lanyard (Dr. Smiley's askBadge) ----------
      Units are the cord drawing's (viewBox 100 x 140 over his box): the pivot is behind his
-     collar at 48,80; the clip hangs 31 below it. A spring pulls the badge back to hanging
+     collar at 48,80; the clip hangs 44 below it, under the calculator. A spring pulls the badge back to hanging
      straight, friction settles it, a breeze keeps it alive for a few seconds after he lands
      or is tapped, then the loop stops. Under Reduce Motion it hangs still. */
   const badge = (() => {
-    const P = { x: 48, y: 80 }, A = { x: 41, y: 79 }, B = { x: 56, y: 79 }, DROP = 31;
+    const P = { x: 48, y: 80 }, A = { x: 41, y: 79 }, B = { x: 56, y: 79 }, DROP = 44;
     const K = 42, C = 3.2, REST_LIMIT = 8, BREEZE_S = 3, BREEZE_FADE = 0.8;
     let root = null, tag = null, cords = [], clip = null, raf = 0, last = 0, theta = 0, omega = 0, t0 = 0, released = -1e9, deg = 0;
     const rot = (x, y, a) => { const c = Math.cos(a), s = Math.sin(a); return { x: P.x + x * c - y * s, y: P.y + x * s + y * c }; };
@@ -213,7 +222,9 @@
     // To his left, level with his face, the dots trailing to his head.
     const b = face.getBoundingClientRect(), room = document.documentElement.clientWidth - 4;
     const edge = b.left + b.width * 0.08;
-    let left = edge - 156, top = b.top + b.height * 0.12, sc = 1;
+    // never over the name: when he stands level with it, the cloud opens just below it
+    const nameEl = document.querySelector(".greet-name"), nameBottom = nameEl ? nameEl.getBoundingClientRect().bottom - 2 : -1e9;
+    let left = edge - 156, top = Math.max(b.top + b.width * 0.12, nameBottom), sc = 1;
     if (left < 8) { sc = Math.max(0.7, (edge - 8) / 156); left = edge - 156 * sc; el.style.transformOrigin = "100% 0"; }
     left = Math.max(8, Math.min(room - 150, left));
     el.style.left = (left + window.scrollX) + "px"; el.style.top = (top + window.scrollY) + "px";
@@ -307,7 +318,7 @@
     if (!ctx) { root.classList.remove("buddy-pending"); badge.attach(root, true); done(); return; }
     greet.appendChild(canvas);
     const box = greet.getBoundingClientRect(), face = root.querySelector(".buddy-face").getBoundingClientRect();
-    const w = box.width, h = box.height, bx = face.left - box.left + face.width * 0.5, by = face.top - box.top + face.height * 0.55;
+    const w = box.width, h = box.height, bx = face.left - box.left + face.width * 0.5, by = face.top - box.top + face.width * 0.6;
     // The ring forms where it fits inside the card, then glides into him as it spins down.
     const fx = Math.max(RING + 26, Math.min(bx, w - RING - 26)), fy = Math.max(RING + 20, Math.min(by, h - RING - 20));
     let cx = fx, cy = fy;
@@ -468,6 +479,26 @@
     think(root, pickPep(), reduced.matches);
   }
 
+  /* Like Dr. Smiley's fitWave: when the name leaves room beside it, he moves up so his head
+     sits level with the name and no empty band opens up beside him. A long name keeps him
+     on the line below. */
+  let fitBound = false;
+  function fit() {
+    const greet = document.querySelector(".greet"); if (!greet) return;
+    const name = greet.querySelector(".greet-name"), root = greet.querySelector(".buddy");
+    const text = name.firstChild; if (!text) return;
+    root.style.removeProperty("--lift"); name.style.fontSize = "";
+    const range = document.createRange(); range.selectNodeContents(name);
+    let nr = range.getBoundingClientRect();
+    const br = root.getBoundingClientRect(), room = br.left - 10 - nr.left;
+    if (nr.width > room) {
+      // shrink the script name to fit beside him, but not below 38px
+      const size = parseFloat(getComputedStyle(name).fontSize) * room / nr.width;
+      if (size < 38) return;
+      name.style.fontSize = size.toFixed(1) + "px"; nr = range.getBoundingClientRect();
+    }
+    root.style.setProperty("--lift", Math.round(name.getBoundingClientRect().height * 0.85) + "px");
+  }
   window.Mascot = {
     src: ART,
     greeting,
@@ -479,6 +510,9 @@
       root.querySelector(".buddy-face").onclick = () => hop(root);
       root.querySelector(".buddy-tag").onclick = () => { if (onPlay) onPlay(); };
       onDone = afterHello || null;
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      if (!fitBound) { fitBound = true; window.addEventListener("resize", fit, { passive: true }); }
       if (!played) { played = true; hello(greet, root); }
       else { badge.attach(root, false); done(); }
     }
