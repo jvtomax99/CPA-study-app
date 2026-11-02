@@ -141,6 +141,10 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   grid-template-areas: "meta meta" "name name" "side buddy" "quote quote"; }
 .greet-meta { grid-area: meta; } .greet-name { grid-area: name; } .greet-side { grid-area: side; align-self: center; min-width: 0; } .buddy { grid-area: buddy; } .greet-quote { grid-area: quote; }
 .greet-row { display: contents; }
+.greet-side { display: grid; gap: 8px; justify-items: start; }
+.greet-guide { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px 6px 7px; border-radius: 999px; font: 700 14px/1 var(--f-ui); color: #fff; cursor: pointer; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.32); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 6px 14px -6px rgba(0,0,0,0.6); }
+.greet-guide .gg-play { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: var(--amber-ink); }
+.greet-guide:active { transform: scale(0.96); }
 .greet-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); }
 .greet-meta time { letter-spacing: 0.02em; text-transform: none; font-size: 13px; }
 .greet-name { margin: 2px 0 0; font: 400 58px/1.12 "Parisienne", cursive; letter-spacing: 0; text-transform: none; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 0.1em 0.06em 0; text-shadow: 0 1px 2px rgba(4,4,28,0.6), 0 2px 6px rgba(4,4,28,0.35), 0 3px 22px rgba(4,4,28,0.42); }
@@ -656,7 +660,7 @@ footer p { margin: 0; max-width: 70ch; }
       </g>`;
   })();
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
-  function greeting({ name, pill }) {
+  function greeting({ name, pill, extra }) {
     const now = new Date(), h = now.getHours();
     const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
@@ -671,7 +675,7 @@ footer p { margin: 0; max-width: 70ch; }
         <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
         <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
         <div class="greet-row">
-          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}</div>
+          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}${extra || ""}</div>
           <div class="buddy" id="buddy">
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
@@ -1388,7 +1392,7 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" })}${elLine(p, r)}</div>` : ""}
+  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
@@ -1430,6 +1434,7 @@ function renderHome() {
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
+  if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
@@ -1486,6 +1491,17 @@ function openArea(d) {
   $("#sheetgo").onclick = () => { closeLayer(); startDrill(d); };
   if (window.Town && window.Town.highlight) window.Town.highlight(d);
 }
+/* the how-to video (media/how-to-use.mp4, made in promo/) */
+function openGuide() {
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app">
+    <div class="grab"></div>
+    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
+    <div class="row" style="justify-content:space-between;align-items:center"><span class="hint">Step one: add this app to your Home Screen.</span><button class="btn ghost" id="guideclose">Close</button></div>
+  </div></div>`;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeGuide(); };
+  $("#guideclose").onclick = closeGuide;
+}
+function closeGuide() { const v = $("#guidevid"); if (v) v.pause(); closeLayer(); if (view === "home") renderHome(); }
 function closeLayer() { $("#layer").innerHTML = ""; if (window.Town && window.Town.highlight) window.Town.highlight(null); }
 
 /* ---------- Drill ---------- */
@@ -1813,6 +1829,9 @@ function renderMore() {
   const rem = state.reminder || {}, remPick = rem.pick || rem.time || "1900";
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
   <div class="stack" style="margin-top:0">
+    <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
+      <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
+      <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
       <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
       <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
@@ -1848,6 +1867,7 @@ function renderMore() {
       <span>Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.</span></section>
   </div>`;
   $("#back").onclick = renderHome;
+  $("#guidemore").onclick = openGuide;
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
@@ -1885,7 +1905,7 @@ document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || "").toLowerCase(); if (tag === "textarea" || tag === "input" || tag === "select") return;
   const k = e.key.toLowerCase(), i = "abcd".indexOf(k) >= 0 ? "abcd".indexOf(k) : "1234".indexOf(k);
-  if (e.key === "Escape" && $("#scrim")) return closeLayer();
+  if (e.key === "Escape" && $("#scrim")) return $("#guidevid") ? closeGuide() : closeLayer();
   if (view === "drill" && drill && drill.q) {
     if (drill.picked == null && i >= 0) { e.preventDefault(); answerDrill(i); }
     else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); drill.goalHit ? renderSummary() : nextQ(); }

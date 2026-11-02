@@ -67,6 +67,16 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#fsbtn"); await p.waitForTimeout(800); await p.keyboard.press("Escape"); await p.waitForTimeout(800);
   check(await p.evaluate(() => !window.__townDebug().fs && !!document.querySelector("#stage canvas")), "Escape closes full screen and the town returns to home");
 
+  /* the how-to video: the greeting's How to use button opens it; More keeps a button */
+  check(!!(await p.$("#greetguide")), "guide: the greeting has How to use");
+  await p.click("#greetguide");
+  check(await p.evaluate(() => { const v = document.querySelector("#guidevid"); return !!v && v.getAttribute("src") === "media/how-to-use.mp4"; }), "guide: How to use opens the video");
+  check(fs.existsSync(path.resolve("media/how-to-use.mp4")), "guide: media/how-to-use.mp4 is in the repo");
+  await p.click("#guideclose"); await p.waitForTimeout(300);
+  check(!(await p.$("#guidevid")) && !!(await p.$("#greetguide")), "guide: closing it returns to Home");
+  await p.click("#morebtn"); check(!!(await p.$("#guidemore")), "guide: More has Watch the guide"); await p.click("#back");
+  await p.waitForFunction(() => window.Town && window.Town.ready && document.querySelector("#stage canvas"), null, { timeout: 30000 }).catch(() => {});
+
   /* drill and flagging */
   await p.click("#play"); await p.click(".choice >> nth=0");
   check(!!(await p.$(".explain")), "drill: answering shows the explanation");

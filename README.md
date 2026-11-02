@@ -9,6 +9,7 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - Honest readiness: "I guessed" turns a lucky right answer into a miss, a session summary when you leave Drill splits new questions from reviews, and sim results show your score on questions you'd never seen
 - A night Midtown Manhattan in 3D: each content area is a tower on the Times Square canyon that gets finished floor by floor as it's mastered. Dusk is neon Times Square; Day is an autumn afternoon with tree-lined walk-up streets west of the canyon
 - Progress is saved in the browser on the device. More > Backup saves and loads a backup file.
+- A 2-minute narrated how-to video (`media/how-to-use.mp4`), opened by Watch the guide on Home (once) and in More. It leads with adding the app to the Home Screen, since progress lives only on the device.
 - Slow devices switch the town to a lighter mode automatically. Add `?gfx=low` or `?gfx=high` to the URL to force it, or `?fps=1` to show a frame-rate meter.
 
 ## Editing
@@ -25,7 +26,8 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
 - `tools/loss-sorter/`: the loss sorter, a drawn machine that sorts a loss through the basis, at-risk, passive and excess business loss limits in order. The drill links to it from the four questions it reproduces. Run `node tools/loss-sorter/build.mjs` to write `art/loss-sorter.html`, and `node tools/loss-sorter/test.mjs` to check its cases against the bank. Its drawing kit is from [Anatomy](https://github.com/wheresryan22/anatomy) (MIT).
 - `tools/basis-order/`: the basis order, a drawn figure that steps S corporation stock and debt basis through one year in the order Form 7203 applies it: income, distributions, nondeductible expenses, losses (or losses first with the Reg. 1.1367-1(g) election), then debt basis restoration. The drill links to it from p2d1b-023 and p2d1b-024, and More lists both figures under Figures. Run `node tools/basis-order/build.mjs` to write `art/basis-order.html`, and `node tools/basis-order/test.mjs` to check its cases against the bank. It uses the loss sorter's copy of the Anatomy kit.
-- `tools/smoke.js`: headless test of the greeting and study buddy, the town, drill, flagging, "I guessed", the session summary, exam sim and backup. Run `node tools/smoke.js` after building.
+- `tools/smoke.js`: headless test of the greeting and study buddy, the town, the how-to guide, drill, flagging, "I guessed", the session summary, exam sim and backup. Run `node tools/smoke.js` after building.
+- `promo/`: the Remotion project that makes the how-to video (screenshots, narration, scenes). See `promo/README.md`.
 - `docs/`: content outlines and the briefs used to write and fact-check questions. See `docs/HANDOFF.md`.
 
 © 2026 Chris Hidalgo. All rights reserved.
