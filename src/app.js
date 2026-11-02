@@ -180,24 +180,76 @@ function pushTown() {
   if (window.Town && window.Town.ready) window.Town.update(data);
   state.shown = Object.assign({}, data.mastery); save();
 }
-/* ---------- home cards ---------- */
-const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
-const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
+/* ---------- home: each part drawn as a subway strip map ---------- */
+/* Each area is a station on its part's line (LINE, below). The bullet at a station is a transfer to a real line, in that line's official color. */
+const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2" };
+const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
+  N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River" };
+const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
 /* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
-   Add the id here once its file is in; until then the card shows the area's tower, lit to mastery. */
+   Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
 const ART = new Set([]);
-const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
-function areaCard(d, focus) {
-  const D = DOMAINS[d], m = mastery(d), qs = inBank(d), now = Date.now();
-  const due = qs.filter(q => isDue(q, now)).length;
-  const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : towerSvg(m);
-  return `<section class="card area-card hue-${hueOf(d)}${focus ? " focus" : ""}">
-    <button class="area-top" data-sheet="${d}"><span class="area-art" aria-hidden="true">${art}</span>
-      <span class="area-txt"><span class="nm">${esc(D.name)}</span><span class="bld">${esc(cap(D.bld))}</span>
-        <span class="area-meta"><span>${examShare(d)}% of exam</span> · <span>${qs.length} questions</span>${due ? ` · <b>${due} due</b>` : ""}</span></span></button>
-    <div class="area-side">${focus && m === 0 ? `<span class="start">Start here</span>` : `<span class="pct">${pct(m)}%</span>`}
-      <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
-  </section>`;
+/* Drawn building per area: s = shapes (b body, t trim), w = windows [x, y, w, h], lit bottom-up with mastery */
+const grid = (x0, y0, cols, rows, dx, dy, w, h) => { const a = []; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) a.push([x0 + c * dx, y0 + r * dy, w, h]); return a; };
+const BLD = {
+  "P1-1": { s: '<rect class="b" x="8" y="26" width="44" height="48"/><rect class="t" x="6" y="23" width="48" height="4" rx="1"/><rect class="t" x="10" y="46" width="40" height="5"/><path class="t" d="M8 56h44l-2 6H10z"/><rect class="b" x="26" y="64" width="8" height="10" opacity=".6"/>',
+    w: [[11,64,13,9],[36,64,13,9]].concat(grid(12, 29, 3, 2, 14.5, 8, 7, 6)) },
+  "P1-2": { s: '<path class="t" d="M4 28L30 14L56 28Z"/><rect class="t" x="5" y="28" width="50" height="3"/><rect class="b" x="7" y="31" width="46" height="37"/><rect class="t" x="9" y="31" width="3.5" height="37"/><rect class="t" x="20.5" y="31" width="3.5" height="37"/><rect class="t" x="36" y="31" width="3.5" height="37"/><rect class="t" x="47.5" y="31" width="3.5" height="37"/><rect class="t" x="5" y="68" width="50" height="2.5"/><rect class="t" x="3" y="71" width="54" height="3"/>',
+    w: [[14,56,5,9],[26,56,8,12],[41,56,5,9],[14,44,5,9],[27,44,6,9],[41,44,5,9],[14,34,5,7],[27,34,6,7],[41,34,5,7]] },
+  "P1-3": { s: '<rect class="b" x="3" y="24" width="18" height="50"/><rect class="b" x="21" y="20" width="18" height="54"/><rect class="b" x="39" y="26" width="18" height="48"/><rect class="t" x="2" y="22" width="20" height="3"/><rect class="t" x="20" y="18" width="20" height="3"/><rect class="t" x="38" y="24" width="20" height="3"/><path class="t" d="M5 74l6-7h3v7zM23 74l6-7h3v7zM41 74l6-7h3v7z"/>',
+    w: grid(6, 35, 6, 3, 0, 10, 4, 6).map((w, i) => [[6, 13, 24, 31, 42, 49][i % 6], w[1], 4, 6]).concat([[24,26,4,5],[31,26,4,5]]) },
+  "P1-4": { s: '<rect class="t" x="35" y="6" width="10" height="9" rx="1"/><path class="t" d="M34 6l6-4 6 4z"/><rect class="t" x="36" y="15" width="1.5" height="5"/><rect class="t" x="42.5" y="15" width="1.5" height="5"/><rect class="b" x="12" y="20" width="36" height="54"/><rect class="t" x="10" y="18" width="40" height="3"/>' + [30, 40, 50, 60].map(y => `<rect class="t" x="10" y="${y + 6}" width="18" height="1.4"/><path class="t" d="M12 ${y + 6}L26 ${y - 4}L27.2 ${y - 3.2}L13.2 ${y + 6.8}z"/>`).join(""),
+    w: grid(16, 24, 2, 5, 8, 10, 6, 6).concat(grid(38, 24, 1, 5, 0, 10, 6, 6)) },
+  "P1-5": { s: '<rect class="b" x="10" y="22" width="40" height="52"/><rect class="b" x="17" y="10" width="26" height="13"/><rect class="t" x="16" y="8" width="28" height="2.5"/><rect class="t" x="9" y="20" width="42" height="2.5"/><rect class="t" x="29" y="2" width="1.5" height="6"/>',
+    w: grid(13, 27.6, 4, 7, 9.2, 6.4, 7.6, 4).concat(grid(19.5, 13, 3, 1, 7.5, 0, 6, 4)) },
+  "P1-6": { s: '<rect class="t" x="11" y="12" width="4" height="10"/><rect class="t" x="45" y="12" width="4" height="10"/><path class="t" d="M6 34L11 20H49L54 34Z"/><rect class="b" x="6" y="34" width="48" height="40"/><rect class="t" x="4" y="32" width="52" height="3"/><path class="t" d="M24 74v-11a6 6 0 0 1 12 0v11z"/>',
+    w: [[18,25,5,6],[27.5,25,5,6],[37,25,5,6],[10,38,6,8],[19,38,6,8],[27,38,6,8],[35,38,6,8],[44,38,6,8],[10,52,6,9],[19,52,6,9],[35,52,6,9],[44,52,6,9]] },
+  /* Midtown tower: art deco setbacks and a spire */
+  "P2-1": { s: '<rect class="t" x="29.2" y="0" width="1.6" height="10"/><rect class="b" x="24" y="10" width="12" height="9"/><rect class="b" x="19" y="19" width="22" height="12"/><rect class="b" x="14" y="31" width="32" height="43"/><rect class="t" x="23" y="9" width="14" height="2"/><rect class="t" x="18" y="18" width="24" height="2"/><rect class="t" x="13" y="30" width="34" height="2"/>',
+    w: grid(17, 35, 4, 6, 7, 6.4, 4.5, 4).concat(grid(22, 22, 3, 1, 6, 0, 4, 5), [[27.5,13,5,4]]) },
+  /* loft building: cast-iron front, big windows */
+  "P2-2": { s: '<rect class="b" x="5" y="24" width="50" height="50"/><rect class="t" x="3" y="21" width="54" height="4"/><rect class="t" x="5" y="36" width="50" height="1.5"/><rect class="t" x="5" y="48" width="50" height="1.5"/><rect class="t" x="5" y="60" width="50" height="1.5"/>',
+    w: grid(8, 27, 4, 4, 12, 12, 9, 7.5) },
+  /* rooftop farm: low block with a greenhouse and planters on the roof */
+  "P2-3": { s: '<path class="t" d="M14 40V32L24 26L34 32V40Z" opacity=".85"/><rect class="t" x="38" y="35" width="14" height="5" rx="1"/><path class="t" d="M40 35c1-4 3-4 4 0M46 35c1-5 3-5 4 0"/><rect class="b" x="6" y="40" width="48" height="34"/><rect class="t" x="4" y="38" width="52" height="3"/>',
+    w: grid(10, 45, 4, 3, 11.5, 9.5, 7, 6).concat([[18,33,4,5],[26,33,4,5]]) },
+  /* practitioner's office: four floors and a door canopy */
+  "P3-1": { s: '<rect class="b" x="12" y="24" width="36" height="50"/><rect class="t" x="10" y="21" width="40" height="4"/><rect class="t" x="22" y="62" width="16" height="2.5"/><rect class="b" x="26" y="65" width="8" height="9" opacity=".6"/>',
+    w: grid(16, 28, 3, 4, 10.5, 8.5, 7, 5.5).concat([[16,65,6,6],[38,65,6,6]]) },
+  /* courthouse: colonnade with a stepped tower */
+  "P3-2": { s: '<path class="t" d="M23 18L30 8L37 18Z"/><rect class="b" x="21" y="18" width="18" height="24"/><path class="t" d="M3 46L30 38L57 46Z"/><rect class="b" x="5" y="46" width="50" height="23"/>' + [7, 15, 23, 33, 41, 49].map(x => `<rect class="t" x="${x}" y="46" width="3" height="23"/>`).join("") + '<rect class="t" x="3" y="69" width="54" height="2.5"/><rect class="t" x="1" y="71.5" width="58" height="2.5"/>',
+    w: [[11.5,52,2.5,12],[19.5,52,2.5,12],[28,52,4,15],[37.5,52,2.5,12],[45.5,52,2.5,12]].concat(grid(24, 22, 2, 3, 7, 6.5, 5, 4)) },
+  /* collections office: a plain slab of narrow windows */
+  "P3-3": { s: '<rect class="b" x="9" y="16" width="42" height="58"/><rect class="t" x="8" y="14" width="44" height="3"/><rect class="t" x="9" y="66" width="42" height="1.5"/>',
+    w: grid(12, 20, 6, 7, 6.4, 6.4, 3.6, 4.2) },
+  /* post office: a long colonnade with a flagpole */
+  "P3-4": { s: '<rect class="t" x="29.3" y="14" width="1.4" height="20"/><path class="t" d="M30.7 14h9v6h-9z" opacity=".9"/><rect class="b" x="2" y="38" width="56" height="31"/><rect class="t" x="1" y="35" width="58" height="4"/>' + [4, 12, 20, 28, 36, 44, 52].map(x => `<rect class="t" x="${x}" y="44" width="3" height="25"/>`).join("") + '<rect class="t" x="1" y="69" width="58" height="2.5"/><rect class="t" x="0" y="71.5" width="60" height="2.5"/>',
+    w: grid(8, 48, 6, 1, 8, 0, 3, 16).concat(grid(8, 40, 6, 1, 8, 0, 3, 2.5)) }
+};
+function bldSvg(d, m) {
+  const B = BLD[d], order = B.w.map((w, i) => i).sort((a, b) => B.w[b][1] - B.w[a][1] || B.w[a][0] - B.w[b][0]);
+  const on = new Set(order.slice(0, Math.floor(m * B.w.length + 1e-9)));
+  return `<svg class="bld" viewBox="0 0 60 76" aria-hidden="true">${B.s}${B.w.map((w, i) => `<rect class="w${on.has(i) ? " on" : ""}" x="${w[0]}" y="${w[1]}" width="${w[2]}" height="${w[3]}" rx=".5"/>`).join("")}</svg>`;
+}
+const stopsLine = m => `<span class="stops" aria-hidden="true"><i style="width:calc((100% - 10px) * ${m})"></i>${[0, 0.25, 0.5, 0.75, 1].map(x => `<b class="${m > 0 && m + 1e-9 >= x ? "on" : ""}" style="left:calc(5px + (100% - 10px) * ${x})"></b>`).join("")}</span>`;
+function stripMap(p, focus) {
+  const now = Date.now();
+  const rows = partDomains(p).map(d => {
+    const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = Math.round(D.n / 85 * 100);
+    const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : bldSvg(d, m);
+    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : "Not started"}</span></span>`;
+    const where = `<span class="hood">${esc(D.bld.replace(/^the /, ""))}</span><span>${share}% of exam</span>${due ? `<b>${due} due</b>` : ""}`;
+    if (d === focus) return `<div class="srow"><span class="sdot"></span><div class="sbox">
+      <div class="shd">${routeBullet(ROUTE[d])}<span>Next stop</span></div>
+      <div class="snm">${esc(D.name)}</div><div class="swhere">${where}</div>${prog}
+      <button class="sgo" data-drill="${d}">Practice <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
+      <span class="sart" aria-hidden="true">${art}</span></div></div>`;
+    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="Practice ${esc(D.name)}, ${pct(m)}% mastered"><span class="sdot"></span>
+      <span class="stxt"><span class="snm">${esc(D.name)}</span><span class="swhere">${routeBullet(ROUTE[d])}${where}</span>${prog}</span>
+      <span class="sart" aria-hidden="true">${art}</span></button>`;
+  }).join("");
+  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${RIVER[p]}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
 }
 /* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
 const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad" };
@@ -264,7 +316,7 @@ function renderHome() {
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-    ${partDomains(p).map(d => areaCard(d, g && g.m < 0.999 && g.d === d)).join("")}
+    ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
