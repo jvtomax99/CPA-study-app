@@ -319,6 +319,59 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
 .explain p { margin: 0; font-family: var(--f-read); font-size: 16px; line-height: 1.55; max-width: 65ch; }
 .meta { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-soft); }
 .meta b { color: var(--ink); font-weight: 650; }
+/* Drill card: a dusk header with the area's tower, a verdict with the buddy, figures picked out in the explanation.
+   Scoped to .drillsheet so the exam sim keeps its plain, PSI-like sheet. */
+.drillsheet .dhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 12px; padding: 14px 14px 0 16px; color: #fff;
+  background: radial-gradient(120% 90% at 85% 110%, rgba(217,135,110,0.55), transparent 60%), linear-gradient(165deg, var(--dusk-top) 0%, var(--dusk-mid) 75%, #4a3366 100%); }
+.drillsheet .dhead .id { display: grid; gap: 3px; min-width: 0; padding-bottom: 14px; }
+.drillsheet .dhead .k { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.68); font-weight: 700; }
+.drillsheet .dhead .d { font-weight: 750; font-size: 16px; line-height: 1.25; }
+.drillsheet .dhead .m { font-size: 12.5px; color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.drillsheet .dhead .m b { color: #ffd27a; font-weight: 750; }
+.drillsheet .dhead .m b.dn { color: #ff9aac; }
+.drillsheet .dhead .m i { font-style: normal; opacity: 0.6; }
+.dtower { width: 48px; height: 80px; display: block; margin-bottom: -1px; }
+.dtower .body { fill: #241f52; stroke: #4b4288; stroke-width: 1; }
+.dtower .base { fill: #4b4288; }
+.dtower .spire, .dtower .crown { fill: #4b4288; }
+.dtower .gold { fill: #ffd27a; }
+.dtower rect.off, .dtower rect.drop { fill: #3d3577; }
+.dtower rect.on { fill: #ffd27a; filter: drop-shadow(0 0 1.6px rgba(255,210,122,0.9)); }
+.drillsheet .qbody { padding-top: 16px; }
+.drillsheet .choice .L { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); border: 1.5px solid var(--line); font: 750 12.5px/1 var(--f-ui); margin-top: -1px; }
+.drillsheet .choice { grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: center; }
+.drillsheet .choice.right .L { background: var(--good); border-color: var(--good); color: #fff; }
+.drillsheet .choice.wrong .L { background: var(--bad); border-color: var(--bad); color: #fff; }
+.drillsheet .explain { border-top: 0; padding-top: 4px; gap: 12px; }
+.drillsheet .verdict { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; font-weight: 400; }
+.drillsheet .verdict.ok { background: var(--good-soft); color: var(--good); }
+.drillsheet .verdict.no { background: var(--bad-soft); color: var(--bad); }
+.drillsheet .vbuddy { width: 44px; height: 56px; object-fit: cover; object-position: top; margin: -14px 0 -8px; transform-origin: 50% 90%; }
+.drillsheet .vt { display: grid; gap: 1px; min-width: 0; }
+.drillsheet .vt b { font-size: 15.5px; font-weight: 800; }
+.drillsheet .vt span { font-size: 13px; color: var(--ink-soft); }
+.drillsheet .delta { font: 800 13px/1 var(--f-ui); font-variant-numeric: tabular-nums; padding: 6px 9px; border-radius: 999px; background: var(--paper); }
+.drillsheet .delta.up { color: var(--good); } .drillsheet .delta.down { color: var(--bad); }
+.drillsheet mark.fig { background: linear-gradient(transparent 62%, var(--warn-soft) 62%); color: var(--ink); font-family: var(--f-ui); font-weight: 650; font-size: 0.94em; padding: 0 1px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.drillsheet .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.drillsheet .meta .mk { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-right: 2px; }
+.drillsheet .meta .mk:not(:first-child) { flex-basis: 100%; margin-top: 4px; }
+.drillsheet .pill { font-size: 12.5px; font-weight: 600; color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 3px 9px; border-radius: 10px; }
+@media (prefers-reduced-motion: no-preference) {
+  .dtower rect.pop { animation: winPop 0.9s var(--d, 0ms) both ease-out; }
+  .dtower rect.drop { animation: winDrop 0.9s var(--d, 0ms) both; }
+  .drillsheet .verdict { animation: verdictIn 0.35s both cubic-bezier(.2,.9,.3,1.2); }
+  .drillsheet .verdict.ok .vbuddy { animation: buddyHop 0.6s 0.1s both ease-out; }
+  .drillsheet .verdict.no .vbuddy { animation: buddyTilt 0.7s 0.1s both ease-in-out; }
+  .drillsheet .choice.wrong { animation: choiceShake 0.4s both; }
+  .drillsheet .delta { animation: verdictIn 0.4s 0.25s both cubic-bezier(.2,.9,.3,1.4); }
+}
+@keyframes winPop { 0% { fill: #3a3372; filter: none; } 40% { fill: #fff6d8; filter: drop-shadow(0 0 4px #ffd27a); } 100% { fill: #ffd27a; } }
+@keyframes winDrop { 0% { fill: #ffd27a; } 30% { fill: #ff6b81; } 55% { fill: #3a3372; } 70% { fill: #ff6b81; } 100% { fill: #3a3372; } }
+@keyframes verdictIn { from { opacity: 0; transform: translateY(6px) scale(0.98); } }
+@keyframes buddyHop { 0% { transform: translateY(6px) scale(0.9); } 45% { transform: translateY(-5px) rotate(-4deg); } 100% { transform: none; } }
+@keyframes buddyTilt { 0%, 100% { transform: none; } 30% { transform: rotate(-8deg); } 60% { transform: rotate(5deg); } }
+@keyframes choiceShake { 0%, 100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 16px 16px; }
 .flagform { padding: 0 16px 16px; display: grid; gap: 8px; }
 textarea, select { font: 400 16px var(--f-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
@@ -1173,7 +1226,22 @@ function startDrill(domain) {
   drill = drill || { domain, q: null };
   renderDrill(); window.scrollTo(0, 0);
 }
-function nextQ() { const d = drill.domain; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; renderDrill(); }
+function nextQ() { const d = drill.domain, run = drill.run || 0; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; drill.run = run; renderDrill(); }
+/* The area's tower on the question card: 12 floors of 3 windows, lit up to the area's mastery.
+   After an answer, windows that just lit glow in and windows that just went dark flicker out. */
+function towerSvg(m, prev) {
+  const F = 12, W = 3, N = F * W, lit = Math.floor(m * N + 1e-9), was = prev == null ? lit : Math.floor(prev * N + 1e-9);
+  let w = "";
+  for (let i = 0; i < N; i++) {
+    const f = Math.floor(i / W), x = 10 + (i % W) * 9.5, y = 73 - (f + 1) * 5;
+    const c = i < lit ? (i >= was ? "on pop" : "on") : (i < was ? "drop" : "off");
+    w += `<rect class="${c}" x="${x}" y="${y + 1.2}" width="7" height="2.8" rx="0.6" style="--d:${(i - Math.min(lit, was)) * 60}ms"/>`;
+  }
+  return `<svg class="dtower" viewBox="0 0 48 80" aria-hidden="true"><rect class="spire${m >= 0.999 ? " gold" : ""}" x="22.5" y="3" width="3" height="10" rx="1"/><rect class="body" x="7" y="12" width="34" height="62" rx="1.5"/>${w}<rect class="base" x="2" y="74" width="44" height="3" rx="1"/></svg>`;
+}
+const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
+const pickLine = a => a[Math.floor(Math.random() * a.length)];
+const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
   const scope = drill.domain ? DOMAINS[drill.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
@@ -1187,22 +1255,27 @@ function renderDrill() {
   const choices = drill.perm.map((o, i) => {
     let c = "choice";
     if (answered) c += o === q.answer ? " right" : o === drill.picked ? " wrong" : " dim";
-    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${"ABCD"[i]}</span><span>${esc(q.choices[o])}</span></button>`;
+    const mark = answered && o === q.answer ? "✓" : answered && o === drill.picked ? "✕" : "ABCD"[i];
+    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${mark}</span><span>${esc(q.choices[o])}</span></button>`;
   }).join("");
   let after = "";
   if (answered) {
     const ok = drill.picked === q.answer, cpa = (q.cpa || []).map(t => CPA[t] || t).join("; ");
-    after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}">${ok ? "Correct" : "Not quite. The answer is " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</div>
-      <p>${esc(q.explain)}</p>
-      <div class="meta"><span><b>Source:</b> ${esc(q.source)}</span>${cpa ? `<span><b>Also counts for CPA:</b> ${esc(cpa)}</span>` : ""}<span><b>Mastery here:</b> ${pct(mastery(q.domain))}%</span></div></div>`;
+    const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
+    const sub = ok ? (drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line) : drill.line;
+    after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
+      <p>${figs(esc(q.explain))}</p>
+      <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
         <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
       : `<div class="actions"><button class="btn primary" id="next">Next question</button><button class="btn ghost" id="flag">Flag as wrong</button></div>`;
   }
   $("#app").innerHTML = top + `
-    <article class="sheet">
-      <div class="sheet-head"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]}</span><span class="d">${esc(D.name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
+    <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
+      <div class="dhead"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]} · TY 2025</span><span class="d">${esc(D.name)}</span>
+        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
+        ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
       <div class="choices">${choices}</div>${after}
     </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, Enter for the next question.</p>`}`;
@@ -1216,8 +1289,11 @@ function renderDrill() {
 function answerDrill(i) {
   if (!drill.q || drill.picked != null) return;
   drill.picked = drill.perm[i];
-  const before = todayCount();
-  record(drill.q, drill.picked === drill.q.answer, "drill");
+  const before = todayCount(), ok = drill.picked === drill.q.answer;
+  drill.mBefore = mastery(drill.q.domain);
+  record(drill.q, ok, "drill");
+  drill.mAfter = mastery(drill.q.domain);
+  drill.run = ok ? (drill.run || 0) + 1 : 0; drill.line = pickLine(ok ? PRAISE : CONSOLE);
   if (before < state.goal && todayCount() >= state.goal) toast(`Daily goal done: ${state.goal} questions.`);
   renderDrill();
 }

@@ -310,7 +310,22 @@ function startDrill(domain) {
   drill = drill || { domain, q: null };
   renderDrill(); window.scrollTo(0, 0);
 }
-function nextQ() { const d = drill.domain; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; renderDrill(); }
+function nextQ() { const d = drill.domain, run = drill.run || 0; drill = pickNext(d, state.part, drill.q && drill.q.id) || { q: null }; drill.domain = d; drill.run = run; renderDrill(); }
+/* The area's tower on the question card: 12 floors of 3 windows, lit up to the area's mastery.
+   After an answer, windows that just lit glow in and windows that just went dark flicker out. */
+function towerSvg(m, prev) {
+  const F = 12, W = 3, N = F * W, lit = Math.floor(m * N + 1e-9), was = prev == null ? lit : Math.floor(prev * N + 1e-9);
+  let w = "";
+  for (let i = 0; i < N; i++) {
+    const f = Math.floor(i / W), x = 10 + (i % W) * 9.5, y = 73 - (f + 1) * 5;
+    const c = i < lit ? (i >= was ? "on pop" : "on") : (i < was ? "drop" : "off");
+    w += `<rect class="${c}" x="${x}" y="${y + 1.2}" width="7" height="2.8" rx="0.6" style="--d:${(i - Math.min(lit, was)) * 60}ms"/>`;
+  }
+  return `<svg class="dtower" viewBox="0 0 48 80" aria-hidden="true"><rect class="spire${m >= 0.999 ? " gold" : ""}" x="22.5" y="3" width="3" height="10" rx="1"/><rect class="body" x="7" y="12" width="34" height="62" rx="1.5"/>${w}<rect class="base" x="2" y="74" width="44" height="3" rx="1"/></svg>`;
+}
+const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
+const pickLine = a => a[Math.floor(Math.random() * a.length)];
+const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
   const scope = drill.domain ? DOMAINS[drill.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
@@ -324,22 +339,27 @@ function renderDrill() {
   const choices = drill.perm.map((o, i) => {
     let c = "choice";
     if (answered) c += o === q.answer ? " right" : o === drill.picked ? " wrong" : " dim";
-    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${"ABCD"[i]}</span><span>${esc(q.choices[o])}</span></button>`;
+    const mark = answered && o === q.answer ? "✓" : answered && o === drill.picked ? "✕" : "ABCD"[i];
+    return `<button class="${c}" data-i="${i}"${answered ? " disabled" : ""}><span class="L">${mark}</span><span>${esc(q.choices[o])}</span></button>`;
   }).join("");
   let after = "";
   if (answered) {
     const ok = drill.picked === q.answer, cpa = (q.cpa || []).map(t => CPA[t] || t).join("; ");
-    after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}">${ok ? "Correct" : "Not quite. The answer is " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</div>
-      <p>${esc(q.explain)}</p>
-      <div class="meta"><span><b>Source:</b> ${esc(q.source)}</span>${cpa ? `<span><b>Also counts for CPA:</b> ${esc(cpa)}</span>` : ""}<span><b>Mastery here:</b> ${pct(mastery(q.domain))}%</span></div></div>`;
+    const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
+    const sub = ok ? (drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line) : drill.line;
+    after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
+      <p>${figs(esc(q.explain))}</p>
+      <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
         <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
       : `<div class="actions"><button class="btn primary" id="next">Next question</button><button class="btn ghost" id="flag">Flag as wrong</button></div>`;
   }
   $("#app").innerHTML = top + `
-    <article class="sheet">
-      <div class="sheet-head"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]}</span><span class="d">${esc(D.name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
+    <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
+      <div class="dhead"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]} · TY 2025</span><span class="d">${esc(D.name)}</span>
+        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
+        ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
       <div class="choices">${choices}</div>${after}
     </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, Enter for the next question.</p>`}`;
@@ -353,8 +373,11 @@ function renderDrill() {
 function answerDrill(i) {
   if (!drill.q || drill.picked != null) return;
   drill.picked = drill.perm[i];
-  const before = todayCount();
-  record(drill.q, drill.picked === drill.q.answer, "drill");
+  const before = todayCount(), ok = drill.picked === drill.q.answer;
+  drill.mBefore = mastery(drill.q.domain);
+  record(drill.q, ok, "drill");
+  drill.mAfter = mastery(drill.q.domain);
+  drill.run = ok ? (drill.run || 0) + 1 : 0; drill.line = pickLine(ok ? PRAISE : CONSOLE);
   if (before < state.goal && todayCount() >= state.goal) toast(`Daily goal done: ${state.goal} questions.`);
   renderDrill();
 }

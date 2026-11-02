@@ -303,6 +303,59 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
 .explain p { margin: 0; font-family: var(--f-read); font-size: 16px; line-height: 1.55; max-width: 65ch; }
 .meta { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-soft); }
 .meta b { color: var(--ink); font-weight: 650; }
+/* Drill card: a dusk header with the area's tower, a verdict with the buddy, figures picked out in the explanation.
+   Scoped to .drillsheet so the exam sim keeps its plain, PSI-like sheet. */
+.drillsheet .dhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 12px; padding: 14px 14px 0 16px; color: #fff;
+  background: radial-gradient(120% 90% at 85% 110%, rgba(217,135,110,0.55), transparent 60%), linear-gradient(165deg, var(--dusk-top) 0%, var(--dusk-mid) 75%, #4a3366 100%); }
+.drillsheet .dhead .id { display: grid; gap: 3px; min-width: 0; padding-bottom: 14px; }
+.drillsheet .dhead .k { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.68); font-weight: 700; }
+.drillsheet .dhead .d { font-weight: 750; font-size: 16px; line-height: 1.25; }
+.drillsheet .dhead .m { font-size: 12.5px; color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.drillsheet .dhead .m b { color: #ffd27a; font-weight: 750; }
+.drillsheet .dhead .m b.dn { color: #ff9aac; }
+.drillsheet .dhead .m i { font-style: normal; opacity: 0.6; }
+.dtower { width: 48px; height: 80px; display: block; margin-bottom: -1px; }
+.dtower .body { fill: #241f52; stroke: #4b4288; stroke-width: 1; }
+.dtower .base { fill: #4b4288; }
+.dtower .spire, .dtower .crown { fill: #4b4288; }
+.dtower .gold { fill: #ffd27a; }
+.dtower rect.off, .dtower rect.drop { fill: #3d3577; }
+.dtower rect.on { fill: #ffd27a; filter: drop-shadow(0 0 1.6px rgba(255,210,122,0.9)); }
+.drillsheet .qbody { padding-top: 16px; }
+.drillsheet .choice .L { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); border: 1.5px solid var(--line); font: 750 12.5px/1 var(--f-ui); margin-top: -1px; }
+.drillsheet .choice { grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: center; }
+.drillsheet .choice.right .L { background: var(--good); border-color: var(--good); color: #fff; }
+.drillsheet .choice.wrong .L { background: var(--bad); border-color: var(--bad); color: #fff; }
+.drillsheet .explain { border-top: 0; padding-top: 4px; gap: 12px; }
+.drillsheet .verdict { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; font-weight: 400; }
+.drillsheet .verdict.ok { background: var(--good-soft); color: var(--good); }
+.drillsheet .verdict.no { background: var(--bad-soft); color: var(--bad); }
+.drillsheet .vbuddy { width: 44px; height: 56px; object-fit: cover; object-position: top; margin: -14px 0 -8px; transform-origin: 50% 90%; }
+.drillsheet .vt { display: grid; gap: 1px; min-width: 0; }
+.drillsheet .vt b { font-size: 15.5px; font-weight: 800; }
+.drillsheet .vt span { font-size: 13px; color: var(--ink-soft); }
+.drillsheet .delta { font: 800 13px/1 var(--f-ui); font-variant-numeric: tabular-nums; padding: 6px 9px; border-radius: 999px; background: var(--paper); }
+.drillsheet .delta.up { color: var(--good); } .drillsheet .delta.down { color: var(--bad); }
+.drillsheet mark.fig { background: linear-gradient(transparent 62%, var(--warn-soft) 62%); color: var(--ink); font-family: var(--f-ui); font-weight: 650; font-size: 0.94em; padding: 0 1px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.drillsheet .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.drillsheet .meta .mk { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-right: 2px; }
+.drillsheet .meta .mk:not(:first-child) { flex-basis: 100%; margin-top: 4px; }
+.drillsheet .pill { font-size: 12.5px; font-weight: 600; color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 3px 9px; border-radius: 10px; }
+@media (prefers-reduced-motion: no-preference) {
+  .dtower rect.pop { animation: winPop 0.9s var(--d, 0ms) both ease-out; }
+  .dtower rect.drop { animation: winDrop 0.9s var(--d, 0ms) both; }
+  .drillsheet .verdict { animation: verdictIn 0.35s both cubic-bezier(.2,.9,.3,1.2); }
+  .drillsheet .verdict.ok .vbuddy { animation: buddyHop 0.6s 0.1s both ease-out; }
+  .drillsheet .verdict.no .vbuddy { animation: buddyTilt 0.7s 0.1s both ease-in-out; }
+  .drillsheet .choice.wrong { animation: choiceShake 0.4s both; }
+  .drillsheet .delta { animation: verdictIn 0.4s 0.25s both cubic-bezier(.2,.9,.3,1.4); }
+}
+@keyframes winPop { 0% { fill: #3a3372; filter: none; } 40% { fill: #fff6d8; filter: drop-shadow(0 0 4px #ffd27a); } 100% { fill: #ffd27a; } }
+@keyframes winDrop { 0% { fill: #ffd27a; } 30% { fill: #ff6b81; } 55% { fill: #3a3372; } 70% { fill: #ff6b81; } 100% { fill: #3a3372; } }
+@keyframes verdictIn { from { opacity: 0; transform: translateY(6px) scale(0.98); } }
+@keyframes buddyHop { 0% { transform: translateY(6px) scale(0.9); } 45% { transform: translateY(-5px) rotate(-4deg); } 100% { transform: none; } }
+@keyframes buddyTilt { 0%, 100% { transform: none; } 30% { transform: rotate(-8deg); } 60% { transform: rotate(5deg); } }
+@keyframes choiceShake { 0%, 100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 16px 16px; }
 .flagform { padding: 0 16px 16px; display: grid; gap: 8px; }
 textarea, select { font: 400 16px var(--f-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
