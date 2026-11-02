@@ -266,21 +266,26 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   background: linear-gradient(180deg, color-mix(in srgb, var(--hue-soft, var(--line)) 70%, var(--paper)), var(--hue-soft, var(--line)));
   color: var(--hue-ink, var(--ink)); box-shadow: inset 0 -3px 0 var(--hue-edge, var(--ink-faint)), 0 2px 6px -3px rgba(20,30,60,0.25); }
 .soft:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 var(--hue-edge, var(--ink-faint)); }
-.focus-tile { display: grid; gap: 8px; }
-.focus-tile .big { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
 .meter { display: block; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; position: relative; }
 .meter i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: var(--hue, var(--amber)); }
 .part-head { padding: 6px 4px 0; }
-.area-card { padding: 16px; display: grid; gap: 14px; }
-.area-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; background: none; border: 0; padding: 0; text-align: left; color: inherit; font: inherit; cursor: pointer; }
-.gem { width: 13px; height: 13px; align-self: start; margin-top: 6px; transform: rotate(45deg); border-radius: 3px; background: linear-gradient(135deg, color-mix(in srgb, var(--hue) 45%, #fff), var(--hue)); box-shadow: 0 1px 3px color-mix(in srgb, var(--hue) 60%, transparent); }
-.area-top .nm { font-size: 17px; font-weight: 650; letter-spacing: -0.01em; }
-.area-top .pct { align-self: start; font-size: 20px; font-weight: 700; color: var(--hue); font-variant-numeric: tabular-nums; }
-.area-top .area-meta { grid-column: 2 / -1; font-size: 13.5px; color: var(--ink-faint); }
-.area-top .area-meta b { color: var(--hue-ink); font-weight: 650; }
-.area-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.area-foot > span > span { white-space: nowrap; }
-.area-foot .soft { padding: 10px 18px; flex: none; }
+.area-card { padding: 14px 12px 14px 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.area-card.focus { border-color: var(--hue); box-shadow: 0 0 0 1px var(--hue), var(--shadow); background: color-mix(in srgb, var(--hue-soft) 45%, var(--paper)); }
+.area-top { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 12px; align-items: center; background: none; border: 0; padding: 0; text-align: left; color: inherit; font: inherit; cursor: pointer; }
+.area-art { height: 80px; display: grid; place-items: center; padding-right: 8px; border-right: 1px solid var(--line); }
+.area-art img { width: 100%; height: 100%; object-fit: contain; }
+.area-art .dtower { width: 42px; height: 70px; }
+.area-txt { display: grid; gap: 3px; min-width: 0; }
+.area-txt .nm { font-size: 16.5px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+.area-txt .bld { font-size: 14px; color: var(--ink-soft); }
+.area-txt .area-meta > span, .area-txt .area-meta b { white-space: nowrap; }
+.area-txt .area-meta { font-size: 13px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.area-txt .area-meta b { color: var(--hue-ink); font-weight: 650; }
+.area-side { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 10px; }
+.area-side .pct { font-size: 22px; font-weight: 750; color: var(--hue); font-variant-numeric: tabular-nums; line-height: 1.1; padding-right: 2px; }
+.area-side .start { font-size: 13.5px; font-weight: 650; color: var(--hue-ink); background: var(--hue-soft); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+.area-side .soft { padding: 8px 14px; font-size: 14px; }
+.area-side .soft.solid { background: var(--hue-ink); color: var(--paper); box-shadow: inset 0 -3px 0 rgba(0,0,0,0.25), 0 4px 10px -4px color-mix(in srgb, var(--hue-ink) 70%, transparent); }
 .hist { display: flex; gap: 8px; align-items: end; height: 72px; }
 .hist div { flex: 1; display: grid; gap: 4px; justify-items: center; font-size: 11px; color: var(--ink-soft); min-width: 0; }
 .hist span.b { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: var(--amber); }
@@ -1151,17 +1156,20 @@ function pushTown() {
 /* ---------- home cards ---------- */
 const examShare = d => Math.round(DOMAINS[d].n / 85 * 100);
 const hueOf = d => partDomains(DOMAINS[d].part).indexOf(d) % 6;
-function areaCard(d) {
-  const D = DOMAINS[d], m = mastery(d), a = accuracy(d), qs = inBank(d), now = Date.now();
+/* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
+   Add the id here once its file is in; until then the card shows the area's tower, lit to mastery. */
+const ART = new Set([]);
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+function areaCard(d, focus) {
+  const D = DOMAINS[d], m = mastery(d), qs = inBank(d), now = Date.now();
   const due = qs.filter(q => isDue(q, now)).length;
-  const learned = qs.filter(q => st(q.id).box >= 3).length, unseen = qs.filter(q => !st(q.id).seen).length;
-  const meta = [`${examShare(d)}% of the exam`, esc(D.bld), a == null ? "not started" : pct(a) + "% right"];
-  if (due) meta.push(`<b>${due} due</b>`);
-  return `<section class="card area-card hue-${hueOf(d)}">
-    <button class="area-top" data-sheet="${d}"><i class="gem" aria-hidden="true"></i>
-      <span class="nm">${esc(D.name)}</span><span class="pct">${pct(m)}%</span><span class="area-meta">${meta.join(" · ")}</span></button>
-    <span class="meter"><i style="width:${pct(m)}%"></i></span>
-    <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
+  const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : towerSvg(m);
+  return `<section class="card area-card hue-${hueOf(d)}${focus ? " focus" : ""}">
+    <button class="area-top" data-sheet="${d}"><span class="area-art" aria-hidden="true">${art}</span>
+      <span class="area-txt"><span class="nm">${esc(D.name)}</span><span class="bld">${esc(cap(D.bld))}</span>
+        <span class="area-meta"><span>${examShare(d)}% of exam</span> · <span>${qs.length} questions</span>${due ? ` · <b>${due} due</b>` : ""}</span></span></button>
+    <div class="area-side">${focus && m === 0 ? `<span class="start">Start here</span>` : `<span class="pct">${pct(m)}%</span>`}
+      <button class="soft${focus ? " solid" : ""}" data-drill="${d}">Practice</button></div>
   </section>`;
 }
 function renderHome() {
@@ -1202,11 +1210,8 @@ function renderHome() {
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
-    ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
-      <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
-      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
-    ${partDomains(p).map(areaCard).join("")}
+    ${partDomains(p).map(d => areaCard(d, g && g.m < 0.999 && g.d === d)).join("")}
     <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
       ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
