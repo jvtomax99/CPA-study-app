@@ -193,40 +193,13 @@ function areaCard(d) {
     <div class="area-foot"><span><span>${learned} learned</span> · <span>${qs.length - learned - unseen} shaky</span> · <span>${unseen} unseen</span></span><button class="soft" data-drill="${d}">Practice</button></div>
   </section>`;
 }
-function scoresCard(exams) {
-  const resume = state.examRun ? `<button class="soft amber" id="resume">Resume exam</button>` : "";
-  if (!exams.length) return `<section class="card pad scores"><div class="spread"><h2>Exam sim scores</h2>${resume}</div>
-    <p class="muted small" style="margin:0">No exam sims yet. A full sim is 100 questions in 3.5 hours, in three sections, like the real test. Your scores chart here.</p></section>`;
-  const sc = exams.map(e => e.score), last = exams[exams.length - 1], all = state.exams.map(e => e.score);
-  const avg = all.reduce((a, b) => a + b, 0) / all.length, best = Math.max(...all);
-  const prev = all.slice(0, -1), diff = prev.length ? pct(last.score) - pct(prev.reduce((a, b) => a + b, 0) / prev.length) : null;
-  const W = 300, H = 120, x0 = 12, x1 = 250, y = v => 8 + (1 - v) * (H - 16);
-  const xs = sc.map((_, i) => sc.length === 1 ? (x0 + x1) / 2 : x0 + i * (x1 - x0) / (sc.length - 1));
-  const pts = sc.map((v, i) => `${xs[i].toFixed(1)},${y(v).toFixed(1)}`);
-  const area = `M${xs[0].toFixed(1)},${H}L${pts.join("L")}L${xs[xs.length - 1].toFixed(1)},${H}Z`;
-  const day = t => new Date(t).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  return `<section class="card pad scores"><div class="spread"><h2>Exam sim scores</h2>${resume}</div>
-    <div class="big-score">${pct(last.score)}%</div>
-    <div class="spread"><span class="muted">last sim · Part ${last.part} · ${day(last.t)}</span>${diff == null ? "" : `<span class="vs-chip${diff < 0 ? " down" : ""}">${diff >= 0 ? "+" : ""}${diff} vs average</span>`}</div>
-    <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Last ${sc.length} exam sim scores: ${sc.map(v => pct(v) + "%").join(", ")}">
-      <defs><linearGradient id="scfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--chart)" stop-opacity=".22"/><stop offset="1" stop-color="var(--chart)" stop-opacity="0"/></linearGradient></defs>
-      <line class="grid" x1="0" x2="${x1 + 10}" y1="${y(1)}" y2="${y(1)}"/><text x="${W}" y="${y(1) + 4}">100%</text>
-      <line class="grid" x1="0" x2="${x1 + 10}" y1="${y(.5)}" y2="${y(.5)}"/><text x="${W}" y="${y(.5) + 4}">50%</text>
-      <line class="base" x1="0" x2="${x1 + 10}" y1="${H - .5}" y2="${H - .5}"/>
-      <path d="${area}" fill="url(#scfill)"/>
-      ${sc.length > 1 ? `<polyline points="${pts.join(" ")}"/>` : ""}
-      ${xs.map((x, i) => `<circle cx="${x.toFixed(1)}" cy="${y(sc[i]).toFixed(1)}" r="${i === sc.length - 1 ? 6 : 4.5}"><title>${pct(sc[i])}% · Part ${exams[i].part} · ${day(exams[i].t)}</title></circle>`).join("")}
-    </svg>
-    <div class="score-stats"><span><b>${all.length}</b> sim${all.length === 1 ? "" : "s"}</span><span><b>${pct(avg)}%</b> average</span><span><b>${pct(best)}%</b> best</span></div>
-  </section>`;
-}
 function renderHome() {
   view = "home";
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak();
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
-  const exams = state.exams.slice(-8);
+  const exams = state.exams.slice(-6);
   $("#app").innerHTML = `
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
@@ -258,13 +231,15 @@ function renderHome() {
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
-    ${g && g.m < 0.999 ? `<section class="card pad focus-tile hue-${hueOf(g.d)}"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
-      <div class="muted">${examShare(g.d)}% of the exam · ${pct(g.m)}% mastered</div>
-      <span class="meter"><i style="width:${pct(g.m)}%"></i></span>
-      <div><button class="soft" data-drill="${g.d}">Practice it</button></div></section>` : ""}
+    ${g && g.m < 0.999 ? `<section class="card pad focus-tile"><h2>Focus next</h2><div class="big">${esc(DOMAINS[g.d].name)}</div>
+      <div class="muted small">${pct(g.m)}% mastered · ${DOMAINS[g.d].n} scored questions on the exam · ${inBank(g.d).length} in the bank</div>
+      <div><button class="btn primary" data-drill="${g.d}">Practice it</button></div></section>` : ""}
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
     ${partDomains(p).map(areaCard).join("")}
-    ${scoresCard(exams)}
+    <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
+      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
+        : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
+    </section>
   </div>`;
   $("#app").querySelectorAll(".ptab").forEach(b => b.onclick = () => { state.part = b.dataset.part; tsView = false; save(); renderHome(); });
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };

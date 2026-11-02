@@ -169,9 +169,8 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   background: linear-gradient(180deg, color-mix(in srgb, var(--hue-soft, var(--line)) 70%, var(--paper)), var(--hue-soft, var(--line)));
   color: var(--hue-ink, var(--ink)); box-shadow: inset 0 -3px 0 var(--hue-edge, var(--ink-faint)), 0 2px 6px -3px rgba(20,30,60,0.25); }
 .soft:active { transform: translateY(1px); box-shadow: inset 0 -1px 0 var(--hue-edge, var(--ink-faint)); }
-.soft.amber { --hue-soft: var(--warn-soft); --hue-ink: var(--warn); --hue-edge: var(--amber); }
-.focus-tile { display: grid; gap: 10px; }
-.focus-tile .big { font-size: 22px; font-weight: 800; letter-spacing: -0.015em; }
+.focus-tile { display: grid; gap: 8px; }
+.focus-tile .big { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
 .meter { display: block; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; position: relative; }
 .meter i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: var(--hue, var(--amber)); }
 .part-head { padding: 6px 4px 0; }
@@ -185,18 +184,9 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
 .area-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .area-foot > span > span { white-space: nowrap; }
 .area-foot .soft { padding: 10px 18px; flex: none; }
-.scores { --chart: #3d7cc9; display: grid; gap: 6px; }
-.big-score { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-top: 4px; font-variant-numeric: tabular-nums; }
-.vs-chip { padding: 4px 12px; border-radius: 999px; background: var(--good-soft); color: var(--good); font-weight: 650; font-size: 14px; }
-.vs-chip.down { background: var(--bad-soft); color: var(--bad); }
-.chart { width: 100%; height: auto; margin: 10px 0 4px; overflow: visible; }
-.chart .grid { stroke: var(--line); stroke-dasharray: 4 4; }
-.chart .base { stroke: var(--line); }
-.chart text { fill: var(--ink-faint); font-size: 11px; text-anchor: end; }
-.chart polyline { fill: none; stroke: var(--chart); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.chart circle { fill: var(--chart); stroke: var(--paper); stroke-width: 2; }
-.score-stats { display: flex; gap: 20px; flex-wrap: wrap; color: var(--ink-soft); font-size: 14.5px; }
-.score-stats b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.hist { display: flex; gap: 8px; align-items: end; height: 72px; }
+.hist div { flex: 1; display: grid; gap: 4px; justify-items: center; font-size: 11px; color: var(--ink-soft); min-width: 0; }
+.hist span.b { width: 100%; max-width: 34px; border-radius: 6px 6px 2px 2px; background: var(--amber); }
 
 /* Question sheet (drill + exam) */
 .qbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-block: 4px 10px; flex-wrap: wrap; }
