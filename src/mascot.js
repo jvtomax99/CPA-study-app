@@ -4,7 +4,7 @@
      person's name in Parisienne, a tax quote of the day in Lora italic;
    - the buddy as a bust popping out of a gold-coin disc, with a ring of numbers turning
      behind it (Dr. Smiley's ring is the Hackensack mark's sixteen squares);
-   - a "Play" button on the calculator he holds (where Dr. Smiley has his "Ask" badge);
+   - "PLAY" lit up on the screen of the calculator he holds (where Dr. Smiley has his "Ask" badge);
    - the hello, once per app load: numbers and equations spiral in from the edges, lock
      into a ring around "A = L + E", pulse, then spin down into him with a flash and gold
      stars. He springs in, Play lights up on his calculator, his name is written in, and
@@ -129,7 +129,8 @@
               <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
                 <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
-              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"><span class="bp-key"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></svg>Play</span></button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
+              <span class="bp-lcd" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 3v10l9-5z" fill="currentColor"/></svg>PLAY</span>
             </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
             <span class="buddy-status" aria-live="polite"></span>
@@ -381,7 +382,7 @@
     let frame = 0, last = null, elapsed = 0, entered = false, thought = false;
     root.classList.add("buddy-entering", "buddy-wait");
     // Play lights up on his calculator just after he lands
-    anim(root.querySelector(".buddy-play"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
+    anim(root.querySelector(".bp-lcd"), [{ opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.18, offset: 0.6 }, { opacity: 1, scale: 1 }], { duration: 420, delay: PLAY_AT, fill: "backwards", easing: "ease-out" });
     const land = () => { entered = true; body.style.transform = ""; body.style.opacity = ""; root.classList.remove("buddy-entering"); };
     const stop = () => {
       cancelAnimationFrame(frame); anims.forEach(a => a.cancel()); anims = [];
