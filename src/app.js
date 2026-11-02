@@ -327,6 +327,15 @@ function towerSvg(m, prev) {
 }
 const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
 const pickLine = a => a[Math.floor(Math.random() * a.length)];
+/* Questions whose explanation links to the loss sorter (art/loss-sorter.html), with the case it opens on */
+const MACHINE = { "p2d1a-018": 0, "p2d1b-023": 1, "p2d1b-024": 2, "p2d2a-006": 3 };
+function openMachine(n) {
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet figsheet" role="dialog" aria-label="Loss sorter"><div class="grab"></div>
+    <div class="figbar"><b>Loss sorter</b><button class="btn ghost" id="figx" type="button">Close</button></div>
+    <iframe src="art/loss-sorter.html?case=${n}" title="Loss sorter: the basis, at-risk, passive and excess business loss limits in order"></iframe></div></div>`;
+  $("#figx").onclick = closeLayer;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+}
 const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
@@ -350,7 +359,7 @@ function renderDrill() {
     const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
     const sub = ok ? (drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line) : drill.line;
     after = `<div class="explain"><div class="verdict ${ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
-      <p>${figs(esc(q.explain))}</p>
+      <p>${figs(esc(q.explain))}</p>${MACHINE[q.id] != null ? `<button class="machine" id="machine" type="button">See it on the loss sorter ›</button>` : ""}
       <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
     after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
         <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
@@ -369,6 +378,7 @@ function renderDrill() {
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
   if ($("#summary")) $("#summary").onclick = renderSummary;
+  if ($("#machine")) $("#machine").onclick = () => openMachine(MACHINE[q.id]);
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
   if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
