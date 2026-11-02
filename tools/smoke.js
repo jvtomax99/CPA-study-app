@@ -87,12 +87,21 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
 
   /* loss sorter: a linked question's explanation opens the figure in a sheet on that question's case (sess reset so Back goes home, not to the summary) */
   await p.evaluate(() => { sess = null; drill = { q: BANK.find(q => q.id === "p2d1b-023"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
-  await p.click(".choice >> nth=2"); await p.click("#machine");
+  await p.click(".choice >> nth=2"); await p.click(".machine[data-fig=loss-sorter]");
   const fig = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
   await fig.waitForSelector("[data-deducted]");
   check(await fig.evaluate(() => document.querySelector("[data-deducted]").textContent === "$18,000" && /^Jo/.test(document.querySelector("[aria-pressed=true]").textContent)), "loss sorter: opens on Jo's case and deducts $18,000");
   await p.click("#figx");
   check(!(await p.$("#scrim")), "loss sorter: Close shuts the sheet");
+  /* basis order: Ray's question opens it on his case; stepping to the end shows the $8,000 the bank gives, and the election gives $10,000 */
+  await p.evaluate(() => { drill = { q: BANK.find(q => q.id === "p2d1b-024"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
+  await p.click(".choice >> nth=1"); await p.click(".machine[data-fig=basis-order]");
+  const bo = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await bo.waitForSelector("[data-out=deducted]"); await bo.focus(".iso-stage"); await bo.press(".iso-stage", "End");
+  check(await bo.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$8,000" && document.querySelector("[data-out=suspended]").textContent === "$4,000" && /^Ray$/.test(document.querySelector("[aria-pressed=true]").textContent)), "basis order: opens on Ray's case and deducts $8,000");
+  await bo.click("[data-in=election]");
+  check(await bo.evaluate(() => document.querySelector("[data-out=deducted]").textContent === "$10,000"), "basis order: the election deducts $10,000");
+  await p.click("#figx");
 
   /* exam sim */
   await p.click("#back"); await p.click("#examgo"); await p.click("#start");
