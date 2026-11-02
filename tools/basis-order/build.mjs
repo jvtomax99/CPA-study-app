@@ -126,7 +126,7 @@ const css = `
 .iso-page{margin:16px auto 32px}
 .iso-plate{overflow:hidden}
 .iso-stage{touch-action:pan-y}
-@media (max-width:520px){.iso-page{margin:8px auto 24px;width:calc(100% - 20px)}.bo-table th:nth-child(5),.bo-table td:nth-child(5){display:none}}
+@media (max-width:520px){.iso-page{margin:8px auto 24px;width:calc(100% - 20px)}.iso-stage svg{transform:scale(1.3);transform-origin:50% 50%}.bo-table th:nth-child(5),.bo-table td:nth-child(5){display:none}}
 `;
 
 const body = `<style>${css}</style>` + k.plateHtml({

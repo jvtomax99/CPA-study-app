@@ -3,6 +3,7 @@ const svg = stage.querySelector("svg");
 const scene = svg.querySelector("[data-scene]");
 const readout = document.querySelector("[data-readout]");
 const stepName = document.querySelector("[data-stepname]");
+if (matchMedia("(pointer: coarse)").matches) { const hint = document.querySelector('[data-corner="hint"]'); if (hint) hint.textContent = "Tap › to step through"; }
 const still = matchMedia("(prefers-reduced-motion: reduce)");
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const ease = (t) => t * t * (3 - 2 * t);
