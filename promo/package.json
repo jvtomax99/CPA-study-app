@@ -1,0 +1,20 @@
+{
+  "name": "ea-drill-guide",
+  "private": true,
+  "description": "Remotion project for the app's narrated how-to video (media/how-to-use.mp4). Not part of the app.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render HowTo out/how-to-use.mp4",
+    "finish": "sh tools/finish.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.537",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.537"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

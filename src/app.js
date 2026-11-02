@@ -22,7 +22,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, guideSeen: false }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -211,6 +211,9 @@ function renderHome() {
   </section>
   <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights a gold crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   <div class="stack">
+    ${state.guideSeen ? "" : `<section class="card pad focus-tile"><h2>How to use this app</h2>
+      <div class="muted small">A 2-minute guide with narration. Step one: add this app to your Home Screen, so your progress is kept.</div>
+      <div class="row"><button class="btn amber" id="guidego">Watch the guide</button><button class="btn ghost" id="guidex">Not now</button></div></section>`}
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
@@ -233,6 +236,8 @@ function renderHome() {
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
+  if ($("#guidego")) $("#guidego").onclick = openGuide;
+  if ($("#guidex")) $("#guidex").onclick = () => { state.guideSeen = true; save(); renderHome(); toast("The guide is in More whenever you want it."); };
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
@@ -276,6 +281,18 @@ function openArea(d) {
   $("#sheetgo").onclick = () => { closeLayer(); startDrill(d); };
   if (window.Town && window.Town.highlight) window.Town.highlight(d);
 }
+/* the how-to video (media/how-to-use.mp4, made in promo/) */
+function openGuide() {
+  if (!state.guideSeen) { state.guideSeen = true; save(); }
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app">
+    <div class="grab"></div>
+    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
+    <div class="row" style="justify-content:space-between;align-items:center"><span class="hint">Step one: add this app to your Home Screen.</span><button class="btn ghost" id="guideclose">Close</button></div>
+  </div></div>`;
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeGuide(); };
+  $("#guideclose").onclick = closeGuide;
+}
+function closeGuide() { const v = $("#guidevid"); if (v) v.pause(); closeLayer(); if (view === "home") renderHome(); }
 function closeLayer() { $("#layer").innerHTML = ""; if (window.Town && window.Town.highlight) window.Town.highlight(null); }
 
 /* ---------- Drill ---------- */
@@ -469,6 +486,9 @@ function renderMore() {
   const rem = state.reminder || {}, remPick = rem.pick || rem.time || "1900";
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
   <div class="stack" style="margin-top:0">
+    <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
+      <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
+      <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
       <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
@@ -498,6 +518,7 @@ function renderMore() {
       <span>Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.</span></section>
   </div>`;
   $("#back").onclick = renderHome;
+  $("#guidemore").onclick = openGuide;
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
   $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };
@@ -533,7 +554,7 @@ document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || "").toLowerCase(); if (tag === "textarea" || tag === "input" || tag === "select") return;
   const k = e.key.toLowerCase(), i = "abcd".indexOf(k) >= 0 ? "abcd".indexOf(k) : "1234".indexOf(k);
-  if (e.key === "Escape" && $("#scrim")) return closeLayer();
+  if (e.key === "Escape" && $("#scrim")) return $("#guidevid") ? closeGuide() : closeLayer();
   if (view === "drill" && drill && drill.q) {
     if (drill.picked == null && i >= 0) { e.preventDefault(); answerDrill(i); }
     else if (drill.picked != null && !drill.flagging && (k === "enter" || k === "n")) { e.preventDefault(); nextQ(); }
