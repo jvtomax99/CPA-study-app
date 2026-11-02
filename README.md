@@ -22,6 +22,7 @@ A study app for the IRS Enrolled Agent exam (SEE), tax year 2025 law, for the Ju
 - `src/shell.html`: page markup and styles
 - `tools/make_reminders.py`: writes the daily-reminder calendar files in `reminders/`
 - `tools/make_icons.js`: draws the app icon into `icons/` (used by `manifest.webmanifest`)
+- `tools/loss-sorter/`: the loss sorter, a drawn machine that sorts a loss through the basis, at-risk, passive and excess business loss limits in order. The drill links to it from the four questions it reproduces. Run `node tools/loss-sorter/build.mjs` to write `art/loss-sorter.html`, and `node tools/loss-sorter/test.mjs` to check its cases against the bank. Its drawing kit is from [Anatomy](https://github.com/wheresryan22/anatomy) (MIT).
 - `tools/smoke.js`: headless test of the greeting and study buddy, the town, drill, flagging, "I guessed", the session summary, exam sim and backup. Run `node tools/smoke.js` after building.
 - `docs/`: content outlines and the briefs used to write and fact-check questions. See `docs/HANDOFF.md`.
 

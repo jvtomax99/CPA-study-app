@@ -85,6 +85,15 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#back");
   check(await p.evaluate(() => !!document.querySelector("#sumgo") && /was a guess, counted as a miss/.test(document.querySelector("#app .card .muted").textContent) && document.querySelectorAll("table.res tbody tr").length >= 1), "drill: leaving after 3 answers shows the session summary");
 
+  /* loss sorter: a linked question's explanation opens the figure in a sheet on that question's case (sess reset so Back goes home, not to the summary) */
+  await p.evaluate(() => { sess = null; drill = { q: BANK.find(q => q.id === "p2d1b-023"), reason: "new", perm: [0, 1, 2, 3], picked: null, flagging: false, domain: null, guessed: false }; renderDrill(); });
+  await p.click(".choice >> nth=2"); await p.click("#machine");
+  const fig = await (await p.waitForSelector(".figsheet iframe")).contentFrame();
+  await fig.waitForSelector("[data-deducted]");
+  check(await fig.evaluate(() => document.querySelector("[data-deducted]").textContent === "$18,000" && /^Jo/.test(document.querySelector("[aria-pressed=true]").textContent)), "loss sorter: opens on Jo's case and deducts $18,000");
+  await p.click("#figx");
+  check(!(await p.$("#scrim")), "loss sorter: Close shuts the sheet");
+
   /* exam sim */
   await p.click("#back"); await p.click("#examgo"); await p.click("#start");
   await p.click(".choice >> nth=1"); await p.click("#endsec"); await p.click("#yes");
