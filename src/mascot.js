@@ -130,7 +130,7 @@
                 <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}"><span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
               <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
-              <span class="bp-lcd" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M4 3v10l9-5z" fill="currentColor"/></svg>PLAY</span>
+              <span class="bp-lcd" aria-hidden="true"><span class="bp-txt"><svg viewBox="0 0 16 16"><path d="M4 3v10l9-5z" fill="currentColor"/></svg>PLAY</span></span>
             </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
             <span class="buddy-status" aria-live="polite"></span>
