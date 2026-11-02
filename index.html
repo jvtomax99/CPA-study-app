@@ -786,13 +786,21 @@ if (state.examRun) renderExam(); else renderHome();
   } catch (e) { window.__townFail && window.__townFail(); return; }
 
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* graphics level: ?gfx=low or ?gfx=high forces it; otherwise a slow device drops to low on its own and remembers for 7 days */
+  const GFXKEY = "eaTaxTown.gfx", QS = new URLSearchParams(location.search), gfxForced = QS.get("gfx");
+  const gfxSaved = (() => { try { const v = JSON.parse(localStorage.getItem(GFXKEY) || "null"); return v && Date.now() - v.at < 7 * 864e5 ? v.level : null; } catch (e) { return null; } })();
+  if (gfxForced === "high") { try { localStorage.removeItem(GFXKEY); } catch (e) {} }
+  let low = gfxForced ? gfxForced === "low" : gfxSaved === "low";
+  const coarse = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  const dprFor = () => low ? 1 : Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(dprFor());
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate = false; /* redrawn only when the sun, the camera or a building's paint moves; movers cast no shadows */
   renderer.localClippingEnabled = true;
   renderer.setClearColor(0x000000, 0);
   const canvas = renderer.domElement;
@@ -809,7 +817,8 @@ if (state.examRun) renderExam(); else renderHome();
   const fill = new THREE.DirectionalLight(0xb9c8ff, 0.45); fill.position.set(40, 30, -30); scene.add(fill);
 
   /* ---------- materials ---------- */
-  const mat = (c, r = 0.85, m = 0) => new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: m });
+  const MATS = new Map(); /* same color, roughness and metalness share one material, so their meshes can merge */
+  const mat = (c, r = 0.85, m = 0) => { const k = c + "|" + r + "|" + m; if (!MATS.has(k)) MATS.set(k, new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: m })); return MATS.get(k); };
   const PAL = {
     grass: mat(0xc3ddb6), grass2: mat(0xb3d3a4), earth: mat(0xa8673e, 0.95), earth2: mat(0x7e4a2b, 0.95),
     road: mat(0x5c6070, 0.9), walk: mat(0xdcd8cf), line: mat(0xf3cf5a), white: mat(0xf4f3ef), pad: mat(0xe4e0d7),
@@ -847,6 +856,37 @@ if (state.examRun) renderExam(); else renderHome();
     const o = new THREE.Mesh(new THREE.ConeGeometry(Math.SQRT1_2, 1, 4, 1), m);
     o.rotation.y = Math.PI / 4; o.scale.set(w, rise, d); o.position.set(x, y + rise / 2, z); g.add(o); return o;
   }
+  /* fold every static mesh under root into one mesh per material, so the GPU gets a few big draws instead of hundreds of small ones */
+  const ATTRS = ["position", "normal", "uv"];
+  function mergeStatic(root, skip) {
+    root.updateMatrixWorld(true);
+    const inv = new THREE.Matrix4().copy(root.matrixWorld).invert(), M = new THREE.Matrix4(), buckets = new Map();
+    (function walk(o) {
+      for (const c of o.children) {
+        if (skip && skip.has(c)) continue;
+        if (c.isMesh && !c.isInstancedMesh && !Array.isArray(c.material) && !c.children.length && c.visible && ATTRS.every(a => c.geometry.attributes[a])) {
+          const k = c.material.uuid + "|" + c.castShadow + "|" + c.receiveShadow + "|" + (c.userData.d || "");
+          if (!buckets.has(k)) buckets.set(k, []); buckets.get(k).push(c);
+        } else if (c.children.length) walk(c);
+      }
+    })(root);
+    for (const list of buckets.values()) {
+      if (list.length < 2) continue;
+      const geos = list.map(m => { M.multiplyMatrices(inv, m.matrixWorld); const g = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry.clone(); g.applyMatrix4(M); return g; });
+      const out = new THREE.BufferGeometry();
+      for (const a of ATTRS) {
+        const n = geos[0].attributes[a].itemSize, arr = new Float32Array(geos.reduce((s, g) => s + g.attributes[a].count * n, 0)); let off = 0;
+        for (const g of geos) { arr.set(g.attributes[a].array, off); off += g.attributes[a].array.length; }
+        out.setAttribute(a, new THREE.BufferAttribute(arr, n));
+      }
+      const first = list[0], mesh = new THREE.Mesh(out, first.material);
+      mesh.castShadow = first.castShadow; mesh.receiveShadow = first.receiveShadow; if (first.userData.d) mesh.userData.d = first.userData.d;
+      for (const m of list) m.parent.remove(m);
+      root.add(mesh);
+    }
+    return root;
+  }
+  const noShadow = o => { o.traverse(c => { if (c.isMesh) c.castShadow = false; }); return o; };
   const winGeo = new THREE.BoxGeometry(0.62, 0.9, 0.12);
   function windows(g, m, spec) {
     const { w, d, floors, fh, y0, faces = ["+z", "-x"], gap = 1.35, inset = 0 } = spec;
@@ -1016,7 +1056,7 @@ if (state.examRun) renderExam(); else renderHome();
     b.paintMats = Object.values(P); b.P = P; b.hl = false;
     b.group = new THREE.Group(); b.group.position.set(b.x, 0, b.z); b.group.rotation.y = b.ry;
     const gp = new THREE.Group(), gc = new THREE.Group(); b.make(gp, P); b.make(gc, C);
-    tag(gp, d); tag(gc, d); b.group.add(gp, gc);
+    tag(gp, d); tag(gc, d); b.group.add(gp, gc); mergeStatic(gp); mergeStatic(gc);
     box(b.group, PAL.pad, b.w + 2, 0.12, b.d + 2, 0, 0, 0).receiveShadow = true;
     world.add(b.group); pickables.push(gp, gc);
     b.m = 0; b.target = 0; b.from = 0;
@@ -1033,7 +1073,8 @@ if (state.examRun) renderExam(); else renderHome();
     box(jib, PAL.crane, 0.7, 0.9, 0.7, 0, 0.45, 0);
     box(jib, PAL.dark, 0.05, 3.2, 0.05, 6.4, -3.2, 0); box(jib, PAL.crane, 0.35, 0.3, 0.35, 6.4, -3.5, 0);
     g.userData.jib = jib; jib.rotation.y = Math.random() * 6.28;
-    g.traverse(c => { if (c.isMesh) c.castShadow = true; });
+    g.traverse(c => { if (c.isMesh) c.castShadow = true; }); noShadow(jib);
+    mergeStatic(jib); mergeStatic(g, new Set([jib]));
     return g;
   }
   function makeFlag(b) {
@@ -1043,7 +1084,7 @@ if (state.examRun) renderExam(); else renderHome();
     const sh = new THREE.Shape(); sh.moveTo(0, 0); sh.lineTo(2.1, -0.55); sh.lineTo(0, -1.1); sh.closePath();
     pen.add(new THREE.Mesh(new THREE.ShapeGeometry(sh), FLAGMAT));
     g.userData.pen = pen; g.userData.ph = Math.random() * 6; g.visible = false;
-    g.traverse(c => { if (c.isMesh) c.castShadow = true; });
+    g.traverse(c => { if (c.isMesh) c.castShadow = true; }); noShadow(pen);
     return g;
   }
   const unit = new THREE.BoxGeometry(1, 1, 1);
@@ -1122,7 +1163,7 @@ if (state.examRun) renderExam(); else renderHome();
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), mat(0x4d5866)); head.position.set(0.42, 0.5, 0); g.add(head);
     box(g, mat(0x2b2f3d), 0.14, 0.05, 0.08, 0.6, 0.45, 0); g.scale.setScalar(0.6);
     g.userData = { a: i * 2.1, r: 1.1 + i * 0.7, s: 0.35 - i * 0.07 };
-    g.traverse(c => { if (c.isMesh) c.castShadow = true; }); world.add(g); ducks.push(g);
+    world.add(g); ducks.push(g);
   }
   /* pigeons circling the screen tower */
   const birds = [], birdMat = mat(0x6b7280), wingGeo = new THREE.BoxGeometry(0.22, 0.04, 0.55);
@@ -1134,7 +1175,7 @@ if (state.examRun) renderExam(); else renderHome();
     g.add(wl, wr); g.userData = { a: i * 0.45 + (i % 2) * 0.2, r: 8 + (i % 3) * 1.4, h: 38 + (i % 3) * 0.8, wl, wr, ph: i };
     world.add(g); birds.push(g);
   }
-  const pole = new THREE.Group(); pole.position.set(16, 0, 27.5); cyl(pole, PAL.white, 0.06, 0.08, 7, 0, 0, 0, 6); const flag = box(pole, mat(0xc6455a), 1.6, 0.9, 0.04, 0.8, 6, 0); world.add(tag(pole));
+  const pole = new THREE.Group(); pole.position.set(16, 0, 27.5); cyl(pole, PAL.white, 0.06, 0.08, 7, 0, 0, 0, 6); const flag = box(pole, mat(0xc6455a), 1.6, 0.9, 0.04, 0.8, 6, 0); world.add(tag(pole)); flag.castShadow = false;
 
   /* ---------- Times Square: screens, red steps, the screen tower, street furniture ---------- */
   let HUD = { part: "1", ready: 0, due: 0, streak: 0, today: 0, goal: 20, gap: "" };
@@ -1222,7 +1263,7 @@ if (state.examRun) renderExam(); else renderHome();
   function artPanel(w, h, x, y, z, ry, k) {
     const tex = ART[k % ART.length].clone(); tex.needsUpdate = true; tex.repeat.set(w / (2 * h), 1); tex.offset.set(rnd(), 0);
     const o = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false })); o.position.set(x, y, z); o.rotation.y = ry; world.add(o);
-    const vert = rnd() < 0.3; arts.push({ tex, vx: vert ? 0 : (0.02 + rnd() * 0.05) * (rnd() < 0.5 ? -1 : 1), vy: vert ? 0.05 + rnd() * 0.05 : 0 });
+    const vert = rnd() < 0.3; arts.push({ o, tex, vx: vert ? 0 : (0.02 + rnd() * 0.05) * (rnd() < 0.5 ? -1 : 1), vy: vert ? 0.05 + rnd() * 0.05 : 0 });
   }
   let wallN = 0;
   function screenWall(axis, at, ry, u0, u1, y0, y1) {
@@ -1288,13 +1329,13 @@ if (state.examRun) renderExam(); else renderHome();
   }
   /* crowds in the canyon and on the steps (instanced: three draws for everyone) */
   const headGeo = new THREE.SphereGeometry(0.2, 8, 6), bodyGeo = new THREE.CylinderGeometry(0.22, 0.26, 0.8, 8), legGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.25, 8);
-  const CROWD = [];
+  const CROWD = [], crowd = [];
   for (let k = 0; k < 14; k++) { const i = Math.floor(rnd() * 5); CROWD.push([CX - 2.6 + rnd() * 5.2, 0.42 * (i + 1), 15.2 + i * 0.8]); }
   for (let k = 0; k < 60; k++) { let x, z; do { x = -19.6 + rnd() * 7.2; z = 4.8 + rnd() * 22; } while ((x > -19.2 && x < -12.8 && z > 14.6 && z < 19.8) || (z > 26.9 && x > -18.6 && x < -13.4) || (x > -14.6 && z > 12.2 && z < 14.2)); CROWD.push([x, 0.02, z]); }
   { const n = CROWD.length, cLeg = new THREE.InstancedMesh(legGeo, PAL.dark, n), cBody = new THREE.InstancedMesh(bodyGeo, new THREE.MeshStandardMaterial({ roughness: 0.8 }), n), cHead = new THREE.InstancedMesh(headGeo, PAL.skin, n);
     const M = new THREE.Matrix4(), CC = [0xc6455a, 0x3d64a8, 0x2f8f5b, 0xe9a43a, 0x6b4fa8, 0x2f8f8a, 0xf4f3ef, 0x2b2f3d, 0xd8262f].map(c => new THREE.Color(c));
     CROWD.forEach(([x, y, z], i) => { M.makeTranslation(x, y + 0.125, z); cLeg.setMatrixAt(i, M); M.makeTranslation(x, y + 0.55, z); cBody.setMatrixAt(i, M); cBody.setColorAt(i, CC[Math.floor(rnd() * CC.length)]); M.makeTranslation(x, y + 1.15, z); cHead.setMatrixAt(i, M); });
-    [cLeg, cBody, cHead].forEach(m => { m.castShadow = true; world.add(m); }); }
+    [cLeg, cBody, cHead].forEach(m => { m.castShadow = true; world.add(m); crowd.push(m); }); }
   /* hot dog cart */
   const cart = new THREE.Group(); cart.position.set(-13.4, 0, 13.2); cart.rotation.y = Math.PI / 2;
   box(cart, mat(0xc9ced6, 0.35, 0.4), 1.6, 0.9, 0.8, 0, 0.35, 0); for (const x of [-0.5, 0.5]) box(cart, PAL.dark, 0.36, 0.36, 0.08, x, 0, 0.42);
@@ -1327,7 +1368,7 @@ if (state.examRun) renderExam(); else renderHome();
     box(g, col, 1.9, 0.6, 1, 0, 0.18, 0); box(g, mat(0xdfe8f0, 0.2), 1.05, 0.48, 0.9, -0.1, 0.78, 0); box(g, PAL.dark, 1.6, 0.22, 1.04, 0, 0, 0);
     for (const z of [0.28, -0.28]) { box(g, headMat, 0.06, 0.16, 0.22, 0.96, 0.32, z); box(g, tailMat, 0.06, 0.14, 0.2, -0.96, 0.32, z); }
     if (carCols[i % carCols.length] === TAXI) { box(g, headMat, 0.5, 0.18, 0.62, -0.1, 1.02, 0); box(g, PAL.dark, 1.92, 0.08, 1.02, 0, 0.45, 0); }
-    g.traverse(c => { if (c.isMesh) c.castShadow = true; });
+    mergeStatic(g);
     const lane = [lanes[0], lanes[2], lanes[3]][i % 3]; g.userData = { lane, t: (i * 0.37) % 1, speed: 0.022 + (i % 3) * 0.004 };
     if (lane.ax === "z") g.rotation.y = lane.dir > 0 ? -Math.PI / 2 : Math.PI / 2; else g.rotation.y = lane.dir > 0 ? 0 : Math.PI;
     g.visible = false; world.add(g); cars.push(g);
@@ -1336,17 +1377,18 @@ if (state.examRun) renderExam(); else renderHome();
   box(bus, mat(0x2f6db5, 0.5), 4.4, 1.3, 1.25, 0, 0.25, 0); box(bus, mat(0xf4f3ef, 0.5), 4.42, 0.22, 1.27, 0, 1.55, 0);
   box(bus, busWin, 3.3, 0.5, 1.28, -0.35, 1.0, 0); box(bus, busWin, 0.06, 0.6, 1.0, 2.2, 0.95, 0); box(bus, PAL.dark, 3.8, 0.25, 1.28, 0, 0, 0);
   for (const z of [0.4, -0.4]) { box(bus, headMat, 0.06, 0.18, 0.24, 2.21, 0.45, z); box(bus, tailMat, 0.06, 0.16, 0.22, -2.21, 0.45, z); }
-  bus.traverse(c => { if (c.isMesh) c.castShadow = true; });
+  mergeStatic(bus);
   bus.rotation.y = Math.PI / 2; bus.userData = { lane: lanes[1], t: 0.2, speed: 0.017, dwell: 0, stopped: false }; world.add(bus);
   const walkers = [];
   const shirts = [0xc6455a, 0x3d64a8, 0x2f8f5b, 0xe9a43a, 0x6b4fa8, 0x2f8f8a, 0xf4f3ef];
   for (let i = 0; i < 9; i++) {
     const g = new THREE.Group(); cyl(g, mat(shirts[i % shirts.length]), 0.22, 0.26, 0.8, 0, 0.15, 0, 8); cyl(g, PAL.dark, 0.2, 0.2, 0.25, 0, 0, 0, 8);
     const h = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 8), PAL.skin); h.position.y = 1.15; g.add(h);
-    g.traverse(c => { if (c.isMesh) c.castShadow = true; });
     const s = i % 2 ? 1 : -1; g.userData = { ax: i % 4 < 2 ? "z" : "x", c: s * 3.6, dir: i % 3 ? 1 : -1, t: (i * 0.23) % 1, speed: 0.006 + (i % 3) * 0.0015 };
     world.add(g); walkers.push(g);
   }
+  /* everything that never moves folds into one mesh per material */
+  mergeStatic(world, new Set([...Object.values(B).map(b => b.group), ...ducks, ...birds, ...cars, bus, ...walkers, flag]));
   function along(o, ax, c, t, dir, y = 0) { const p = (dir > 0 ? t : 1 - t) * 2 * S - S; if (ax === "z") o.position.set(c, y, p); else o.position.set(p, y, c); const e = Math.min(1, (S - Math.abs(p)) / 2.5); o.scale.setScalar(Math.max(0.001, e)); }
 
   /* ---------- camera rig ---------- */
@@ -1480,10 +1522,10 @@ if (state.examRun) renderExam(); else renderHome();
     sun.intensity = lerp(2.4, 0.6, k); sun.color.copy(SKY.sun[0]).lerp(SKY.sun[1], k);
     fill.intensity = lerp(0.45, 0.35, k); fill.color.copy(SKY.fill[0]).lerp(SKY.fill[1], k);
     renderer.toneMappingExposure = lerp(1.05, 1.18, k);
-    bulbMat.emissiveIntensity = 3 * k; glowMat.opacity = 0.9 * k; poolMat.opacity = 0.5 * k;
+    bulbMat.emissiveIntensity = 3 * k; glowMat.opacity = 0.9 * k; poolMat.opacity = 0.5 * k; glowMat.visible = poolMat.visible = k > 0.01;
     headMat.emissiveIntensity = 2.6 * k; tailMat.emissiveIntensity = 2 * k; busWin.emissiveIntensity = 1.3 * k;
-    birds.forEach(b => { b.visible = k < 0.5; });
-    towerMats.forEach(m => { m.emissiveIntensity = 1.1 * k; }); stepMat.emissiveIntensity = lerp(0.25, 1.4, k); globeMat.emissiveIntensity = lerp(0.5, 2.6, k); spillMats.forEach(m => { m.opacity = 0.42 * k; });
+    birds.forEach(b => { b.visible = k < 0.5 && !low; });
+    towerMats.forEach(m => { m.emissiveIntensity = 1.1 * k; }); stepMat.emissiveIntensity = lerp(0.25, 1.4, k); globeMat.emissiveIntensity = lerp(0.5, 2.6, k); spillMats.forEach(m => { m.opacity = 0.42 * k; m.visible = k > 0.01; });
     refreshEmissive();
   }
   function setSky(name, instant) {
@@ -1494,6 +1536,24 @@ if (state.examRun) renderExam(); else renderHome();
 
   /* ---------- loop ---------- */
   let running = false, visible = true, lastT = performance.now(), paintAnim = null, wantFrame = true, nCars = 0;
+  /* low graphics: no crowd, steam, art panels or pigeons, 1x pixels, 30 frames a second */
+  function applyLow() {
+    crowd.forEach(m => { m.visible = !low; }); steam.forEach(sp => { sp.visible = !low; }); arts.forEach(a => { a.o.visible = !low; });
+    birds.forEach(b => { b.visible = skyK < 0.5 && !low; });
+    renderer.setPixelRatio(dprFor()); resize(); shadowDirty = true;
+  }
+  /* frame-time check: after the first 2 seconds, if 3 straight seconds average slower than ~36 fps, drop to low and remember it */
+  const perf = { t0: performance.now(), sum: 0, n: 0, fps: 0, fpsN: 0, fpsT: 0 };
+  function sampleFrame(now, raw) {
+    perf.fpsN++; if (now - perf.fpsT > 500) { perf.fps = Math.round(perf.fpsN * 1000 / (now - perf.fpsT)); perf.fpsN = 0; perf.fpsT = now; if (meter) meter.textContent = `${perf.fps} fps · ${renderer.info.render.calls} draws · ${low ? "low" : "high"} · ${renderer.getPixelRatio()}x`; }
+    if (gfxForced || low || now - perf.t0 < 2000 || raw > 250) return;
+    perf.sum += raw; perf.n++;
+    if (perf.sum < 3000) return;
+    if (perf.sum / perf.n > 28) { low = true; applyLow(); try { localStorage.setItem(GFXKEY, JSON.stringify({ level: "low", at: Date.now() })); } catch (e) {} }
+    perf.sum = 0; perf.n = 0;
+  }
+  const meter = QS.get("fps") ? Object.assign(document.createElement("div"), { style: "position:absolute;left:8px;bottom:6px;z-index:5;font:600 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 6px;border-radius:6px;pointer-events:none" }) : null;
+  let shadowDirty = true, shadowKey = "", lastDraw = 0;
   const io = "IntersectionObserver" in window ? new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) kick(); }) : null;
   const ro = "ResizeObserver" in window ? new ResizeObserver(() => resize()) : null;
   function kick() { wantFrame = true; if (!running) { running = true; requestAnimationFrame(frame); } }
@@ -1503,13 +1563,15 @@ if (state.examRun) renderExam(); else renderHome();
   }
   function frame(now) {
     if (!stage || document.hidden || !visible) { running = false; return; }
-    const dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+    if (low && wantFrame === false && now - lastDraw < 30) { requestAnimationFrame(frame); return; }
+    const raw = now - lastT; lastDraw = now; sampleFrame(now, raw);
+    const dt = Math.min(0.05, raw / 1000); lastT = now;
     let busy = !reduce;
     if (rig.anim) { const k = Math.min(1, (now - rig.anim.t0) / rig.anim.dur), e = 1 - Math.pow(1 - k, 3); for (const key in rig.anim.to) rig[key] = rig.anim.from[key] + (rig.anim.to[key] - rig.anim.from[key]) * e; if (k >= 1) rig.anim = null; busy = true; }
     if (paintAnim) {
       const k = Math.min(1, (now - paintAnim.t0) / paintAnim.dur), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
       for (const d in B) { const b = B[d]; b.m = b.from + (b.target - b.from) * e; applyCut(b); if (Math.abs(b.target - b.from) > 0.001) rebuildScaffold(b); }
-      if (k >= 1) paintAnim = null; busy = true;
+      if (k >= 1) paintAnim = null; busy = true; shadowDirty = true;
     }
     if (skyK !== skyTarget) { const st = dt / 0.9; skyK = skyTarget > skyK ? Math.min(skyTarget, skyK + st) : Math.max(skyTarget, skyK - st); applySky(); busy = true; }
     const fw = bursts.length || pending.length; if (labels) labels.style.opacity = fw ? 0.08 : "";
@@ -1533,7 +1595,9 @@ if (state.examRun) renderExam(); else renderHome();
       ducks.forEach((dk, i) => { const u = dk.userData; u.a += dt * u.s; dk.position.set(-17.6 + Math.cos(u.a) * u.r, 0.06 + Math.abs(Math.sin(now / 140 + i)) * 0.05, 9.5 + Math.sin(u.a) * u.r); dk.rotation.y = -u.a - Math.PI / 2; });
       birds.forEach(bd => { if (!bd.visible) return; const u = bd.userData; u.a += dt * 0.32; bd.position.set(-16 + Math.cos(u.a) * u.r, u.h + Math.sin(u.a * 2) * 0.6, 24 + Math.sin(u.a) * u.r); bd.rotation.y = -u.a - Math.PI / 2; const fl = Math.sin(now / 90 + u.ph) * 0.7; u.wl.rotation.x = fl; u.wr.rotation.x = -fl; });
     }
-    placeCamera(); renderer.render(scene, camera); placeLabels();
+    placeCamera();
+    { const key = sun.position.x.toFixed(2) + "," + sun.position.z.toFixed(2); if (shadowDirty || key !== shadowKey) { renderer.shadowMap.needsUpdate = true; shadowKey = key; shadowDirty = false; } }
+    renderer.render(scene, camera); placeLabels();
     wantFrame = false;
     if (busy) requestAnimationFrame(frame); else running = false;
   }
@@ -1544,7 +1608,7 @@ if (state.examRun) renderExam(); else renderHome();
     ready: true,
     mount(el) {
       stage = el; labels = el.querySelector(".labels");
-      el.insertBefore(canvas, labels);
+      el.insertBefore(canvas, labels); if (meter) el.appendChild(meter);
       if (io) { io.disconnect(); io.observe(el); } if (ro) { ro.disconnect(); ro.observe(el); }
       resize(); buildLabels(); kick();
     },
@@ -1559,7 +1623,7 @@ if (state.examRun) renderExam(); else renderHome();
         b.from = reduce ? t : from; b.target = t; b.m = b.from; applyCut(b); rebuildScaffold(b);
         if (d.startsWith("P" + currentPart)) { const gp = (1 - t) * ({ "P1-1": 14, "P1-2": 17, "P1-3": 17, "P1-4": 15, "P1-5": 11, "P1-6": 11, "P2-1": 30, "P2-2": 37, "P2-3": 18, "P3-1": 26, "P3-2": 25, "P3-3": 20, "P3-4": 14 })[d]; if (gp > maxGap && t < 0.999) { maxGap = gp; focusD = d; } }
       }
-      paintAnim = reduce ? null : { t0: performance.now() + 350, dur: 1300 };
+      paintAnim = reduce ? null : { t0: performance.now() + 350, dur: 1300 }; shadowDirty = true;
       if (data.view) viewTS = data.view === "ts";
       if (data.sky) setSky(data.sky, !skyInit);
       if (data.hud) { HUD = Object.assign({}, HUD, data.hud); screens.forEach(drawScreen); tickers.forEach(drawTicker); }
@@ -1581,11 +1645,12 @@ if (state.examRun) renderExam(); else renderHome();
       refreshEmissive(); updateLabelText(); kick();
     },
     setSky(name) { setSky(name, false); },
-    setView(v) { viewTS = v === "ts"; for (const d in B) applyCut(B[d]); focusPart(viewTS ? "ts" : currentPart, false); kick(); },
+    setView(v) { viewTS = v === "ts"; for (const d in B) applyCut(B[d]); shadowDirty = true; focusPart(viewTS ? "ts" : currentPart, false); kick(); },
     celebrate(d) { if (B[d] && !reduce) { pending.push({ d, k: 0, at: performance.now() }); kick(); } }
   };
-  window.__townDebug = () => ({ b: bursts.length });
+  window.__townDebug = () => ({ b: bursts.length, calls: renderer.info.render.calls, low, dpr: renderer.getPixelRatio(), fps: perf.fps });
   focusPart("1", true);
+  if (low) applyLow();
   if (window.__townData) window.Town.update(window.__townData);
   window.__townReady && window.__townReady();
 })();
