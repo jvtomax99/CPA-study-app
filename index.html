@@ -100,6 +100,10 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   grid-template-areas: "meta meta" "name name" "side buddy" "quote quote"; }
 .greet-meta { grid-area: meta; } .greet-name { grid-area: name; } .greet-side { grid-area: side; align-self: center; min-width: 0; } .buddy { grid-area: buddy; } .greet-quote { grid-area: quote; }
 .greet-row { display: contents; }
+.greet-side { display: grid; gap: 8px; justify-items: start; }
+.greet-guide { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px 6px 7px; border-radius: 999px; font: 700 14px/1 var(--f-ui); color: #fff; cursor: pointer; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.32); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 6px 14px -6px rgba(0,0,0,0.6); }
+.greet-guide .gg-play { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: var(--amber-ink); }
+.greet-guide:active { transform: scale(0.96); }
 .greet-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); }
 .greet-meta time { letter-spacing: 0.02em; text-transform: none; font-size: 13px; }
 .greet-name { margin: 2px 0 0; font: 400 58px/1.12 "Parisienne", cursive; letter-spacing: 0; text-transform: none; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 0.1em 0.06em 0; text-shadow: 0 1px 2px rgba(4,4,28,0.6), 0 2px 6px rgba(4,4,28,0.35), 0 3px 22px rgba(4,4,28,0.42); }
@@ -512,7 +516,7 @@ footer p { margin: 0; max-width: 70ch; }
       </g>`;
   })();
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
-  function greeting({ name, pill }) {
+  function greeting({ name, pill, extra }) {
     const now = new Date(), h = now.getHours();
     const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
@@ -527,7 +531,7 @@ footer p { margin: 0; max-width: 70ch; }
         <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
         <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
         <div class="greet-row">
-          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}</div>
+          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}${extra || ""}</div>
           <div class="buddy" id="buddy">
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
@@ -907,7 +911,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, guideSeen: false }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -1085,7 +1089,7 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
+  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` }) : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
@@ -1113,9 +1117,6 @@ function renderHome() {
   </section>
   <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights a gold crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   <div class="stack">
-    ${state.guideSeen ? "" : `<section class="card pad focus-tile"><h2>How to use this app</h2>
-      <div class="muted small">A 2-minute guide with narration. Step one: add this app to your Home Screen, so your progress is kept.</div>
-      <div class="row"><button class="btn amber" id="guidego">Watch the guide</button><button class="btn ghost" id="guidex">Not now</button></div></section>`}
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
@@ -1133,8 +1134,7 @@ function renderHome() {
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
-  if ($("#guidego")) $("#guidego").onclick = openGuide;
-  if ($("#guidex")) $("#guidex").onclick = () => { state.guideSeen = true; save(); renderHome(); toast("The guide is in More whenever you want it."); };
+  if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
@@ -1193,7 +1193,6 @@ function openArea(d) {
 }
 /* the how-to video (media/how-to-use.mp4, made in promo/) */
 function openGuide() {
-  if (!state.guideSeen) { state.guideSeen = true; save(); }
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app">
     <div class="grab"></div>
     <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>

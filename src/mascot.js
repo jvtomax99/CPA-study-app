@@ -125,7 +125,7 @@
       </g>`;
   })();
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
-  function greeting({ name, pill }) {
+  function greeting({ name, pill, extra }) {
     const now = new Date(), h = now.getHours();
     const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
@@ -140,7 +140,7 @@
         <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
         <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
         <div class="greet-row">
-          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}</div>
+          <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}${extra || ""}</div>
           <div class="buddy" id="buddy">
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>

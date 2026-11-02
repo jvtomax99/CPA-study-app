@@ -21,6 +21,6 @@ function seed() {
   return { v: 2, items, log, part: "1", goal: 20, exams: [
     { t: now - 9 * DAY, part: 1, n: 100, right: 58, score: 0.58, per: {}, timeUp: false, missed: [] },
     { t: now - 2 * DAY, part: 1, n: 100, right: 66, score: 0.66, per: {}, timeUp: false, missed: [] }
-  ], examRun: null, shown, lastBackup: now - 3 * DAY, reminder: null, sky: "dusk", name: "Alex", nameAsked: true, guideSeen: true };
+  ], examRun: null, shown, lastBackup: now - 3 * DAY, reminder: null, sky: "dusk", name: "Alex", nameAsked: true };
 }
 module.exports = seed;

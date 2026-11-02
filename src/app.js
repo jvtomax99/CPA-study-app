@@ -22,7 +22,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, guideSeen: false }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -200,7 +200,7 @@ function renderHome() {
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA" }) : ""}
+  $("#app").innerHTML = `${window.Mascot ? window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` }) : ""}
   <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
@@ -228,9 +228,6 @@ function renderHome() {
   </section>
   <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights a gold crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   <div class="stack">
-    ${state.guideSeen ? "" : `<section class="card pad focus-tile"><h2>How to use this app</h2>
-      <div class="muted small">A 2-minute guide with narration. Step one: add this app to your Home Screen, so your progress is kept.</div>
-      <div class="row"><button class="btn amber" id="guidego">Watch the guide</button><button class="btn ghost" id="guidex">Not now</button></div></section>`}
     ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
       <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
       <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
@@ -248,8 +245,7 @@ function renderHome() {
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
-  if ($("#guidego")) $("#guidego").onclick = openGuide;
-  if ($("#guidex")) $("#guidex").onclick = () => { state.guideSeen = true; save(); renderHome(); toast("The guide is in More whenever you want it."); };
+  if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
@@ -308,7 +304,6 @@ function openArea(d) {
 }
 /* the how-to video (media/how-to-use.mp4, made in promo/) */
 function openGuide() {
-  if (!state.guideSeen) { state.guideSeen = true; save(); }
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app">
     <div class="grab"></div>
     <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
