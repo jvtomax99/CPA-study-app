@@ -200,6 +200,7 @@ function areaCard(d, focus) {
 }
 function renderHome() {
   view = "home";
+  document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak();
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
@@ -539,7 +540,7 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n ? ` · ${n} flagged` : ""; }
+function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";

@@ -23,7 +23,7 @@
 <style>
 /* Layout: one phone-width column. A dusk "toy town" hero card (always dark, like the CCHI campus card) sits over a light or dark page; drill and exam screens are plain sheets below it. */
 :root {
-  --bg: #f3f5f9;
+  --bg: #f2efe7;
   --paper: #ffffff;
   --ink: #161c2b;
   --ink-soft: #5b6478;
@@ -47,6 +47,7 @@
   --shadow: 0 1px 0 0 inset rgba(255,255,255,0.8), 0 1px 2px rgba(20,43,67,0.06), 0 8px 20px -12px rgba(22,55,90,0.22);
   --f-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --f-read: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-sign: "Helvetica Neue", "Inter", Arial, sans-serif;
   --r-sm: 10px; --r-md: 14px; --r-lg: 22px;
 }
 @media (prefers-color-scheme: dark) {
@@ -66,14 +67,25 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: #111; }
 .wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; }
 button { font-family: inherit; }
 button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--amber-deep); outline-offset: 2px; }
 
-.appbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px 12px; }
-.appbar h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; }
-.appbar h1 small { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--ink-soft); }
+/* App bar: a subway station sign. Black band, white rule along the top, Helvetica on Apple devices, route bullets for the three exam parts (the current one lit). */
+.appbar { --gut: max(16px, env(safe-area-inset-left, 0px)); position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 calc(-1 * var(--gut)) 14px; padding: 18px var(--gut) 14px; background: #111; color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,0.06); }
+.appbar::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: #fff; }
+.appbar h1 { margin: 0; font: 700 27px/1.1 var(--f-sign); letter-spacing: -0.015em; text-wrap: balance; }
+.lines { display: flex; align-items: center; gap: 6px; margin: 8px 0 0; font: 500 13px/1 var(--f-sign); color: rgba(255,255,255,0.82); }
+.lines .t { margin-left: 6px; }
+.bul { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; opacity: 0.4; transition: opacity 0.2s; }
+.bul.on { opacity: 1; box-shadow: 0 0 0 2px #111, 0 0 0 3.5px #fff; }
+.bul[data-part="1"] { background: #ee352e; } .bul[data-part="2"] { background: #00933c; } .bul[data-part="3"] { background: #b933ad; }
+.menubtn { position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; border: 2px solid #fff; background: #111; display: grid; place-items: center; cursor: pointer; }
+.menubtn i { display: block; width: 16px; height: 2px; background: #fff; box-shadow: 0 -5px 0 #fff, 0 5px 0 #fff; }
+#flagdot { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--amber); color: var(--amber-ink); font: 700 11px/18px var(--f-ui); }
+#flagdot:empty { display: none; }
+@media (min-width: 673px) { .appbar { border-radius: 0 0 10px 10px; } }
 .iconbtn { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: var(--shadow); }
 
 /* Hero: the town card */
@@ -460,8 +472,11 @@ footer p { margin: 0; max-width: 70ch; }
 
 <div class="wrap">
   <header class="appbar">
-    <h1>EA Ledger Drill<small>Enrolled Agent exam · tax year 2025</small></h1>
-    <button class="iconbtn" id="morebtn">More<span id="flagdot"></span></button>
+    <div>
+      <h1>EA Ledger Drill</h1>
+      <p class="lines"><span class="bul" data-part="1" aria-hidden="true">1</span><span class="bul" data-part="2" aria-hidden="true">2</span><span class="bul" data-part="3" aria-hidden="true">3</span><span class="t">Enrolled Agent · Tax Year 2025</span></p>
+    </div>
+    <button class="menubtn" id="morebtn" aria-label="More"><i></i><span id="flagdot"></span></button>
   </header>
   <main id="app"></main>
   <footer>
@@ -1174,6 +1189,7 @@ function areaCard(d, focus) {
 }
 function renderHome() {
   view = "home";
+  document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak();
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
@@ -1513,7 +1529,7 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n ? ` · ${n} flagged` : ""; }
+function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
