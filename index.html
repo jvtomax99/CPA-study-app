@@ -90,15 +90,15 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .iconbtn { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; cursor: pointer; box-shadow: var(--shadow); }
 
 /* Hero: the town card */
-.hero { position: relative; border-radius: 28px; overflow: hidden; color: #fff;
+.hero, .today-card { position: relative; border-radius: 28px; overflow: hidden; color: #fff;
   background: radial-gradient(120% 70% at 50% 108%, var(--dusk-edge) 0%, var(--dusk-low) 32%, transparent 62%), linear-gradient(180deg, var(--dusk-top) 0%, var(--dusk-mid) 62%, var(--dusk-low) 100%);
   box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); }
-.hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12); }
+.hero::after, .today-card::after { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12); }
 /* The greeting and the town card join into one night scene over an elevated subway line. The train parks at the part's readiness
    (0% at the left, 100% beside the EXAM READY sign) and pulls in when Home draws. */
 .nightline .greet { margin-bottom: 0; border-radius: 28px 28px 0 0; box-shadow: none; }
-.nightline + .hero { border-radius: 0 0 28px 28px; }
-.nightline + .hero::after { box-shadow: none; }
+.nightline + .hero, .nightline + .today-card { border-radius: 0 0 28px 28px; }
+.nightline + .hero::after, .nightline + .today-card::after { box-shadow: none; }
 .el { --el-end: #0b0a24; position: relative; height: 70px; overflow: hidden; background: linear-gradient(180deg, #090820, var(--el-end)); }
 .el.day { --el-end: var(--dusk-top); }
 .el-deck { position: absolute; left: 0; right: 0; bottom: 16px; height: 12px; overflow: hidden; border-top: 2px solid #77739c; border-bottom: 1px solid #2e2a52; background: linear-gradient(180deg, #2e2a52, #1d1a3a); }
@@ -261,15 +261,68 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 .fs-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
 .fs-bar i { display: block; height: 100%; background: var(--amber); border-radius: 999px; }
 .fs-card span { font-size: 13px; color: var(--ink-soft); }
-.hero.night { background: radial-gradient(120% 70% at 50% 108%, #6b3d5e 0%, #3a2758 32%, transparent 62%), linear-gradient(180deg, #0b0a24 0%, #1b1742 62%, #3a2758 100%); }
+.hero.night, .today-card.night { background: radial-gradient(120% 70% at 50% 108%, #6b3d5e 0%, #3a2758 32%, transparent 62%), linear-gradient(180deg, #0b0a24 0%, #1b1742 62%, #3a2758 100%); }
 .stage-msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: rgba(255,255,255,0.8); font-size: 14px; }
 .hero-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; padding: 0 16px 18px; margin-top: -8px; position: relative; }
 .cta { border: 0; border-radius: 18px; padding: 16px 12px; font-size: 18px; font-weight: 800; cursor: pointer; letter-spacing: -0.01em; transition: transform 120ms; }
 .cta:active { transform: translateY(2px) scale(0.98); }
 .cta.play { background: linear-gradient(180deg, #ffd27a, var(--amber)); color: var(--amber-ink); box-shadow: 0 4px 0 var(--amber-deep), 0 10px 20px -10px rgba(0,0,0,0.5); }
 .cta.exam { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.24); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.legend { font-size: 13px; color: var(--ink-soft); margin: 12px 4px 0; }
+.legend { font-size: 13px; color: var(--ink-soft); margin: 0 4px; }
 .rights { font-weight: 600; margin-top: 10px; }
+
+/* Home sections. Today, City, Map and Exam are panes in #app; .panes[data-tab] shows one. The tab bar shows only while
+   Home is on screen (app.js sets body.tabs). Phone: a station-sign band along the bottom. 1024px and wider: a sidebar,
+   with Today and the map side by side. */
+.pane { display: none; gap: 14px; align-content: start; }
+.panes[data-tab="today"] .pane-today, .panes[data-tab="city"] .pane-city, .panes[data-tab="map"] .pane-map, .panes[data-tab="exam"] .pane-exam { display: grid; }
+.pane-today { gap: 0; }
+/* On a phone the quote gives way so Play sits above the tab bar; wider screens keep it. */
+@media (max-width: 559px) { .pane-today .greet-quote { display: none; } }
+.pane-today > .card { margin-top: 14px; }
+.today-card { padding-bottom: 2px; }
+.today-card .hero-cta { margin-top: 16px; }
+.pane-city .stage { height: max(340px, calc(100vh - 270px)); height: max(340px, calc(100svh - 270px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))); }
+.partseg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.partseg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-soft); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 160ms, color 160ms; }
+.partseg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.partseg button[aria-pressed="true"] .bul { opacity: 1; }
+.tabbar { display: none; }
+body.tabs .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; background: #111; border-top: 2px solid #fff;
+  padding: 6px max(8px, env(safe-area-inset-right, 0px), calc(50vw - 320px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px), calc(50vw - 320px)); }
+.tabbar button { position: relative; display: grid; justify-items: center; align-content: center; gap: 5px; min-height: 52px; padding: 6px 0; border: 0; background: none; cursor: pointer;
+  color: rgba(255,255,255,0.6); font: 700 11px/1 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; transition: color 160ms; }
+.tabbar svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tabbar button[aria-current] { color: #fff; }
+.tabbar button[aria-current]::before { content: ""; position: absolute; top: -8px; left: 30%; right: 30%; height: 4px; border-radius: 0 0 4px 4px; background: var(--amber); }
+.tabbar .tb-brand, .tabbar #tbmore { display: none; }
+#tbflag { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--amber); color: var(--amber-ink); font: 700 11px/18px var(--f-ui); letter-spacing: 0; }
+#tbflag:empty { display: none; }
+body.tabs .wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+body.tabs footer { display: none; }
+body.tabs .toast { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 1024px) {
+  body.tabs .appbar { display: none; }
+  body.tabs .wrap { max-width: none; margin: 0 0 0 232px; padding: 28px 32px 56px; }
+  body.tabs #app { max-width: 1116px; margin: 0 auto; }
+  body.tabs .toast { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+  body.tabs .tabbar { right: auto; top: 0; width: 232px; box-sizing: border-box; grid-template-columns: none; grid-template-rows: auto auto auto auto 1fr; align-content: stretch; gap: 4px; border-top: 0; padding: 26px 14px calc(20px + env(safe-area-inset-bottom, 0px)); }
+  .tabbar .tb-brand { display: block; color: #fff; font: 700 20px/1.1 var(--f-sign); padding: 14px 14px 22px; margin-bottom: 8px; border-top: 2px solid #fff; }
+  .tabbar button { grid-auto-flow: column; justify-content: start; align-items: center; justify-items: start; gap: 14px; min-height: 48px; padding: 0 14px; border-radius: var(--r-sm); font-size: 13px; }
+  .tabbar button:hover { color: #fff; }
+  .tabbar button[aria-current], .tabbar[data-cur="map"] button[data-tab="today"] { color: #fff; background: rgba(255,255,255,0.1); }
+  .tabbar button[aria-current]::before, .tabbar[data-cur="map"] button[data-tab="today"]::before { content: ""; position: absolute; left: -14px; right: auto; top: 10px; bottom: 10px; width: 3px; height: auto; border-radius: 0 3px 3px 0; background: var(--amber); }
+  .tabbar button[data-tab="map"] { display: none; }
+  .tabbar #tbmore { display: grid; align-self: end; }
+  .panes { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+  .panes[data-tab="today"] .pane-map, .panes[data-tab="map"] .pane-today { display: grid; }
+  .pane-today { grid-column: 1; grid-row: 1; position: sticky; top: 28px; }
+  .pane-map { grid-column: 2; grid-row: 1; }
+  .pane-city, .pane-exam { grid-column: 1 / -1; grid-row: 1; }
+  .pane-exam { grid-template-columns: 1fr 1fr; align-items: start; }
+  .pane-city .stage { height: clamp(420px, calc(100vh - 150px), 760px); }
+}
+@media (prefers-reduced-motion: reduce) { .tabbar button, .partseg button { transition: none; } }
 
 /* Shared blocks */
 .stack { display: grid; gap: 14px; margin-top: 18px; }
@@ -521,6 +574,14 @@ footer p { margin: 0; max-width: 70ch; }
     <button class="menubtn" id="morebtn" aria-label="More"><i></i><span id="flagdot"></span></button>
   </header>
   <main id="app"></main>
+  <nav class="tabbar" aria-label="Home sections">
+    <div class="tb-brand">EA Ledger Drill</div>
+    <button type="button" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Today</span></button>
+    <button type="button" data-tab="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l4-2v14M9 21V4l6 3v14M15 21v-9l4 2v7"/></svg><span>City</span></button>
+    <button type="button" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5h4a6 6 0 0 1 6 5"/></svg><span>Map</span></button>
+    <button type="button" data-tab="exam"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span>Exam</span></button>
+    <button type="button" id="tbmore" aria-label="More"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>More</span><span id="tbflag"></span></button>
+  </nav>
   <footer>
     <p>Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.</p>
     <p>Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.</p>
@@ -1384,16 +1445,34 @@ function elLine(p, r) {
     <div class="el-sign"><b>EXAM READY</b><i></i></div>
     <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
 }
+/* Home is four sections, each one screen: Today (greeting, readiness, Play), City (the 3D town), Map (the strip map) and
+   Exam (sims). The tab bar in shell.html switches them; at 1024px and wider it becomes a sidebar and Today sits beside the
+   map. Every launch opens on Today; within a visit Home comes back to the section you left. */
+let homeTab = "today", greetStale = false;
+function setHomeTab(t) {
+  homeTab = t;
+  const panes = $(".panes"); if (!panes) return;
+  panes.dataset.tab = t; $(".tabbar").dataset.cur = t;
+  document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+  window.scrollTo(0, 0);
+  const todayShown = $(".pane-today").getClientRects().length > 0;
+  /* the buddy's thought cloud floats on <body>, so it would stay on screen over another section */
+  if (!todayShown) document.querySelectorAll(".buddy-thought").forEach(e => e.remove());
+  /* the greeting's hello can't play while it's hidden: if Home was drawn on another section, draw it again now it shows */
+  if (greetStale && todayShown) renderHome();
+}
 function renderHome() {
   view = "home";
   document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
-  const done = todayCount(), sk = streak();
+  const done = todayCount(), sk = streak(), night = skyNow() === "dusk" ? " night" : "";
   const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
     `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
   const exams = state.exams.slice(-6);
-  $("#app").innerHTML = `${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
-  <section class="hero${skyNow() === "dusk" ? " night" : ""}" aria-label="Your tax city">
+  $("#app").innerHTML = `<div class="panes" data-tab="${homeTab}">
+  <div class="pane pane-today">
+  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
+  <section class="today-card${night}" aria-label="Today">
     <div class="hero-top">
       <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
       <div class="coach">${coach}</div>
@@ -1403,6 +1482,17 @@ function renderHome() {
       <span class="pill">${ICON.clock}${dueP} due</span>
       <span class="pill">${ICON.goal}${done}/${state.goal} today</span>
     </div>
+    <div class="hero-cta">
+      <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
+      <button class="cta exam" id="examgo">Exam sim</button>
+    </div>
+  </section>
+  ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
+      <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
+      <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
+  </div>
+  <div class="pane pane-city">
+  <section class="hero${night}" aria-label="Your tax city">
     <div class="ptabs" role="tablist">
       ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}"><b>Part ${n}</b>${PARTS[n]}</button>`).join("")}
     </div>
@@ -1411,26 +1501,31 @@ function renderHome() {
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
       <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
-    </div>
-    <div class="hero-cta">
-      <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
-      <button class="cta exam" id="examgo">Exam sim</button>
+      <div class="stagebtns"><button class="sky" id="legendbtn" type="button" aria-expanded="false" aria-controls="legend" aria-label="What the city shows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
     </div>
   </section>
-  <p class="legend">Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
-  <div class="stack">
-    ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
-      <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
-      <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
+  <p class="legend" id="legend" hidden>Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
+  </div>
+  <div class="pane pane-map">
+    <div class="partseg" role="group" aria-label="Exam part">${[1, 2, 3].map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"><span class="bul" data-part="${n}" aria-hidden="true">${n}</span>Part ${n}</button>`).join("")}</div>
     <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
     ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
-    <section class="card pad"><div class="spread"><h2>Exam sims</h2>${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button>` : ""}</div>
-      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
-        : `<p class="muted small" style="margin:8px 0 0">No exam sims yet. A full Part 1 sim is 100 questions in 3.5 hours, in three sections, like the real test.</p>`}
+  </div>
+  <div class="pane pane-exam">
+    <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
+      <p class="muted small" style="margin:0">A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.</p>
+      <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
     </section>
+    <section class="card pad"><h2>Past sims</h2>
+      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
+        : `<p class="muted small" style="margin:8px 0 0">No exam sims yet.</p>`}
+    </section>
+  </div>
   </div>`;
-  $("#app").querySelectorAll(".ptab").forEach(b => b.onclick = () => { state.part = b.dataset.part; tsView = false; save(); renderHome(); });
+  setHomeTab(homeTab);
+  const pickPart = n => { state.part = n; tsView = false; save(); renderHome(); };
+  $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
+  $("#legendbtn").onclick = () => { const l = $("#legend"); l.hidden = !l.hidden; $("#legendbtn").setAttribute("aria-expanded", String(!l.hidden)); };
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(null);
@@ -1440,14 +1535,17 @@ function renderHome() {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
     const dusk = state.sky === "dusk";
     $("#skybtn").innerHTML = dusk ? ICON.sun + "Day" : ICON.moon + "Dusk";
-    $(".hero").classList.toggle("night", dusk);
+    document.querySelectorAll(".hero, .today-card").forEach(e => e.classList.toggle("night", dusk));
+    if ($(".el")) $(".el").classList.toggle("day", !dusk);
     if (window.Town && window.Town.setSky) window.Town.setSky(state.sky);
   };
   $("#examgo").onclick = () => renderExamSetup();
+  $("#examnew").onclick = () => renderExamSetup();
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));
-  if (window.Mascot) window.Mascot.mount({ onPlay: () => startDrill(null), afterHello: state.nameAsked ? null : () => { if (view === "home" && !$("#scrim")) askName(); } });
+  greetStale = !$(".pane-today").getClientRects().length;
+  if (window.Mascot && !greetStale) window.Mascot.mount({ onPlay: () => startDrill(null), afterHello: state.nameAsked ? null : () => { if (view === "home" && !$("#scrim")) askName(); } });
   mountTown();
 }
 /* Asked once, after the first hello: the greeting's name. Changeable in More. */
@@ -1819,7 +1917,7 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
+function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
@@ -1903,6 +2001,10 @@ function renderMore() {
 
 /* ---------- wiring ---------- */
 $("#morebtn").onclick = () => (view === "more" ? renderHome() : renderMore());
+document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.onclick = () => (view === "home" ? setHomeTab(b.dataset.tab) : (homeTab = b.dataset.tab, renderHome())));
+$("#tbmore").onclick = () => $("#morebtn").click();
+/* the tab bar shows only while Home's sections are on screen: drill, exam and More keep their own screens */
+new MutationObserver(() => document.body.classList.toggle("tabs", !!$("#app > .panes"))).observe($("#app"), { childList: true });
 document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || "").toLowerCase(); if (tag === "textarea" || tag === "input" || tag === "select") return;
