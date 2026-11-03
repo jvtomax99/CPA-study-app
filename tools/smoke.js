@@ -34,8 +34,10 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(await p.evaluate(() => document.body.classList.contains("tabs") && document.querySelector(".panes").dataset.tab === "today" && !!document.querySelector("#play").getClientRects().length), "tabs: Home opens on Today with Play");
   await p.click(".tabbar [data-tab=exam]");
   check(await p.evaluate(() => !!document.querySelector("#examnew").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: Exam shows the exam sims");
+  check(await p.evaluate(() => !document.documentElement.classList.contains("nightpage")), "night page: Exam stays on paper");
   await p.click(".tabbar [data-tab=city]");
   check(await p.evaluate(() => !!document.querySelector("#stage").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: City shows the town");
+  check(await p.evaluate(() => document.documentElement.classList.contains("nightpage")), "night page: City is a night scene");
 
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
