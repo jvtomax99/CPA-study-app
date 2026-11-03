@@ -2463,6 +2463,7 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       const r = ringOf(b.slice(2)), h = b[0], base = b[1];
       const cx = r.reduce((s, p) => s + p[0], 0) / r.length, cz = r.reduce((s, p) => s + p[1], 0) / r.length;
       if (lots.some(l => inLot(cx, cz, l, 2) || r.filter(([x, z]) => inLot(x, z, l, 0)).length > r.length * 0.4)) continue;
+      if (inRing(cx, cz, STEPS)) continue;   /* the TKTS booth: the map draws it as a 5 m block, but it's the red steps, drawn below */
       const ots = cx > 8 && cx < 40 && cz > 180 && cz < 232 && h > 50;
       const style = ots ? 3 : h > 120 ? pick([0, 3, 0, 1]) : h > 45 ? pick([1, 0, 1, 3, 2]) : pick([2, 2, 1]);
       const xs = r.map(p => p[0]), zs = r.map(p => p[1]), f = { r, h, base, style, tint: ots ? 0x14181e : pick(PAL[style]), seed: rnd() * 1000, cx, cz,
@@ -2824,7 +2825,9 @@ void main() {
       if (r < 0.14) { const s = Math.floor(rnd() * NSTEP); x = SX[0] + 1 + rnd() * (SX[1] - SX[0] - 2); z = SZ[1] - (s + 0.5) * STD; y = STR * (s + 1); sit = true; }
       else if (r < 0.8) { do { x = -60 + rnd() * 106; z = CANYON.z0 + rnd() * (CANYON.z1 - CANYON.z0); } while (!onPlaza(x, z) || inRing(x, z, STEPS)); pz = true; }
       else { z = CANYON.z0 + rnd() * (CANYON.z1 - CANYON.z0); const sd = rnd() < 0.5 ? -1 : 1; x = sd * (half7(z) + 1 + rnd() * Math.max(0.5, avHalf(0) - half7(z) - 2)); if (sd > 0 && z > 180) x = Math.min(x, 13.5); }
-      crowd.push({ x, y: sit ? y - 0.35 : y, z, pz, v: sit || rnd() < 0.45 ? 0 : (0.8 + rnd() * 0.8) * (rnd() < 0.5 ? -1 : 1), s: sit ? 0.8 : 0.9 + rnd() * 0.2 });
+      let zlo = CANYON.z0, zhi = CANYON.z1; /* a plaza walker's stretch of plaza, worked out once instead of every frame */
+      if (pz) { zlo = zhi = z; while (zlo > z - 300 && onPlaza(x, zlo - 1)) zlo -= 1; while (zhi < z + 300 && onPlaza(x, zhi + 1)) zhi += 1; }
+      crowd.push({ x, y: sit ? y - 0.35 : y, z, zlo, zhi, v: sit || rnd() < 0.45 ? 0 : (0.8 + rnd() * 0.8) * (rnd() < 0.5 ? -1 : 1), s: sit ? 0.8 : 0.9 + rnd() * 0.2 });
       im.setColorAt(i, new THREE.Color(pick(CC)));
     }
     crowd.mesh = im; im.frustumCulled = false; scene.add(im); }
@@ -3044,79 +3047,162 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   canvas.addEventListener("wheel", e => { if (fs) return; e.preventDefault(); rig.zoom = THREE.MathUtils.clamp(rig.zoom * (e.deltaY < 0 ? 1.08 : 0.93), 0.75, 1.9); kick(); }, { passive: false });
   canvas.addEventListener("dblclick", () => { if (fs) return; rig.off = 0; rig.zoom = 1; kick(); });
 
-  /* ---------- full screen: the city fills the screen and moves like a map (the CoreCHI campus way) ----------
-     One finger drags the ground (the spot under it stays under it) and glides on when let go; two fingers pinch to zoom
-     toward them, twist to turn, slide up or down together to tilt; tapping a tower flies to it. A mouse: drag to move,
-     right-drag to turn and tilt, the wheel zooms toward the pointer. The view stops softly at the city's edges. */
-  const NAV = { minD: 45, maxD: 1200, minPhi: 0.18, maxPhi: 1.42, x0: -420, x1: 420, z0: -480, z1: 480 };
+  /* ---------- full screen: the city fills the screen and moves like a map ----------
+     One finger drags what's under it (it stays under the finger) and glides on when let go; two fingers pinch to zoom toward them,
+     twist to turn (after a clear twist), slide up or down together to tilt; double-tap zooms in, a two-finger tap zooms out; tapping
+     a tower flies to it. Zooming in tilts toward the horizon and ends at eye level. A mouse: drag to move, right-drag to turn and tilt,
+     the wheel zooms toward the pointer. Keys: arrows or WASD, Q and E, R and F, + and -. Past the city's edge it springs back. */
+  const NAV = { minD: 4, maxD: 1200, minPhi: 0.18, x0: -560, x1: 560, z0: -640, z1: 640, eye: 1.6 };
   const UPV = new THREE.Vector3(0, 1, 0), GPLANE = new THREE.Plane(UPV, 0), SPH = new THREE.Spherical(), tgt = new THREE.Vector3();
-  let fs = null, fsPrev = null, picked = null, glide = null, fly = null;
-  const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a));
-  function look() { camera.lookAt(tgt); camera.updateMatrixWorld(); sky.position.copy(camera.position); }
-  function groundAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); const h = ray.ray.intersectPlane(GPLANE, new THREE.Vector3()); return h && h.distanceTo(camera.position) < 3000 ? h : null; }
-  function moveBy(dx, dz) { tgt.x += dx; tgt.z += dz; camera.position.x += dx; camera.position.z += dz; }
-  function keepIn() { moveBy(Math.min(NAV.x1, Math.max(NAV.x0, tgt.x)) - tgt.x, Math.min(NAV.z1, Math.max(NAV.z0, tgt.z)) - tgt.z); pushOut(); }
-  /* the buildings as plain boxes on a 50 m grid, so the camera can tell what it is over and what a finger points at */
+  /* CAM is where the camera wants to be; inside a building it stands just in front of the wall instead (see look) */
+  const CAM = new THREE.Vector3(), LP = new THREE.Plane(UPV, 0), _v = new THREE.Vector3(), _w = new THREE.Vector3();
+  let fs = null, fsPrev = null, picked = null, glide = null, fly = null, zoomAnim = null, armK = 1, lastInput = 0;
+  const wrapA = a => Math.atan2(Math.sin(a), Math.cos(a)), sstep = (x, a, b) => THREE.MathUtils.smoothstep(x, a, b);
+  /* the closer the camera, the further it may tilt toward the horizon, so zooming in ends at eye level looking along the street */
+  const phiMax = r => 1.25 + 0.34 * (1 - sstep(r, 40, 200));
+  const pivotY = r => NAV.eye * Math.min(1, Math.max(0, (60 - r) / 40));
+  function look(dt = 0) {
+    const off = _v.copy(CAM).sub(tgt), r = off.length(); let want = 1;
+    if (r > 2 && solidAt(CAM)) { /* walk from the camera toward what it looks at until clear of the building, then 2 m more */
+      for (let t = r; t > 0; t -= Math.max(1, t * 0.03)) { _w.copy(tgt).addScaledVector(off, t / r); if (!solidAt(_w)) { want = Math.max(0.02, (t - 2) / r); break; } if (t <= 1) want = 0.02; } }
+    /* pulled in quickly, let back out gently: no jumps */
+    armK = !dt ? want : armK + (want - armK) * (1 - Math.exp(-dt / (want < armK ? 70 : 320)));
+    camera.position.copy(tgt).addScaledVector(off, armK);
+    if (camera.position.y < 1.2) camera.position.y = 1.2;
+    camera.lookAt(tgt); camera.updateMatrixWorld(); sky.position.copy(camera.position);
+  }
+  function syncCam() { camera.position.copy(tgt).addScaledVector(_v.copy(CAM).sub(tgt), armK); if (camera.position.y < 1.2) camera.position.y = 1.2; camera.lookAt(tgt); camera.updateMatrixWorld(); }
+  function setPose(p) { tgt.set(p.x, p.y || 0, p.z); SPH.set(p.r, p.ph, p.th); CAM.copy(tgt).add(_v.setFromSpherical(SPH)); armK = 1; look(); }
+  function rayAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); return ray.ray; }
+  /* where a screen point meets the level plane at height h (the street when h = 0) */
+  function planeAt(x, y, h = 0) { LP.constant = -h; const hit = rayAt(x, y).intersectPlane(LP, new THREE.Vector3()); return hit && hit.distanceTo(camera.position) < 3000 ? hit : null; }
+  const groundAt = (x, y) => planeAt(x, y, 0);
+  /* the buildings on a 50 m grid; the map's buildings keep their real outlines, so a slanted Broadway front is where it really is */
   const GC = 50, SOLID = new Map(), gkey = (i, j) => i * 4096 + j;
-  function addSolid(x0, x1, z0, z1, top) { const s = [x0, x1, z0, z1, top]; for (let i = Math.floor(x0 / GC); i <= Math.floor(x1 / GC); i++) for (let j = Math.floor(z0 / GC); j <= Math.floor(z1 / GC); j++) { const k = gkey(i, j); if (!SOLID.has(k)) SOLID.set(k, []); SOLID.get(k).push(s); } }
-  for (const t of towers) if (Math.abs(t[0]) < 1600 && Math.abs(t[2]) < 1600) addSolid(t[0] - t[3] / 2, t[0] + t[3] / 2, t[2] - t[5] / 2, t[2] + t[5] / 2, t[1] + t[4]);
+  function addSolid(x0, x1, z0, z1, top, ring = null) { const s = [x0, x1, z0, z1, top, ring]; for (let i = Math.floor(x0 / GC); i <= Math.floor(x1 / GC); i++) for (let j = Math.floor(z0 / GC); j <= Math.floor(z1 / GC); j++) { const k = gkey(i, j); if (!SOLID.has(k)) SOLID.set(k, []); SOLID.get(k).push(s); } }
+  for (const t of towers) if (Math.abs(t[0]) < 1600 && Math.abs(t[2]) < 1600 && !t[9]) addSolid(t[0] - t[3] / 2, t[0] + t[3] / 2, t[2] - t[5] / 2, t[2] + t[5] / 2, t[1] + t[4]);
   for (const d in B) { const b = B[d], bb = new THREE.Box3().setFromObject(b.g.children[0]); addSolid(bb.min.x, bb.max.x, bb.min.z, bb.max.z, b.H + 10); }
-  for (const f of foots) addSolid(f.cx - f.hx, f.cx + f.hx, f.cz - f.hz, f.cz + f.hz, f.h);
-  function solidAt(p) { const l = SOLID.get(gkey(Math.floor(p.x / GC), Math.floor(p.z / GC))); if (l) for (const s of l) if (p.x > s[0] && p.x < s[1] && p.z > s[2] && p.z < s[3] && p.y < s[4]) return s; return null; }
-  /* never inside a building: rise above its roof */
-  function pushOut() { const s = solidAt(camera.position); if (s) camera.position.y = s[4] + 12; if (camera.position.y < 20) camera.position.y = 20; }
+  for (const f of foots) addSolid(f.cx - f.hx, f.cx + f.hx, f.cz - f.hz, f.cz + f.hz, f.h, f.r);
+  function solidAt(p) { const l = SOLID.get(gkey(Math.floor(p.x / GC), Math.floor(p.z / GC))); if (l) for (const s of l) if (p.x > s[0] && p.x < s[1] && p.z > s[2] && p.z < s[3] && p.y < s[4] && (!s[5] || inRing(p.x, p.z, s[5]))) return s; return null; }
   /* the first thing under a screen point: a building face or the street */
-  function hitAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
-    const o = ray.ray.origin, dv = ray.ray.direction, p = new THREE.Vector3();
-    for (let t = 4; t < 2500; t += t < 300 ? 3 : 8) { p.copy(o).addScaledVector(dv, t); if (p.y <= 0) return groundAt(x, y); if (solidAt(p)) return p.clone(); }
+  function hitAt(x, y) { const o = rayAt(x, y).origin, dv = ray.ray.direction, p = new THREE.Vector3();
+    for (let t = 2; t < 2500; t += Math.max(2, t * 0.012)) { p.copy(o).addScaledVector(dv, t); if (p.y <= 0) return groundAt(x, y); if (solidAt(p)) return p.clone(); }
     return groundAt(x, y); }
-  function zoomAbout(M, k) { const d = camera.position.distanceTo(tgt); k = Math.min(Math.max(k, NAV.minD / d), NAV.maxD / d); for (const p of [camera.position, tgt]) p.sub(M).multiplyScalar(k).add(M);
-    const dir = tgt.clone().sub(camera.position).normalize(); if (dir.y < -0.05) tgt.addScaledVector(dir, -tgt.y / dir.y); else tgt.y = 0; }
-  function turnAbout(M, a) { for (const p of [camera.position, tgt]) p.sub(M).applyAxisAngle(UPV, a).add(M); }
-  function tiltBy(d) { const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off); SPH.phi = Math.min(NAV.maxPhi, Math.max(NAV.minPhi, SPH.phi + d)); off.setFromSpherical(SPH); camera.position.copy(tgt).add(off); }
+  /* moving: low down the camera slides along a building's wall instead of entering it; past the city's edge it moves stiffly and springs back */
+  function moveBy(dx, dz, soft = false) {
+    if (soft) { const ox = tgt.x + dx, oz = tgt.z + dz; if (ox < NAV.x0 || ox > NAV.x1) dx *= 0.3; if (oz < NAV.z0 || oz > NAV.z1) dz *= 0.3; }
+    if (CAM.y < 70) { const p = _w; const ok = (a, b) => !solidAt(p.set(CAM.x + a, CAM.y, CAM.z + b));
+      if (!ok(dx, dz)) { if (ok(dx, 0)) dz = 0; else if (ok(0, dz)) dx = 0; else if (!solidAt(CAM)) return; } }
+    tgt.x += dx; tgt.z += dz; CAM.x += dx; CAM.z += dz; }
+  const outside = () => Math.max(0, NAV.x0 - tgt.x, tgt.x - NAV.x1, NAV.z0 - tgt.z, tgt.z - NAV.z1);
+  function springBack(dt) { const cx = Math.min(NAV.x1, Math.max(NAV.x0, tgt.x)), cz = Math.min(NAV.z1, Math.max(NAV.z0, tgt.z)), k = 1 - Math.exp(-dt / 140); moveBy((cx - tgt.x) * k, (cz - tgt.z) * k); }
+  /* zoom about a point M (factor k on the distance), never closer than 5 m to it, then the pivot settles on its plane */
+  function zoomAbout(M, k) {
+    const d = CAM.distanceTo(tgt), dm = Math.max(1e-3, CAM.distanceTo(M)); k = Math.min(Math.max(k, NAV.minD / d, Math.min(1, 5 / dm)), NAV.maxD / d);
+    for (const p of [CAM, tgt]) p.sub(M).multiplyScalar(k).add(M);
+    const r = CAM.distanceTo(tgt), py = tgt.y + (pivotY(r) - tgt.y) * 0.35, dir = _v.copy(tgt).sub(CAM).normalize();
+    if (Math.abs(dir.y) > 0.15) tgt.addScaledVector(dir, (py - tgt.y) / dir.y); else tgt.y = py;
+    if (CAM.distanceTo(tgt) < NAV.minD) tgt.copy(CAM).addScaledVector(dir, NAV.minD);
+    clampTilt(); }
+  function turnAbout(M, a) { for (const p of [CAM, tgt]) p.sub(M).applyAxisAngle(UPV, a).add(M); }
+  function clampTilt() { const off = _v.copy(CAM).sub(tgt); SPH.setFromVector3(off); const ph = Math.min(phiMax(SPH.radius), Math.max(NAV.minPhi, SPH.phi)); if (ph !== SPH.phi) { SPH.phi = ph; CAM.copy(tgt).add(off.setFromSpherical(SPH)); } }
+  function tiltBy(d) { const off = _v.copy(CAM).sub(tgt); SPH.setFromVector3(off); SPH.phi = Math.min(phiMax(SPH.radius), Math.max(NAV.minPhi, SPH.phi + d)); CAM.copy(tgt).add(off.setFromSpherical(SPH)); }
   /* a stage view (target, yaw, pitch, distance) as the same picture pivoting on the ground */
   function groundPose(t, yaw, pitch, dist) { const s = t[1] / Math.sin(pitch), cp = Math.cos(pitch); return { x: t[0] - s * Math.sin(yaw) * cp, z: t[2] - s * Math.cos(yaw) * cp, r: dist + s, th: yaw, ph: Math.PI / 2 - pitch }; }
-  function flyTo(p, ms = 900) { const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off);
-    fly = { t0: performance.now(), ms, a: { x: tgt.x, z: tgt.z, r: SPH.radius, th: SPH.theta, ph: SPH.phi }, b: { x: p.x, z: p.z, r: p.r, th: SPH.theta + wrapA((p.th ?? SPH.theta) - SPH.theta), ph: p.ph ?? SPH.phi } }; glide = null; kick(); }
+  function flyTo(p, ms = 900) { SPH.setFromVector3(_v.copy(CAM).sub(tgt));
+    fly = { t0: performance.now(), ms, a: { x: tgt.x, y: tgt.y, z: tgt.z, r: SPH.radius, th: SPH.theta, ph: SPH.phi }, b: { x: p.x, y: p.y || 0, z: p.z, r: p.r, th: SPH.theta + wrapA((p.th ?? SPH.theta) - SPH.theta), ph: p.ph ?? SPH.phi } }; glide = null; zoomAnim = null; kick(); }
   const fsView = k => { const f = FOCUS[k]; return groundPose(f.t, f.yaw, f.pitch, f.dist * (aspect < 1 ? 1.25 : 1)); };
-  function fsUpdate(now) {
-    if (glide) { const dt = Math.min(48, now - glide.t); glide.t = now; moveBy(glide.x * dt, glide.z * dt); keepIn(); const k = Math.pow(0.86, dt / 16); glide.x *= k; glide.z *= k; if (Math.hypot(glide.x, glide.z) < 0.003) glide = null; }
+  /* on the red steps at eye level, looking south down the square to One Times Square */
+  const streetPose = () => { const y = STR * NSTEP + NAV.eye; return { x: (SX[0] + SX[1]) / 2, y: y - 1, z: SZ[0] + 1.5 + 45, r: Math.hypot(45, 1), th: Math.PI, ph: Math.acos(1 / Math.hypot(45, 1)) }; };
+  /* heading, for the compass: 0 when looking up the avenues (Manhattan's north) */
+  const heading = () => { _v.copy(tgt).sub(CAM); return Math.atan2(_v.x, -_v.z); };
+  let compassEl = null, lastHead = 9;
+  function fsUpdate(now, dt) {
+    pointers(now);
+    if (keys.size) keyMove(dt);
+    if (glide) { const g = Math.min(48, now - glide.t); glide.t = now; moveBy(glide.x * g, glide.z * g, true); const k = Math.pow(0.92, g / 16.7); glide.x *= k; glide.z *= k; if (Math.hypot(glide.x, glide.z) < 0.002) glide = null; }
+    if (zoomAnim) { const u = Math.min(1, (now - zoomAnim.t0) / zoomAnim.ms), e = 1 - Math.pow(1 - u, 3), f = Math.pow(zoomAnim.k, e); zoomAbout(zoomAnim.M, f / zoomAnim.f); zoomAnim.f = f; if (u >= 1) zoomAnim = null; }
     if (fly) { const u = Math.min(1, (now - fly.t0) / fly.ms), e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2, L = p => fly.a[p] + (fly.b[p] - fly.a[p]) * e;
-      tgt.set(L("x"), 0, L("z")); SPH.set(L("r"), L("ph"), L("th")); camera.position.copy(tgt).add(new THREE.Vector3().setFromSpherical(SPH)); pushOut(); if (u >= 1) fly = null; }
-    look();
+      tgt.set(L("x"), L("y"), L("z")); SPH.set(L("r"), L("ph"), L("th")); CAM.copy(tgt).add(_v.setFromSpherical(SPH)); if (u >= 1) fly = null; }
+    if (!FP.size && !fly && outside() > 0.05) springBack(dt);
+    look(dt);
+    const h = heading(); if (compassEl && Math.abs(wrapA(h - lastHead)) > 0.005) { lastHead = h; compassEl.style.transform = `rotate(${-h}rad)`; }
   }
-  const FP = new Map(); let fmode = null, anchor = null, d0 = 0, vel = { x: 0, z: 0, t: 0 }, tap = null;
-  const two = () => { const [a, b] = [...FP.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.hypot(b.x - a.x, b.y - a.y), ang: Math.atan2(b.y - a.y, b.x - a.x) }; };
-  function fbegin() { glide = null;
-    if (FP.size === 1) { const p = [...FP.values()][0]; fmode = p.b === 2 ? "turn" : "pan"; anchor = groundAt(p.x, p.y); vel = { x: 0, z: 0, t: performance.now() }; }
-    else if (FP.size === 2) { fmode = "two"; for (const p of FP.values()) { p.sx = p.x; p.sy = p.y; } d0 = two().d; tap = null; }
+  const navBusy = () => !!(glide || fly || zoomAnim || keys.size || FP.size || armK < 0.999 || outside() > 0.05);
+
+  /* ---------- fingers, mouse and keys. Moves are only recorded as they come in (a phone sends up to 120 a second) and applied once per frame ---------- */
+  const FP = new Map(); let fmode = null, anchor = null, anchorH = 0, vel = { x: 0, z: 0, t: 0 }, tap = null, lastTap = null, pickT = 0, g2 = null;
+  const two = () => { const [a, b] = [...FP.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, d: Math.max(1, Math.hypot(b.x - a.x, b.y - a.y)), ang: Math.atan2(b.y - a.y, b.x - a.x) }; };
+  function fbegin() { glide = null; zoomAnim = null;
+    for (const p of FP.values()) { p.lx = p.x; p.ly = p.y; }
+    if (FP.size === 1) { const p = [...FP.values()][0]; fmode = p.b === 2 ? "turn" : "pan";
+      if (fmode === "pan") { const hit = hitAt(p.x, p.y); anchorH = hit ? Math.max(0, Math.min(hit.y, camera.position.y - 3)) : 0; anchor = planeAt(p.x, p.y, anchorH); }
+      vel = { x: 0, z: 0, t: performance.now() }; }
+    else if (FP.size === 2) { const c = two(), M = hitAt(c.x, c.y) || groundAt(c.x, c.y); fmode = "two"; tap = null;
+      g2 = { c0: c, last: c, M, zoom: false, rot: false, t0: performance.now(), moved: false }; }
     else fmode = null; }
+  function pointers(now) {
+    if (!FP.size || !fmode) return;
+    if (fmode === "pan") { const p = [...FP.values()][0]; if (p.x === p.lx && p.y === p.ly) return; const dxs = p.x - p.lx, dys = p.y - p.ly; p.lx = p.x; p.ly = p.y;
+      const hgt = Math.max(3, camera.position.y - anchorH), cap = Math.max(25, hgt * 1.5), h = anchor && planeAt(p.x, p.y, anchorH);
+      let sx, sz;
+      if (h) { sx = anchor.x - h.x; sz = anchor.z - h.z; }
+      else { /* finger above the horizon: move by screen distance instead */ const k = hgt * 0.004, hd = heading(); sx = -(dxs * Math.cos(hd) - dys * Math.sin(hd)) * k; sz = -(dxs * Math.sin(hd) + dys * Math.cos(hd)) * k; }
+      const L = Math.hypot(sx, sz); if (L > cap) { sx *= cap / L; sz *= cap / L; }
+      moveBy(sx, sz, true); if (!h && anchor) anchor = null;
+      const dt = Math.max(8, now - vel.t); vel = { x: vel.x * 0.4 + sx / dt * 0.6, z: vel.z * 0.4 + sz / dt * 0.6, t: now }; lastInput = now; return; }
+    if (fmode === "turn") { const p = [...FP.values()][0], dx = p.x - p.lx, dy = p.y - p.ly; p.lx = p.x; p.ly = p.y; if (!dx && !dy) return; turnAbout(tgt.clone(), -dx * 0.006); tiltBy(-dy * 0.005); lastInput = now; return; }
+    if (FP.size !== 2 || !g2) return;
+    const c = two(), last = g2.last; if (c.x === last.x && c.y === last.y && c.d === last.d && c.ang === last.ang) return;
+    if (fmode === "two") { const [a, b] = [...FP.values()], vA = a.y - a.ly, vb = b.y - b.ly, ha = a.x - a.lx, hb = b.x - b.lx;
+      if (Math.abs(vA) + Math.abs(vb) + Math.abs(ha) + Math.abs(hb) + Math.abs(c.d - g2.c0.d) < 14) return;   /* not decided yet */
+      g2.moved = true;
+      fmode = vA * vb > 0 && Math.abs(vA) > 1.5 * Math.abs(ha) && Math.abs(vb) > 1.5 * Math.abs(hb) && Math.abs(c.d - g2.c0.d) < 0.3 * (Math.abs(vA) + Math.abs(vb)) ? "tilt" : "map";
+      g2.last = c; return; }
+    if (fmode === "tilt") { tiltBy(-(c.y - last.y) * 0.004); g2.last = c; lastInput = now; return; }
+    /* pinch zooms only once it's clearly a pinch, and turns only after the fingers swing 25 px around their circle (MapLibre's threshold) */
+    if (!g2.zoom && Math.abs(Math.log(c.d / g2.c0.d)) > 0.06) g2.zoom = true;
+    if (!g2.rot && Math.abs(wrapA(c.ang - g2.c0.ang)) > 50 / c.d) g2.rot = true;
+    const M = g2.M; if (!M) { g2.last = c; return; }
+    if (g2.zoom) zoomAbout(M, last.d / c.d);
+    if (g2.rot) turnAbout(M, wrapA(c.ang - last.ang));
+    syncCam(); const h = planeAt(c.x, c.y, M.y); if (h) moveBy(M.x - h.x, M.z - h.z);   /* the spot between the fingers stays between them */
+    g2.last = c; lastInput = now; }
   canvas.addEventListener("pointerdown", e => { if (!fs) return; try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
-    FP.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button }); fly = null; tap = FP.size === 1 && e.button === 0 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; fbegin(); kick(); });
+    FP.set(e.pointerId, { x: e.clientX, y: e.clientY, b: e.button }); fly = null; lastInput = performance.now();
+    tap = FP.size === 1 && e.button === 0 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; fbegin(); kick(); });
   canvas.addEventListener("pointermove", e => { if (!fs) return; const p = FP.get(e.pointerId); if (!p) return;
-    const before = FP.size === 2 ? two() : null, dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
-    if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 8) tap = null;
-    if (fmode === "pan" && anchor) { const h = groundAt(p.x, p.y); if (!h) return;
-      const sx = anchor.x - h.x, sz = anchor.z - h.z, now = performance.now(), dt = Math.max(8, now - vel.t);
-      moveBy(sx, sz); keepIn(); look(); vel = { x: vel.x * 0.5 + sx / dt * 0.5, z: vel.z * 0.5 + sz / dt * 0.5, t: now }; kick(); return; }
-    if (fmode === "turn") { turnAbout(tgt.clone(), -dx * 0.006); tiltBy(-dy * 0.005); keepIn(); look(); kick(); return; }
-    if (!before || FP.size !== 2) return;
-    const now2 = two();
-    if (fmode === "two") { const [a, b] = [...FP.values()], va = a.y - a.sy, vb = b.y - b.sy, ha = a.x - a.sx, hb = b.x - b.sx;
-      if (Math.abs(va) + Math.abs(vb) + Math.abs(ha) + Math.abs(hb) + Math.abs(now2.d - d0) < 14) return;   /* not decided yet */
-      fmode = va * vb > 0 && Math.abs(va) > 1.5 * Math.abs(ha) && Math.abs(vb) > 1.5 * Math.abs(hb) && Math.abs(now2.d - d0) < 0.3 * (Math.abs(va) + Math.abs(vb)) ? "tilt" : "zoom"; }
-    if (fmode === "tilt") { tiltBy(-(now2.y - before.y) * 0.004); keepIn(); look(); kick(); return; }
-    const M = hitAt(before.x, before.y); if (!M) return;
-    zoomAbout(M, before.d / Math.max(1, now2.d)); turnAbout(M, wrapA(now2.ang - before.ang)); look();
-    const h = groundAt(now2.x, now2.y); if (h) moveBy(M.x - h.x, M.z - h.z);   /* the spot between the fingers follows them */
-    keepIn(); look(); kick(); });
-  function fend(e) { if (!fs || !FP.has(e.pointerId)) return; FP.delete(e.pointerId);
-    if (tap && FP.size === 0 && performance.now() - tap.t < 450) { pickAt(e.clientX, e.clientY); tap = null; }
-    else if (fmode === "pan" && FP.size === 0 && performance.now() - vel.t < 90 && Math.hypot(vel.x, vel.z) > 0.02) { const v = Math.hypot(vel.x, vel.z), k = Math.min(1, 0.6 / v); glide = { x: vel.x * k, z: vel.z * k, t: performance.now() }; }
-    if (FP.size) fbegin(); else fmode = null; kick(); }
+    p.x = e.clientX; p.y = e.clientY; if (tap && Math.hypot(p.x - tap.x, p.y - tap.y) > 8) tap = null; kick(); });
+  function fend(e) { if (!fs || !FP.has(e.pointerId)) return; const now = performance.now(); pointers(now); FP.delete(e.pointerId);
+    if (tap && FP.size === 0 && now - tap.t < 450) {
+      if (lastTap && now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 40) { /* double tap: zoom in toward it */
+        clearTimeout(pickT); lastTap = null; const M = hitAt(e.clientX, e.clientY); if (M) zoomAnim = { M, k: 0.45, f: 1, t0: now, ms: 320 }; }
+      else { const x = e.clientX, y = e.clientY; lastTap = { x, y, t: now }; clearTimeout(pickT); pickT = setTimeout(() => pickAt(x, y), 260); }
+      tap = null; }
+    else if (fmode === "two" && g2 && !g2.moved && FP.size === 1 && now - g2.t0 < 320) { /* two-finger tap: zoom out */ zoomAnim = { M: g2.M || tgt.clone(), k: 2, f: 1, t0: now, ms: 320 }; }
+    else if (fmode === "pan" && FP.size === 0 && now - vel.t < 120 && Math.hypot(vel.x, vel.z) > 0.01) { const v = Math.hypot(vel.x, vel.z), k = Math.min(1, Math.max(0.3, camera.position.y * 0.004) / v); glide = { x: vel.x * k, z: vel.z * k, t: now }; }
+    if (FP.size) fbegin(); else { fmode = null; g2 = null; }
+    kick(); }
   canvas.addEventListener("pointerup", fend); canvas.addEventListener("pointercancel", fend);
   canvas.addEventListener("contextmenu", e => { if (fs) e.preventDefault(); });
-  canvas.addEventListener("wheel", e => { if (!fs) return; e.preventDefault(); fly = null; glide = null; const M = hitAt(e.clientX, e.clientY); if (!M) return; zoomAbout(M, Math.exp(e.deltaY * 0.0015)); keepIn(); look(); kick(); }, { passive: false });
+  canvas.addEventListener("dblclick", e => { if (fs) e.preventDefault(); });
+  /* the wheel zooms toward the pointer; a trackpad pinch arrives as a wheel with ctrl held and small steps */
+  canvas.addEventListener("wheel", e => { if (!fs) return; e.preventDefault(); fly = null; glide = null; const M = hitAt(e.clientX, e.clientY); if (!M) return;
+    const dy = e.deltaY * (e.deltaMode === 1 ? 16 : 1), step = Math.exp(Math.max(-0.6, Math.min(0.6, dy * (e.ctrlKey ? 0.01 : 0.0015)))), now = performance.now();
+    /* each notch eases in over 160 ms; notches that come quickly add up */
+    zoomAnim = { M: zoomAnim && zoomAnim.M.distanceTo(M) < 30 ? zoomAnim.M : M, k: (zoomAnim ? zoomAnim.k / zoomAnim.f : 1) * step, f: 1, t0: now, ms: 160 }; lastInput = now; kick(); }, { passive: false });
+  /* keys: arrows or WASD move, Q and E turn, R and F tilt, + and - zoom */
+  const keys = new Set(), KEYS = { ArrowUp: "f", w: "f", ArrowDown: "b", s: "b", ArrowLeft: "l", a: "l", ArrowRight: "r", d: "r", q: "tl", e: "tr", r: "up", f: "dn", "+": "in", "=": "in", "-": "out", _: "out" };
+  addEventListener("keydown", e => { if (!fs || e.metaKey || e.ctrlKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test((e.target && e.target.tagName) || "")) return; const k = KEYS[e.key.length === 1 ? e.key.toLowerCase() : e.key]; if (!k) return; e.preventDefault(); keys.add(k); fly = null; glide = null; kick(); });
+  addEventListener("keyup", e => { const k = KEYS[e.key.length === 1 ? e.key.toLowerCase() : e.key]; if (k) keys.delete(k); });
+  addEventListener("blur", () => keys.clear());
+  function keyMove(dt) { const hd = heading(), sp = Math.max(25, camera.position.y * 1.4) * dt / 1000, fx = Math.sin(hd), fz = -Math.cos(hd);
+    let mx = 0, mz = 0; if (keys.has("f")) { mx += fx; mz += fz; } if (keys.has("b")) { mx -= fx; mz -= fz; } if (keys.has("r")) { mx -= fz; mz += fx; } if (keys.has("l")) { mx += fz; mz -= fx; }
+    if (mx || mz) moveBy(mx * sp, mz * sp, true);
+    if (keys.has("tl")) turnAbout(tgt.clone(), 1.3 * dt / 1000); if (keys.has("tr")) turnAbout(tgt.clone(), -1.3 * dt / 1000);
+    if (keys.has("up")) tiltBy(-0.9 * dt / 1000); if (keys.has("dn")) tiltBy(0.9 * dt / 1000);
+    if (keys.has("in")) zoomAbout(tgt.clone(), Math.exp(-1.2 * dt / 1000)); if (keys.has("out")) zoomAbout(tgt.clone(), Math.exp(1.2 * dt / 1000));
+    lastInput = performance.now(); }
   function pickAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
     const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d); select(hit ? hit.object.userData.d : null); }
   /* a tapped tower: fly to it and show its card */
@@ -3131,7 +3217,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
       <span>${pctv >= 100 ? "Finished: every floor is mastered." : `${pctv}% finished · ${Math.round(floors * b.target)} of ${floors} floors done`}</span>
       <button class="btn primary" type="button" data-fs="drill">Drill ${names[d] || "this area"}</button>`;
     card.hidden = false;
-    const off = camera.position.clone().sub(tgt); SPH.setFromVector3(off);
+    const off = CAM.clone().sub(tgt); SPH.setFromVector3(off);
     /* frame the whole tower, a little above center so the card below doesn't cover it */
     const r = Math.max(260, b.H * 1.9 + 80) * (aspect < 1 ? 1.1 : 1), ph = Math.min(1.05, Math.max(0.85, SPH.phi));
     /* aim at the tower's middle, not its base: slide the ground pivot past the tower along the view */
@@ -3154,6 +3240,8 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     const a = e.target.closest("[data-fs]"); if (!a) return; const k = a.dataset.fs;
     if (k === "close") closeFs();
     else if (k === "home") { select(null); flyTo(fsView(currentPart)); }
+    else if (k === "north") { SPH.setFromVector3(_v.copy(CAM).sub(tgt)); flyTo({ x: tgt.x, y: tgt.y, z: tgt.z, r: SPH.radius, th: 0, ph: SPH.phi }, 600); }
+    else if (k === "street") { select(null); flyTo(streetPose(), 1400); }
     else if (k === "unpick") select(null);
     else if (k === "drill") { const d = picked; closeFs(); if (d && window.__townPick) setTimeout(() => window.__townPick(d), 60); }
     else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? "Day" : "Dusk"; }
@@ -3167,13 +3255,13 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     fs.innerHTML = `<div class="labels"></div>
       <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
         <div class="fs-views">${[["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]].map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
-      <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · tap a tower</div>
-      <div class="fs-bottom"><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
+      <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
+      <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
       <div class="fs-card" hidden></div>`;
     fs.addEventListener("click", onFsClick);
     document.body.appendChild(fs); document.documentElement.classList.add("town-fs-open");
     window.Town.mount(fs);
-    tgt.set(pose.x, 0, pose.z); SPH.set(pose.r, pose.ph, pose.th); camera.position.copy(tgt).add(new THREE.Vector3().setFromSpherical(SPH)); look();
+    setPose(pose); compassEl = fs.querySelector(".fs-compass svg"); lastHead = 9;
     for (const d in B) applyCut(B[d]);
     try { history.pushState({ town3d: 1 }, ""); } catch (e) {}
     setTimeout(() => { const h = fs && fs.querySelector(".fs-hint"); if (h) h.classList.add("gone"); }, 5000);
@@ -3181,7 +3269,8 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   }
   function closeFs(fromHistory) {
     if (!fs) return;
-    const el = fs, prev = fsPrev; fs = null; fsPrev = null; glide = null; fly = null; FP.clear(); fmode = null;
+    const el = fs, prev = fsPrev; fs = null; fsPrev = null; glide = null; fly = null; zoomAnim = null; FP.clear(); fmode = null; g2 = null; keys.clear(); compassEl = null; clearTimeout(pickT);
+    if (Math.abs(renderer.getPixelRatio() - dprFor()) > 0.01) renderer.setPixelRatio(dprFor());
     select(null);
     window.Town.unmount(); el.remove(); document.documentElement.classList.remove("town-fs-open");
     if (prev && document.body.contains(prev)) window.Town.mount(prev);
@@ -3236,13 +3325,20 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     if (perf.sum / perf.n > 28) { low = true; applyLow(); try { localStorage.setItem(GFXKEY, JSON.stringify({ level: "low", at: Date.now() })); } catch (e) {} }
     perf.sum = 0; perf.n = 0;
   }
+  /* while moving full screen on a device that can't keep up (frames over 22 ms), draw at 1x pixels until it stops */
+  const mv = { sum: 0, n: 0, lowRes: false };
+  function moveRes(now, raw) {
+    if (low) return; const moving = now - lastInput < 400 || !!(glide || fly || zoomAnim);
+    if (moving && raw < 250) { mv.sum += raw; mv.n++; if (mv.n >= 20) { if (mv.sum / mv.n > 22 && dprFor() > 1) mv.lowRes = true; mv.sum = mv.n = 0; } }
+    const want = mv.lowRes && moving ? 1 : dprFor(); if (Math.abs(renderer.getPixelRatio() - want) > 0.01) { renderer.setPixelRatio(want); resize(); }
+  }
   const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), V = new THREE.Vector3(), Sv = new THREE.Vector3();
   function frame(now) {
     if (!stage || document.hidden || !visible || lost) { running = false; return; }
     if (low && !wantFrame && now - lastDraw < 30) { requestAnimationFrame(frame); return; }
     const raw = now - lastT; lastDraw = now; sampleFrame(now, raw);
     const dt = Math.min(0.05, raw / 1000); lastT = now; U.time.value = now / 1000;
-    let busy = !reduce || (fs && (glide || fly));
+    let busy = !reduce || (fs && navBusy());
     if (rig.anim) { const k = Math.min(1, (now - rig.anim.t0) / rig.anim.dur), e = 1 - Math.pow(1 - k, 3); for (let i = 0; i < 3; i++) rig.t[i] = rig.anim.from.t[i] + (rig.anim.to.t[i] - rig.anim.from.t[i]) * e; for (const key of ["yaw", "pitch", "dist"]) rig[key] = rig.anim.from[key] + (rig.anim.to[key] - rig.anim.from[key]) * e; if (k >= 1) rig.anim = null; busy = true; }
     if (paintAnim) {
       const k = Math.max(0, Math.min(1, (now - paintAnim.t0) / paintAnim.dur)), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
@@ -3253,7 +3349,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     const fw = bursts.length || pending.length; if (labels) labels.style.opacity = fw ? 0.08 : "";
     if (fw) { stepBursts(now); busy = true; }
     if (!reduce) {
-      if (!low) { crowd.forEach((p, i) => { if (p.v) { p.z += p.v * dt; if (p.pz ? !onPlaza(p.x, p.z) : p.z > CANYON.z1 || p.z < CANYON.z0) { p.v = -p.v; p.z += p.v * dt * 2; } } M4.compose(V.set(p.x, p.y, p.z), Q, Sv.set(p.s, p.s, p.s)); crowd.mesh.setMatrixAt(i, M4); }); crowd.mesh.instanceMatrix.needsUpdate = true; }
+      if (!low) { crowd.forEach((p, i) => { if (p.v) { p.z += p.v * dt; if (p.z > p.zhi || p.z < p.zlo) { p.v = -p.v; p.z = Math.min(p.zhi, Math.max(p.zlo, p.z)); } } M4.compose(V.set(p.x, p.y, p.z), Q, Sv.set(p.s, p.s, p.s)); crowd.mesh.setMatrixAt(i, M4); }); crowd.mesh.instanceMatrix.needsUpdate = true; }
       const lp = cars.lights.geometry.attributes.position;
       for (let i = 0; i < nCars; i++) { const c = cars[i]; c.z += c.v * dt; if (c.z > 520) c.z = -620; M4.makeTranslation(c.lane, 0, c.z); cars.bodies.setMatrixAt(i, M4); cars.cabs.setMatrixAt(i, M4);
         lp.setXYZ(i * 4, c.lane - 0.7, 0.9, c.z - 2.35); lp.setXYZ(i * 4 + 1, c.lane + 0.7, 0.9, c.z - 2.35); lp.setXYZ(i * 4 + 2, c.lane - 0.7, 0.8, c.z + 2.35); lp.setXYZ(i * 4 + 3, c.lane + 0.7, 0.8, c.z + 2.35); }
@@ -3263,7 +3359,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
       redLightM.color.setRGB(Math.sin(now / 300) > 0 ? 4 : 0.6, 0.3, 0.2);
       if (now - lastStat > 2600) { lastStat = now; const s = stats[statI++ % stats.length]; s.i++; drawStat(s); }
     }
-    if (fs) fsUpdate(now); else placeCamera();
+    if (fs) { fsUpdate(now, Math.min(50, raw)); moveRes(now, raw); } else placeCamera();
     if (shadowDirty && renderer.shadowMap.enabled) { renderer.shadowMap.needsUpdate = true; shadowDirty = false; }
     renderer.info.reset();
     if (composer && !low) composer.render(); else renderer.render(scene, camera);
@@ -3316,7 +3412,8 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     fullscreen(on) { if (on) openFs(); else closeFs(); }
   };
   window.__townDebug = () => ({ rig(t, yaw, pitch, dist) { rig.anim = null; rig.off = 0; rig.zoom = 1; Object.assign(rig, { t, yaw, pitch, dist }); kick(); },
-    cam(pos, at) { fly = glide = null; camera.position.set(...pos); tgt.set(...at); look(); kick(); }, nanTest: () => { reflBright.value = NaN; kick(); return true; }, lost, lostCount, fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, tris: renderer.info.render.triangles, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
+    pose: { cam: camera.position.toArray(), want: CAM.toArray(), tgt: tgt.toArray(), armK, head: heading(), busy: !!(glide || fly || zoomAnim) },
+    cam(pos, at) { fly = glide = zoomAnim = null; CAM.set(...pos); tgt.set(...at); armK = 1; look(); kick(); }, nanTest: () => { reflBright.value = NaN; kick(); return true; }, lost, lostCount, fs: !!fs, picked, target: tgt.toArray().map(Math.round), b: bursts.length, calls: renderer.info.render.calls, tris: renderer.info.render.triangles, low, dpr: renderer.getPixelRatio(), fps: perf.fps, towers: Object.keys(B).length,
     /* where a tower sits on screen, for tests that tap it */
     screenOf(d) { const b = B[d]; if (!b || !stage) return null; v3.set(b.x, b.H * 0.85, b.z).project(camera); const r = canvas.getBoundingClientRect(); return { x: r.left + (v3.x + 1) / 2 * r.width, y: r.top + (1 - v3.y) / 2 * r.height }; } });
   /* ---------- sun shadows (high mode): towers shade the streets and each other. The city stands still, so the shadow map
