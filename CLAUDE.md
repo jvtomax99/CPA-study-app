@@ -5,6 +5,8 @@
 - For UI changes (index.html, src/, art/, preview/), also send before/after
   screenshots rendered with Playwright.
 - Never commit or push without explicit approval.
+- When a push needs my approval, ask with clickable buttons ("Push" and
+  "Hold"), not a line asking me to type "push".
 - Once I approve a push, open the pull request and merge it into main
   yourself. Don't ask a second time to merge.
 - After merging, wait for the GitHub Pages deploy and tell me when the update
