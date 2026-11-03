@@ -277,6 +277,25 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 .partseg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-soft); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 160ms, color 160ms; }
 .partseg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
 .partseg button[aria-pressed="true"] .bul { opacity: 1; }
+/* Exam day: the countdown pill on Today (glass, like the stat pills) and the Exam day card on Exam (paper) */
+.countpill { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.countpill b { color: #ffd27a; font-weight: 800; font-variant-numeric: tabular-nums; }
+.countpill span { color: rgba(255,255,255,0.6); }
+.examday { display: grid; gap: 16px; }
+.ed-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.ed-top .btn { flex: none; white-space: nowrap; }
+.ed-days { font-size: 52px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin: 8px 0 6px; font-variant-numeric: tabular-nums; }
+.ed-days span { font-size: 17px; font-weight: 700; letter-spacing: 0; margin-left: 6px; color: var(--ink-soft); }
+.ed-warn { color: var(--bad); font-weight: 700; }
+.ed-parts { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 10px; }
+.ed-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; min-height: 42px; padding: 8px 4px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); text-align: left; cursor: pointer; transition: background-color 160ms; }
+.ed-row:hover { background: var(--bg); }
+.ed-row .bul { opacity: 1; }
+.ed-mid { display: grid; gap: 6px; }
+.ed-nm { font-weight: 700; }
+.ed-sub { font-size: 12.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.ed-num { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .ed-row { transition: none; } }
 .tabbar { display: none; }
 body.tabs .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; background: #111; border-top: 2px solid #fff;
   padding: 6px max(8px, env(safe-area-inset-right, 0px), calc(50vw - 320px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px), calc(50vw - 320px)); }

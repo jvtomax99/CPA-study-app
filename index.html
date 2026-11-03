@@ -294,6 +294,25 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 .partseg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-soft); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 160ms, color 160ms; }
 .partseg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
 .partseg button[aria-pressed="true"] .bul { opacity: 1; }
+/* Exam day: the countdown pill on Today (glass, like the stat pills) and the Exam day card on Exam (paper) */
+.countpill { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.countpill b { color: #ffd27a; font-weight: 800; font-variant-numeric: tabular-nums; }
+.countpill span { color: rgba(255,255,255,0.6); }
+.examday { display: grid; gap: 16px; }
+.ed-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.ed-top .btn { flex: none; white-space: nowrap; }
+.ed-days { font-size: 52px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin: 8px 0 6px; font-variant-numeric: tabular-nums; }
+.ed-days span { font-size: 17px; font-weight: 700; letter-spacing: 0; margin-left: 6px; color: var(--ink-soft); }
+.ed-warn { color: var(--bad); font-weight: 700; }
+.ed-parts { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 10px; }
+.ed-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; min-height: 42px; padding: 8px 4px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); text-align: left; cursor: pointer; transition: background-color 160ms; }
+.ed-row:hover { background: var(--bg); }
+.ed-row .bul { opacity: 1; }
+.ed-mid { display: grid; gap: 6px; }
+.ed-nm { font-weight: 700; }
+.ed-sub { font-size: 12.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.ed-num { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .ed-row { transition: none; } }
 .tabbar { display: none; }
 body.tabs .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; background: #111; border-top: 2px solid #fff;
   padding: 6px max(8px, env(safe-area-inset-right, 0px), calc(50vw - 320px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px), calc(50vw - 320px)); }
@@ -1221,7 +1240,7 @@ const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
 const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false }; }
+function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, examDates: {} }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -1475,6 +1494,45 @@ function elLine(p, r) {
     <div class="el-sign"><b>EXAM READY</b><i></i></div>
     <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
 }
+/* ---------- exam day: a date per part, counted down on Today and Exam ---------- */
+const WINDOW_END = "2027-02-28"; /* the July 1, 2026 to February 28, 2027 testing window */
+const examDate = p => (state.examDates || {})[p] || "";
+function daysTo(iso) { const [y, m, d] = iso.split("-").map(Number), now = new Date(); now.setHours(0, 0, 0, 0); return Math.round((new Date(y, m - 1, d) - now) / 864e5); }
+const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, o || { month: "short", day: "numeric" }); };
+const bestSim = p => { const s = state.exams.filter(e => String(e.part) === String(p)).map(e => e.score); return s.length ? Math.max(...s) : null; };
+function countPill(p) {
+  const iso = examDate(p); if (!iso) return "";
+  const d = daysTo(iso);
+  if (d < 0) return "";
+  return `<div class="countpill">${d === 0 ? `<b>Exam day</b> Good luck on Part ${p}` : `<b>${d}</b> day${d === 1 ? "" : "s"} to Part ${p} <span>· ${fmtDay(iso)}</span>`}</div>`;
+}
+function examDayCard(p) {
+  const iso = examDate(p), d = iso ? daysTo(iso) : null;
+  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">Set your Part ${p} date to count down to it.</p>`
+    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">Part ${p} was on ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric" })}. Set your next date.</p>`
+    : `<div class="ed-days">${d === 0 ? "Today" : d}${d === 0 ? "" : `<span>day${d === 1 ? "" : "s"}</span>`}</div>
+      <div class="muted small">Part ${p} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${iso > WINDOW_END ? ` · <b class="ed-warn">after the window closes Feb 28</b>` : d === 0 ? " · good luck" : " · the window closes Feb 28"}</div>`;
+  return `<section class="card pad examday"><div class="ed-top"><div><h2>Exam day</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? "Change" : "Set date"}</button></div>
+    <div class="ed-parts">${[1, 2, 3].map(n => { const r = readiness(String(n)), b = bestSim(n), di = examDate(String(n));
+      return `<button class="ed-row" type="button" data-setdate="${n}" aria-label="Part ${n}, ${PARTS[n]}: ${pct(r)}% ready${di ? ", exam " + fmtDay(di) : ", no date set"}"><span class="bul" data-part="${n}" aria-hidden="true">${n}</span>
+        <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : "No date"}${b != null ? ` · best sim ${pct(b)}%` : ""}</span></span>
+        <span class="ed-num">${pct(r)}%</span></button>`; }).join("")}</div></section>`;
+}
+function askExamDate(p) {
+  const iso = examDate(p), today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="Part ${p} exam date"><div class="grab"></div>
+    <h3>When is your Part ${p} exam?</h3>
+    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="Part ${p} exam date">
+    <p class="hint" id="datewarn" style="margin:0">The current testing window closes February 28, 2027.</p>
+    <div class="row"><button class="btn primary" type="submit">Save</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">Clear date</button>` : ""}<button class="btn ghost" type="button" id="datecancel">Cancel</button></div></form></div>`;
+  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = v && v > WINDOW_END ? "That's after the window closes on February 28, 2027. Check the date with PSI." : "The current testing window closes February 28, 2027."; };
+  $("#datein").oninput = warn; warn();
+  $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
+  $("#datecancel").onclick = closeLayer;
+  if ($("#dateclear")) $("#dateclear").onclick = () => { delete state.examDates[p]; save(); closeLayer(); renderHome(); };
+  $("#dateform").onsubmit = e => { e.preventDefault(); const v = $("#datein").value; closeLayer(); if (v) { state.examDates = Object.assign({}, state.examDates, { [p]: v }); save(); renderHome(); } };
+}
+
 /* Home is four sections, each one screen: Today (greeting, readiness, Play), City (the 3D town), Map (the strip map) and
    Exam (sims). The tab bar in shell.html switches them; at 1024px and wider it becomes a sidebar and Today sits beside the
    map. Every launch opens on Today; within a visit Home comes back to the section you left. */
@@ -1510,7 +1568,7 @@ function renderHome() {
   <div class="pane pane-today">
   ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
   <section class="today-card${night}" aria-label="Today">
-    <div class="hero-top">${heroTop}</div>
+    <div class="hero-top">${countPill(p)}${heroTop}</div>
     ${pills.length && !firstRide ? `<div class="pills">${pills.map(x => `<span class="pill">${x}</span>`).join("")}</div>` : ""}
     <div class="hero-cta">
       <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
@@ -1542,6 +1600,7 @@ function renderHome() {
     ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
   </div>
   <div class="pane pane-exam">
+    ${examDayCard(p)}
     <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
       <p class="muted small" style="margin:0">A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.</p>
       <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
@@ -1570,6 +1629,7 @@ function renderHome() {
   };
   $("#examgo").onclick = () => renderExamSetup();
   $("#examnew").onclick = () => renderExamSetup();
+  $("#app").querySelectorAll("[data-setdate]").forEach(b => b.onclick = () => askExamDate(b.dataset.setdate));
   if ($("#resume")) $("#resume").onclick = () => renderExam();
   $("#app").querySelectorAll("[data-drill]").forEach(b => b.onclick = () => startDrill(b.dataset.drill));
   $("#app").querySelectorAll("[data-sheet]").forEach(b => b.onclick = () => openArea(b.dataset.sheet));

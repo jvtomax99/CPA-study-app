@@ -170,6 +170,11 @@ Each exam part is a subway strip map: a tan map with white streets, a 38px river
 
 Tapping a row starts that area's drill. The area with the biggest gap gets a white **Next stop** box instead: 4px radius, 1.5px `#8c8471` border, a header with its route bullet and "NEXT STOP", the name at 20px, and a black 6px-radius Practice button.
 
+### Exam day
+A date per part, saved with your progress (`state.examDates`, ISO dates), set in a bottom sheet with the phone's date picker; a date after the testing window closes (February 28, 2027) gets a warning.
+- **Countdown pill** (Today card, above the first stop or readiness): glass control like the stat pills; the day count in Lit Window gold 800 with tabular numbers, "days to Part 3", and the date in white at 60%. On exam day it reads "Exam day · Good luck on Part 3"; once the date has passed it disappears.
+- **Exam day card** (first card on Exam, paper): "Exam day" eyebrow, the countdown at 52px/800 with "days" at 17px/700 in Ink Soft, the date and a window note (Bad red if the date is after the window), and Change or Set date. Below a Line rule, one 42px row per part: its bullet at full strength, the part name, a meter in the part's line color for readiness, the date (or "No date") and best sim score in 12.5px Ink Soft, and the readiness percentage at 17px/700. Tapping a row sets that part's date.
+
 ### Tab bar and sidebar (Home only)
 A station-sign band fixed to the bottom of the screen: Sign Black `#111` with a 2px white rule along its top edge, four equal buttons (Today, City, Map, Exam), each a 24px line icon (1.8 stroke, round caps) over an 11px/700 uppercase label with 0.06em tracking. Labels are white at 60% at rest and full white when current; the current tab also gets a 4px Amber bar sitting on the white rule. Buttons are at least 52px tall, the bar pads for the home indicator, and on screens wider than 640px the buttons stay inside the 640px column. z-index 30: above the page, below bottom sheets (40), toasts (50) and full-screen 3D (60).
 
