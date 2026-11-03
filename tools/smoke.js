@@ -35,6 +35,10 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click(".tabbar [data-tab=exam]");
   check(await p.evaluate(() => !!document.querySelector("#examnew").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: Exam shows the exam sims");
   check(await p.evaluate(() => !document.documentElement.classList.contains("nightpage")), "night page: Exam stays on paper");
+  /* exam day: set a Part 1 date 30 days out; the Exam card counts it down and Today shows the pill */
+  const in30 = await p.evaluate(() => { const d = new Date(); d.setDate(d.getDate() + 30); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); });
+  await p.click(".examday [data-setdate='1'] >> nth=0"); await p.fill("#datein", in30); await p.click("#dateform button[type=submit]");
+  check(await p.evaluate(() => /^30/.test(document.querySelector(".ed-days").textContent) && /30\s*days to Part 1/.test(document.querySelector(".countpill").textContent) && JSON.parse(localStorage.getItem("eaTaxTown.v2")).examDates["1"]), "exam day: a date counts down on Exam and Today");
   await p.click(".tabbar [data-tab=city]");
   check(await p.evaluate(() => !!document.querySelector("#stage").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: City shows the town");
   check(await p.evaluate(() => document.documentElement.classList.contains("nightpage")), "night page: City is a night scene");
