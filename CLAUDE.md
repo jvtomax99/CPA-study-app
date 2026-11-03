@@ -5,15 +5,18 @@
 - For UI changes (index.html, src/, art/, preview/), also send before/after
   screenshots rendered with Playwright.
 - Never commit or push without explicit approval.
-- When a push needs my approval, ask with clickable buttons ("Push" and
-  "Hold"), not a line asking me to type "push".
 - Once I approve a push, open the pull request and merge it into main
   yourself. Don't ask a second time to merge.
 - After merging, wait for the GitHub Pages deploy and tell me when the update
   is live, naming the change. If the deploy fails, tell me that instead.
+- Always send me a phone notification when an update goes live, naming the
+  change, even if I'm in the chat. If the deploy fails, notify me of that
+  instead.
 - End every reply with what I have to do, in a line starting "You need to:"
   (approve a diff, approve a push, reload the app, and so on). If there's
   nothing, write "You need to: nothing."
+- When I need to approve a diff or a push, give it to me as a clickable
+  button, not only as text.
 
 ## Design
 - Follow DESIGN.md for colors, type, corner radius, shadows, motion and

@@ -297,22 +297,22 @@ function renderHome() {
   document.querySelectorAll(".appbar .bul").forEach(b => b.classList.toggle("on", b.dataset.part === state.part));
   const p = state.part, r = readiness(p), g = gap(p), dueP = dueIn(q => String(q.part) === p);
   const done = todayCount(), sk = streak(), night = skyNow() === "dusk" ? " night" : "";
-  const coach = g ? (g.m >= 0.999 ? `Every building in Part ${p} is finished. Keep reviews up to date.` :
-    `Finish <b>${esc(DOMAINS[g.d].bld)}</b> (${esc(DOMAINS[g.d].name)}, ${DOMAINS[g.d].n} of 85 scored questions).`) : "";
+  /* Day one: nothing answered yet, so the card names the first stop instead of a row of zeros, and Play starts that area */
+  const firstRide = !BANK.some(q => st(q.id).seen), next = g && g.m < 0.999 ? g.d : null;
+  const heroTop = firstRide && next
+    ? `<div class="eyebrow">Your first stop</div>
+      <div class="first">${routeBullet(ROUTE[next])}<div><div class="first-nm">${esc(DOMAINS[next].name)}</div>
+        <div class="first-sub">${esc(DOMAINS[next].bld.replace(/^the /, "The "))} · ${Math.round(DOMAINS[next].n / 85 * 100)}% of exam · ${inBank(next).length} questions</div></div></div>`
+    : `<div class="eyebrow">Your tax city</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
+      <div class="next-line">${next ? `<b>Next stop</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : `Every building in Part ${p} is finished. Keep reviews up to date.`}</div>`;
+  const pills = [dueP ? `${ICON.clock}${dueP} due` : "", done ? `${ICON.goal}${done}/${state.goal} today` : ""].filter(Boolean);
   const exams = state.exams.slice(-6);
   $("#app").innerHTML = `<div class="panes" data-tab="${homeTab}">
   <div class="pane pane-today">
   ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
   <section class="today-card${night}" aria-label="Today">
-    <div class="hero-top">
-      <div><div class="eyebrow">Your tax city</div><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-      <div class="coach">${coach}</div>
-    </div>
-    <div class="pills">
-      <span class="pill">${ICON.fire}${sk} day${sk === 1 ? "" : "s"}</span>
-      <span class="pill">${ICON.clock}${dueP} due</span>
-      <span class="pill">${ICON.goal}${done}/${state.goal} today</span>
-    </div>
+    <div class="hero-top">${heroTop}</div>
+    ${pills.length && !firstRide ? `<div class="pills">${pills.map(x => `<span class="pill">${x}</span>`).join("")}</div>` : ""}
     <div class="hero-cta">
       <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
       <button class="cta exam" id="examgo">Exam sim</button>
@@ -324,18 +324,18 @@ function renderHome() {
   </div>
   <div class="pane pane-city">
   <section class="hero${night}" aria-label="Your tax city">
-    <div class="ptabs" role="tablist">
-      ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}"><b>Part ${n}</b>${PARTS[n]}</button>`).join("")}
+    <div class="ptabs" role="tablist" aria-label="Exam part">
+      ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}" aria-label="Part ${n}, ${PARTS[n]}" style="--lc:${LINE[n]}">${n}</button>`).join("")}
+      <span class="pname" aria-hidden="true"><small>Part ${p}</small>${PARTS[p]}</span>
     </div>
     <div class="stage-fade" aria-hidden="true"></div>
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
       <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="legendbtn" type="button" aria-expanded="false" aria-controls="legend" aria-label="What the city shows"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
     </div>
   </section>
-  <p class="legend" id="legend" hidden>Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   </div>
   <div class="pane pane-map">
     <div class="partseg" role="group" aria-label="Exam part">${[1, 2, 3].map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"><span class="bul" data-part="${n}" aria-hidden="true">${n}</span>Part ${n}</button>`).join("")}</div>
@@ -356,10 +356,9 @@ function renderHome() {
   setHomeTab(homeTab);
   const pickPart = n => { state.part = n; tsView = false; save(); renderHome(); };
   $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
-  $("#legendbtn").onclick = () => { const l = $("#legend"); l.hidden = !l.hidden; $("#legendbtn").setAttribute("aria-expanded", String(!l.hidden)); };
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
-  $("#play").onclick = () => startDrill(null);
+  $("#play").onclick = () => startDrill(firstRide ? next : null);
   if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
@@ -428,6 +427,7 @@ function openGuide() {
       <button class="btn" id="guideclose" aria-label="Close" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
     <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px);max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
     <span class="hint">Step one: add this app to your Home Screen.</span>
+    <p class="muted small" style="margin:0"><b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   </div></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeGuide(); };
   $("#guideclose").onclick = closeGuide;

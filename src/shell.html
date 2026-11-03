@@ -106,12 +106,19 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .el-sign b { background: #111; color: #fff; font: 700 9.5px/1 var(--f-sign); letter-spacing: 0.05em; padding: 5px 6px 4px; border-top: 1.5px solid #fff; white-space: nowrap; }
 .el-sign i { width: 2px; height: 12px; background: #77739c; }
 @media (prefers-reduced-motion: reduce) { .el-train, .el-car, .el-beam, .el-deck i, .el-cols i { animation: none; } }
-.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px; padding: 20px 18px 0; align-items: start; }
+.hero-top { padding: 20px 18px 0; }
 .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.72); }
 .ready { font-size: 52px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: var(--amber); margin-top: 6px; font-variant-numeric: tabular-nums; }
 .ready-sub { font-size: 15px; color: rgba(255,255,255,0.86); margin-top: 4px; }
-.coach { background: #fff; color: #1b1f30; border-radius: 18px 18px 18px 6px; padding: 12px 14px; font-size: 14px; line-height: 1.4; box-shadow: 0 10px 24px -14px rgba(0,0,0,0.5); min-width: 0; }
-.coach b { color: #b3485e; font-weight: 700; }
+.ready-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.ready-row .ready, .ready-row .ready-sub { margin: 0; }
+.next-line { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.next-line b { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+/* Day one: the first stop, with its route bullet */
+.first { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+.first .rbul { width: 40px; height: 40px; font-size: 22px; box-shadow: 0 0 0 2px #111, 0 0 0 3.5px #fff; }
+.first-nm { font: 700 24px/1.1 var(--f-sign); letter-spacing: -0.015em; }
+.first-sub { font-size: 14px; color: rgba(255,255,255,0.75); margin-top: 4px; }
 /* Greeting with the study buddy (src/mascot.js), after Dr. Smiley's in the Interp app: a drawn night
    Midtown, the name in Parisienne, the quote in Lora italic, the buddy popping out of a gold-coin disc
    with a ring of numbers turning behind him and Play on the calculator he holds. --s is his picture's size;
@@ -126,14 +133,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 .greet-meta { grid-area: meta; } .greet-name { grid-area: name; } .greet-side { grid-area: side; align-self: center; min-width: 0; } .buddy { grid-area: buddy; } .greet-quote { grid-area: quote; }
 .greet-row { display: contents; }
 .greet-side { display: grid; gap: 8px; justify-items: start; }
-.greet-guide { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px 6px 7px; border-radius: 999px; font: 700 14px/1 var(--f-ui); color: #fff; cursor: pointer; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.32); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 6px 14px -6px rgba(0,0,0,0.6); }
+.greet-guide { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px 6px 7px; border-radius: 999px; font: 700 14px/1 var(--f-ui); color: #fff; cursor: pointer; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .greet-guide .gg-play { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--amber); color: var(--amber-ink); }
 .greet-guide:active { transform: scale(0.96); }
 .greet-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.88); }
 .greet-meta time { letter-spacing: 0.02em; text-transform: none; font-size: 13px; }
 .greet-name { margin: 2px 0 0; font: 400 58px/1.12 "Parisienne", cursive; letter-spacing: 0; text-transform: none; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 0.1em 0.06em 0; text-shadow: 0 1px 2px rgba(4,4,28,0.6), 0 2px 6px rgba(4,4,28,0.35), 0 3px 22px rgba(4,4,28,0.42); }
 .greet-name.is-long { font-size: 42px; }
-.greet-pill { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; font-size: 14px; font-weight: 700; color: #fff; background: linear-gradient(90deg, #1d6a43, #39a66d); box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 6px 14px -6px rgba(0,0,0,0.6); }
+.greet-pill { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; font-size: 14px; font-weight: 700; color: #ffd27a; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .greet-pill svg { width: 16px; height: 16px; }
 .greet-quote { margin: 6px 0 0; padding: 0; max-width: 26em; font: italic 500 19px/1.34 "Lora", Georgia, serif; text-wrap: balance; text-shadow: 0 1px 2px rgba(4,4,28,0.55), 0 2px 16px rgba(4,4,28,0.45); }
 .greet-quote cite { display: flex; align-items: center; gap: 9px; margin-top: 8px; font: normal 650 11.5px/1.5 var(--f-ui); letter-spacing: 0.16em; text-transform: uppercase; text-shadow: 0 1px 3px rgba(4,4,28,0.7); }
@@ -200,14 +207,15 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
   .buddy { margin-top: calc(6px - var(--lift, 0px)); align-self: end; } .greet-side { margin-top: 2px; } }
 @media (max-width: 350px) { .greet { --s: 112px; } .greet-name { font-size: 50px; } .greet-name.is-long { font-size: 36px; } .greet-quote { font-size: 17.5px; } }
 .pills { display: flex; gap: 8px; flex-wrap: wrap; padding: 14px 18px 0; }
-.pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; padding: 7px 12px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 7px 12px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .pill svg { width: 16px; height: 16px; flex: none; }
-.ptabs { display: flex; gap: 6px; padding: 14px 18px 0; overflow-x: auto; scrollbar-width: none; }
-.ptab { flex: 1 0 auto; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); border-radius: 12px; padding: 8px 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; line-height: 1.25; }
-.ptab b { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 700; }
-.ptab[aria-selected="true"] { background: #fff; color: #1b1f30; border-color: #fff; }
-.ptab[aria-selected="true"] b { color: #8a4f72; }
-.stage { position: relative; height: 380px; margin-top: 4px; touch-action: none; user-select: none; -webkit-user-select: none; }
+/* Part switcher: the three line bullets, the current one ringed like the app bar's, with its name beside them */
+.ptabs { display: flex; gap: 10px; align-items: center; padding: 16px 18px 0; }
+.ptab { flex: none; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--lc); color: #fff; font: 700 19px/1 var(--f-sign); cursor: pointer; opacity: 0.45; transition: opacity 160ms; }
+.ptab[aria-selected="true"] { opacity: 1; box-shadow: 0 0 0 2.5px #111, 0 0 0 4.5px #fff; }
+.pname { margin-left: 4px; font: 700 16px/1.1 var(--f-sign); }
+.pname small { display: block; margin-bottom: 3px; font: 700 11px/1 var(--f-ui); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.stage { position: relative; height: 380px; margin-top: 10px; touch-action: none; user-select: none; -webkit-user-select: none; }
 .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* The 3D picture fades into the card at its top edge. The fade is a copy of the card's own background laid over the
    canvas, never a mask on the canvas itself: iPhone Safari keeps a canvas mask after the canvas moves to full screen
@@ -247,12 +255,11 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 .fs-card span { font-size: 13px; color: var(--ink-soft); }
 .hero.night, .today-card.night { background: radial-gradient(120% 70% at 50% 108%, #6b3d5e 0%, #3a2758 32%, transparent 62%), linear-gradient(180deg, #0b0a24 0%, #1b1742 62%, #3a2758 100%); }
 .stage-msg { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; color: rgba(255,255,255,0.8); font-size: 14px; }
-.hero-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; padding: 0 16px 18px; margin-top: -8px; position: relative; }
+.hero-cta { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; padding: 16px 16px 0; position: relative; }
 .cta { border: 0; border-radius: 18px; padding: 16px 12px; font-size: 18px; font-weight: 800; cursor: pointer; letter-spacing: -0.01em; transition: transform 120ms; }
 .cta:active { transform: translateY(2px) scale(0.98); }
 .cta.play { background: linear-gradient(180deg, #ffd27a, var(--amber)); color: var(--amber-ink); box-shadow: 0 4px 0 var(--amber-deep), 0 10px 20px -10px rgba(0,0,0,0.5); }
 .cta.exam { background: rgba(255,255,255,0.16); color: #fff; border: 1px solid rgba(255,255,255,0.24); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.legend { font-size: 13px; color: var(--ink-soft); margin: 0 4px; }
 .rights { font-weight: 600; margin-top: 10px; }
 
 /* Home sections. Today, City, Map and Exam are panes in #app; .panes[data-tab] shows one. The tab bar shows only while
@@ -264,8 +271,7 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 /* On a phone the quote gives way so Play sits above the tab bar; wider screens keep it. */
 @media (max-width: 559px) { .pane-today .greet-quote { display: none; } }
 .pane-today > .card { margin-top: 14px; }
-.today-card { padding-bottom: 2px; }
-.today-card .hero-cta { margin-top: 16px; }
+.today-card .hero-cta { padding-bottom: 18px; }
 .pane-city .stage { height: max(340px, calc(100vh - 270px)); height: max(340px, calc(100svh - 270px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))); }
 .partseg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow); }
 .partseg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-soft); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 160ms, color 160ms; }

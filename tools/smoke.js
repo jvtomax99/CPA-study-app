@@ -35,7 +35,7 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click(".tabbar [data-tab=exam]");
   check(await p.evaluate(() => !!document.querySelector("#examnew").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: Exam shows the exam sims");
   await p.click(".tabbar [data-tab=city]");
-  check(await p.evaluate(() => !!document.querySelector("#stage").getClientRects().length && document.querySelector("#legend").hidden), "tabs: City shows the town, its key behind the info button");
+  check(await p.evaluate(() => !!document.querySelector("#stage").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: City shows the town");
 
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
