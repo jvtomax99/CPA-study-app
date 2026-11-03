@@ -9,6 +9,9 @@
   yourself. Don't ask a second time to merge.
 - After merging, wait for the GitHub Pages deploy and tell me when the update
   is live, naming the change. If the deploy fails, tell me that instead.
+- Always send me a phone notification when an update goes live, naming the
+  change, even if I'm in the chat. If the deploy fails, notify me of that
+  instead.
 - End every reply with what I have to do, in a line starting "You need to:"
   (approve a diff, approve a push, reload the app, and so on). If there's
   nothing, write "You need to: nothing."
