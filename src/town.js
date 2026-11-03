@@ -111,19 +111,23 @@
   float up = exp(-v / 30.0); /* at night walls are lit from the street: bright low down, dark higher up */
   diffuseColor.rgb *= mix(1.0, 0.22 + 0.78 * up, uNight);
   /* in the Times Square canyon the street light is the screens: magenta and cyan washing up the walls */
-  float inCy = step(-215.0, vFPos.z) * step(vFPos.z, 250.0) * (1.0 - smoothstep(22.0, 75.0, abs(vFPos.x)));
+  float inCy = step(-175.0, vFPos.z) * step(vFPos.z, 250.0) * (1.0 - smoothstep(34.0, 90.0, abs(vFPos.x + 0.13 * vFPos.z)));
   vec3 spill = mix(vec3(1.0, 0.1, 0.48), vec3(0.06, 0.7, 1.0), 0.5 + 0.5 * sin(vFPos.z * 0.043 + vFPos.x * 0.05)) * exp(-v / 24.0) * inCy;
   em += (1.0 - isRoof) * (baseCol * up * vec3(0.5, 0.32, 0.45) * 0.3 * (1.0 - inCy) + (baseCol + 0.12) * spill * 0.75);
   fEnvK = mix(1.0, 0.3, smoothstep(14.0, 90.0, v) * uNight);
   totalEmissiveRadiance += em * uNight;
 }`;
-  function facadeMat(opts = {}) {
+  function facadeMat(opts = {}, foot = false) {
     const m = new THREE.MeshStandardMaterial(Object.assign({ color: 0xffffff, roughness: 0.8, metalness: 0 }, opts));
+    if (foot) m.defines = { FOOT: "" }; /* a real building from the map: an extruded footprint, not a box */
     m.userData.facade = true; m.clipShadows = true; /* a tower's shadow stops where its floors do */
     m.onBeforeCompile = sh => {
       sh.uniforms.uNight = U.night;
       sh.vertexShader = sh.vertexShader.replace("#include <common>", `#include <common>
 attribute float aSeed; attribute float aStyle;
+#ifdef FOOT
+attribute vec3 aOrg; attribute float aTop; attribute vec2 aHalf;
+#endif
 varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle; varying float vTop; varying vec2 vHalf;`).replace("#include <begin_vertex>", `#include <begin_vertex>
 { mat4 fm = modelMatrix;
 #ifdef USE_INSTANCING
@@ -131,25 +135,41 @@ varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed;
 #endif
   vFPos = (fm * vec4(transformed, 1.0)).xyz; vFOrg = (fm * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
   vFNrm = mat3(fm) * objectNormal; vSeed = aSeed; vStyle = aStyle;
-  vTop = (fm * vec4(0.0, 1.0, 0.0, 1.0)).y; vHalf = vec2(length(fm[0].xyz), length(fm[2].xyz)) * 0.5; }`);
+  vTop = (fm * vec4(0.0, 1.0, 0.0, 1.0)).y; vHalf = vec2(length(fm[0].xyz), length(fm[2].xyz)) * 0.5;
+#ifdef FOOT
+  vFOrg = aOrg; vTop = aTop; vHalf = aHalf;
+#endif
+}`);
       sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>
 uniform float uNight; float fEnvK = 1.0;
 varying vec3 vFPos; varying vec3 vFNrm; varying vec3 vFOrg; varying float vSeed; varying float vStyle; varying float vTop; varying vec2 vHalf;
 ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + FACADE).replace("#include <lights_fragment_maps>", "#include <lights_fragment_maps>\n#ifdef USE_ENVMAP\nradiance *= fEnvK;\n#endif");
     };
-    m.customProgramCacheKey = () => "facade";
+    m.customProgramCacheKey = () => foot ? "facade-foot" : "facade";
     return m;
   }
 
-  /* ---------- city layout (meters; north is -z; the Times Square canyon runs along x = 0) ---------- */
-  const AVE = 260, ST = 80, SH = 9, avHalf = i => (i === 0 ? 18 : 15);
-  const CANYON = { z0: -205, z1: 245 }, PARK = { x0: -260, x1: 520, z1: -1100 };
+  /* ---------- city layout (meters; north is -z; 7th Avenue runs along x = 0, 45th Street along z = 0) ---------- */
+  /* The square itself is real: tools/tsq_map.py turns OpenStreetMap into TSQ (buildings with their heights and setbacks, the plazas,
+     the red steps, Broadway's line), on the same grid as the town: avenues 273 m apart, a street every 80 m, 42nd at z = 240, 47th at z = -160 */
+  const TSQ = __TSQ__;
+  const AVE = 273, ST = 80, SH = 9, avHalf = i => (i === 0 ? 15.25 : 15);
+  const CANYON = { z0: -170, z1: 245 }, PARK = { x0: -AVE, x1: 2 * AVE, z1: -1100 };
+  const ringOf = f => { const r = []; for (let i = 0; i < f.length; i += 2) r.push([f[i], f[i + 1]]); return r; };
+  const PLAZAS = TSQ.pz.map(ringOf), STEPS = ringOf(TSQ.st[0]), BW = TSQ.bw.filter((_, i) => i % 4 === 0), BWN = BW.length, PZB = [-75, -180, 65, 250];
+  const inRing = (x, z, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, zi] = r[i], [xj, zj] = r[j]; if ((zi > z) !== (zj > z) && x < xi + (z - zi) * (xj - xi) / (zj - zi)) c = !c; } return c; };
+  /* 7th Avenue's roadway through the square, half width by block: 3 lanes from 47th to 46th, 5 to 45th, 4 to 42nd (the map's lane counts) */
+  const half7 = z => z < -170 ? 8.5 : z < -81 ? 5.5 : z < 0 ? 8.25 : z < 245 ? 6.6 : 8.5;
+  const onRoad = (x, z) => Math.abs(x) < half7(z) || Math.abs(z - Math.round(z / ST) * ST) < 5.5;
+  const onPlaza = (x, z) => !onRoad(x, z) && PLAZAS.some(r => inRing(x, z, r));
+  /* the square's outer walls: where the plazas meet Broadway's buildings */
+  const plazaSpan = z => { let lo = Infinity, hi = -Infinity; for (const r of PLAZAS) for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, zi] = r[i], [xj, zj] = r[j]; if ((zi > z) !== (zj > z)) { const x = xi + (z - zi) * (xj - xi) / (zj - zi); lo = Math.min(lo, x); hi = Math.max(hi, x); } } return [lo, hi]; };
   const RANGE = low ? 1500 : 2500, TDEPTH = 44;
   const PAL = { 0: [0x2b3542, 0x3a4553, 0x1f2731, 0x56606c, 0x2f3d4a, 0x44525e], 1: [0xb9ae99, 0x9d9485, 0xd0c6b1, 0x8b8579, 0xa79a86], 2: [0x8b4b37, 0x6f3c2d, 0xa1654b, 0x7b5b49, 0x5e4a3e], 3: [0x14181e, 0x20262e, 0x1a1f26] };
   const AWN = [0x1f4d2b, 0x1d2a44, 0x5a1a1f, 0x262629, 0x3d5a3a, 0x6b2d1a, 0x2f4058];
   const CROWN_COLS = [0xffc861, 0xf4f1ea, 0x6fb6ff, 0xff4f8b, 0x8cffb0, 0xb48cff];
   const towers = [], crowns = [], tanks = [], roofBoxes = [], avPts = [], walls = [], escapes = [], rails = [], awnings = [];
-  const addT = (x, y, z, w, h, d, style, seed, tint) => towers.push([x, y, z, w, h, d, style, seed, tint]);
+  const addT = (x, y, z, w, h, d, style, seed, tint, yaw = 0) => towers.push([x, y, z, w, h, d, style, seed, tint, yaw]);
   const density = (x, z) => Math.max(Math.exp(-((x - 300) ** 2) / 1000 ** 2 - ((z + 150) ** 2) / 1250 ** 2), 0.9 * Math.exp(-((x + 650) ** 2) / 320 ** 2 - ((z - 700) ** 2) / 260 ** 2));
   function building(x0, x1, z0, z1, o = {}) {
     const w = x1 - x0, d = z1 - z0, cx = (x0 + x1) / 2, cz = (z0 + z1) / 2, dn = density(cx, cz);
@@ -193,9 +213,6 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     }
     return { h, wallH };
   }
-  /* study tower slots: the first 44 m of each canyon block, two lots per block; Part 1 north, Part 2 middle, Part 3 south */
-  const SLOT_BLOCKS = { "-2": 1, "-1": 1, "0": 2, "1": 3 };
-  const slots = { 1: [], 2: [], 3: [] };
   for (let k = -6; k <= 8; k++) {
     const x0 = k * AVE + avHalf(k), x1 = (k + 1) * AVE - avHalf(k + 1);
     if (x1 < -1300 || x0 > 2100) continue;
@@ -203,26 +220,30 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       const z0 = j * ST + SH, z1 = (j + 1) * ST - SH, cz = (z0 + z1) / 2;
       if (Math.hypot((x0 + x1) / 2 - 150, cz) > RANGE) continue;
       if (x0 >= PARK.x0 && x1 <= PARK.x1 && z1 <= PARK.z1 + 1) continue;
-      const canyon = (k === 0 || k === -1) && z1 > CANYON.z0 && z0 < CANYON.z1;
-      const part = canyon ? SLOT_BLOCKS[j] : 0;
-      let xa = x0, xb = x1;
-      if (part) {
-        const nx = k === 0 ? -1 : 1, sx0 = k === 0 ? x0 : x1 - TDEPTH, sx1 = k === 0 ? x0 + TDEPTH : x1;
-        for (const [a, b, side] of [[z0, cz, -1], [cz, z1, 1]]) slots[part].push({ x0: sx0, x1: sx1, z0: a, z1: b, nx, side, wallX: k === 0 ? x0 : x1 });
-        if (k === 0) xa = x0 + TDEPTH; else xb = x1 - TDEPTH;
-      }
+      if ((k === 0 || k === -1) && j >= -5 && j <= 4) continue;   /* the blocks around the square, 40th to 50th Street, come from the map */
+      const xa = x0, xb = x1;
       const hk = (k === -2 || k === -3) && z0 > -520 && z1 < 470;   /* the walk-up blocks west of the canyon */
       let x = xa;
       while (x < xb - 8) {
         let lw = hk ? 7.5 + rnd() * 8 : 18 + rnd() * 40; if (xb - (x + lw) < (hk ? 7 : 16)) lw = xb - x;
         const lx0 = x, lx1 = x + lw; x += lw;
-        const faces = canyon && !part && ((k === 0 && lx0 === x0) || (k === -1 && Math.abs(lx1 - x1) < 0.01));
-        const rows = hk || (!faces && rnd() < 0.45) ? [[z0, cz - 1], [cz + 1, z1]] : faces && rnd() < 0.5 ? [[z0, cz], [cz, z1]] : [[z0, z1]];
-        for (const [a, b] of rows) {
-          const info = building(lx0, lx1, a, b, Object.assign(faces ? { minH: 50, maxH: 105, maxCap: 110 } : part ? { maxCap: 115 } : {}, { nf: a === z0, sf: b === z1, hk }));
-          if (faces) walls.push({ x: k === 0 ? lx0 : lx1, nx: k === 0 ? -1 : 1, z0: a, z1: b, h: info.wallH, n: a === z0, s: b === z1, depth: lw });
-        }
+        const rows = hk || rnd() < 0.45 ? [[z0, cz - 1], [cz + 1, z1]] : [[z0, z1]];
+        for (const [a, b] of rows) building(lx0, lx1, a, b, { nf: a === z0, sf: b === z1, hk });
       }
+    }
+  }
+  /* study tower slots: two lots per block on the square's walls, each running 44 m back from the wall. North of 45th Street the square's
+     west wall is Broadway's building line and its east wall is 7th Avenue's; south of 45th it's the other way round.
+     Part 1 = 45th to 47th, Part 2 = 44th to 45th, Part 3 = 43rd to 44th. A lot on Broadway turns to face it. */
+  const slots = { 1: [], 2: [], 3: [] };
+  for (const side of [-1, 1]) for (const [j, part] of [[-2, 1], [-1, 1], [0, 2], [1, 3]]) {
+    const z0 = j * ST + SH, z1 = (j + 1) * ST - SH, cz = (z0 + z1) / 2, bway = j < 0 ? side < 0 : side > 0;
+    const wx = z => bway ? plazaSpan(z)[side < 0 ? 0 : 1] : side * avHalf(0);
+    for (const [a, b, half] of [[z0, cz, -1], [cz, z1, 1]]) {
+      const xa = wx(a + 0.5), xb = wx(b - 0.5), len = Math.hypot(xb - xa, b - a), yaw = Math.atan2(xb - xa, b - a);
+      const dir = [(xb - xa) / len, (b - a) / len], away = [side * dir[1], -side * dir[0]];
+      const cx = (xa + xb) / 2 + away[0] * TDEPTH / 2, czc = (a + b) / 2 + away[1] * TDEPTH / 2;
+      slots[part].push({ x0: cx - TDEPTH / 2, x1: cx + TDEPTH / 2, z0: czc - len / 2, z1: czc + len / 2, cx, cz: czc, len, yaw, nx: -side, side: half, front: [xa, a, xb, b], fn: [-away[0], -away[1]] });
     }
   }
   /* skyline anchors in the distance (generic shapes) */
@@ -236,9 +257,6 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     const h = tall ? 60 + rnd() * 160 : 8 + rnd() * 30, st = h > 60 ? pick([0, 3, 1]) : pick([2, 1, 2]);
     addT(x, 0, z, 14 + rnd() * 30, h, 14 + rnd() * 30, st, rnd() * 1000, pick(PAL[st]));
   }
-  /* the screen tower that closes the south end of the canyon */
-  const OTS = { x0: -11, x1: 11, z0: 212, z1: 232, h: 112 };
-  addT(0, 0, 222, 22, OTS.h, 20, 3, 5.5, 0x14181e); addT(0, OTS.h, 222, 14, 8, 12, 3, 5.5, 0x14181e); addT(0, OTS.h + 8, 222, 1.2, 26, 1.2, 3, 5.5, 0x9aa3ad);
 
   /* ---------- the 13 study towers: finished cladding below the cut; bare frame, netting and a crane above ---------- */
   const TDEF = {
@@ -267,7 +285,7 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     ids.forEach((d, i) => {
       const lot = slots[p][i]; if (!lot) return;
       const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + p * 101;
-      const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); scene.add(g);
+      const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); g.rotation.y = lot.yaw; lot.used = true; scene.add(g);
       const below = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0), above = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const clad = facadeMat({ color: def.tint, clippingPlanes: [below] }), frame = facadeMat({ clippingPlanes: [above] });
       const mdl = MODELS[def.style];
@@ -307,9 +325,42 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       g.add(crown);
       const top = mdl ? new THREE.Box3().setFromObject(crown).max.y : H + 8; /* highest point when finished: labels and fireworks clear it */
       B[d] = { id: d, part: p, g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
-      walls.push({ x: lot.wallX, nx: lot.nx, z0: lot.z0, z1: lot.z1, h: 22, n: false, s: false, depth: TDEPTH });
+      walls.push({ ax: lot.front[0], az: lot.front[1], bx: lot.front[2], bz: lot.front[3], nx: lot.fn[0], nz: lot.fn[1], h: 22 });
     });
-    for (let i = ids.length; i < slots[p].length; i++) { const l = slots[p][i]; building(l.x0, l.x1, l.z0, l.z1, { maxCap: 140 }); }
+  }
+
+  /* ---------- the real buildings around the square, from the map: footprints, heights and setbacks. A study tower takes the place of
+     whatever stands on its lot; a lot with no tower keeps its real buildings. One Times Square is the dark tower on the island
+     between 42nd and 43rd, with 7th Avenue to its west and Broadway to its east ---------- */
+  const foots = [], OTS = { parts: [], h: 0, top: 0, cx: 0, cz: 0 };
+  { const lots = [1, 2, 3].flatMap(p => slots[p].filter(l => l.used));
+    const inLot = (x, z, l, pad) => { const dx = x - l.cx, dz = z - l.cz, c = Math.cos(l.yaw), s = Math.sin(l.yaw); return Math.abs(dx * c - dz * s) < TDEPTH / 2 + pad && Math.abs(dx * s + dz * c) < l.len / 2 + pad; };
+    const outward = (r, i) => { const [ax, az] = r[i], [bx, bz] = r[(i + 1) % r.length], L = Math.hypot(bx - ax, bz - az); if (L < 1e-3) return [1, 0, 0]; let nx = (bz - az) / L, nz = -(bx - ax) / L;
+      if (inRing((ax + bx) / 2 + nx * 0.3, (az + bz) / 2 + nz * 0.3, r)) { nx = -nx; nz = -nz; } return [nx, nz, L]; };
+    for (const b of TSQ.b) {
+      const r = ringOf(b.slice(2)), h = b[0], base = b[1];
+      const cx = r.reduce((s, p) => s + p[0], 0) / r.length, cz = r.reduce((s, p) => s + p[1], 0) / r.length;
+      if (lots.some(l => inLot(cx, cz, l, 2) || r.filter(([x, z]) => inLot(x, z, l, 0)).length > r.length * 0.4)) continue;
+      const ots = cx > 8 && cx < 40 && cz > 180 && cz < 232 && h > 50;
+      const style = ots ? 3 : h > 120 ? pick([0, 3, 0, 1]) : h > 45 ? pick([1, 0, 1, 3, 2]) : pick([2, 2, 1]);
+      const xs = r.map(p => p[0]), zs = r.map(p => p[1]), f = { r, h, base, style, tint: ots ? 0x14181e : pick(PAL[style]), seed: rnd() * 1000, cx, cz,
+        hx: (Math.max(...xs) - Math.min(...xs)) / 2, hz: (Math.max(...zs) - Math.min(...zs)) / 2 };
+      foots.push(f);
+      if (ots) { if (f.hx > 2) { OTS.parts.push(f); if (h > OTS.h) Object.assign(OTS, { h, cx, cz }); } OTS.top = Math.max(OTS.top, h); continue; }
+      if (style === 2 && h < 80 && rnd() < 0.5) tanks.push([cx, h, cz, 0.8 + rnd() * 0.4]);
+      if (h > 20 && f.hx > 6 && f.hz > 6) { const bw = 3 + rnd() * 3, bd = 3 + rnd() * 3; roofBoxes.push([cx, h, cz, bw, 1.5 + rnd() * 3, bd]); }
+      if (h > 150) avPts.push([cx, h + 0.8, cz]);
+      /* the faces that front the square get screens: onto a plaza, 7th Avenue's sidewalk, or a cross street at the square's edge */
+      if (base > 6) continue;
+      for (let i = 0; i < r.length; i++) {
+        const [nx, nz, L] = outward(r, i); if (L < 5) continue;
+        const mx = (r[i][0] + r[(i + 1) % r.length][0]) / 2 + nx * 4, mz = (r[i][1] + r[(i + 1) % r.length][1]) / 2 + nz * 4;
+        const fronts = PLAZAS.some(q => inRing(mx, mz, q)) || (Math.abs(mx) < avHalf(0) && mz > CANYON.z0 && mz < CANYON.z1) ||
+          (Math.abs(mz - Math.round(mz / ST) * ST) < SH && mz > CANYON.z0 - 10 && mz < CANYON.z1 + 10 && Math.abs(mx + 0.13 * mz) < 75);
+        if (fronts) walls.push({ ax: r[i][0], az: r[i][1], bx: r[(i + 1) % r.length][0], bz: r[(i + 1) % r.length][1], nx, nz, h });
+      }
+    }
+    OTS.outward = outward;
   }
   let viewTS = false, currentPart = "1";
   function applyCut(b) {
@@ -323,23 +374,41 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   /* rooftop spectaculars: big signs on the low roofs along the canyon, at its edge and on the block corners facing up the canyon */
   const roofSigns = [];
   for (const wl of walls) {
-    if (wl.h <= 22 || wl.h > 75 || rnd() > 0.6) continue;
-    const corner = wl.n && rnd() < 0.6, h = 8 + rnd() * 9;
-    if (corner) { const w = Math.min(wl.depth - 4, 14 + rnd() * 12), x = wl.x - wl.nx * (w / 2 + 1.5), z = wl.z0 + 1.6;
-      addT(x, wl.h, z + 0.5, w, h + 2, 0.8, 3, rnd() * 1000, 0x14181e); roofSigns.push([x, wl.h + 2 + h / 2, z - 0.05, w - 0.4, h - 0.4, 0, -1]); }
-    else { const w = Math.min(wl.z1 - wl.z0 - 4, 16 + rnd() * 16), x = wl.x - wl.nx * 1.4, z = (wl.z0 + wl.z1) / 2 + (rnd() - 0.5) * (wl.z1 - wl.z0 - 4 - w);
-      addT(x - wl.nx * 0.5, wl.h, z, 0.8, h + 2, w, 3, rnd() * 1000, 0x14181e); roofSigns.push([x + wl.nx * 0.05, wl.h + 2 + h / 2, z, w - 0.4, h - 0.4, wl.nx, 0]); }
+    const L = Math.hypot(wl.bx - wl.ax, wl.bz - wl.az);
+    if (wl.h <= 22 || wl.h > 75 || L < 12 || rnd() > 0.6) continue;
+    const tx = (wl.bx - wl.ax) / L, tz = (wl.bz - wl.az) / L, h = 8 + rnd() * 9, w = Math.min(L - 4, 16 + rnd() * 16), m = L / 2 + (rnd() - 0.5) * (L - 4 - w);
+    const x = wl.ax + tx * m - wl.nx * 1.4, z = wl.az + tz * m - wl.nz * 1.4;
+    addT(x - wl.nx * 0.5, wl.h, z - wl.nz * 0.5, 0.8, h + 2, w, 3, rnd() * 1000, 0x14181e, Math.atan2(tx, tz)); roofSigns.push([x + wl.nx * 0.05, wl.h + 2 + h / 2, z + wl.nz * 0.05, w - 0.4, h - 0.4, wl.nx, wl.nz]);
   }
 
   /* ---------- build the instanced city ---------- */
   function instanced(list, geo, mat) {
     const n = list.length, im = new THREE.InstancedMesh(geo, mat, n), M = new THREE.Matrix4(), col = new THREE.Color();
     const seeds = new Float32Array(n), styles = new Float32Array(n);
-    list.forEach((t, i) => { M.makeScale(t[3], t[4], t[5]); M.setPosition(t[0], t[1], t[2]); im.setMatrixAt(i, M); seeds[i] = t[7]; styles[i] = t[6]; im.setColorAt(i, col.setHex(t[8])); });
+    const q = new THREE.Quaternion(), Y = new THREE.Vector3(0, 1, 0), P = new THREE.Vector3(), Sc = new THREE.Vector3();
+    list.forEach((t, i) => { M.compose(P.set(t[0], t[1], t[2]), q.setFromAxisAngle(Y, t[9] || 0), Sc.set(t[3], t[4], t[5])); im.setMatrixAt(i, M); seeds[i] = t[7]; styles[i] = t[6]; im.setColorAt(i, col.setHex(t[8])); });
     geo.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1)); geo.setAttribute("aStyle", new THREE.InstancedBufferAttribute(styles, 1));
     im.computeBoundingSphere(); return im;
   }
   scene.add(instanced(towers, unitBox.clone(), facadeMat()));
+  { /* the map's buildings: each footprint extruded from its base to its height, all in one mesh */
+    const pos = [], nrm = [], col = [], seed = [], sty = [], org = [], top = [], half = [], c = new THREE.Color();
+    const put = (f, p, n) => { pos.push(...p); nrm.push(...n); col.push(c.r, c.g, c.b); seed.push(f.seed); sty.push(f.style); org.push(f.cx, f.base, f.cz); top.push(f.h); half.push(f.hx, f.hz); };
+    const tri = (f, a, b, d, n) => { const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2], vx = d[0] - a[0], vy = d[1] - a[1], vz = d[2] - a[2];
+      const gx = uy * vz - uz * vy, gy = uz * vx - ux * vz, gz = ux * vy - uy * vx; if (gx * n[0] + gy * n[1] + gz * n[2] < 0) [b, d] = [d, b]; put(f, a, n); put(f, b, n); put(f, d, n); };
+    for (const f of foots) {
+      c.setHex(f.tint); const r = f.r;
+      for (let i = 0; i < r.length; i++) {
+        const [nx, nz] = OTS.outward(r, i), [ax, az] = r[i], [bx, bz] = r[(i + 1) % r.length], n = [nx, 0, nz];
+        tri(f, [ax, f.base, az], [bx, f.base, bz], [bx, f.h, bz], n); tri(f, [ax, f.base, az], [bx, f.h, bz], [ax, f.h, az], n);
+      }
+      for (const [i, j, k] of THREE.ShapeUtils.triangulateShape(r.map(([x, z]) => new THREE.Vector2(x, z)), [])) tri(f, [r[i][0], f.h, r[i][1]], [r[j][0], f.h, r[j][1]], [r[k][0], f.h, r[k][1]], [0, 1, 0]);
+    }
+    const g = new THREE.BufferGeometry(), F = (a, k) => new THREE.Float32BufferAttribute(a, k);
+    g.setAttribute("position", F(pos, 3)); g.setAttribute("normal", F(nrm, 3)); g.setAttribute("color", F(col, 3)); g.setAttribute("aSeed", F(seed, 1)); g.setAttribute("aStyle", F(sty, 1));
+    g.setAttribute("aOrg", F(org, 3)); g.setAttribute("aTop", F(top, 1)); g.setAttribute("aHalf", F(half, 2));
+    scene.add(new THREE.Mesh(g, facadeMat({ vertexColors: true }, true)));
+  }
   { /* fire escapes (platforms and stairs), their railings, awnings */
     const M = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), V1 = new THREE.Vector3(), V2 = new THREE.Vector3(), col = new THREE.Color();
     const flat = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), upright = new THREE.PlaneGeometry(1, 1);   /* thin parts are single quads */
@@ -376,16 +445,23 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const GROUND = `
 {
   vec2 p = vGPos.xz;
-  float ai = floor(p.x / 260.0 + 0.5), axd = p.x - ai * 260.0, dx = abs(axd);
+  float ai = floor(p.x / ${AVE}.0 + 0.5), axd = p.x - ai * ${AVE}.0, dx = abs(axd);
   float si = floor(p.y / 80.0 + 0.5), szd = p.y - si * 80.0, dz = abs(szd);
-  float avH = ai == 0.0 ? 18.0 : 15.0;
-  float inC = (ai == 0.0 && p.y > -205.0 && p.y < 245.0) ? 1.0 : 0.0;
+  float avH = ai == 0.0 ? 15.25 : 15.0;
+  float inC = (p.y > ${CANYON.z0}.0 && p.y < ${CANYON.z1}.0 && abs(p.x + 0.13 * p.y) < 75.0) ? 1.0 : 0.0; /* in Times Square */
   float onAve = step(dx, avH), onSt = step(dz, 9.0);
   float aveRoad = step(dx, avH - 4.5), stRoad = step(dz, 5.5);
-  if (inC > 0.5) aveRoad = step(4.0, axd) * step(axd, 14.0);
+  if (ai == 0.0) aveRoad = step(dx, p.y < -170.0 ? 8.5 : p.y < -81.0 ? 5.5 : p.y < 0.0 ? 8.25 : p.y < 245.0 ? 6.6 : 8.5); /* 7th Avenue's lanes, as mapped */
   float road = max(aveRoad, stRoad), street = max(onAve, onSt);
-  float plaza = inC * step(-14.0, axd) * step(axd, 4.0) * (1.0 - stRoad);
-  float park = step(-258.0, p.x) * step(p.x, 518.0) * step(p.y, -1102.0);
+  /* the plazas (a mask drawn from the map) and Broadway's own roadway north of 47th and south of 42nd */
+  vec2 pq = (p - uPzBox.xy) / (uPzBox.zw - uPzBox.xy);
+  float plaza = (pq.x > 0.0 && pq.x < 1.0 && pq.y > 0.0 && pq.y < 1.0) ? smoothstep(0.3, 0.7, texture2D(uPz, pq).r) : 0.0;
+  plaza = step(0.5, plaza) * (1.0 - road); street = max(street, plaza);
+  if (abs(p.x) < 140.0 && abs(p.y) < 420.0 && (p.y < -165.0 || p.y > 240.0)) {
+    float bd = 1e3; for (int i = 0; i < ${BWN - 1}; i++) { vec2 a = uBw[i], ab = uBw[i + 1] - a; bd = min(bd, length(p - a - ab * clamp(dot(p - a, ab) / dot(ab, ab), 0.0, 1.0))); }
+    street = max(street, step(bd, 12.0)); road = max(road, step(bd, 3.6));
+  }
+  float park = step(-${AVE - 2}.0, p.x) * step(p.x, ${2 * AVE - 2}.0) * step(p.y, -1102.0);
   vec2 fwp = fwidth(p); float farK = smoothstep(0.5, 3.0, max(fwp.x, fwp.y));
   vec3 col = vec3(0.07); float rough = 0.9;
   if (street > 0.5) { col = vec3(0.15, 0.15, 0.16); rough = 0.6; }
@@ -416,18 +492,18 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   float along = onAve > 0.5 ? p.y : p.x;
   float curbD = onAve > 0.5 ? abs(dx - (avH - 4.5)) : abs(dz - 5.5);
   float pool = exp(-curbD * curbD / 20.0) * (0.5 + 0.5 * cos(6.2832 * along / 28.0));
-  float inCy = (ai == 0.0 && p.y > -215.0 && p.y < 250.0) ? 1.0 : 0.0;
-  em += vec3(1.0, 0.56, 0.24) * mix(pool, 0.7, farK) * 0.45 * street * (1.0 - 0.7 * inCy);
-  if (inCy > 0.5 && dx < 18.0) { /* each screen throws its own color on the pavement in front of it */
-    float side = axd > 0.0 ? 3.0 : 7.0, sz = p.y / 15.0 + side, f = smoothstep(0.2, 0.8, fract(sz));
-    vec3 c0 = neonAt(fh21(vec2(floor(sz), side))), c1 = neonAt(fh21(vec2(floor(sz) + 1.0, side)));
-    float flick = 0.8 + 0.2 * sin(uTime * 0.9 + floor(sz) * 2.3);
-    em += mix(c0, c1, f) * exp(-(18.0 - dx) / 3.0) * 0.55 * flick * (0.55 + 0.45 * fh21(floor(p * 0.7))) * (1.0 - 0.6 * road);
+  em += vec3(1.0, 0.56, 0.24) * mix(pool, 0.7, farK) * 0.45 * street * (1.0 - inC * (0.7 + 0.3 * road)); /* in the square the screens light the street, not lamps */
+  if (inC > 0.5 && street > 0.5) { /* the screens throw their colors across the square's pavement */
+    float n1 = vnoise(p / 26.0 + vec2(uTime * 0.03, 0.0)), n2 = vnoise(p / 11.0 + 7.3);
+    vec3 cs = mix(vec3(1.0, 0.1, 0.45), vec3(0.05, 0.6, 1.0), smoothstep(0.3, 0.7, n1));
+    cs = mix(cs, vec3(0.6, 0.15, 1.0), smoothstep(0.55, 0.85, n2) * 0.6);
+    float flick = 0.85 + 0.15 * sin(uTime * 0.9 + n2 * 12.0);
+    em += cs * 0.17 * flick * (0.7 + 0.3 * fh21(floor(p * 0.7))) * (1.0 - 0.6 * road);
     em += mix(vec3(0.9, 0.1, 0.5), vec3(0.1, 0.55, 1.0), 0.5 + 0.5 * sin(p.y * 0.031)) * 0.018;
   }
   if (road > 0.5 && park < 0.5 && !(aveRoad > 0.5 && stRoad > 0.5)) {
     float lanePos = 1000.0, t = 0.0, sd = 0.0, dir = 1.0;
-    if (aveRoad > 0.5 && inC < 0.5) { lanePos = axd; t = p.y; sd = ai; dir = mod(ai, 2.0) < 0.5 ? 1.0 : -1.0; }
+    if (aveRoad > 0.5 && !(ai == 0.0 && p.y > -640.0 && p.y < 540.0)) { lanePos = axd; t = p.y; sd = ai; dir = mod(ai, 2.0) < 0.5 ? 1.0 : -1.0; }
     else if (stRoad > 0.5) { lanePos = szd; t = p.x; sd = si + 57.0; dir = mod(si, 2.0) < 0.5 ? 1.0 : -1.0; }
     float li = floor(lanePos / 3.2), lf = abs(fract(lanePos / 3.2) - 0.5);
     float laneMask = 1.0 - smoothstep(0.16, 0.26, lf);
@@ -443,10 +519,17 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const VNOISE = "float vnoise(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fh21(i), fh21(i + vec2(1.0, 0.0)), f.x), mix(fh21(i + vec2(0.0, 1.0)), fh21(i + vec2(1.0, 1.0)), f.x), f.y); }";
   const NEONAT = "vec3 neonAt(float h) { return h < 0.34 ? vec3(1.0, 0.08, 0.42) : h < 0.62 ? vec3(0.04, 0.68, 1.0) : h < 0.8 ? vec3(0.55, 0.12, 1.0) : h < 0.92 ? vec3(1.0, 0.5, 0.08) : vec3(0.9, 0.9, 1.0); }";
   const gMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  /* plaza mask: the map's plazas and car-free Broadway (42nd to 43rd), drawn at 4 pixels a meter */
+  const pzTex = (() => { const k = 4, c = document.createElement("canvas"); c.width = (PZB[2] - PZB[0]) * k; c.height = (PZB[3] - PZB[1]) * k; const x = c.getContext("2d");
+    x.fillStyle = "#000"; x.fillRect(0, 0, c.width, c.height); x.fillStyle = x.strokeStyle = "#fff"; const P = ([px, pz]) => [(px - PZB[0]) * k, (pz - PZB[1]) * k];
+    for (const r of PLAZAS) { x.beginPath(); r.forEach((p, i) => x[i ? "lineTo" : "moveTo"](...P(p))); x.closePath(); x.fill(); }
+    x.lineWidth = 17 * k; x.beginPath(); TSQ.bw.filter(([, z]) => z > 150 && z < 250).forEach((p, i) => x[i ? "lineTo" : "moveTo"](...P(p))); x.stroke();
+    const t = new THREE.CanvasTexture(c); t.flipY = false; return t; })();
   gMat.onBeforeCompile = sh => {
     sh.uniforms.uNight = U.night; sh.uniforms.uTime = U.time;
+    sh.uniforms.uPz = { value: pzTex }; sh.uniforms.uPzBox = { value: new THREE.Vector4(...PZB) }; sh.uniforms.uBw = { value: BW.map(([x, z]) => new THREE.Vector2(x, z)) };
     sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nvarying vec3 vGPos;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvGPos = (modelMatrix * vec4(transformed, 1.0)).xyz;");
-    sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>\nuniform float uNight; uniform float uTime; varying vec3 vGPos;\n${HASH}\n${VNOISE}\n${NEONAT}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + GROUND);
+    sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>\nuniform float uNight; uniform float uTime; varying vec3 vGPos;\nuniform sampler2D uPz; uniform vec4 uPzBox; uniform vec2 uBw[${BWN}];\n${HASH}\n${VNOISE}\n${NEONAT}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_fragment>\n" + GROUND);
   };
   gMat.customProgramCacheKey = () => "ground";
   const plane = (x0, x1, z0, z1, m, y = 0) => { const o = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0).rotateX(-Math.PI / 2), m); o.position.set((x0 + x1) / 2, y, (z0 + z1) / 2); scene.add(o); return o; };
@@ -557,28 +640,22 @@ void main() {
     if (c.y - h / 2 < 9) { const len = Math.min(12, 4 + h * 0.7), fc = new THREE.Vector3().copy(c).addScaledVector(nrm, len / 2 + 0.3); fc.y = 0.04; quad(RF, fc, right, new THREE.Vector3().copy(nrm).negate(), w, len, rect, [aspect, sx, 0, br]); }
   }
   for (const wl of walls) {
-    const nrm = new THREE.Vector3(wl.nx, 0, 0), top = wl.h <= 22 ? wl.h - 2 : Math.min(wl.h - 3, 36 + rnd() * 36);
+    const L = Math.hypot(wl.bx - wl.ax, wl.bz - wl.az), tx = (wl.bx - wl.ax) / L, tz = (wl.bz - wl.az) / L, nrm = new THREE.Vector3(wl.nx, 0, wl.nz);
+    const top = wl.h <= 22 ? wl.h - 2 : Math.min(wl.h - 3, 36 + rnd() * 36);
     let y = 4.8, row = 0;
     while (y < top - 2) {
-      const big = row++ > 0, rh = Math.min(top - y, big ? 8 + rnd() * 14 : 3.2 + rnd() * 3.5); let z = wl.z0 + 0.4;
-      while (z < wl.z1 - 2.4) { let pw = Math.min(wl.z1 - 0.4 - z, big ? 12 + rnd() * 30 : 5 + rnd() * 14); if (wl.z1 - 0.4 - z - pw < 6) pw = wl.z1 - 0.4 - z; billboard(new THREE.Vector3(wl.x + wl.nx * 0.2, y + rh / 2, z + pw / 2), nrm, pw - 0.3, rh - 0.3, rnd() < 0.08 ? { stat: Math.floor(rnd() * 5) } : {}); z += pw; }
+      const big = row++ > 0, rh = Math.min(top - y, big ? 8 + rnd() * 14 : 3.2 + rnd() * 3.5); let s = 0.4;
+      while (s < L - 2.4) { let pw = Math.min(L - 0.4 - s, big ? 12 + rnd() * 30 : 5 + rnd() * 14); if (L - 0.4 - s - pw < 6) pw = L - 0.4 - s; const m = s + pw / 2;
+        billboard(new THREE.Vector3(wl.ax + tx * m + wl.nx * 0.2, y + rh / 2, wl.az + tz * m + wl.nz * 0.2), nrm, pw - 0.3, rh - 0.3, rnd() < 0.08 ? { stat: Math.floor(rnd() * 5) } : {}); s += pw; }
       y += rh;
-    }
-    for (const [is, zf, nz] of [[wl.n, wl.z0, -1], [wl.s, wl.z1, 1]]) {
-      if (!is) continue; const span = Math.min(wl.depth - 2, 14 + rnd() * 22), x0 = wl.x - wl.nx * 0.4, n2 = new THREE.Vector3(0, 0, nz); let yy = 4.8;
-      while (yy < top - 2) { const rh = Math.min(top - yy, 6 + rnd() * 14); billboard(new THREE.Vector3(x0 - wl.nx * span / 2, yy + rh / 2, zf + nz * 0.2), n2, span, rh - 0.3); yy += rh; }
     }
   }
   for (const [x, y, z, w, h, nx, nz] of roofSigns) billboard(new THREE.Vector3(x, y, z), new THREE.Vector3(nx, 0, nz), w, h);
-  { let y = 7, k = 0;
-    while (y < OTS.h - 6) {
-      const rh = 7 + rnd() * 9;
-      billboard(new THREE.Vector3(0, y + rh / 2, OTS.z0 - 0.2), new THREE.Vector3(0, 0, -1), 21.4, rh - 0.4, k % 2 === 0 ? { stat: k / 2 % 5 } : {});
-      billboard(new THREE.Vector3(OTS.x1 + 0.2, y + rh / 2, 222), new THREE.Vector3(1, 0, 0), 19.4, rh - 0.4);
-      billboard(new THREE.Vector3(OTS.x0 - 0.2, y + rh / 2, 222), new THREE.Vector3(-1, 0, 0), 19.4, rh - 0.4);
-      billboard(new THREE.Vector3(0, y + rh / 2, OTS.z1 + 0.2), new THREE.Vector3(0, 0, 1), 21.4, rh - 0.4);
-      y += rh; k++;
-    } }
+  for (const f of OTS.parts) for (let i = 0, r = f.r; i < r.length; i++) { /* One Times Square: screens up every face, live numbers on the north face that looks up the square */
+    const [nx, nz, L] = OTS.outward(r, i); if (L < 4) continue;
+    const mx = (r[i][0] + r[(i + 1) % r.length][0]) / 2 + nx * 0.2, mz = (r[i][1] + r[(i + 1) % r.length][1]) / 2 + nz * 0.2, n = new THREE.Vector3(nx, 0, nz);
+    for (let y = 7, k = 0; y < f.h - 6; k++) { const rh = Math.min(f.h - 4 - y, 7 + rnd() * 9); billboard(new THREE.Vector3(mx, y + rh / 2, mz), n, L - 0.6, rh - 0.4, nz < -0.7 && k % 2 === 0 ? { stat: k / 2 % 5 } : {}); y += rh; }
+  }
   function storeMesh(s, mat) {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.Float32BufferAttribute(s.p, 3)); g.setAttribute("aLocal", new THREE.Float32BufferAttribute(s.l, 2));
@@ -612,16 +689,20 @@ void main() {
 
   /* ---------- the red steps, the crowd, cabs (one per review due), lamps ---------- */
   const stepM = new THREE.MeshStandardMaterial({ color: 0x9a0e1c, emissive: 0xff1a2c, emissiveIntensity: 1.4, roughness: 0.25 });
-  { const g = new THREE.Group(); for (let i = 0; i < 9; i++) g.add(new THREE.Mesh(new THREE.BoxGeometry(14, 0.45 * (i + 1), 1.6).translate(-5, 0.225 * (i + 1), -110 - i * 1.6), stepM)); scene.add(g);
-    scene.add(new THREE.Mesh(new THREE.BoxGeometry(10, 3.2, 6).translate(-5, 1.6, -128), new THREE.MeshStandardMaterial({ color: 0x0c1016, roughness: 0.1, metalness: 0.8, emissive: 0x331018, emissiveIntensity: 1 }))); }
+  /* the red steps where the map has them, at the north end of Duffy Square: rising north from the front, looking south down the square */
+  const SX = [Math.min(...STEPS.map(p => p[0])), Math.max(...STEPS.map(p => p[0]))], SZ = [Math.min(...STEPS.map(p => p[1])), Math.max(...STEPS.map(p => p[1]))], NSTEP = 12, STD = (SZ[1] - SZ[0]) / NSTEP, STR = 0.4;
+  { const g = new THREE.Group(), sx = (SX[0] + SX[1]) / 2, sw = SX[1] - SX[0];
+    for (let i = 0; i < NSTEP; i++) g.add(new THREE.Mesh(new THREE.BoxGeometry(sw, STR * (i + 1), STD).translate(sx, STR * (i + 1) / 2, SZ[1] - (i + 0.5) * STD), stepM)); scene.add(g);
+    scene.add(new THREE.Mesh(new THREE.BoxGeometry(sw, STR * NSTEP, 0.6).translate(sx, STR * NSTEP / 2, SZ[0] + 0.3), new THREE.MeshStandardMaterial({ color: 0x0c1016, roughness: 0.1, metalness: 0.8, emissive: 0x331018, emissiveIntensity: 1 }))); }
   const crowd = [];
   { const n = 300, geo = new THREE.CapsuleGeometry(0.27, 1.1, 2, 6).translate(0, 0.82, 0), im = new THREE.InstancedMesh(geo, new THREE.MeshStandardMaterial({ roughness: 0.75 }), n), CC = [0x1d1f26, 0x2a2d36, 0x3b3f4a, 0x4a3b33, 0x22303f, 0x5a1f24, 0xd8d4cc, 0x8a8f99, 0xb8312f, 0x2f4f7a, 0xd9a520, 0x1d1f26, 0x2a2d36];
     for (let i = 0; i < n; i++) {
       let x, z, y = 0, sit = false; const r = rnd();
-      if (r < 0.14) { const s = Math.floor(rnd() * 9); x = -11.5 + rnd() * 13; z = -110 - s * 1.6; y = 0.45 * (s + 1); sit = true; }
-      else if (r < 0.8) { x = -13.5 + rnd() * 17; z = -200 + rnd() * 405; if (z > -132 && z < -105 && x < 2.5) z += 30; }
-      else { x = (rnd() < 0.5 ? -1 : 1) * (14.5 + rnd() * 3); z = -200 + rnd() * 405; }
-      crowd.push({ x, y: sit ? y - 0.35 : y, z, v: sit || rnd() < 0.45 ? 0 : (0.8 + rnd() * 0.8) * (rnd() < 0.5 ? -1 : 1), s: sit ? 0.8 : 0.9 + rnd() * 0.2 });
+      let pz = false;
+      if (r < 0.14) { const s = Math.floor(rnd() * NSTEP); x = SX[0] + 1 + rnd() * (SX[1] - SX[0] - 2); z = SZ[1] - (s + 0.5) * STD; y = STR * (s + 1); sit = true; }
+      else if (r < 0.8) { do { x = -60 + rnd() * 106; z = CANYON.z0 + rnd() * (CANYON.z1 - CANYON.z0); } while (!onPlaza(x, z) || inRing(x, z, STEPS)); pz = true; }
+      else { z = CANYON.z0 + rnd() * (CANYON.z1 - CANYON.z0); const sd = rnd() < 0.5 ? -1 : 1; x = sd * (half7(z) + 1 + rnd() * Math.max(0.5, avHalf(0) - half7(z) - 2)); if (sd > 0 && z > 180) x = Math.min(x, 13.5); }
+      crowd.push({ x, y: sit ? y - 0.35 : y, z, pz, v: sit || rnd() < 0.45 ? 0 : (0.8 + rnd() * 0.8) * (rnd() < 0.5 ? -1 : 1), s: sit ? 0.8 : 0.9 + rnd() * 0.2 });
       im.setColorAt(i, new THREE.Color(pick(CC)));
     }
     crowd.mesh = im; im.frustumCulled = false; scene.add(im); }
@@ -636,17 +717,17 @@ void main() {
   { const n = 30, cm = new THREE.MeshStandardMaterial({ roughness: 0.35, metalness: 0.35 });
     const bodies = new THREE.InstancedMesh(new THREE.BoxGeometry(1.9, 0.9, 4.6).translate(0, 0.75, 0), cm, n), cabs = new THREE.InstancedMesh(new THREE.BoxGeometry(1.7, 0.7, 2.4).translate(0, 1.55, -0.2), new THREE.MeshStandardMaterial({ color: 0x15181d, roughness: 0.15, metalness: 0.8 }), n);
     const CC = [0xf2b707, 0xf2b707, 0xf2b707, 0x1b1d22, 0xe8e8e4, 0xf2b707, 0x8a9099, 0x6b1520];
-    for (let i = 0; i < n; i++) { cars.push({ lane: [6.4, 9.6, 12.6][i % 3], z: -600 + (i / n) * 1100 + rnd() * 20, v: 6 + rnd() * 5 }); bodies.setColorAt(i, new THREE.Color(pick(CC))); }
+    for (let i = 0; i < n; i++) { cars.push({ lane: [-3.3, 0, 3.3][i % 3], z: -600 + (i / n) * 1100 + rnd() * 20, v: 6 + rnd() * 5 }); bodies.setColorAt(i, new THREE.Color(pick(CC))); }
     cars.bodies = bodies; cars.cabs = cabs; bodies.frustumCulled = cabs.frustumCulled = false; bodies.count = cabs.count = 0; scene.add(bodies, cabs);
     cars.lights = points(new Array(n * 4).fill([0, -50, 0]), 1.6, cars.flatMap(() => [3, 0.2, 0.12, 3, 0.2, 0.12, 2.4, 2.2, 1.9, 2.4, 2.2, 1.9]));
     cars.lights.geometry.setDrawRange(0, 0);
   }
-  { const lamps = [], tl = [], tlc = []; for (let z = -200; z <= 240; z += 28) for (const x of [-16.2, 16.2]) lamps.push([x, 8.2, z]);
-    for (let j = -2; j <= 3; j++) for (const x of [-15, 15]) { tl.push([x, 5.2, j * 80 - 10]); const red = (j + (x > 0 ? 1 : 0)) % 2; tlc.push(red ? 3 : 0.2, red ? 0.25 : 2.4, red ? 0.15 : 0.9); }
+  { const lamps = [], tl = [], tlc = []; for (let z = CANYON.z0 + 4; z <= CANYON.z1; z += 28) if (Math.abs(z - Math.round(z / ST) * ST) > 7) for (const sd of [-1, 1]) lamps.push([sd * (half7(z) + 0.7), 8.2, z]);
+    for (let j = -2; j <= 3; j++) for (const sd of [-1, 1]) { const x = sd * (half7(j * 80 - 10) + 0.7); tl.push([x, 5.2, j * 80 - 10]); const red = (j + (x > 0 ? 1 : 0)) % 2; tlc.push(red ? 3 : 0.2, red ? 0.25 : 2.4, red ? 0.15 : 0.9); }
     points(lamps, 3.4, lamps.flatMap(() => [2.6, 1.9, 1.2])); points(tl, 1.2, tlc);
     const posts = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.12, 0.16, 8.2, 6).translate(0, 4.1, 0), new THREE.MeshStandardMaterial({ color: 0x23262d, roughness: 0.6 }), lamps.length), M = new THREE.Matrix4();
     lamps.forEach(([x, , z], i) => { M.makeTranslation(x, 0, z); posts.setMatrixAt(i, M); }); scene.add(posts); }
-  { const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(2.2, 2), new THREE.MeshStandardMaterial({ color: 0xbfd6ff, emissive: 0x9fc4ff, emissiveIntensity: 1.6, roughness: 0.2, metalness: 0.6 })); ball.position.set(0, OTS.h + 30, 222); scene.add(ball); }
+  { const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(2.2, 2), new THREE.MeshStandardMaterial({ color: 0xbfd6ff, emissive: 0x9fc4ff, emissiveIntensity: 1.6, roughness: 0.2, metalness: 0.6 })); ball.position.set(OTS.cx, OTS.top - 4, OTS.cz); scene.add(ball); }
 
   /* ---------- sky, haze, light, reflections ---------- */
   const SKY = { night: { top: 0x020309, mid: 0x0d0b24, hor: 0x2b1a3a }, day: { top: 0x4a78bd, mid: 0x9db8da, hor: 0xeee2d2 } };
@@ -750,8 +831,8 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     }
   }
 
-  /* ---------- camera: each part is seen down the lit canyon: Part 1 from the north toward the screen tower, Parts 2 and 3 over the screen tower's shoulder ---------- */
-  const FOCUS = { ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: 0, pitch: 0.5, dist: 420 }, 3: { t: [0, 50, 110], yaw: 0, pitch: 0.62, dist: 380 } };
+  /* ---------- camera: each part is seen down the lit square: Part 1 from the north toward One Times Square, Parts 2 and 3 from high over the towers south of 42nd ---------- */
+  const FOCUS = { ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: -0.25, pitch: 0.74, dist: 420 }, 3: { t: [5, 50, 110], yaw: -0.25, pitch: 0.82, dist: 380 } };
   const rig = { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400, off: 0, zoom: 1, anim: null };
   let aspect = 1;
   function placeCamera() {
@@ -858,6 +939,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   function addSolid(x0, x1, z0, z1, top) { const s = [x0, x1, z0, z1, top]; for (let i = Math.floor(x0 / GC); i <= Math.floor(x1 / GC); i++) for (let j = Math.floor(z0 / GC); j <= Math.floor(z1 / GC); j++) { const k = gkey(i, j); if (!SOLID.has(k)) SOLID.set(k, []); SOLID.get(k).push(s); } }
   for (const t of towers) if (Math.abs(t[0]) < 1600 && Math.abs(t[2]) < 1600) addSolid(t[0] - t[3] / 2, t[0] + t[3] / 2, t[2] - t[5] / 2, t[2] + t[5] / 2, t[1] + t[4]);
   for (const d in B) { const b = B[d], bb = new THREE.Box3().setFromObject(b.g.children[0]); addSolid(bb.min.x, bb.max.x, bb.min.z, bb.max.z, b.H + 10); }
+  for (const f of foots) addSolid(f.cx - f.hx, f.cx + f.hx, f.cz - f.hz, f.cz + f.hz, f.h);
   function solidAt(p) { const l = SOLID.get(gkey(Math.floor(p.x / GC), Math.floor(p.z / GC))); if (l) for (const s of l) if (p.x > s[0] && p.x < s[1] && p.z > s[2] && p.z < s[3] && p.y < s[4]) return s; return null; }
   /* never inside a building: rise above its roof */
   function pushOut() { const s = solidAt(camera.position); if (s) camera.position.y = s[4] + 12; if (camera.position.y < 20) camera.position.y = 20; }
@@ -1049,7 +1131,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     const fw = bursts.length || pending.length; if (labels) labels.style.opacity = fw ? 0.08 : "";
     if (fw) { stepBursts(now); busy = true; }
     if (!reduce) {
-      if (!low) { crowd.forEach((p, i) => { if (p.v) { p.z += p.v * dt; if (p.z > 205) p.z = -200; if (p.z < -200) p.z = 205; } M4.compose(V.set(p.x, p.y, p.z), Q, Sv.set(p.s, p.s, p.s)); crowd.mesh.setMatrixAt(i, M4); }); crowd.mesh.instanceMatrix.needsUpdate = true; }
+      if (!low) { crowd.forEach((p, i) => { if (p.v) { p.z += p.v * dt; if (p.pz ? !onPlaza(p.x, p.z) : p.z > CANYON.z1 || p.z < CANYON.z0) { p.v = -p.v; p.z += p.v * dt * 2; } } M4.compose(V.set(p.x, p.y, p.z), Q, Sv.set(p.s, p.s, p.s)); crowd.mesh.setMatrixAt(i, M4); }); crowd.mesh.instanceMatrix.needsUpdate = true; }
       const lp = cars.lights.geometry.attributes.position;
       for (let i = 0; i < nCars; i++) { const c = cars[i]; c.z += c.v * dt; if (c.z > 520) c.z = -620; M4.makeTranslation(c.lane, 0, c.z); cars.bodies.setMatrixAt(i, M4); cars.cabs.setMatrixAt(i, M4);
         lp.setXYZ(i * 4, c.lane - 0.7, 0.9, c.z - 2.35); lp.setXYZ(i * 4 + 1, c.lane + 0.7, 0.9, c.z - 2.35); lp.setXYZ(i * 4 + 2, c.lane - 0.7, 0.8, c.z + 2.35); lp.setXYZ(i * 4 + 3, c.lane + 0.7, 0.8, c.z + 2.35); }

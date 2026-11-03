@@ -24,6 +24,7 @@ head = """<!doctype html>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
 <style>html, body { margin: 0; } :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } img { max-width: 100%; }</style>
 """
-out = head + shell + "\n<script>\n" + src("mascot.js") + "\n</script>\n<script>\n" + app + "\n</script>\n<script type=\"module\">\n" + src("town.js") + "\n</script>\n\n</html>\n"
+town = src("town.js").replace("__TSQ__", src("tsq-map.json"))   # the real Times Square, made by tools/tsq_map.py from OpenStreetMap
+out = head + shell + "\n<script>\n" + src("mascot.js") + "\n</script>\n<script>\n" + app + "\n</script>\n<script type=\"module\">\n" + town + "\n</script>\n\n</html>\n"
 open(os.path.join(root, "index.html"), "w", encoding="utf-8").write(out)
 print(f"index.html: {len(out):,} bytes, {len(bank)} questions")
