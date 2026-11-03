@@ -28,7 +28,14 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   check(await p.evaluate(() => { const e = document.querySelector(".buddy-expr"); return !!e && e.style.backgroundPosition !== "" && !/^0(\.000)?% /.test(e.style.backgroundPosition); }), "buddy: tapping him changes his face");
   await p.click("#buddyplay", { force: true });
   check(!!(await p.$(".choice")), "buddy: Play on his calculator starts a drill");
-  await p.click("#back"); await p.waitForSelector("#stage");
+  await p.click("#back"); await p.waitForSelector("#stage", { state: "attached" });
+
+  /* Home sections: Today opens first; the tab bar (a sidebar at this width) switches to the town, the map and exam sims */
+  check(await p.evaluate(() => document.body.classList.contains("tabs") && document.querySelector(".panes").dataset.tab === "today" && !!document.querySelector("#play").getClientRects().length), "tabs: Home opens on Today with Play");
+  await p.click(".tabbar [data-tab=exam]");
+  check(await p.evaluate(() => !!document.querySelector("#examnew").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: Exam shows the exam sims");
+  await p.click(".tabbar [data-tab=city]");
+  check(await p.evaluate(() => !!document.querySelector("#stage").getClientRects().length && !document.querySelector("#play").getClientRects().length), "tabs: City shows the town");
 
   /* town */
   await p.waitForFunction(() => window.Town && window.Town.ready && window.__townDebug && window.__townDebug().calls > 0, null, { timeout: 120000 }); /* wait for a real rendered frame */
@@ -67,6 +74,7 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.click("#fsbtn"); await p.waitForTimeout(800); await p.keyboard.press("Escape"); await p.waitForTimeout(800);
   check(await p.evaluate(() => !window.__townDebug().fs && !!document.querySelector("#stage canvas")), "Escape closes full screen and the town returns to home");
 
+  await p.click(".tabbar [data-tab=today]");
   /* the how-to video: the greeting's How to use button opens it; More keeps a button */
   check(!!(await p.$("#greetguide")), "guide: the greeting has How to use");
   await p.click("#greetguide");
@@ -78,7 +86,9 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   await p.waitForFunction(() => window.Town && window.Town.ready && document.querySelector("#stage canvas"), null, { timeout: 30000 }).catch(() => {});
 
   /* drill and flagging */
-  await p.click("#play"); await p.click(".choice >> nth=0");
+  await p.click("#play");
+  check(await p.evaluate(() => !document.body.classList.contains("tabs") && getComputedStyle(document.querySelector(".tabbar")).display === "none"), "tabs: the tab bar hides in a drill");
+  await p.click(".choice >> nth=0");
   check(!!(await p.$(".explain")), "drill: answering shows the explanation");
   await p.click("#flag"); await p.fill("#flagnote", "smoke test"); await p.click("#flagsave");
   const flagged = await p.evaluate(() => Object.values(JSON.parse(localStorage.getItem("eaTaxTown.v2")).items).filter(x => x.flag && x.note === "smoke test").length);

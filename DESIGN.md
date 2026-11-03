@@ -5,11 +5,11 @@
 
 This file describes the app as built (tokens live in `:root` in `src/shell.html`). Use it for every new screen or component. When a change adds or changes a token or a component, update this file in the same pull request.
 
-The app is one phone-width column. Three looks share it, each with a job:
+The app is a phone-width column. Home is split into four sections, each one screen: **Today**, **City**, **Map** and **Exam**, switched by a tab bar along the bottom (a sidebar at 1024px and wider). Every other screen (drill, session summary, exam setup, exam sim, results, More) keeps the single column with no tab bar. Three looks share the app, each with a job:
 
-1. **Night scenes** (greeting, El train, 3D town card, drill header, daily summary): a dusk gradient with lit gold windows. This is where progress feels rewarding.
-2. **Transit signage** (app bar, part bullets, the Home strip map): black station signs, Helvetica, official subway line colors, a tan map with white streets. This is how you find your way.
-3. **Paper** (question sheet, exam sim, bottom sheets, cards): plain cream and white surfaces with Inter and IBM Plex Serif. This is where you read and answer. The exam sim stays the plainest of all, close to the real PSI test screen.
+1. **Night scenes** (Today: greeting, El train and the Today card; City: the 3D town card; the drill header; the daily summary): a dusk gradient with lit gold windows. This is where progress feels rewarding.
+2. **Transit signage** (app bar, tab bar and sidebar, part bullets, the strip map on Map): black station signs, Helvetica, official subway line colors, a tan map with white streets. This is how you find your way.
+3. **Paper** (question sheet, the Exam section and exam sim, bottom sheets, cards): plain cream and white surfaces with Inter and IBM Plex Serif. This is where you read and answer. The exam sim stays the plainest of all, close to the real PSI test screen.
 
 ## Colors
 
@@ -103,6 +103,8 @@ The stylesheet holds 28 distinct font sizes today. New work picks from the sizes
 ## Spacing and layout
 
 - **Column:** max-width 640px, centered, side gutters `max(16px, safe-area inset)`.
+- **Home at 1024px and wider:** a 232px sidebar on the left; the content area gets 32px side padding and a 1116px max width. Today and Map sit side by side (columns 1.05fr and 1fr, 28px apart) with Today sticky at the top; City and Exam span both columns.
+- **Tab bar clearance:** while the tab bar shows, the column's bottom padding is `96px + safe-area inset` and toasts rise above the bar.
 - **Stack gap:** 14px between cards on Home.
 - **Card padding:** 16px (`.pad`); the question body uses 18px 16px.
 - **Base unit:** 2px steps in practice; prefer multiples of 4 for new work.
@@ -128,30 +130,31 @@ The stylesheet holds 28 distinct font sizes today. New work picks from the sizes
 ### Station sign app bar
 Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%). A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
 
-### Night scene: greeting, El train, town card
-One continuous dark piece with 28px outer corners: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic), then the elevated subway line with a two-car train parked at the part's readiness, then the 3D town card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
+### Night scene: greeting, El train, Today card
+One continuous dark piece with 28px outer corners on Today: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic; the quote is hidden under 560px wide so Play stays above the tab bar), then the elevated subway line with a two-car train parked at the part's readiness, then the Today card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
 
-### Town card
-The top of the town card says one thing, then offers one action. Top to bottom:
+### Today card
+It says one thing, then offers one action. Top to bottom:
 1. **Day one** (nothing answered yet): "Your first stop" with the area's route bullet (40px, ringed), its name in Helvetica 24px/700 and "The Bank · 20% of exam · 40 questions". Play starts that area. No stats are shown.
    **After that:** "Your tax city", readiness in Amber 52px/800 with "ready for Part 1" beside it, and a Next stop line (route bullet and area name). Play is the usual mixed drill.
 2. Stat pills, only for numbers above zero (due, today's count). The streak lives in the greeting badge, not here.
 3. Play and Exam sim.
-4. The part switcher.
-5. The 3D town, with its 3D, Times Sq and Day/Dusk buttons.
+
+### Town card (City)
+The 3D town on the dusk gradient with 28px corners: the part switcher, then the stage with its 3D, Times Sq and Day/Dusk buttons. The stage fills the screen above the tab bar (at least 340px; on desktop 420px to 760px). Same shadow as the other night scenes.
 
 The town legend (what cabs, netting and cranes mean) lives in How to use, not on Home.
 
-### Part switcher
+### Part switcher (City)
 Three 40px round line bullets in the part colors, the current one at full opacity with the app bar's black and white double ring, the others at 45%, and the current part's name beside them ("PART 1" eyebrow over "Individuals" in Helvetica 16px/700).
 
 ### Glass controls
 Every secondary control on a night scene shares one style: white at 10% with a 1px white border at 22%, 999px radius, a 6 to 8px backdrop blur, white 13 to 14px/700 text. That covers the greeting badge (its text in Lit Window gold), How to use, the stat pills and Exam sim. The 3D, Times Sq and Day buttons sit on the moving 3D scene, so they use a darker glass (`rgba(18,16,46,0.6)`) to stay readable. The only solid button on a night scene is gold Play.
 
 ### Hero buttons: Play and Exam sim
-The two big buttons on the town card: 18px radius, 16px 12px padding, 18px/800. **Play** is a gold gradient (`#ffd27a` to Amber) with Amber Ink text and a 4px Amber Deep bottom edge that presses down on tap. **Exam sim** is frosted glass: white at 16% with a 24% white border and a 10px backdrop blur.
+The two big buttons on the Today card: 18px radius, 16px 12px padding, 18px/800. **Play** is a gold gradient (`#ffd27a` to Amber) with Amber Ink text and a 4px Amber Deep bottom edge that presses down on tap. **Exam sim** is frosted glass: white at 16% with a 24% white border and a 10px backdrop blur.
 
-### Home strip map
+### Strip map (Map section)
 Each exam part is a subway strip map: a tan map with white streets, a 38px river strip on the left (Hudson, East or Harlem River), and a 7px rail in the part's line color. Each area is a station row:
 - 19px white station dot with a 3px black outline (filled black with a white ring once the area is mastered)
 - station name in Helvetica 18px/700 with a tan halo so streets don't cut through it
@@ -160,6 +163,14 @@ Each exam part is a subway strip map: a tan map with white streets, a 38px river
 - the area's drawn building on the right, windows lit bottom-up with mastery
 
 Tapping a row starts that area's drill. The area with the biggest gap gets a white **Next stop** box instead: 4px radius, 1.5px `#8c8471` border, a header with its route bullet and "NEXT STOP", the name at 20px, and a black 6px-radius Practice button.
+
+### Tab bar and sidebar (Home only)
+A station-sign band fixed to the bottom of the screen: Sign Black `#111` with a 2px white rule along its top edge, four equal buttons (Today, City, Map, Exam), each a 24px line icon (1.8 stroke, round caps) over an 11px/700 uppercase label with 0.06em tracking. Labels are white at 60% at rest and full white when current; the current tab also gets a 4px Amber bar sitting on the white rule. Buttons are at least 52px tall, the bar pads for the home indicator, and on screens wider than 640px the buttons stay inside the 640px column. z-index 30: above the page, below bottom sheets (40), toasts (50) and full-screen 3D (60).
+
+At 1024px and wider the same element becomes a 232px sidebar down the left edge: the app name in Helvetica 20px/700 under a 2px white rule, then the sections as rows (icon beside a 13px label, 48px tall, 10px radius), with the current row on white at 10% and a 3px Amber bar at the sidebar's left edge. Map drops out because the map sits beside Today, and More (with the flag count in an Amber pill) sits at the bottom. The app bar is hidden while the sidebar shows.
+
+### Part switcher (Map)
+A segmented control on Paper with a 1px Line border, 14px radius and the card shadow: three 42px buttons, each a part bullet and "Part n" in 15px/600. The current part sits on the Page color in Ink with its bullet at full strength; the others are Ink Soft with bullets at 40%.
 
 ### Cards
 `.card`: Paper fill, 1px Line border, 22px radius, `--shadow`. Section titles inside use the eyebrow style (13px/700 uppercase, Ink Soft).
