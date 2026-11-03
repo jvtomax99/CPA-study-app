@@ -283,7 +283,7 @@ let homeTab = "today", greetStale = false;
 function setHomeTab(t) {
   homeTab = t;
   const panes = $(".panes"); if (!panes) return;
-  panes.dataset.tab = t; $(".tabbar").dataset.cur = t;
+  panes.dataset.tab = t; $(".tabbar").dataset.cur = t; syncPage();
   document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
   window.scrollTo(0, 0);
   const todayShown = $(".pane-today").getClientRects().length > 0;
@@ -835,7 +835,13 @@ $("#morebtn").onclick = () => (view === "more" ? renderHome() : renderMore());
 document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.onclick = () => (view === "home" ? setHomeTab(b.dataset.tab) : (homeTab = b.dataset.tab, renderHome())));
 $("#tbmore").onclick = () => $("#morebtn").click();
 /* the tab bar shows only while Home's sections are on screen: drill, exam and More keep their own screens */
-new MutationObserver(() => document.body.classList.toggle("tabs", !!$("#app > .panes"))).observe($("#app"), { childList: true });
+/* On a phone, Today and City are night scenes edge to edge: the page itself turns to night sky (see .nightsky in shell.html) */
+function syncPage() {
+  const tabs = !!$("#app > .panes");
+  document.body.classList.toggle("tabs", tabs);
+  document.documentElement.classList.toggle("nightpage", tabs && (homeTab === "today" || homeTab === "city"));
+}
+new MutationObserver(syncPage).observe($("#app"), { childList: true });
 document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || "").toLowerCase(); if (tag === "textarea" || tag === "input" || tag === "select") return;

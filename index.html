@@ -10,6 +10,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="EA Drill">
 <meta name="theme-color" content="#0b0a1a">
@@ -330,6 +331,28 @@ body.tabs .toast { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) { .tabbar button, .partseg button { transition: none; } }
 
+/* The status bar band: black like the station sign, so the sign reaches the top of the screen on phones with a notch */
+body::before { content: ""; position: fixed; z-index: 35; left: 0; right: 0; top: 0; height: env(safe-area-inset-top, 0px); background: #111; pointer-events: none; }
+
+/* Night page (phone): on Today and City the page is the night sky, from the sign down to the tab bar, with the sunset
+   glow on the horizon. The cards lose their frames and run edge to edge. Map, Exam and every other screen stay on paper. */
+.nightsky { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 260ms;
+  background: radial-gradient(130% 42% at 50% 100%, var(--dusk-edge) 0%, var(--dusk-low) 32%, transparent 68%), linear-gradient(180deg, #0b0a24 0%, var(--dusk-top) 38%, var(--dusk-mid) 100%); }
+@media (max-width: 1023px) {
+  html.nightpage .nightsky { opacity: 1; }
+  html.nightpage .appbar { margin-bottom: 0; }
+  html.nightpage .pane-today, html.nightpage .pane-city { margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
+  html.nightpage .pane-today .greet, html.nightpage .today-card, html.nightpage .pane-city .hero { border-radius: 0; box-shadow: none; background-color: transparent; }
+  html.nightpage .today-card, html.nightpage .pane-city .hero { background: transparent; }
+  html.nightpage .today-card::after, html.nightpage .pane-city .hero::after { box-shadow: none; }
+  html.nightpage .today-card { padding: 0 2px; }
+  html.nightpage .greet-sky { background-position: 50% 35%; } /* edge to edge the sky scales up; keep the moon in view */
+  html.nightpage .pane-today > .card { margin: 14px max(16px, env(safe-area-inset-left, 0px)) 0; }
+  html.nightpage .pane-city .stage-fade { background: linear-gradient(180deg, #0b0a24, transparent); }
+  html.nightpage .pane-city .stage { height: max(340px, calc(100vh - 226px)); height: max(340px, calc(100svh - 226px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))); }
+}
+@media (prefers-reduced-motion: reduce) { .nightsky { transition: none; } }
+
 /* Shared blocks */
 .stack { display: grid; gap: 14px; margin-top: 18px; }
 .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
@@ -571,6 +594,7 @@ footer p { margin: 0; max-width: 70ch; }
 @media (prefers-reduced-motion: reduce) { .cta, .tag { transition: none; } }
 </style>
 
+<div class="nightsky" aria-hidden="true"></div>
 <div class="wrap">
   <header class="appbar">
     <div>
@@ -1458,7 +1482,7 @@ let homeTab = "today", greetStale = false;
 function setHomeTab(t) {
   homeTab = t;
   const panes = $(".panes"); if (!panes) return;
-  panes.dataset.tab = t; $(".tabbar").dataset.cur = t;
+  panes.dataset.tab = t; $(".tabbar").dataset.cur = t; syncPage();
   document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.dataset.tab === t ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
   window.scrollTo(0, 0);
   const todayShown = $(".pane-today").getClientRects().length > 0;
@@ -2010,7 +2034,13 @@ $("#morebtn").onclick = () => (view === "more" ? renderHome() : renderMore());
 document.querySelectorAll(".tabbar [data-tab]").forEach(b => b.onclick = () => (view === "home" ? setHomeTab(b.dataset.tab) : (homeTab = b.dataset.tab, renderHome())));
 $("#tbmore").onclick = () => $("#morebtn").click();
 /* the tab bar shows only while Home's sections are on screen: drill, exam and More keep their own screens */
-new MutationObserver(() => document.body.classList.toggle("tabs", !!$("#app > .panes"))).observe($("#app"), { childList: true });
+/* On a phone, Today and City are night scenes edge to edge: the page itself turns to night sky (see .nightsky in shell.html) */
+function syncPage() {
+  const tabs = !!$("#app > .panes");
+  document.body.classList.toggle("tabs", tabs);
+  document.documentElement.classList.toggle("nightpage", tabs && (homeTab === "today" || homeTab === "city"));
+}
+new MutationObserver(syncPage).observe($("#app"), { childList: true });
 document.addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const tag = (e.target.tagName || "").toLowerCase(); if (tag === "textarea" || tag === "input" || tag === "select") return;

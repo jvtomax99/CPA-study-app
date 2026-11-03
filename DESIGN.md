@@ -133,6 +133,12 @@ Full-bleed black `#111` band with a 2px white rule 7px from the top, the title i
 ### Night scene: greeting, El train, Today card
 One continuous dark piece with 28px outer corners on Today: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic; the quote is hidden under 560px wide so Play stays above the tab bar), then the elevated subway line with a two-car train parked at the part's readiness, then the Today card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
 
+### Night page (phone)
+Under 1024px wide, Today and City drop their card frames: the page itself becomes the night sky from the station sign down to the tab bar. A fixed layer behind the page (`.nightsky`) paints `#0b0a24` at the top through Dusk Top to Dusk Mid, with the sunset glow (Dusk Edge into Dusk Low) rising from the bottom edge as the horizon. It fades in and out over 260ms as you move between sections; Map, Exam, drill and every other screen stay on the cream page. The greeting, the Today card and the town card run edge to edge with no corners and no shadow, the town's stage fills down to the tab bar, and the greeting's sky is anchored at 35% so the moon stays in view at full width. At 1024px and wider the framed cards stay, beside the map.
+
+### Status bar band
+A Sign Black `#111` band fills the iPhone status bar area (`env(safe-area-inset-top)`), and the home-screen app asks for a translucent black status bar, so the station sign reads as running to the top of the screen.
+
 ### Today card
 It says one thing, then offers one action. Top to bottom:
 1. **Day one** (nothing answered yet): "Your first stop" with the area's route bullet (40px, ringed), its name in Helvetica 24px/700 and "The Bank · 20% of exam · 40 questions". Play starts that area. No stats are shown.
