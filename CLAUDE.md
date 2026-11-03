@@ -12,3 +12,10 @@
 - End every reply with what I have to do, in a line starting "You need to:"
   (approve a diff, approve a push, reload the app, and so on). If there's
   nothing, write "You need to: nothing."
+
+## Design
+- Follow DESIGN.md for colors, type, corner radius, shadows, motion and
+  components. Don't add a new color, font size, weight, radius or shadow
+  without adding it there.
+- When a change adds or changes a token or a component, update DESIGN.md in
+  the same pull request.
