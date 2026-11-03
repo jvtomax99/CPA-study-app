@@ -17,6 +17,9 @@
   nothing, write "You need to: nothing."
 - When I need to approve a diff or a push, give it to me as a clickable
   button, not only as text.
+- When you suggest UI or design options, mock up every option before I
+  choose: build them on a scratch copy of the app (never the repo), render
+  them with Playwright, and send the screenshots with the suggestions.
 
 ## Design
 - Follow DESIGN.md for colors, type, corner radius, shadows, motion and
