@@ -131,6 +131,23 @@ Full-bleed black `#111` band with a 2px white rule 7px from the top, the title i
 ### Night scene: greeting, El train, town card
 One continuous dark piece with 28px outer corners: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic), then the elevated subway line with a two-car train parked at the part's readiness, then the 3D town card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
 
+### Town card
+The top of the town card says one thing, then offers one action. Top to bottom:
+1. **Day one** (nothing answered yet): "Your first stop" with the area's route bullet (40px, ringed), its name in Helvetica 24px/700 and "The Bank · 20% of exam · 40 questions". Play starts that area. No stats are shown.
+   **After that:** "Your tax city", readiness in Amber 52px/800 with "ready for Part 1" beside it, and a Next stop line (route bullet and area name). Play is the usual mixed drill.
+2. Stat pills, only for numbers above zero (due, today's count). The streak lives in the greeting badge, not here.
+3. Play and Exam sim.
+4. The part switcher.
+5. The 3D town, with its 3D, Times Sq and Day/Dusk buttons.
+
+The town legend (what cabs, netting and cranes mean) lives in How to use, not on Home.
+
+### Part switcher
+Three 40px round line bullets in the part colors, the current one at full opacity with the app bar's black and white double ring, the others at 45%, and the current part's name beside them ("PART 1" eyebrow over "Individuals" in Helvetica 16px/700).
+
+### Glass controls
+Every secondary control on a night scene shares one style: white at 10% with a 1px white border at 22%, 999px radius, a 6 to 8px backdrop blur, white 13 to 14px/700 text. That covers the greeting badge (its text in Lit Window gold), How to use, the stat pills and Exam sim. The 3D, Times Sq and Day buttons sit on the moving 3D scene, so they use a darker glass (`rgba(18,16,46,0.6)`) to stay readable. The only solid button on a night scene is gold Play.
+
 ### Hero buttons: Play and Exam sim
 The two big buttons on the town card: 18px radius, 16px 12px padding, 18px/800. **Play** is a gold gradient (`#ffd27a` to Amber) with Amber Ink text and a 4px Amber Deep bottom edge that presses down on tap. **Exam sim** is frosted glass: white at 16% with a 24% white border and a 10px backdrop blur.
 
