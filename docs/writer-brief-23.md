@@ -23,6 +23,7 @@ Avoid questions keyed on inflation-adjusted penalty dollar amounts (preparer pen
 - "source": the primary source(s), e.g. "IRS Pub 590-B (2025); IRC 408(d)(3)".
 - "cpa": CPA blueprint tags from this set only: REG-I (ethics/procedures), REG-III (property transactions), REG-IV (individuals), REG-V (entities), TCP-I (individuals/planning), TCP-II (entity compliance), TCP-III (entity planning), TCP-IV (property transactions).
 - Writing style: plain English. No em dashes, no ampersands. Use "and".
+- Abbreviations: spell out each one the first time a question uses it, as "adjusted gross income (AGI)", then use the short form. Every card stands alone and its choices are shuffled, so a term the stem doesn't define is spelled out in each choice that uses it. Run `python3 tools/abbrev.py` to check; `--fix` spells them out for you.
 - "part": 2 or 3 to match the domain. "answer": 0-based index into "choices".
 
 ## Output
