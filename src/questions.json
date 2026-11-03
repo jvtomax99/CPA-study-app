@@ -1027,9 +1027,7 @@
 "answer": 1,
 "explain": "Enrolled agents (EAs) need 72 hours per 3-year enrollment cycle, with a minimum of 16 hours each year, 2 of which must be ethics.",
 "source": "Treasury Circular 230, 10.6(e)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3-002",
@@ -1171,9 +1169,7 @@
 "answer": 0,
 "explain": "A guaranteed agreement requires $10,000 or less in tax, full payment within 3 years, and filing and payment compliance for the prior 5 years. Streamlined agreements go up to $50,000 assessed.",
 "source": "IRC 6159(c); IRS Pub 594",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3-010",
@@ -1189,9 +1185,7 @@
 "answer": 1,
 "explain": "A timely collection due process (CDP) request must be filed within 30 days of the notice date. After that, only an equivalent hearing is available, without Tax Court review.",
 "source": "IRS Pub 1660; IRC 6330",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3-011",
@@ -1244,9 +1238,7 @@
 "answer": 2,
 "explain": "EROs keep Form 8879 for 3 years from the return due date or the date the IRS received the return, whichever is later.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3-014",
@@ -1262,9 +1254,7 @@
 "answer": 1,
 "explain": "Preparers who reasonably expect to file more than 10 (that is, 11 or more) individual or trust returns must e-file, unless an exception applies. Form 8948 documents paper-filed exceptions.",
 "source": "IRC 6011(e)(3); Form 8948 instructions",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3-015",
@@ -1394,8 +1384,7 @@
 "explain": "An ITIN is for federal tax purposes only; it does not authorize work in the United States or provide eligibility for Social Security benefits or the earned income tax credit. The other statements are true: it is for people not eligible for a Social Security number (SSN), Form W-7 is used to apply or renew, and it expires on December 31 after the third consecutive tax year of non-use.",
 "source": "IRS: Individual Taxpayer Identification Number; IRS: Renew an ITIN",
 "cpa": [
-"REG-IV",
-"REG-I"
+"REG-IV"
 ]
 },
 {
@@ -1413,7 +1402,6 @@
 "explain": "An IP PIN is a six-digit number valid for one calendar year, and a new IP PIN is generated each year. Anyone with a Social Security number (SSN) or individual taxpayer identification number (ITIN) who can verify identity may enroll, not just identity theft victims, and parents and guardians can request IP PINs for dependents.",
 "source": "IRS: Get an Identity Protection PIN",
 "cpa": [
-"REG-I",
 "REG-IV"
 ]
 },
@@ -1698,7 +1686,6 @@
 "explain": "The IRS automatically provides filing and penalty relief to any taxpayer with an IRS address of record in the disaster area, with no need to contact the agency. Taxpayers outside the area whose necessary records are located in the area can also qualify and should call the IRS disaster hotline. No Form 4868 is needed for the postponement.",
 "source": "IRS newsroom: California wildfire victims qualify for tax relief (2025); IRC 7508A",
 "cpa": [
-"REG-I",
 "REG-IV"
 ]
 },
@@ -7909,9 +7896,7 @@
 "answer": 0,
 "explain": "The Annual Filing Season Program (AFSP) requires 18 hours: a 6-hour Annual Federal Tax Refresher (AFTR) course with test, 10 hours of other federal tax law, and 2 hours of ethics. Exempt individuals skip the AFTR course but still need 15 hours (10 federal tax law, 3 federal tax law updates, 2 ethics), and all participants must have an active preparer tax identification number (PTIN) and consent to Circular 230 Subpart B and 10.51.",
 "source": "IRS: General Requirements for the Annual Filing Season Program Record of Completion",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-005",
@@ -7945,9 +7930,7 @@
 "answer": 2,
 "explain": "A former IRS employee with at least 5 years of continuous qualifying employment may be enrolled without the exam, but the application must be made within 3 years from the date of separation. Kim has the service but waited 4 years, so she must qualify by examination like any other applicant.",
 "source": "Treasury Circular 230, 10.4(d)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-007",
@@ -7963,9 +7946,7 @@
 "answer": 0,
 "explain": "An applicant denied enrollment may file a written protest within 30 days of receiving the notice of denial, and an applicant denied for a tax compliance failure may reapply after becoming current. Temporary recognition is granted only in unusual circumstances and is not automatic while a protest is pending.",
 "source": "Treasury Circular 230, 10.5(d), (e), and (f)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-008",
@@ -7981,9 +7962,7 @@
 "answer": 1,
 "explain": "Enrolled agents are grouped by the last digit of the SSN (or taxpayer identification number): 0, 1, 2, or 3; 4, 5, or 6; and 7, 8, or 9. An SSN ending in 3 falls in the 0 to 3 group, while 4 belongs to the next group.",
 "source": "Treasury Circular 230, 10.6(d); IRS: Enrolled Agent Renewal",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-009",
@@ -7999,9 +7978,7 @@
 "answer": 1,
 "explain": "A new enrollee must complete 2 hours of qualifying continuing education (CE) for each month enrolled during the cycle, and enrollment for any part of a month counts as a full month: July 2025 through December 2026 is 18 months, times 2 hours = 36 hours. She also needs 2 hours of ethics for each enrollment year in the cycle (2025 and 2026), or 4 hours. The full 72-hour requirement applies only to a complete 3-year cycle.",
 "source": "Treasury Circular 230, 10.6(e)(2)(iii)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-010",
@@ -8017,9 +7994,7 @@
 "answer": 1,
 "explain": "A contact hour is 50 minutes of continuous participation, and credit is granted only for full contact hours. 175 minutes divided by 50 is 3.5, so only 3 full contact hours may be claimed.",
 "source": "Treasury Circular 230, 10.6(g)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-011",
@@ -8035,9 +8010,7 @@
 "answer": 2,
 "explain": "An individual placed in inactive status is ineligible to practice and may not use the enrolled agent designation. She may return to active status by filing a renewal application and showing the required CE, but must do so within three years of being placed in inactive status or her status terminates.",
 "source": "Treasury Circular 230, 10.6(j)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-012",
@@ -8665,9 +8638,7 @@
 "answer": 2,
 "explain": "A PTIN is required of any individual who is compensated for preparing, or assisting in preparing, all or substantially all of a return or claim for refund, even if he does not sign. Clerical workers who make no substantive determinations and an outside expert who advises on one item are not required to have one.",
 "source": "Treas. Reg. 1.6109-2(d) and (g)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-047",
@@ -8683,9 +8654,7 @@
 "answer": 1,
 "explain": "PTINs expire on December 31 of the calendar year for which they are issued, so preparers renew annually. All enrolled agents must have a valid PTIN to maintain active status, and the preparer's own PTIN, not the employer's EIN, goes in the preparer identification field (the EIN is reported separately for the firm).",
 "source": "IRS News: PTIN Renewal Period; Treas. Reg. 1.6109-2(a) and (e); Treasury Circular 230, 10.4(a)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d1-048",
@@ -8882,9 +8851,7 @@
 "answer": 1,
 "explain": "The IRS will not record future years that go more than 3 years past December 31 of the year it receives the form. December 31, 2025 plus 3 years is December 31, 2028, so 2021 through 2028 are recorded and 2029 and 2030 are not. Listing future years is allowed, so the form is not returned for that reason.",
 "source": "Form 2848 instructions (Rev. 09/2021), Line 3",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-002",
@@ -8936,9 +8903,7 @@
 "answer": 2,
 "explain": "Qualifying students and law graduates use designation k and must be authorized under Circular 230 section 10.7(d). The CAF automatically purges the student or law graduate as representative 130 days after the taxpayer's signature date. The 45-day period is the time a representative has to sign after the taxpayer signs, not an expiration date.",
 "source": "Form 2848 instructions (Rev. 09/2021), Part II designation k; Circular 230, 10.7(d)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-005",
@@ -9008,9 +8973,7 @@
 "answer": 1,
 "explain": "To revoke without naming a new representative, the taxpayer writes \"REVOKE\" across the top of the first page with a current signature and date and sends it to the IRS. Without a copy, she sends a signed and dated statement listing the matters, periods and representatives being revoked. A representative who wants out instead writes \"WITHDRAW\" on the form in the same way.",
 "source": "Form 2848 instructions (Rev. 09/2021), Revocation of power of attorney; IRS Pub 947",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-009",
@@ -9026,9 +8989,7 @@
 "answer": 2,
 "explain": "When the IRS records a new Form 2848 on the CAF, it generally revokes earlier powers of attorney for the same matters. To keep Lee, the client had to check the line 6 box and attach a copy of each power of attorney she wanted to remain in effect.",
 "source": "Form 2848 instructions (Rev. 09/2021), Line 6; 26 CFR 601.505(a)(1)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-010",
@@ -9044,9 +9005,7 @@
 "answer": 0,
 "explain": "The Form 2848 instructions state that filing Form 2848 will not revoke any Form 8821 in effect. A new Form 2848 revokes earlier Forms 2848 for the same matters, and a new Form 8821 revokes earlier Forms 8821, unless the taxpayer keeps them, but the two forms do not cancel each other.",
 "source": "Form 2848 instructions (Rev. 09/2021), Line 6; Form 8821 instructions (Rev. 09/2021), Line 5",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-011",
@@ -9062,9 +9021,7 @@
 "answer": 3,
 "explain": "The IRS accepts a power of attorney other than Form 2848 if it meets the requirements of section 601.503(a) of the IRS Statement of Procedural Rules. It can be recorded on the CAF only if a completed Form 2848 is attached. Because the other document is the operative grant, the taxpayer need not sign the attached Form 2848, but the representative must sign the Declaration of Representative.",
 "source": "26 CFR 601.503(b)(2); Form 2848 instructions (Rev. 09/2021), Substitute Form 2848",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-012",
@@ -9098,9 +9055,7 @@
 "answer": 1,
 "explain": "Forms 2848 with electronic or digitized signatures must be submitted online. Digital, electronic or typed-font signatures are not valid on forms filed by mail or fax. For a remote electronic signature, the submitter must also authenticate the taxpayer's identity.",
 "source": "Form 2848 instructions (Rev. 09/2021), Where To File; Electronic signatures",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-014",
@@ -9116,9 +9071,7 @@
 "answer": 3,
 "explain": "The CAF number is a unique nine-digit identifier the IRS assigns to a representative. It is not a Social Security number (SSN), employer identification number (EIN), PTIN or enrollment card number, and having one does not mean the person is recognized or authorized to practice. A representative without one enters \"None\" and the IRS issues one.",
 "source": "Form 2848 instructions (Rev. 09/2021), Line 2; IRS Pub 947",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-015",
@@ -9152,9 +9105,7 @@
 "answer": 2,
 "explain": "When Form 8821 authorizes disclosure for income verification and not for help with a tax matter, the IRS must receive it within 120 days of the taxpayer's signature date. The 120-day rule does not apply when the form is used to resolve a tax matter.",
 "source": "Form 8821 instructions (Rev. 09/2021), Taxpayer signature",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-017",
@@ -9242,9 +9193,7 @@
 "answer": 3,
 "explain": "A tax account transcript shows basic return data plus changes made after filing, such as assessments, penalties and payments. A tax return transcript shows the line items from the original return as filed and does not reflect later changes. A record of account combines the two.",
 "source": "IRS, Transcript types for individuals and ways to order them; IRS Transcript Delivery System page",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-022",
@@ -9260,9 +9209,7 @@
 "answer": 0,
 "explain": "TDS is available to Circular 230 practitioners and electronic return originators (EROs), but only when a properly executed Form 2848 or Form 8821 is on file for the client. A wage and income transcript from TDS then shows W-2 and 1099 data for the unfiled years. Using the client's own login credentials is not the authorized method.",
 "source": "IRS Transcript Delivery System (TDS) page; Form 8821 instructions; Form 2848 instructions (Rev. 09/2021)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-023",
@@ -9314,9 +9261,7 @@
 "answer": 0,
 "explain": "Taxpayers are allowed the total National Standards amount monthly for their family size without questioning the amount actually spent. The lesser-of-actual-or-standard rule applies to most Local Standards, such as housing and utilities, not to the National Standards.",
 "source": "IRS Collection Financial Standards; IRM 5.15.1",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-026",
@@ -9332,9 +9277,7 @@
 "answer": 1,
 "explain": "For Local Standards such as housing and utilities, the taxpayer is allowed the amount actually spent or the standard, whichever is less. The lesser of $2,600 and $2,200 is $2,200. Higher actual expenses may be allowed only if the taxpayer shows the standard is inadequate.",
 "source": "IRS Collection Financial Standards; IRM 5.15.1",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-027",
@@ -9350,9 +9293,7 @@
 "answer": 3,
 "explain": "The six-year rule lets the IRS allow living expenses above the standards and other expenses, such as minimum credit card payments, when the liability can be paid in full within six years. The taxpayer provides financial information but generally does not have to substantiate reasonable expenses.",
 "source": "IRS Collection Financial Standards (Six-Year Rule); IRM 5.14.1.4.1",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-028",
@@ -9638,9 +9579,7 @@
 "answer": 0,
 "explain": "A return sent through an authorized electronic return transmitter is treated as filed on the date of the electronic postmark, if that date is on or before the due date. When the taxpayer and the transmitter are in different time zones, the taxpayer's time zone controls.",
 "source": "IRC 7502(c); Treas. Reg. 301.7502-1(d)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-044",
@@ -9674,9 +9613,7 @@
 "answer": 1,
 "explain": "The IRS says not to use Freedom of Information Act (FOIA) for copies of tax returns or transcripts. A copy of the actual return is requested on Form 4506, and transcripts on Form 4506-T or through Transcript Delivery System (TDS) or online access. FOIA is for other agency records, such as an examination file.",
 "source": "IRS, Freedom of Information Act (FOIA) guidelines",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-046",
@@ -9800,9 +9737,7 @@
 "answer": 1,
 "explain": "An incorrect or missing IP PIN causes an e-filed return to be rejected; a paper return is delayed until it can be verified. An IP PIN is valid for one calendar year and must be used on any federal return filed during that year, including prior-year returns.",
 "source": "IRS, Get an identity protection PIN (IP PIN)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-053",
@@ -9818,9 +9753,7 @@
 "answer": 0,
 "explain": "When a misused SSN or individual taxpayer identification number (ITIN) prevents e-filing, Form 14039 is attached to the back of a paper return mailed to the usual filing location. Form 14039 can also be submitted online when it is not attached to a return. If the IRS sends a letter asking him to verify his identity, he should follow that letter instead.",
 "source": "Form 14039 (Rev. 2-2026) instructions; IRS Identity theft guide for individuals",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d2-054",
@@ -9872,9 +9805,7 @@
 "answer": 1,
 "explain": "An extension to pay tax shown on a return for undue hardship (more than an inconvenience, such as a sale at a sacrifice price) is generally limited to 6 months, or longer only if the taxpayer is abroad. The 18-month limit (plus up to 12 more in exceptional cases) applies to an extension to pay a deficiency, not the tax shown on the return. Interest still runs during any extension.",
 "source": "IRC 6161(a)(1), 6161(b)(1); Form 1127 (Rev. 12-2024), General Instructions",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-002",
@@ -9890,9 +9821,7 @@
 "answer": 0,
 "explain": "When the balance on Form 9465 is greater than $50,000, the instructions require the taxpayer to complete and attach Form 433-F so the IRS can evaluate ability to pay. The simple payment plan (formerly streamlined), which needs no financial statement, is limited to $50,000 or less. A guaranteed agreement requires tax of $10,000 or less.",
 "source": "Form 9465 instructions (Rev. July 2024); IRM 5.14.5.2",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-003",
@@ -9908,9 +9837,7 @@
 "answer": 2,
 "explain": "Individual balances of $50,000 or less that will be paid within the collection statute qualify for a streamlined agreement (renamed a simple payment plan in 2025), which does not require a collection information statement. A guaranteed agreement is only for tax of $10,000 or less paid within 3 years.",
 "source": "IRM 5.14.5.2; IRS SB/SE Interim Guidance SBSE-05-0325-0008 (Mar. 3, 2025); Form 9465 instructions (Rev. July 2024)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-004",
@@ -9944,9 +9871,7 @@
 "answer": 3,
 "explain": "The collection statute expiration date (CSED) is suspended while an installment agreement request is pending, for 30 days after a rejection or termination, and during a timely appeal. It is not suspended while the agreement itself is in effect, because Internal Revenue Code (IRC) section 6331(k)(3) excludes that period.",
 "source": "IRC 6331(k)(1)-(3), 6331(i)(5), 6502(a); IRM 5.1.19.3.5.1, 5.1.19.3.4.1",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-006",
@@ -9962,9 +9887,7 @@
 "answer": 3,
 "explain": "Missed installments, failure to pay later liabilities and failure to give a requested financial update are statutory grounds for termination. Refunds are routinely applied to the balance during an agreement, and the taxpayer still makes the regular payment, so an offset is not a default. The IRS generally must give 30 days' notice before terminating an agreement.",
 "source": "IRC 6159(b)(4), 6159(b)(5); Form 9465 instructions (Rev. July 2024)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-007",
@@ -9980,9 +9903,7 @@
 "answer": 3,
 "explain": "The three grounds for compromise are doubt as to liability, doubt as to collectibility, and effective tax administration (economic hardship or public policy and equity). Reasonable cause is a basis for penalty abatement, requested separately, not a ground for an offer.",
 "source": "IRC 7122; Treas. Reg. 301.7122-1(b); Form 656-B Booklet",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-008",
@@ -9998,9 +9919,7 @@
 "answer": 2,
 "explain": "A lump sum offer (5 or fewer payments) must include 20% of the offer amount plus the $205 application fee: $15,000 x 20% = $3,000, plus $205 = $3,205. Under the periodic payment option he would instead send the first proposed monthly payment with the fee.",
 "source": "IRC 7122(c)(1)(A); 26 CFR 300.3(b); Form 656-B Booklet",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-009",
@@ -10016,9 +9935,7 @@
 "answer": 2,
 "explain": "A doubt as to liability offer has no application fee or deposit, and the taxpayer must include a written statement and documents showing why the assessed tax is incorrect. It is barred only where the liability was established by a final court decision. Form 433-A (OIC) supports doubt as to collectibility offers.",
 "source": "26 CFR 300.3(b)(1)(i); Treas. Reg. 301.7122-1(b)(1); Form 656-L instructions",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-010",
@@ -10034,9 +9951,7 @@
 "answer": 3,
 "explain": "Form 656 requires filing compliance, current-year estimated payments and, for employers, deposits for the current quarter and two preceding quarters. There is no requirement to pay part of the liability before applying; the only upfront amounts are the fee and the 20% or first periodic payment.",
 "source": "Form 656-B Booklet; Form 656, Section 7",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-011",
@@ -10052,9 +9967,7 @@
 "answer": 0,
 "explain": "Internal Revenue Code (IRC) section 6331(k)(1) bars levy while an offer is pending, for 30 days after rejection and during a timely appeal, and the collection statute expiration date (CSED) is suspended for those periods. An offer is deemed accepted only if not rejected within 24 months of submission. Penalties and interest continue, and the IRS may file a notice of federal tax lien (NFTL) during consideration.",
 "source": "IRC 6331(k)(1), 7122(f); Form 656, Section 7; IRM 5.1.19.3.4.1",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-012",
@@ -10088,9 +10001,7 @@
 "answer": 0,
 "explain": "Appeals' CAP decision is binding on both sides with no judicial review, while a CDP determination may be petitioned to the Tax Court within 30 days. CAP covers proposed or filed liens, levies, seizures, and rejected, modified or terminated installment agreements. CAP never allows a challenge to the liability itself.",
 "source": "IRS Pub 1660 (Rev. 1-2020); IRC 6330(c)(2)(B), 6330(d)(1)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-014",
@@ -10106,9 +10017,7 @@
 "answer": 2,
 "explain": "A CDP request must be made within 30 days of the levy notice. A late request filed within one year of the notice date gets an equivalent hearing, which results in a decision letter that cannot be taken to court. During an equivalent hearing the law does not prohibit levy and the collection statute is not suspended.",
 "source": "IRS Pub 1660 (Rev. 1-2020); IRC 6330",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-015",
@@ -10124,9 +10033,7 @@
 "answer": 2,
 "explain": "At a CDP hearing the taxpayer may raise collection alternatives, spousal defenses and the appropriateness of the levy. The existence or amount of the liability may be challenged only if the taxpayer did not receive a notice of deficiency or otherwise have a chance to dispute it, so Ben cannot relitigate the deduction.",
 "source": "IRC 6330(c)(2)(A), 6330(c)(2)(B); IRS Pub 1660",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-016",
@@ -10142,9 +10049,7 @@
 "answer": 2,
 "explain": "A certificate of subordination lets a named creditor move ahead of the federal tax lien on specific property without removing the lien; it is requested on Form 14134 at least 45 days before the transaction. Discharge removes the lien from a specific property, release ends the lien when the debt is paid or unenforceable, and withdrawal removes the public notice.",
 "source": "IRC 6325(d); IRS Pub 784 (Rev. 12-2022)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-017",
@@ -10160,9 +10065,7 @@
 "answer": 3,
 "explain": "Under 6325(b)(1), the remaining property must be worth at least double the sum of the unpaid tax liability and the senior liens: 2 x ($40,000 + $30,000) = $140,000. The $110,000 choice doubles only the tax and then adds the mortgage.",
 "source": "IRC 6325(b)(1); IRS Pub 783 (Rev. 12-2022)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-018",
@@ -10178,9 +10081,7 @@
 "answer": 3,
 "explain": "A withdrawal removes the public NFTL as though it was never filed, but the taxpayer remains liable. Grounds include a premature filing, entering an installment agreement (unless it provides otherwise), facilitating collection, or the best interest of the taxpayer and the government. A release, by contrast, must be issued within 30 days after the liability is paid or becomes unenforceable.",
 "source": "IRC 6323(j)(1), 6325(a); IRS, Understanding a Federal Tax Lien",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-019",
@@ -10196,9 +10097,7 @@
 "answer": 3,
 "explain": "Administrative levy requires assessment, notice and demand, nonpayment for 10 days, and a written notice of intent to levy with collection due process (CDP) rights at least 30 days before the levy. No court order is needed for an ordinary levy. Court approval is required only in special cases such as levy on a principal residence.",
 "source": "IRC 6331(a), 6331(d), 6330(a), 6334(e)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-020",
@@ -10214,9 +10113,7 @@
 "answer": 3,
 "explain": "Internal Revenue Code (IRC) section 6334(a) exempts items such as unemployment benefits, workers' compensation, undelivered mail, school books, certain service-connected disability payments and a minimum amount of wages. Bank account balances are not on the list and are a common levy source.",
 "source": "IRC 6334(a); IRS Pub 594",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-021",
@@ -10232,9 +10129,7 @@
 "answer": 0,
 "explain": "A wage levy is continuous from the date it is first made until released, so it is served once. The weekly exempt amount is based on the standard deduction and dependents claimed on the employee's statement, from the tables in Pub 1494. The 15% limit applies to the continuous levy on certain federal payments, not to wages.",
 "source": "IRC 6331(e), 6331(h), 6334(a)(9), 6334(d); IRS Pub 1494; IRS Pub 594",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-022",
@@ -10250,9 +10145,7 @@
 "answer": 2,
 "explain": "After a sale of real property, the owner or other interested person may redeem within 180 days by paying the purchaser the amount paid plus interest at 20% per year. Before a sale, the owner can recover seized property by paying the amount due. The sale itself must be held 10 to 40 days after public notice.",
 "source": "IRC 6335(d), 6337(a), 6337(b)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-023",
@@ -10268,9 +10161,7 @@
 "answer": 3,
 "explain": "Currently not collectible (CNC) status delays collection but does not reduce the debt. Penalties and interest continue to accrue, refunds are applied to the balance, a notice of federal tax lien (NFTL) may be filed, and the IRS may review her finances and resume collection if her ability to pay improves.",
 "source": "IRS, Temporarily delay the collection process; IRS Pub 594; IRM 5.16.1.2.9",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-024",
@@ -10324,7 +10215,6 @@
 "explain": "Letter 1153 proposes the trust fund recovery penalty (TFRP) and gives the person 60 days (75 days if addressed outside the United States) to protest to Appeals before assessment. If he does not respond, the IRS assesses the penalty and issues notice and demand.",
 "source": "IRC 6672(b); IRM 5.7.6.2, 5.7.6.4; IRS, Employment taxes and the Trust Fund Recovery Penalty",
 "cpa": [
-"REG-I",
 "TCP-II"
 ]
 },
@@ -10396,9 +10286,7 @@
 "answer": 2,
 "explain": "For 2025 a seriously delinquent tax debt is an assessed, legally enforceable federal tax debt over $64,000 (including penalties and interest) for which a notice of federal tax lien (NFTL) was filed and collection due process (CDP) rights were exhausted or lapsed, or a levy was made. Ben is under the threshold, and debts being timely paid under an installment agreement or in hardship currently not collectible (CNC) status are not certified.",
 "source": "IRC 7345(b); Rev. Proc. 2024-40, sec. 2.60; IRS, Revocation or denial of passport in cases of certain unpaid taxes",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d3-031",
@@ -10667,9 +10555,7 @@
 "answer": 1,
 "explain": "The correct wage total is $52,000 + $31,000 = $83,000. The return overstates wages by $135,000 - $83,000 = $52,000, which matches the Employer A W-2, so that form was entered twice. A duplicate Employer B entry would give $114,000, and comparing return totals to source documents is how a preparer catches this kind of duplicate entry.",
 "source": "Treasury Circular 230, 10.22(a); Treas. Reg. 1.6694-2(e)",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-003",
@@ -10703,9 +10589,7 @@
 "answer": 2,
 "explain": "Pub 1345 lists copies of Forms W-2, W-2G and 1099-R, Form 8453 with supporting documents not sent electronically, signed consents to disclose, a complete copy of the electronic return, and the acknowledgment file as items kept until the end of the calendar year. The other three choices carry 3-year retention periods: Form 8879 from the later of the due date or IRS received date, due diligence records under the Form 8867 rules, and the IRC 6060 record of employed preparers.",
 "source": "IRS Pub 1345; IRC 6107(b); Treas. Reg. 1.6695-2(b)(4); IRC 6060",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-005",
@@ -10721,9 +10605,7 @@
 "answer": 0,
 "explain": "Pub 1345 requires all Authorized IRS e-file Providers to report security incidents as soon as possible but no later than the next business day after confirmation. Providers that are EROs only report through their local stakeholder liaison, who notifies IRS Criminal Investigation so fraudulent returns can be blocked. The Federal Trade Commission (FTC) notice under the Safeguards Rule is a separate duty and does not replace the IRS report.",
 "source": "IRS Pub 1345; IRS Pub 4557; IRS: Data theft information for tax professionals",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-006",
@@ -10793,9 +10675,7 @@
 "answer": 3,
 "explain": "Pub 3112 lists a tax compliance check, a check for prior e-file noncompliance, and a criminal background check as parts of the suitability check. A credit history review is not part of it. Applicants first create a Secure Access account, and Principals and Responsible Officials need e-Services accounts to complete the application.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-010",
@@ -10811,9 +10691,7 @@
 "answer": 0,
 "explain": "Principals and Responsible Officials must be fingerprinted unless they provide professional credentials as an attorney, CPA or enrolled agent, or are an officer of a publicly held corporation or a bonded banking official. Pub 3112 specifically states that licensed public accountants must provide fingerprints.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-011",
@@ -10829,9 +10707,7 @@
 "answer": 2,
 "explain": "For a partnership, each partner with a 5% or greater interest is a Principal. The partners holding 50%, 30% and 16% qualify, so there are 3. The 4% partner is not a Principal, though the firm could still list that person as a Responsible Official if he or she oversees the e-file operation at a location.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-012",
@@ -10847,9 +10723,7 @@
 "answer": 3,
 "explain": "An Intermediate Service Provider processes return data, typically from an ERO or an individual taxpayer, and forwards it to a transmitter. A Software Developer writes origination or transmission software, a Reporting Agent originates certain returns for payroll clients, and an Online Provider lets taxpayers self-prepare returns and is only a secondary role paired with another option.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-013",
@@ -10865,9 +10739,7 @@
 "answer": 0,
 "explain": "EFINs cannot be sold, transferred, loaned, leased or rented. When a business is sold or transferred, the new entity must get its own EFIN from the IRS, and using another Provider's EFIN can lead to sanctions.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-014",
@@ -10883,9 +10755,7 @@
 "answer": 2,
 "explain": "For preparers who are members of a firm, the count is the total number of covered returns the firm's members expect to file in the aggregate: 3 + 4 + 5 = 12, which is 11 or more. Every member is then a specified tax return preparer, even one who individually files fewer than the threshold.",
 "source": "Form 8948 instructions; Treas. Reg. 301.6011-7; IRS FAQs on e-file requirements for specified tax return preparers",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-015",
@@ -10901,9 +10771,7 @@
 "answer": 3,
 "explain": "A taxpayer choice statement is kept with the preparer's records and is never attached to the return or sent to the IRS. Form 8948, with the box for taxpayer choice checked, goes with the paper return the client signs and mails. If Kim or her staff mailed it, Kim would be the one filing, so the taxpayer choice exception would not apply.",
 "source": "Form 8948 instructions; IRS FAQs on e-file requirements for specified tax return preparers",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-016",
@@ -10919,9 +10787,7 @@
 "answer": 0,
 "explain": "The ERO must take reasonable steps to tell the taxpayer within 24 hours and give the business rules with an explanation. The 5 and 10 calendar day periods are the time allowed to fix and resubmit the return, or file on paper, and still be treated as timely.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-017",
@@ -10937,9 +10803,7 @@
 "answer": 1,
 "explain": "A Provider may not use \"IRS\" or \"Internal Revenue Service\" in its doing business as name, and it may not carry Treasury or IRS seals. Once accepted, it may call itself an Authorized IRS e-file Provider, may use the e-file logo within the stated limits, and may make refund timing claims that match official IRS publications. Acceptance does not imply IRS endorsement.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40; Treasury Circular 230, 10.30",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-018",
@@ -10955,9 +10819,7 @@
 "answer": 1,
 "explain": "For radio, television and internet ads, the Provider keeps a copy of the text or recording until the end of the calendar year following the last transmission or use. The ad last aired in 2026, so the copy is kept until December 31, 2027, and it must be given to the IRS on request.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-019",
@@ -10973,9 +10835,7 @@
 "answer": 0,
 "explain": "The ERO must confirm identity for in-person transactions unless there is a multi-year business relationship, meaning the ERO originated returns for the taxpayer for a prior tax year. A referral or a prior return from another firm does not create that relationship, and a Social Security card is not a government photo ID.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-020",
@@ -10991,9 +10851,7 @@
 "answer": 0,
 "explain": "Primary taxpayers under age 16 who have never filed are ineligible for the Self-Select PIN method, as are secondary taxpayers under 16 who did not file the prior year. The method authenticates with prior-year AGI or prior-year PIN, and an ERO may enter PINs the taxpayers choose. The Practitioner PIN method does not need prior-year AGI or PIN, but the taxpayer must sign Form 8879.",
 "source": "IRS Pub 1345; Form 8879 instructions",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-021",
@@ -11009,9 +10867,7 @@
 "answer": 2,
 "explain": "A new signature is needed when changed amounts differ by more than $50 for total income or AGI, or by more than $14 for total tax, federal income tax withheld, refund or amount owed. A $15 change to withholding and refund exceeds $14. A change of exactly $50 or exactly $14 is not more than the tolerance, and the other choices fall below both limits.",
 "source": "IRS Pub 1345; Form 8879 instructions",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-022",
@@ -11027,9 +10883,7 @@
 "answer": 2,
 "explain": "Supporting documents such as Form 8332 that are not sent electronically are attached to Form 8453 and mailed within 3 business days after the ERO receives acknowledgment that the IRS accepted the electronic return. Form 8453 is a transmittal and is not signed, and Form 8879 stays with the ERO.",
 "source": "Form 8453 instructions; IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-023",
@@ -11045,9 +10899,7 @@
 "answer": 1,
 "explain": "After acceptance into IRS e-file, stockpiling means waiting more than three calendar days to submit a return once the ERO has all necessary information. February 27 plus 3 calendar days is Monday, March 2, 2026. Counting 3 business days (March 4) is the most common error, and collecting returns before acceptance into e-file is also stockpiling.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-024",
@@ -11063,9 +10915,7 @@
 "answer": 1,
 "explain": "Providers must never charge a separate fee for Direct Deposit. The other three statements reflect Pub 1345: the product is a business contract between the Provider and the taxpayer, the refund goes to the financial institution, and refund anticipation loans (RALs) are interest-bearing loans.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-025",
@@ -11081,9 +10931,7 @@
 "answer": 1,
 "explain": "Level Two infractions include continued Level One violations after IRS notice and may lead to suspension for one or two years. A Level One infraction alone may draw a written reprimand. Level Three may bring a two-year suspension or expulsion; individuals of an expelled firm may be reconsidered after a five-year waiting period.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-026",
@@ -11099,9 +10947,7 @@
 "answer": 3,
 "explain": "A written request for administrative review is due within 30 calendar days of the denial or sanction letter. In most cases a sanction is effective 30 days after the letter date or the date the reviewing office or IRS Independent Office of Appeals affirms it, whichever is later. An immediate sanction, such as one for a Level Three infraction, stays in effect during review.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-027",
@@ -11117,9 +10963,7 @@
 "answer": 0,
 "explain": "Accepted Providers need not reapply each year if they keep e-filing and remain suitable. If a Provider does not e-file for both the current and prior processing years, the IRS may notify it of removal, and it may be reactivated if it replies within sixty days asking for reactivation. Otherwise it must reapply.",
 "source": "IRS Pub 3112 (Rev. 11-2025); Rev. Proc. 2007-40",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-028",
@@ -11135,9 +10979,7 @@
 "answer": 1,
 "explain": "A rejected return transmitted on or before the due date is timely if the electronic portion is corrected and resubmitted by the fifth calendar day after the due date: April 15 + 5 = April 20, 2026. April 22 is 5 business days, and April 25 is 10 days, the paper-filing window. A missing or incorrect Identity Protection Personal Identification Number (IP PIN) causes the reject, and the client can find the current IP PIN in the IRS Online Account.",
 "source": "IRS Pub 1345; IRS: Get an Identity Protection PIN",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-029",
@@ -11153,9 +10995,7 @@
 "answer": 2,
 "explain": "A paper return after a reject is timely if filed by the later of the due date or 10 calendar days after the IRS reject notification. April 14 + 10 calendar days = April 24, 2026, which is later than April 15. Counting 10 business days gives April 28, a common error, and the paper return should include an explanation of why it is filed after the due date.",
 "source": "IRS Pub 1345",
-"cpa": [
-"REG-I"
-]
+"cpa": []
 },
 {
 "id": "p3d4-030",
@@ -11172,7 +11012,6 @@
 "explain": "Beginning with the 2025 filing season, the IRS accepts e-filed Forms 1040 that claim an already-claimed dependent if the primary taxpayer includes a valid IP PIN. Without an IP PIN, or for 2022 and 2023 returns, a paper return is needed.",
 "source": "IRS News Release IR-2024-294; IRS e-file FAQ: Age, name or SSN rejects, errors and correction procedures",
 "cpa": [
-"REG-I",
 "REG-IV"
 ]
 }
