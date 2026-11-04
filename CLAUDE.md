@@ -20,6 +20,9 @@
 - When you suggest UI or design options, mock up every option before I
   choose: build them on a scratch copy of the app (never the repo), render
   them with Playwright, and send the screenshots with the suggestions.
+- When an environment setting needs to change (allowed domains, environment
+  variables, setup script and so on), give me the exact values in a code block
+  I can copy and paste, one entry per line, plus where to paste them.
 
 ## Design
 - Follow DESIGN.md for colors, type, corner radius, shadows, motion and
