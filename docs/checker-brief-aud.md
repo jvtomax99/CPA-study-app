@@ -2,7 +2,7 @@
 
 You did not write these questions. Check them as a skeptical reviewer. The bank is the main study source for an accountant preparing for the CPA exam's Auditing and Attestation (AUD) section, so a wrong key teaches a wrong rule.
 
-Scope: the AUD section of the AICPA's 2026 blueprint (/home/claude/aud-blueprint.txt) and only its listed References. Nonissuer audits follow the AICPA standards (AU-C), issuer audits follow the PCAOB standards (AS), and attestation, review and compilation engagements follow AT-C and AR-C. The bank keys the standards in force for periods ending December 31, 2025, and engagements performed in 2026.
+Scope: the AUD section of the AICPA's 2026 blueprint (/home/claude/aud-blueprint.txt) and only its listed References. Nonissuer audits follow the AICPA standards (AU-C), issuer audits follow the PCAOB standards (AS), and attestation, review and compilation engagements follow AT-C and AR-C. The bank keys the current codified text. Where a standard took effect for periods or engagements beginning on or after December 15, 2025 (SAS No. 146, SSAE No. 23), the key must also hold under the earlier wording; SAS No. 149, 150 and 151 are not yet effective and must not change any key.
 
 For EVERY question in your assigned file:
 1. Is the keyed answer ("answer" is a 0-based index into "choices") correct under the standard that applies to the entity and engagement in the stem? Recompute every calculation.

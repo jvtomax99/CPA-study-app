@@ -260,7 +260,7 @@ function pushTown() {
 const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L", "AUD-I": "B", "AUD-II": "D", "AUD-III": "F", "AUD-IV": "M", "TCP-I": "5", "TCP-II": "M", "TCP-III": "Z", "TCP-IV": "Q" };
 const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
   N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
-const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River", TCP: "Harlem River" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River", AUD: "East River", TCP: "Harlem River" };
 const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
 /* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
    Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
@@ -628,7 +628,7 @@ function renderDrill() {
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
-      <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
+      <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" || q.part === "AUD" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
         <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
         ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
