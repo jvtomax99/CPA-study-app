@@ -15202,5 +15202,805 @@
 "cpa": [
 "AUD-III"
 ]
+},
+{
+"id": "aud1-001",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "B",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the firm has audited the entity for 12 years and has never found evidence of dishonesty by management. The controller explains that a large increase in slow-moving inventory needs no write-down because a new customer will buy all of it in 2026. The senior proposes accepting the explanation without further evidence, given management's record. Which response is consistent with professional skepticism?",
+"choices": [
+"Accept the explanation, because the auditor may rely on past experience of management's integrity in place of corroborating evidence",
+"Seek evidence that corroborates or contradicts the explanation, such as customer orders or sales after year end, because a belief that management is honest does not permit the auditor to be satisfied with less than persuasive evidence",
+"Disregard the firm's past experience with management and treat the explanation as false until management proves otherwise",
+"Accept the explanation once management includes it in the written representation letter, because a written representation is sufficient evidence for a matter within management's knowledge"
+],
+"answer": 1,
+"explain": "The auditor neither assumes that management is dishonest nor assumes unquestioned honesty, and a belief that management is honest does not relieve the auditor of professional skepticism or allow less than persuasive evidence, so the auditor looks for evidence such as orders or later sales. The auditor is not expected to disregard past experience, but that experience does not replace evidence. Written representations complement other procedures and do not provide sufficient appropriate evidence on their own.",
+"source": "AU-C 200.17; AU-C 200.A25; AU-C 200.A27; AU-C 580.04",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-002",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "B",
+"q": "In an audit of a nonissuer for the year ending December 31, 2026, a staff auditor scanning the general ledger notices several large manual entries to revenue that the controller posted on a Sunday after year end. The staff auditor then runs the firm's data analytics tool over the full journal entry population, and the tool reports no unusual entries. The staff auditor concludes that the Sunday entries need no follow-up because the tool did not flag them. Which unconscious auditor bias does this conduct illustrate?",
+"choices": [
+"Anchoring bias",
+"Availability bias",
+"Groupthink",
+"Automation bias"
+],
+"answer": 3,
+"explain": "Automation bias is a tendency to favor output generated from automated systems even when human reasoning or contradictory information raises questions about whether the output is reliable; here the tool's clean result overrode what the staff auditor had already seen. Anchoring bias would mean holding to an initial piece of information and inadequately assessing later information, but the first thing the staff auditor saw was the suspicious entries, and those were set aside in favor of the later tool output.",
+"source": "AU-C 200.A28; AU-C 220.A36; AU-C 220.A37 (cited as .A35 in AU-C 200.A28 before the SAS No. 149 renumbering)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-003",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "C",
+"q": "Before an audit of a nonissuer's financial statements for the year ending December 31, 2025, the owner asks what assurance the audit will provide. Which statement by the auditor is correct?",
+"choices": [
+"The audit provides reasonable assurance, a high but not absolute level, that the financial statements as a whole are free from material misstatement, because most audit evidence is persuasive rather than conclusive",
+"The audit provides absolute assurance that the financial statements are free from material misstatement due to error, but not due to fraud, because fraud may be concealed by collusion",
+"The audit provides limited assurance, obtained primarily through inquiry and analytical procedures, that no material modifications need to be made to the financial statements",
+"The audit provides reasonable assurance that the financial statements are free from all misstatements, including immaterial ones, whether due to fraud or error"
+],
+"answer": 0,
+"explain": "An audit obtains reasonable assurance, a high but not absolute level, about whether the financial statements as a whole are free from material misstatement, whether due to fraud or error. Absolute assurance is not possible for errors either, because inherent limitations of an audit make most evidence persuasive rather than conclusive. Limited assurance from inquiry and analytical procedures describes a review engagement, and the auditor has no responsibility to plan the audit to detect misstatements that are not material.",
+"source": "AU-C 200.06; AU-C 200.07; AU-C 200.12; AU-C 200.A52; AR-C 90.07",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-004",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "C",
+"q": "The owner of a nonissuer is comparing services a CPA firm offers. Which pairing of an engagement with the assurance it provides is correct?",
+"choices": [
+"Compilation engagement on the entity's financial statements: limited assurance, obtained primarily by inquiry and analytical procedures",
+"Agreed-upon procedures engagement: limited assurance, expressed as a conclusion on whether the subject matter needs material modification",
+"Review engagement on the entity's financial statements: limited assurance, as a basis for reporting whether the accountant is aware of any material modifications that should be made",
+"Examination engagement: limited assurance, because the practitioner relies mainly on the responsible party's written assertion"
+],
+"answer": 2,
+"explain": "In a review of financial statements, the accountant obtains limited assurance, primarily by performing analytical procedures and inquiries, as a basis for reporting whether the accountant is aware of any material modifications that should be made. A compilation provides no assurance, and an agreed-upon procedures engagement reports findings without an opinion or a conclusion. An examination provides reasonable assurance and an opinion, whether or not the responsible party gives an assertion.",
+"source": "AR-C 80.04; AR-C 90.07; AT-C 105.03; AT-C 105.12",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-005",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "D",
+"q": "A CPA is asked to perform an audit of a nonissuer, Pine Hollow Supply, for the year ending December 31, 2025. The entity is not required by law or regulation to have an audit; its bank has asked for audited financial statements. In the proposed terms, the owner prohibits the auditor from confirming receivables or contacting customers and from observing the physical inventory count. Receivables and inventory make up most of total assets, and the auditor believes these restrictions would result in a disclaimer of opinion on the financial statements as a whole. What should the auditor do?",
+"choices": [
+"Accept the engagement and disclaim an opinion, because the owner is entitled to set the scope of the engagement",
+"Not accept the engagement as an audit engagement with these restrictions",
+"Accept the engagement, describe the restrictions in the engagement letter, and express a qualified opinion",
+"Accept the engagement only if the bank agrees in writing to accept a disclaimer of opinion"
+],
+"answer": 1,
+"explain": "When management of an entity that is not required by law or regulation to have an audit imposes a scope limitation in the proposed terms that the auditor believes will result in a disclaimer of opinion, the auditor should not accept that limited engagement as an audit. The exception applies only to an entity required by law or regulation to have an audit when a disclaimer is acceptable under that law or to the regulator, and a bank's consent does not create it. A restriction expected to cause only a qualified opinion would not prevent acceptance, but restrictions over most of total assets are expected to cause a disclaimer here.",
+"source": "AU-C 210.07; AU-C 210.A19; AU-C 210.A20",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-006",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "D",
+"q": "In an audit of a nonissuer's financial statements for the year ending December 31, 2025, the agreed-upon terms of the engagement must be documented in an engagement letter or other suitable form of written agreement that includes all of the following EXCEPT:",
+"choices": [
+"A statement that, because of the inherent limitations of an audit and of internal control, an unavoidable risk exists that some material misstatements may not be detected",
+"The responsibilities of management, including its responsibility for the design, implementation and maintenance of internal control relevant to the financial statements",
+"Identification of the applicable financial reporting framework for the preparation of the financial statements",
+"The basis on which the auditor's fees are computed and any billing arrangements"
+],
+"answer": 3,
+"explain": "The required terms are the objective and scope of the audit, the responsibilities of the auditor and of management, the statement about the unavoidable risk arising from inherent limitations, the applicable financial reporting framework, and a reference to the expected form and content of the auditor's reports. Fees and billing arrangements appear in most letters, but the standard lists them only as matters the letter may refer to, not as required terms.",
+"source": "AU-C 210.06; AU-C 210.10; AU-C 210.A24",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-007",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor's report is dated March 6, 2026, and the auditor grants the entity permission to use the report on March 20, 2026. Neither firm policy nor any law or regulation sets a shorter assembly period or a longer retention period than the auditing standards. Which statement is correct?",
+"choices": [
+"Assembly of the final audit file must be completed no later than May 19, 2026, and the documentation must be kept at least until March 20, 2031",
+"Assembly of the final audit file must be completed no later than May 5, 2026, and the documentation must be kept at least until March 6, 2031",
+"Assembly of the final audit file must be completed no later than May 19, 2026, and the documentation must be kept at least until December 31, 2030",
+"Assembly of the final audit file must be completed no later than May 4, 2026, and the documentation must be kept at least until March 20, 2033"
+],
+"answer": 0,
+"explain": "The report release date is the date the auditor grants permission to use the report, March 20, 2026. Assembly must be completed no later than 60 days after that date (11 days left in March, 30 in April and 19 in May, so May 19, 2026), and no documentation may be discarded for at least five years from the report release date, so until March 20, 2031. Counting from the March 6 report date gives May 5, 2026, and March 6, 2031, which uses the wrong starting date.",
+"source": "AU-C 230.06; AU-C 230.16; AU-C 230.17; AU-C 230.A24; AU-C 230.A27",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-008",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer for the year ended December 31, 2025, the documentation completion date was May 15, 2026. In September 2026, the firm's internal monitoring reviewer comments that a workpaper on the inventory reserve does not clearly explain a conclusion the engagement team reached before the report date. The manager wants to clarify the workpaper. Which action complies with the auditing standards?",
+"choices": [
+"Replace the original workpaper with a revised version dated as of the original preparation date, so the file appears as it did at the report date",
+"Make no change, because audit documentation may not be modified or added to after the documentation completion date",
+"Add a clarifying memo, documenting the specific reasons for the addition and when and by whom it was made and reviewed, and keep the original workpaper",
+"Perform new inventory procedures, redate the auditor's report and replace the original workpaper with the new results"
+],
+"answer": 2,
+"explain": "After the documentation completion date, the auditor may add or modify documentation, for example to clarify existing documentation in response to monitoring comments, but must document the specific reasons for the change and when and by whom it was made and reviewed. The auditor may not delete or discard documentation before the end of the retention period, so replacing or backdating the original workpaper is not allowed. Clarifying a conclusion already reached does not call for new procedures or a new report date.",
+"source": "AU-C 230.17; AU-C 230.18; AU-C 230.A28",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-009",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "F",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor identified a significant deficiency in controls over changes to the vendor master file, which management fixed in February 2026 while the audit was in progress. The auditor also found a deficiency in petty cash reconciliations that is not a significant deficiency but merits management's attention. The entity's board of directors is separate from management, and the auditor's report was released on March 13, 2026. Which approach meets the auditor's communication requirements?",
+"choices": [
+"Communicate the significant deficiency orally to the board and leave it out of any written communication, because it was fixed before the report date",
+"Communicate both deficiencies in writing to the board before the date of the auditor's report, because communication after the report release date is not permitted",
+"Communicate the significant deficiency in writing only to management, which is responsible for internal control, and state in writing that no other significant deficiencies were identified",
+"Communicate the significant deficiency in writing to the board and to management, and the petty cash deficiency to management in writing or orally, no later than 60 days after March 13, 2026"
+],
+"answer": 3,
+"explain": "Significant deficiencies and material weaknesses, including those remediated during the audit, must be communicated in writing to those charged with governance and to management, while other deficiencies that merit management's attention may go to management in writing or orally. These communications must be made no later than 60 days after the report release date; making them by the release date is best practice but not required. The auditor should not issue a written statement that no significant deficiencies were identified.",
+"source": "AU-C 265.11; AU-C 265.12; AU-C 265.13; AU-C 265.16; AU-C 265.A17",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-010",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "F",
+"q": "While planning an audit of a nonissuer's financial statements for the year ending December 31, 2025, the auditor meets with the entity's audit committee. One member asks for the dates of the surprise cash counts and the list of customer accounts that will be selected for confirmation. Which response is most appropriate?",
+"choices": [
+"Provide the dates and the list, because the auditor must share the detailed audit plan with those charged with governance",
+"Give an overview of the planned scope and timing, including the significant risks identified, without disclosing detailed procedures in a way that would make them predictable",
+"Decline to discuss the planned scope and timing at all, because the overall audit strategy and audit plan are solely the auditor's responsibility",
+"Provide the list and let the audit committee approve any changes to the nature and extent of the planned procedures"
+],
+"answer": 1,
+"explain": "The auditor must communicate an overview of the planned scope and timing of the audit, including the significant risks identified, but care is needed so as not to compromise the audit, because communicating the nature and timing of detailed procedures may make them too predictable. Refusing any discussion is wrong because the overview is required; the auditor's sole responsibility for the strategy and plan means the committee does not approve procedures, not that scope and timing go unmentioned.",
+"source": "AU-C 260.11; AU-C 260.A23; AU-C 260.A24",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-011",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A registered public accounting firm audits the financial statements of an issuer, and the issuer's audit committee pre-approved each of the services below. Under the independence rule of the Securities and Exchange Commission (SEC) in section 210.2-01 of Title 17 of the Code of Federal Regulations, providing all of the following services to the issuer during the audit and professional engagement period would impair the firm's independence EXCEPT:",
+"choices": [
+"Performing reference checks on the two finalists for the issuer's open chief financial officer position",
+"At the issuer's request, interviewing candidates for controller and advising the issuer on each candidate's competence for the role",
+"Performing the issuer's outsourced internal audit work on its internal accounting controls over revenue",
+"Designing and implementing the software system that aggregates the source data underlying the issuer's general ledger"
+],
+"answer": 1,
+"explain": "The SEC rule bars human resources services such as reference checks for an executive position, but it permits the firm, at the client's request, to interview candidates and advise on their competence for financial accounting, administrative or control positions, which includes a controller. Outsourced internal audit work on internal accounting controls and designing a system that aggregates source data for the financial statements are prohibited, because their results will be subject to audit procedures. Audit committee pre-approval does not make a prohibited service permissible; it is an added requirement for services that are allowed.",
+"source": "17 CFR 210.2-01(c)(4)(ii)(B), (c)(4)(v), (c)(4)(vii)(C), (c)(4)(vii)(E); 15 U.S.C. 78j-1(g), (h)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-012",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Tanya Ruiz, an audit manager at a registered public accounting firm, spent more than 40 hours from April through June 2025 on the firm's audit engagement team for an issuer with a calendar fiscal year, reviewing its interim financial information for the quarter ended March 31, 2025. She left the firm on June 30, 2025, and has no capital balance or financial arrangement with it. The issuer filed its 2025 annual report with the Securities and Exchange Commission (SEC) on March 2, 2026, and hired Tanya as its controller on September 1, 2026. Under the SEC independence rule for an audit of an issuer, which statement about the firm's audit of the issuer's 2026 financial statements is correct?",
+"choices": [
+"The firm is independent, because more than one year passed between Tanya leaving the firm and starting work as the issuer's controller",
+"The firm is not independent, because Tanya was on the audit engagement team during the year before audit procedures for 2026 began on March 3, 2026",
+"The firm is independent, provided Tanya does not take part in or influence any audit of a period during which she was employed by the firm",
+"The firm is independent if the audit committee knows of her prior role, because a controller holds an accounting role, not a financial reporting oversight role"
+],
+"answer": 1,
+"explain": "Audit procedures for 2026 are deemed to begin the day after the 2025 annual report is filed, March 3, 2026, so the look-back year runs from March 3, 2025 to March 2, 2026. Tanya worked on the engagement team inside that year, and the SEC rule names a controller as a financial reporting oversight role, so the firm is not independent for the 2026 audit. The 14 months between her leaving the firm and her hire date are not the test, because the year is measured back from the date audit procedures began for the fiscal period that includes her hire date.",
+"source": "17 CFR 210.2-01(c)(2)(iii)(B), (f)(3)(ii); 15 U.S.C. 78j-1(l)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-013",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Pat Okafor served as the lead partner on a registered public accounting firm's audits of an issuer's financial statements for fiscal years 2021 through 2025. The firm has more than 10 partners and more than five audit clients that are issuers. Under the partner rotation rule of the Securities and Exchange Commission (SEC) for an audit of an issuer, Pat",
+"choices": [
+"may not serve as lead partner or as engagement quality reviewer on that issuer's audits for fiscal years 2026 through 2030",
+"may serve as engagement quality reviewer on that issuer's 2026 audit, because the five-year limit applies to each role separately",
+"may return as lead partner on that issuer's audit for fiscal year 2028, after the required two-year time-out period",
+"may continue as lead partner for fiscal years 2026 and 2027 if the issuer's audit committee approves the extension"
+],
+"answer": 0,
+"explain": "Under the SEC rule, the lead partner and the engagement quality reviewer may serve no more than five consecutive years and then may not perform either role, or a combination of them, for the next five consecutive years, so Pat may not return in either role before fiscal year 2031. The two-year time-out applies to other audit partners, who may serve up to seven consecutive years. The audit committee cannot extend the limit; the only exemption is for a firm with fewer than five issuer audit clients and fewer than ten partners whose engagements the Public Company Accounting Oversight Board reviews at least once every three years.",
+"source": "17 CFR 210.2-01(c)(6)(i), (c)(6)(ii), (f)(7)(ii); 15 U.S.C. 78j-1(j)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-015",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm is engaged to audit an employee benefit plan's financial statements for the plan's annual report on Form 5500 filed with the Department of Labor (DOL). Under the DOL interpretive bulletin on the independence of an accountant retained by an employee benefit plan, which relationship would cause the DOL not to recognize the firm as independent?",
+"choices": [
+"The firm's tax department also prepares the plan sponsor's corporate income tax return each year under a separate engagement",
+"An actuary associated with the firm renders actuarial services to the plan sponsor during the period of the plan audit",
+"A partner of the firm keeps the plan's accounting records, posting contributions, benefit payments and investment income each month",
+"The firm hires a former employee of the plan sponsor who has completely disassociated from it and does not audit any plan period when she worked there"
+],
+"answer": 2,
+"explain": "The bulletin states that the DOL will not consider an accountant independent if the accountant or a member of the firm, which includes every partner, maintains financial records for the plan, because the firm would be auditing records it keeps. Being engaged by the plan sponsor for other professional work, such as its tax return, or having an associated actuary serve the plan or sponsor does not by itself impair independence, although the DOL considers all relationships. A former sponsor employee may join the firm if she has completely disassociated from the sponsor and does not audit plan periods covering her employment.",
+"source": "29 CFR 2509.2022-01(b)(2), (b)(3), (c)(1), (c)(2), (d)(1) (the bulletin formerly at 29 CFR 2509.75-9)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-016",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "G",
+"q": "Under Statement on Quality Management Standards (SQMS) No. 1, A Firm's System of Quality Management, a firm's system of quality management addresses eight components. All of the following are among those components EXCEPT:",
+"choices": [
+"Governance and leadership",
+"Information and communication",
+"Control activities",
+"The monitoring and remediation process"
+],
+"answer": 2,
+"explain": "SQMS No. 1 lists eight components: the firm's risk assessment process, governance and leadership, relevant ethical requirements, acceptance and continuance of client relationships and specific engagements, engagement performance, resources, information and communication, and the monitoring and remediation process. Control activities is a component of an entity's internal control under the Internal Control Integrated Framework, not of a firm's system of quality management, where the policies and procedures that address quality risks are called responses.",
+"source": "SQMS 1.07, 1.09, 1.17 (QM 10.07, 10.09, 10.17)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-017",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "G",
+"q": "A CPA firm designed and implemented its system of quality management under Statement on Quality Management Standards (SQMS) No. 1 by December 15, 2025, and assigned its managing partner ultimate responsibility and accountability for the system. In the first annual evaluation, as of September 30, 2026, the firm finds an identified deficiency in one small regional office: widespread noncompliance with firm policies, caused by local leaders' focus on financial targets. The firm judges the deficiency severe but not pervasive, and remediation is not yet complete. Which statement is correct?",
+"choices": [
+"The managing partner should conclude that the system provides reasonable assurance except for matters related to the deficiency, and the firm should act promptly",
+"The managing partner should conclude that the system does not provide reasonable assurance, because any severe deficiency not yet remediated requires that conclusion",
+"The partner with operational responsibility for monitoring and remediation should make the conclusion, which may be unmodified once a remediation plan is approved",
+"The firm should postpone the evaluation until the regional office's remediation is complete, provided it is finished before December 15, 2027"
+],
+"answer": 0,
+"explain": "At least annually, the individual assigned ultimate responsibility and accountability evaluates the system as of a point in time and reaches one of three conclusions; a deficiency that is severe but not pervasive, such as one confined to a small office, leads to the \"except for\" conclusion, and the firm must then take prompt action and communicate to engagement teams and, under its policies, to external parties. The conclusion that the system does not provide reasonable assurance is for deficiencies that are severe and pervasive. The evaluation cannot be handed to the operational monitoring role or deferred, and the first one was due within one year after December 15, 2025.",
+"source": "SQMS 1.14, 1.21(a), 1.54, 1.55, 1.56, 1.A212, 1.A213 (QM 10)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-018",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "G",
+"q": "A CPA firm has three partners. For its audit of a nonissuer's financial statements for the year ending December 31, 2026, the firm's policies require an engagement quality review (EQR) because the firm assessed a quality risk from substantial doubt about the entity's ability to continue as a going concern. Partner A is the 2026 engagement partner, and Partner B is on the 2026 engagement team. Partner C was the engagement partner on the 2025 audit and has no role in 2026. Under Statements on Quality Management Standards (SQMS) No. 1 and No. 2, which statement is correct?",
+"choices": [
+"No EQR is needed, because SQMS No. 1 requires one only for audits of issuers and for engagements on which law or regulation requires one",
+"Partner B may serve as the EQR, provided that Partner B does not sign the auditor's report or supervise the other staff assigned to the audit",
+"Partner C may not serve as the EQR until two years have passed, which is the cooling-off period SQMS No. 2 sets for a former engagement partner",
+"The firm may appoint Partner C if its policies on the threat to objectivity from C's 2025 role are met, or may appoint an eligible outside individual"
+],
+"answer": 3,
+"explain": "SQMS No. 1 requires an EQR both where law or regulation requires one and where the firm decides an EQR is an appropriate response to a quality risk, so this audit needs one, and the reviewer may be a partner, another individual in the firm, or an external individual, but not a member of the engagement team, which rules out Partner B. SQMS No. 2 does not set a fixed cooling-off period; it requires the firm's policies to address the threat to objectivity, mainly self-review, when a former engagement partner becomes the reviewer, and a firm may choose a cooling-off period that fits the facts.",
+"source": "SQMS 1.35(f) (QM 10.35(f)); SQMS 2.13, 2.18, 2.19, 2.A4, 2.A15, 2.A16 (QM 20)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-019",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "G",
+"q": "A CPA firm requires an engagement quality review for its audit of a nonissuer's financial statements for the year ending December 31, 2026. Under Statement on Quality Management Standards (SQMS) No. 2, Engagement Quality Reviews, the engagement quality reviewer should do all of the following EXCEPT:",
+"choices": [
+"Discuss with the engagement partner the significant matters and significant judgments made in planning, performing and reporting on the audit",
+"Evaluate the basis for the engagement partner's determination that relevant ethical requirements relating to independence have been fulfilled",
+"Obtain sufficient appropriate audit evidence of the reviewer's own to support the opinion to be expressed on the financial statements",
+"Evaluate the basis for the engagement partner's determination that the partner's involvement was sufficient and appropriate throughout the audit"
+],
+"answer": 2,
+"explain": "An engagement quality review is an objective evaluation of the significant judgments the engagement team made and the conclusions reached, so the reviewer discusses those judgments with the engagement partner and evaluates the basis for the partner's conclusions on independence and on the sufficiency of the partner's own involvement. The reviewer is not a member of the engagement team and is not required to obtain evidence to support the opinion, although the team may obtain more evidence in response to matters the reviewer raises.",
+"source": "SQMS 2.08, 2.09, 2.25(b), 2.25(d), 2.25(f) (QM 20)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-020",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "G",
+"q": "In an audit of a nonissuer's financial statements for the year ending December 31, 2026, the firm requires an engagement quality review. On March 10, 2027, the engagement partner believes sufficient appropriate audit evidence has been obtained, but the engagement quality reviewer still disagrees with the team's conclusion on the valuation of a significant investment and has not notified the partner that the review is complete. The client wants the report that day. Under generally accepted auditing standards, the engagement partner should",
+"choices": [
+"date and release the auditor's report, because the engagement partner, not the reviewer, has overall responsibility for the audit and the reviewer's concerns are only advisory",
+"follow the firm's policies to resolve the difference of opinion, and neither date the report until it is resolved nor release it until the review is complete",
+"date and release the auditor's report on March 10 and document the reviewer's disagreement in the audit file",
+"release the report on March 10 if the firm's managing partner approves, because the managing partner holds ultimate responsibility for quality"
+],
+"answer": 1,
+"explain": "Under AU-C section 220, a difference of opinion between the engagement team and the engagement quality reviewer is resolved under the firm's policies, the engagement partner may not date the auditor's report until it is resolved, and the partner may not release the report until the engagement quality review is complete. The partner does keep overall responsibility for managing and achieving quality on the audit, but that does not allow the partner to override an incomplete review, and releasing the report while documenting the disagreement breaks the rule on release. The bar on dating the report before the difference is resolved was added by Statement on Auditing Standards No. 146 (AU-C 220.38(c)).",
+"source": "AU-C 220.36, 220.37, 220.38; SQMS 2.24(b), 2.27 (QM 20)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud2-021",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "B",
+"q": "An issuer is neither a large accelerated filer nor an accelerated filer, as the Securities and Exchange Commission defines those terms in Rule 12b-2, and is not an emerging growth company. Under sections 302 and 404 of the Sarbanes-Oxley Act of 2002, which statement about the issuer's annual report for 2026 is correct?",
+"choices": [
+"Because section 404(c) exempts smaller issuers from section 404, the annual report need not include management's internal control report",
+"The annual report must include management's assessment of its internal control over financial reporting, but the auditor need not attest to it",
+"The auditor must attest to and report on management's internal control assessment in an engagement separate from the financial statement audit",
+"The principal executive and financial officers need not certify the annual report, because the certification applies only to accelerated filers"
+],
+"answer": 1,
+"explain": "Section 404(a) requires every annual report to include management's internal control report with an assessment as of fiscal year end, and section 404(c) exempts an issuer that is neither a large accelerated filer nor an accelerated filer only from section 404(b), the auditor's attestation. Section 302 certification by the principal executive and financial officers applies to every annual and quarterly report, whatever the filer status. When an attestation is required, section 404(b) says it may not be the subject of a separate engagement.",
+"source": "15 U.S.C. 7262(a), (b), (c); 15 U.S.C. 7241(a)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud4-001",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor was engaged in February 2026 and could not observe the December 31, 2025 physical inventory count. Inventory is $600,000 of total assets of $9,000,000, and materiality for the financial statements as a whole is $150,000. Alternative procedures did not provide sufficient appropriate audit evidence about the quantities. The auditor concludes that the possible effects of undetected misstatements are material but confined to inventory and cost of sales and are not a substantial proportion of the financial statements. All other areas are satisfactory. Which opinion and wording should the auditor use?",
+"choices": [
+"An adverse opinion, because the auditor cannot conclude that inventory is fairly stated",
+"A qualified opinion stating that, except for the possible effects of the matter described in the Basis for Qualified Opinion section, the financial statements present fairly",
+"A qualified opinion stating that, except for the effects of the matter described in the Basis for Qualified Opinion section, the financial statements present fairly",
+"A disclaimer of opinion, because the auditor could not obtain sufficient appropriate audit evidence about a material account"
+],
+"answer": 1,
+"explain": "An inability to obtain sufficient appropriate audit evidence whose possible effects are material but not pervasive calls for a qualified opinion, and because the problem is missing evidence rather than a known misstatement, the opinion says \"except for the possible effects\" and the Basis for Qualified Opinion section gives the reasons. \"Except for the effects\" is the wording for a material misstatement the auditor has found. A disclaimer is for possible effects that are both material and pervasive, and an adverse opinion is for actual misstatements that are material and pervasive.",
+"source": "AU-C 705.08, 705.10, 705.18, 705.25, 705.A1",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-002",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, management recognizes revenue on all of its long-term construction contracts when each contract is signed, which is not in accordance with the applicable financial reporting framework. Management refuses to correct the resulting misstatements, which affect revenue, receivables, contract liabilities, income taxes and equity, and the auditor concludes they are material and pervasive. Management asks that the report also include an unmodified opinion on cash and on property and equipment, where the auditor found no misstatements. Which report is appropriate?",
+"choices": [
+"A qualified opinion, with the effects of the revenue misstatements quantified in the Basis for Qualified Opinion section",
+"A disclaimer of opinion on the financial statements as a whole, with an unmodified opinion on cash and on property and equipment",
+"An adverse opinion on the financial statements as a whole, with an unmodified opinion on cash and on property and equipment",
+"An adverse opinion on the financial statements as a whole, with no separate opinion on cash or on property and equipment"
+],
+"answer": 3,
+"explain": "Misstatements that are both material and pervasive require an adverse opinion, with the matter described and its effects quantified unless that is impracticable in the Basis for Adverse Opinion section. When the opinion on the financial statements as a whole is adverse or a disclaimer, the report may not also give an unmodified opinion on specific accounts or items (a piecemeal opinion), because that would contradict the overall opinion. A disclaimer is for an inability to obtain evidence, not for misstatements the auditor has found, and a qualified opinion understates a pervasive misstatement.",
+"source": "AU-C 705.09, 705.15, 705.19, 705.22, 705.A1",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-003",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, which are presented comparatively with the 2024 financial statements, the auditor considers four matters for additional paragraphs in the report. Which matter belongs in an other-matter paragraph rather than an emphasis-of-matter paragraph?",
+"choices": [
+"The 2024 financial statements were audited by a predecessor auditor, whose report on them is not reissued",
+"A fire in November 2025 destroyed the entity's main plant, and the loss is fully disclosed in the notes",
+"The outcome of unusually important litigation against the entity, disclosed in the notes, is uncertain",
+"Significant transactions with related parties during 2025 are appropriately disclosed in the notes"
+],
+"answer": 0,
+"explain": "An other-matter paragraph covers a matter not presented or disclosed in the financial statements that is relevant to users' understanding of the audit, the auditor's responsibilities or the report, and when a predecessor's report is not reissued the auditor must use one to say that a predecessor audited the prior period, the type of opinion it expressed and the date of its report. The other three matters are appropriately disclosed in the financial statements, so if the auditor judges one fundamental to users' understanding, it goes in an emphasis-of-matter paragraph that refers to the note and states that the opinion is not modified.",
+"source": "AU-C 706.07, 706.08, 706.09, 706.A4; AU-C 700.57",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-004",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, management refuses to give the auditor access to the accounting records of its largest operating division and will not remove the limitation. The auditor informs those charged with governance, finds no alternative procedures, and concludes that the possible effects of undetected misstatements could be both material and pervasive. Withdrawal is not practicable, so the auditor disclaims an opinion. The auditor's report should include all of the following EXCEPT:",
+"choices": [
+"A statement that the auditor was engaged to audit the financial statements, in place of a statement that they were audited",
+"A Basis for Disclaimer of Opinion section that describes the reasons for the inability to obtain sufficient appropriate audit evidence",
+"A statement that the auditor believes the audit evidence obtained is sufficient and appropriate to provide a basis for the auditor's opinion",
+"A statement that the auditor is required to be independent of the entity and to meet the auditor's other ethical responsibilities"
+],
+"answer": 2,
+"explain": "In a disclaimer, the report states that the auditor was engaged to audit the statements, explains the reasons for the inability in the Basis for Disclaimer of Opinion section, and keeps the statement about independence and ethical responsibilities in the shortened description of the auditor's responsibilities. It leaves out the statement that the evidence obtained is sufficient and appropriate, because a disclaimer means it is not. The report also omits any Key Audit Matters or Other Information section.",
+"source": "AU-C 705.13, 705.20, 705.21, 705.25, 705.27, 705.29, 705.30",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-005",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In an integrated audit of a nonissuer, the auditor audits the financial statements for the year ended December 31, 2025, and internal control over financial reporting (ICFR) as of that date. The auditor identifies a material weakness in the review of the allowance for credit losses, which management describes in its report. Management records the auditor's proposed adjustment, and the auditor concludes that the financial statements are presented fairly in all material respects. The scope of the audit was not limited, and the auditor issues separate reports. Which is appropriate?",
+"choices": [
+"A qualified opinion on ICFR, stating that except for the material weakness ICFR is effective, and an unmodified opinion on the financial statements",
+"An adverse opinion on ICFR that states whether the opinion on the financial statements was affected, an unmodified opinion on the financial statements, and both reports dated the same day",
+"An adverse opinion on ICFR and a qualified opinion on the financial statements, because a material weakness always requires a modified opinion on the financial statements",
+"An adverse opinion on ICFR dated when management's report is finalized, and an unmodified opinion on the financial statements dated earlier, when the audit evidence was complete"
+],
+"answer": 1,
+"explain": "When one or more material weaknesses exist as of the date of management's assessment and the scope is not limited, the auditor must express an adverse opinion on ICFR, not a qualified one. The auditor determines the effect on the financial statement opinion, which stays unmodified here because the misstatement was corrected, and the ICFR report states in a separate paragraph whether that opinion was affected. Because the two audits are integrated, separate reports must carry the same date.",
+"source": "AU-C 940.66, 940.68, 940.69, 940.70",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-006",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer's comparative financial statements for 2025 and 2024, each of the following has a material effect on comparability and is properly accounted for and disclosed. Each requires an emphasis-of-matter paragraph in the auditor's report EXCEPT:",
+"choices": [
+"A voluntary change in 2025 from the first-in, first-out method to the weighted-average method of inventory, which the entity has justified as preferable",
+"A restatement of the 2024 financial statements to correct a material misstatement in the previously issued 2024 financial statements",
+"Presentation of consolidated financial statements in 2025 in place of the separate parent-only financial statements presented before",
+"A change in the reporting entity that results from the entity's purchase of a new subsidiary during 2025"
+],
+"answer": 3,
+"explain": "A material change in accounting principle that meets the standard's criteria, an adjustment to correct a material misstatement in previously issued financial statements, and a change in reporting entity that does not result from a transaction or event, such as presenting consolidated statements in place of individual ones, each require an emphasis-of-matter paragraph that refers to the entity's disclosure. A change in reporting entity that results from a transaction or event, such as buying a subsidiary, does not require recognition in the auditor's report.",
+"source": "AU-C 708.08, 708.11, 708.13, 708.A11",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-007",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, management has acknowledged in writing that its annual report consists of the financial statements, the auditor's report, a president's letter and a page of operating highlights, and the auditor obtains the final version of all of it before the report date of March 10, 2026. The operating highlights say revenue grew 12% in 2025, while the audited financial statements, which are fairly presented, show growth of 4%. The auditor concludes this is a material misstatement of the other information, and management and those charged with governance refuse to correct it. If the auditor issues the report, it should include:",
+"choices": [
+"A qualified opinion on the financial statements, with the misstated growth figure described in the Basis for Qualified Opinion section",
+"An emphasis-of-matter paragraph drawing users' attention to the difference between the operating highlights and the financial statements",
+"An Other Information section stating that an uncorrected material misstatement of the other information exists and describing it",
+"No reference to the matter, because the auditor's opinion does not cover the other information and gives no assurance on it"
+],
+"answer": 2,
+"explain": "When the auditor concludes that an uncorrected material misstatement of the other information exists, the Other Information section must say so and describe it; the alternatives are to withhold the report or withdraw. The financial statements themselves are not misstated, so there is no basis for a qualified opinion, and an emphasis-of-matter paragraph may refer only to matters presented or disclosed in the financial statements. The opinion does not cover the other information, but that does not remove the duty to report the uncorrected misstatement.",
+"source": "AU-C 720.13, 720.16, 720.20, 720.21, 720.24; AU-C 706.08, 706.09",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-008",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "E",
+"q": "An auditor who performed the audit of a nonissuer's financial statements for the year ended December 31, 2025, is engaged to review the nonissuer's interim financial information for the quarter ended March 31, 2026. At the end of the review, management refuses to provide a written representation that all transactions have been recorded and are reflected in the interim financial information. What should the auditor do?",
+"choices": [
+"Withdraw from the engagement to review the interim financial information",
+"Issue the review report with a modified conclusion that describes management's refusal",
+"Issue a review report stating that the auditor does not express a conclusion on the interim financial information",
+"Issue the standard review report, because the auditor is not required to corroborate management's responses"
+],
+"answer": 0,
+"explain": "The representation that all transactions have been recorded is one of those whose absence requires the auditor to withdraw from the review of interim financial information, so no review report is issued. The auditor need not corroborate management's responses to inquiries, but that does not excuse a missing written representation. Modifying the review report is the response to a departure from the applicable financial reporting framework, not to a refusal to provide representations.",
+"source": "AU-C 930.18, 930.22, 930.23, 930.35, 930.36",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-009",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor is also engaged to report on whether consolidating schedules, presented as supplementary information with the financial statements, are fairly stated in relation to the financial statements as a whole. Because of a management-imposed scope limitation whose possible effects are material and pervasive, the auditor disclaims an opinion on the financial statements. The schedules were reconciled to the underlying records without exception. If the auditor does not withdraw from the engagement to report on the schedules, the report on them should:",
+"choices": [
+"State that the schedules are fairly stated, in all material respects, in relation to the financial statements as a whole, because they agree with the records",
+"State that, because of the significance of the matter disclosed in the auditor's report, it is inappropriate to, and the auditor does not, express an opinion on the schedules",
+"State an opinion on the schedules based on a materiality level set for the schedules themselves rather than for the financial statements as a whole",
+"State that, except for the effects of the matter described in the auditor's report, the schedules are fairly stated in relation to the financial statements as a whole"
+],
+"answer": 1,
+"explain": "An opinion on supplementary information in relation to the financial statements as a whole requires an audit report on those statements that contains neither an adverse opinion nor a disclaimer. With a disclaimer, the auditor is precluded from opining on the schedules and, if not withdrawing, states that it is inappropriate to, and the auditor does not, express an opinion on them. The \"except for\" wording applies only when the financial statement opinion is qualified, and procedures on supplementary information use the same materiality as the financial statement audit.",
+"source": "AU-C 725.05, 725.07, 725.09, 725.11",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-010",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer, a partnership, the financial statements for the year ended December 31, 2025, are prepared on the basis of accounting the partnership uses for income tax purposes, and under its partnership agreement management has no choice of financial reporting framework. The auditor concludes that the financial statements are presented fairly, in all material respects, in accordance with that basis, which differs from accounting principles generally accepted in the United States of America (GAAP). Which does the auditor's report require?",
+"choices": [
+"An other-matter paragraph restricting use of the report to the partners and the taxing authorities, which is required for every special purpose framework",
+"A qualified opinion, because the financial statements depart from GAAP",
+"An emphasis-of-matter paragraph stating that the financial statements are prepared on the income tax basis, a basis of accounting other than GAAP, with a reference to the note that describes it",
+"An opinion on fair presentation in accordance with GAAP, plus a separate opinion on whether the financial statements are prepared in accordance with the income tax basis"
+],
+"answer": 2,
+"explain": "Except for regulatory basis statements intended for general use, a report on special purpose financial statements must include an emphasis-of-matter paragraph that states the framework used, refers to the note describing it and says it is a basis other than GAAP, and the opinion is on fair presentation in accordance with the tax basis. An other-matter paragraph restricting use is required for contractual and regulatory bases (other than a regulatory basis intended for general use) and for an other basis when AU-C 905 requires it, but for the tax basis it is optional. The dual opinion on GAAP and on the framework is only for regulatory basis statements intended for general use.",
+"source": "AU-C 800.07, 800.20, 800.21, 800.22, 800.A33, 800.A41",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-011",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "B",
+"q": "Harbor Fund, a nonissuer investment partnership, engages a practitioner to perform an assertion-based examination engagement on a schedule of investment performance statistics for the year ended December 31, 2026. Delta Advisors, the fund's outside investment manager, prepares the schedule and is the responsible party; Harbor Fund is the engaging party. Delta Advisors states orally that the schedule is presented in accordance with the criteria and answers the practitioner's inquiries, but it refuses to provide a written assertion. If the practitioner can otherwise obtain sufficient appropriate evidence, what should the practitioner do?",
+"choices": [
+"Withdraw from the engagement, because an examination cannot be completed without a written assertion from the responsible party",
+"Report directly on the schedule, disclose Delta Advisors' refusal to provide a written assertion in the report, and restrict the use of the report to Harbor Fund",
+"Express an opinion on Delta Advisors' oral assertion and add an alert restricting the use of the report to Harbor Fund and Delta Advisors",
+"Disclaim an opinion, because the missing written assertion is a scope limitation whose possible effects are pervasive"
+],
+"answer": 1,
+"explain": "When the engaging party is not the responsible party, the practitioner need not withdraw if the responsible party refuses a written assertion: the practitioner may report on the subject matter but must disclose the refusal and restrict use of the report to the engaging party. Withdrawal is the required response only when the engaging party is itself the responsible party and refuses. A report on an assertion needs a written assertion, so the practitioner reports on the schedule itself, not on the oral statement.",
+"source": "AT-C 205.10, 205.84, 205.86; AT-C 205A.10, 205A.84, 205A.86",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-012",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "B",
+"q": "A practitioner performs a review engagement under the attestation standards on a nonissuer's written assertion that its schedule of greenhouse gas emissions for the year ended December 31, 2026, is presented in accordance with stated criteria. The practitioner finds that the schedule omits emissions from two of the entity's three plants, and management will not revise it. Management's written assertion acknowledges the omission. The practitioner concludes that the misstatement is both material and pervasive. How should the practitioner report?",
+"choices": [
+"Express a qualified conclusion on management's assertion, because the assertion itself discloses the omission",
+"Express an unmodified conclusion on management's assertion, because the assertion acknowledges the omission, and add a paragraph emphasizing it",
+"Express an adverse conclusion directly on the schedule, not on the assertion, with a separate paragraph describing the omission",
+"Disclaim a conclusion, because limited assurance cannot support a finding that the schedule is materially misstated"
+],
+"answer": 2,
+"explain": "In a review engagement, a material and pervasive misstatement calls for an adverse conclusion, and the practitioner must express it directly on the subject matter, not on the assertion, even when the assertion acknowledges the misstatement. The report adds a separate paragraph describing the matter and, if practicable, its effects. Reporting on an assertion that admits the omission would let a fairly stated assertion hide a misstated schedule, which the standard does not allow.",
+"source": "AT-C 210.53, 210.54, 210.56, 210.57; AT-C 210A.53, 210A.54, 210A.56, 210A.57",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-013",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "B",
+"q": "A practitioner is performing a review engagement under the attestation standards on a nonissuer's schedule of royalties payable to a licensor for the year ended December 31, 2026. Management will not allow the practitioner to make inquiries of the sales staff or to apply analytical procedures to the underlying sales data, and the practitioner cannot obtain sufficient appropriate review evidence any other way. Law and regulation do not prevent withdrawal. What should the practitioner do?",
+"choices": [
+"Disclaim a conclusion and state that the scope of the work was not sufficient to express a conclusion",
+"Express a qualified conclusion and describe the procedures that could not be performed",
+"Issue the review report with an alert restricting its use to management",
+"Withdraw from the engagement"
+],
+"answer": 3,
+"explain": "In a review engagement under the attestation standards, an inability to obtain sufficient appropriate review evidence is a scope limitation, and the practitioner should withdraw when law and regulation allow it. A disclaimer is the response to a pervasive scope limitation in an examination engagement, not in a review, so the most tempting choice applies the examination rule to the wrong engagement.",
+"source": "AT-C 210.30, 210.60; AT-C 210A.30, 210A.60; AT-C 205.77",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-014",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "B",
+"q": "A bank engages a practitioner to perform an agreed-upon procedures engagement on a borrower's schedule of trade accounts receivable as of September 30, 2026. The borrower is a nonissuer and is the responsible party. In the written agreement, the bank tells the practitioner not to report differences of $500 or less. Which of the following should the practitioner's agreed-upon procedures report include?",
+"choices": [
+"A statement that nothing came to the practitioner's attention indicating that the schedule is not fairly stated, in all material respects",
+"A description of the $500 threshold for reporting exceptions, along with the findings from each procedure, including details of the exceptions above it",
+"A statement that the practitioner applied a $500 materiality threshold that the practitioner set based on the total of the schedule",
+"An opinion on the existence of the receivables, limited to the customer accounts the practitioner selected"
+],
+"answer": 1,
+"explain": "The practitioner reports all findings, and when the engaging party has set a threshold for reporting exceptions, the report must describe it. A threshold applies only if the engaging party establishes it, so the practitioner does not set one. A report of procedures and findings gives no opinion or conclusion, and the standard names \"nothing came to our attention\" wording as language that should not be used to report findings.",
+"source": "AT-C 215.04, 215.25, 215.26, 215.34, 215.A37, 215.A40; AT-C 215A.04, 215A.25, 215A.26, 215A.34",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-015",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "C",
+"q": "An accountant is engaged to prepare a nonissuer's financial statements for the year ended December 31, 2025, in a preparation engagement. The entity's bank requires the statements to be submitted on the bank's own template, so the accountant cannot include a statement on each page that no assurance is provided. Each of the following is an acceptable response EXCEPT:",
+"choices": [
+"Issue a disclaimer that makes clear that no assurance is provided on the financial statements",
+"Perform a compilation engagement on the financial statements instead",
+"Withdraw from the engagement and tell management the reasons for withdrawing",
+"Release the financial statements without any statement or disclaimer, because a preparation engagement does not require a report"
+],
+"answer": 3,
+"explain": "In a preparation engagement the accountant must put a statement on each page that, at a minimum, says no assurance is provided. If that is not possible, the accountant must issue a disclaimer making clear that no assurance is provided, perform a compilation engagement instead, or withdraw and tell management why. It is true that a preparation engagement needs no report, but the statements still cannot go out with nothing indicating that no assurance is provided.",
+"source": "AR-C 70.04, 70.14; AR-C 70A.04, 70A.14",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-016",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "C",
+"q": "An accountant performs a compilation engagement on a nonissuer's financial statements for the year ended December 31, 2025, prepared in accordance with accounting principles generally accepted in the United States of America (GAAP). Management has chosen not to recognize several leases that GAAP requires it to recognize, and will not revise the statements. The departure is material. Management has not determined its effects, and they are not readily known to the accountant from the compilation procedures. The accountant concludes that modifying the report is adequate to disclose the departure. What should the compilation report do?",
+"choices": [
+"State in a separate paragraph that, because of the departure, the financial statements are not in accordance with GAAP",
+"Disclose the departure in a separate paragraph and state that management has not determined its effects on the financial statements",
+"Disclose the departure and quantify its effects, which the accountant must determine with additional procedures",
+"Include a qualified conclusion, with a basis paragraph that describes the departure"
+],
+"answer": 1,
+"explain": "When modifying the compilation report is adequate, the accountant discloses the known departure in a separate paragraph and discloses its effects only if management has determined them or they are readily known; otherwise the accountant need not determine them but must state that management has not determined them. The report must not state that the financial statements are not in conformity with the framework. A compilation gives no assurance, so it never contains a qualified conclusion; that wording belongs to a review report.",
+"source": "AR-C 80.29, 80.30, 80.31, 80.33; AR-C 80A.29, 80A.30, 80A.31, 80A.33",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-017",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "C",
+"q": "Midway through a review engagement on a nonissuer's financial statements for the year ended December 31, 2025, an accountant learns that a member of the engagement team holds a direct financial interest in the entity, which impairs the firm's independence. The entity still needs a report from the firm on those financial statements. Which response complies with the Statements on Standards for Accounting and Review Services?",
+"choices": [
+"Complete the review and add a final paragraph to the review report stating that the firm is not independent",
+"Complete the review and describe every reason for the impairment in the review report, which allows a review conclusion to be issued",
+"Withdraw from the review engagement; the firm may instead perform a compilation engagement and state its lack of independence in the final paragraph of the compilation report",
+"Withdraw from the review engagement and decline any other engagement on those financial statements, because a compilation engagement also requires independence"
+],
+"answer": 2,
+"explain": "An accountant must be independent to perform a review, so the accountant who finds independence impaired during the review should withdraw from it, and nothing prohibits a compilation of the same statements instead. A compilation report may be issued without independence if it states the lack of independence in a final paragraph; if the accountant chooses to describe the reasons, all of them must be included. Disclosing the impairment is the compilation rule, and it does not rescue a review report.",
+"source": "AR-C 90.10, 90.A16; AR-C 90A.10, 90A.A16; AR-C 80.07, 80.22, 80.23; AR-C 80A.07, 80A.22, 80A.23",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-018",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "C",
+"q": "In a review engagement on a nonissuer's financial statements for the year ended December 31, 2025, prepared in accordance with accounting principles generally accepted in the United States of America (GAAP), the accountant finds that inventory is overstated by $180,000 because obsolete items were not written down. Management will not adjust. The accountant judges the misstatement material but not pervasive, and the amount is known. How should the accountant's review report address the matter?",
+"choices": [
+"An unmodified conclusion, followed by a separate paragraph disclosing the overstatement as a known departure from GAAP",
+"An adverse conclusion stating that the financial statements are not in accordance with GAAP, because any uncorrected departure requires one in a review",
+"A qualified opinion stating that, except for the overstatement, the financial statements present fairly, in all material respects, in accordance with GAAP",
+"A Qualified Conclusion section stating that, except for the effects of the matter described, the accountant is not aware of any material modifications needed, preceded by a Basis for Qualified Conclusion paragraph that describes the overstatement and quantifies it at $180,000"
+],
+"answer": 3,
+"explain": "A material but not pervasive misstatement in a review calls for a qualified conclusion under a Qualified Conclusion heading, with a basis paragraph immediately before it that describes the misstatement and quantifies its effects when they are known. An adverse conclusion is reserved for misstatements that are both material and pervasive. A review gives limited assurance, so the report never expresses an opinion that the statements present fairly; that is audit language.",
+"source": "AR-C 90.69, 90.70, 90.71, 90.72, 90.74; AR-C 90A.69, 90A.70, 90A.71, 90A.72, 90A.74",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-019",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "D",
+"q": "An auditor audits the financial statements of Pell Co., a nonissuer, for the year ended December 31, 2025, in accordance with generally accepted auditing standards (GAAS). The audit is not also performed under Government Auditing Standards. The auditor expresses an adverse opinion because Pell Co. did not consolidate a material subsidiary. Pell Co.'s loan agreement asks the auditor for a report on compliance with the agreement's financial covenants, insofar as they relate to accounting matters. The auditor identified no instances of noncompliance. What should the auditor do?",
+"choices": [
+"Issue a report on compliance stating that nothing came to the auditor's attention indicating noncompliance, together with a statement describing the adverse opinion",
+"Express an opinion on compliance with the covenants, because the covenants relate to accounting matters subjected to the audit procedures",
+"Not issue a report on compliance, because after an adverse opinion such a report is issued only when instances of noncompliance are identified",
+"Issue a report on compliance with an alert restricting its use, since the alert removes the need to consider the opinion on the financial statements"
+],
+"answer": 2,
+"explain": "Negative assurance on compliance in connection with an audit is permitted only when the auditor found no noncompliance and expressed an unmodified or qualified opinion on the related financial statements. After an adverse opinion or a disclaimer, the auditor issues a report on compliance only to describe identified noncompliance, so with none identified no report is issued. Describing the adverse opinion does not help, because the negative assurance itself is not permitted after an adverse opinion, and an audit never yields an opinion on covenant compliance.",
+"source": "AU-C 806.07, 806.09, 806.10, 806.12",
+"cpa": [
+"AUD-IV"
+]
+},
+{
+"id": "aud4-020",
+"part": "AUD",
+"domain": "AUD-IV",
+"exam": "cpa",
+"group": "D",
+"q": "Rivera Health, a nonissuer that receives a state grant, asks a practitioner for an attestation engagement on its compliance with the grant's requirements for the year ending December 31, 2026. Management accepts responsibility for compliance and for internal control over compliance, and it evaluates its compliance. The practitioner may accept each of the following engagements EXCEPT:",
+"choices": [
+"An examination of Rivera Health's compliance with the specified grant requirements",
+"An agreed-upon procedures engagement related to Rivera Health's compliance with the specified grant requirements",
+"An agreed-upon procedures engagement related to Rivera Health's internal control over compliance with the grant requirements",
+"A review engagement that gives limited assurance on Rivera Health's compliance with the specified grant requirements"
+],
+"answer": 3,
+"explain": "The compliance attestation standard covers examinations of compliance and agreed-upon procedures engagements on compliance or on internal control over compliance. The review standard says a practitioner should not perform a review of compliance with specified laws, regulations, rules, contracts or grants, so limited assurance is not available for this subject matter. An agreed-upon procedures engagement on internal control over compliance is allowed and gives findings rather than assurance.",
+"source": "AT-C 315.01, 315.02, 315.09, 315.23; AT-C 210.07; AT-C 210A.07",
+"cpa": [
+"AUD-IV"
+]
 }
 ]
