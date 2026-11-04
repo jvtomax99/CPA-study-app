@@ -13622,5 +13622,785 @@
 "cpa": [
 "TCP-IV"
 ]
+},
+{
+"id": "tcp1-001",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "A",
+"q": "On March 3, 2023, Ellen's employer granted her nonqualified stock options to buy 2,000 shares of its stock at $15 a share. The options had no readily ascertainable fair market value when granted. On May 12, 2025, she exercised all of the options when the stock was worth $40 a share, and on December 1, 2025, she sold all 2,000 shares for $46 a share. How does Ellen report these events for 2025?",
+"choices": [
+"$50,000 of ordinary compensation income and a $12,000 short-term capital gain",
+"$50,000 of ordinary compensation income and a $12,000 long-term capital gain",
+"No income at exercise and a $62,000 long-term capital gain on the sale",
+"$62,000 of ordinary compensation income and no capital gain"
+],
+"answer": 0,
+"explain": "An option with no readily ascertainable value is not taxed at grant; at exercise Ellen has compensation equal to the spread, ($40 minus $15) times 2,000, or $50,000, and her basis becomes $40 a share. The sale at $46 gives a $12,000 gain that is short-term, because the holding period of the shares began at exercise in May 2025, not at the 2023 grant. Deferring all tax to the sale and getting capital gain treatment is the rule for qualifying incentive stock options, not nonqualified options.",
+"source": "IRC 83(a), (e)(3); Treas. Reg. 1.83-7(a); Treas. Reg. 1.83-4(a), (b)(1)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-002",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "A",
+"q": "On January 10, 2024, Raj was granted incentive stock options to buy 1,000 shares of his employer's stock at $20 a share, the stock's value on that date. On February 3, 2025, he exercised the options when the stock was worth $50 a share. On November 14, 2025, he sold all 1,000 shares on the open market for $45 a share. What are the 2025 results for regular tax and for the alternative minimum tax (AMT)?",
+"choices": [
+"$25,000 of ordinary compensation income for regular tax, and a $30,000 positive AMT adjustment",
+"$25,000 long-term capital gain for regular tax, and a $30,000 positive AMT adjustment",
+"$30,000 of ordinary compensation income and a $5,000 short-term capital loss for regular tax, and no AMT adjustment",
+"$25,000 of ordinary compensation income for regular tax, and no AMT adjustment for the options"
+],
+"answer": 3,
+"explain": "Selling within 1 year of exercise (and 2 years of grant) is a disqualifying disposition, and because the sale is at a price below the value at exercise, ordinary income is limited to the gain actually realized: ($45 minus $20) times 1,000, or $25,000, with no capital gain or loss. For AMT, the same limit applies when the exercise and the sale fall in the same tax year, so AMT income from the options is also $25,000 and there is no adjustment. The $30,000 adjustment applies only when the shares are still held at the end of the year of exercise.",
+"source": "IRC 421(b); IRC 422(a)(1), (c)(2); IRC 56(b)(3)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-003",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "A",
+"q": "On February 3, 2025, Nina's employer transferred 5,000 shares of restricted stock to her for no payment. The shares vest only if she is still employed on February 3, 2028. The shares were worth $4 each ($20,000) on the transfer date, and Nina filed a Section 83(b) election on February 20, 2025. All of the following statements are correct EXCEPT:",
+"choices": [
+"Nina includes $20,000 of ordinary compensation income in 2025.",
+"Nina recognizes no income when the shares vest in 2028, and her basis in the shares is $20,000.",
+"Nina's holding period begins just after February 3, 2025, so a sale in March 2028 produces long-term capital gain or loss.",
+"If Nina quits in 2026 and forfeits the shares, she may deduct a $20,000 capital loss."
+],
+"answer": 3,
+"explain": "Under the election Nina is taxed on the $20,000 value at transfer, gets a $20,000 basis, owes nothing at vesting, and starts her holding period at the transfer. If the shares are forfeited, her loss is limited to what she paid for them minus anything received, which is zero here, so the $20,000 she included is never recovered. That forfeiture risk is the main cost of making the election.",
+"source": "IRC 83(b); Treas. Reg. 1.83-2(a), (b); Treas. Reg. 1.83-4(a), (b)(1)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-004",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "A",
+"q": "Omar is a cash-method sole proprietor. His marginal income tax rate is 35% for 2025 and will be 24% for 2026 because he is cutting back his work. In mid-December 2025 he can either bill a client for $20,000 of work completed in December, so that payment arrives by December 31, 2025, or wait and bill in January 2026, so that payment arrives in January. He also owes a $10,000 deductible advertising bill for services received in 2025, which he can pay on December 29, 2025, or in January 2026. Ignoring self-employment tax, the qualified business income deduction and the time value of money, which plan minimizes his combined 2025 and 2026 income tax, and how much does it save compared with billing in December 2025 and paying the advertising bill in January 2026?",
+"choices": [
+"Bill in January 2026 and pay the advertising bill in January 2026; $2,200",
+"Bill in January 2026 and pay the advertising bill in December 2025; $3,300",
+"Bill in December 2025 and pay the advertising bill in December 2025; $1,100",
+"Bill in January 2026 and pay the advertising bill in December 2025; $10,500"
+],
+"answer": 1,
+"explain": "A cash-method taxpayer reports income when received and deducts expenses when paid, so Omar should push the income into the lower-rate year and pull the deduction into the higher-rate year. Deferring the $20,000 saves $20,000 times (35% minus 24%), or $2,200, and paying the $10,000 bill in 2025 saves $10,000 times 11%, or $1,100, for $3,300 in total. The $10,500 choice looks only at 2025 tax (35% of $30,000) and ignores the tax that still comes due in 2026.",
+"source": "IRC 451(a); IRC 461(a); Treas. Reg. 1.451-1(a); Treas. Reg. 1.451-2(a); Treas. Reg. 1.461-1(a)(1)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-005",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "A",
+"q": "Lena is single. Her 2024 return, for a full 12-month year, showed adjusted gross income (AGI) of $210,000 and total tax of $40,000. She projects, accurately, that her 2025 total tax will be $60,000, and her employer will withhold $20,000 of federal income tax evenly during 2025. She will not use the annualized income installment method. What is the smallest equal estimated tax payment she can make on each of the four 2025 due dates and still avoid an underpayment penalty?",
+"choices": [
+"$5,000",
+"$8,500",
+"$6,000",
+"$10,000"
+],
+"answer": 2,
+"explain": "The required annual payment is the lesser of 90% of the 2025 tax ($54,000) or, because her 2024 AGI exceeded $150,000, 110% of the 2024 tax ($44,000). Subtracting the $20,000 of withholding leaves $24,000 of estimated payments, or $6,000 per installment. The $5,000 choice uses 100% of the prior-year tax, which is not available above $150,000 of AGI, and $8,500 uses the 90% current-year test even though the prior-year test is lower.",
+"source": "IRC 6654(d)(1)(A), (B), (C); IRC 6654(g)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-006",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "B",
+"q": "Ted owns an interest in a retail store, which is not a personal service activity. Under the passive activity regulations, Ted materially participates in the store for 2025 if any of the following is true EXCEPT:",
+"choices": [
+"He participates in the store for 520 hours during 2025.",
+"He participates for 110 hours during 2025, and no other individual, including employees who are not owners, participates more than he does.",
+"He materially participated in the store in 2016, 2018, 2020, 2022 and 2023.",
+"He materially participated in the store in 2022, 2023 and 2024, and in no earlier year."
+],
+"answer": 3,
+"explain": "Material participation in any 3 prior years qualifies only for a personal service activity, such as a consulting or law practice; a retail store needs material participation in any 5 of the 10 preceding years, which the 2016 to 2023 history meets even though the years are not consecutive. More than 500 hours, and more than 100 hours with no other individual participating more, are separate tests that each qualify on their own.",
+"source": "IRC 469(h)(1); Temp. Treas. Reg. 1.469-5T(a)(1), (3), (5), (6); IRS Pub 925 (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-007",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "B",
+"q": "Priya is single. She owns a rental house and actively participates in managing it, and in 2025 the house produced a $30,000 loss. She also has $4,000 of net income from a limited partnership interest in which she does not materially participate. Her modified adjusted gross income (MAGI) for the special allowance is $130,000. She has no other passive activities and no suspended losses from earlier years. How much of the rental loss can she use in 2025, and how much is suspended?",
+"choices": [
+"$14,000 used ($4,000 against the partnership income and $10,000 against nonpassive income); $16,000 suspended",
+"$10,000 used; $20,000 suspended",
+"$29,000 used ($4,000 against the partnership income and $25,000 against nonpassive income); $1,000 suspended",
+"$4,000 used, all against the partnership income; $26,000 suspended"
+],
+"answer": 0,
+"explain": "Passive income and losses are netted first, so $4,000 of the rental loss offsets the partnership income, leaving a $26,000 net passive loss from rental real estate. The $25,000 allowance is reduced by 50% of MAGI over $100,000, or $15,000, leaving $10,000 that can offset nonpassive income, for $14,000 used and $16,000 suspended. The $10,000 choice skips the netting step, and the $4,000 choice reduces the allowance by the full $30,000 excess instead of half of it.",
+"source": "IRC 469(d)(1); IRC 469(i)(1), (2), (3)(A); IRS Pub 925 (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-008",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "B",
+"q": "Marco owns a limited partnership interest in which he does not materially participate, with $40,000 of suspended passive losses from earlier years. On September 30, 2025, he sold his entire interest to an unrelated buyer for cash in a fully taxable sale. For 2025 the partnership allocated him a $5,000 operating loss, and he had a $15,000 gain on the sale. He also owns a second limited partnership interest, also passive, that produced $6,000 of net income in 2025. He has enough basis and amount at risk to cover all losses. How much loss is treated as not from a passive activity in 2025?",
+"choices": [
+"$45,000",
+"$30,000",
+"$24,000",
+"$39,000"
+],
+"answer": 2,
+"explain": "On a fully taxable disposition of an entire interest to an unrelated person, the activity's loss for the year, counting suspended losses and the gain on the sale, is $5,000 plus $40,000 minus $15,000, or $30,000. That loss first offsets the $6,000 of net income from his other passive activity, and the remaining $24,000 is treated as nonpassive and can offset his other income. The $30,000 choice forgets to net against the other passive income, and $45,000 ignores both the gain and the other income.",
+"source": "IRC 469(g)(1)(A); IRS Pub 925 (2025), Dispositions",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-009",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "B",
+"q": "Jade is a limited partner in a partnership that runs a restaurant, and she does not materially participate. At the start of 2025 her basis in the partnership interest is $30,000, which includes a $10,000 share of partnership nonrecourse liabilities that are not qualified nonrecourse financing. Her amount at risk is $20,000. Her share of the partnership's 2025 ordinary loss is $45,000, and she has no passive income. How is the loss treated in 2025?",
+"choices": [
+"$25,000 suspended under the at-risk rules and $20,000 suspended under the passive activity rules",
+"$15,000 suspended under the basis limit, $10,000 suspended under the at-risk rules and $20,000 suspended under the passive activity rules",
+"$15,000 suspended under the basis limit and $30,000 suspended under the passive activity rules",
+"$45,000 suspended under the passive activity rules"
+],
+"answer": 1,
+"explain": "The limits apply in order: basis first, then at-risk, then passive. Basis allows $30,000 and suspends $15,000; of the $30,000, only her $20,000 at risk passes the at-risk limit, suspending $10,000 because the nonrecourse debt is not at risk; the remaining $20,000 is a passive loss with no passive income to absorb it, so none is deducted. Applying the at-risk test to the full $45,000 skips the basis step.",
+"source": "IRC 704(d); IRC 465(a), (b); IRC 469(a); Temp. Treas. Reg. 1.469-2T(d)(6); IRS Pub 925 (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-010",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "B",
+"q": "Hal owned an interest in a passive activity with $50,000 of suspended passive losses. He died on June 10, 2025, and the interest passed to his daughter. Hal's adjusted basis in the interest just before his death was $60,000, and the daughter's basis, its fair market value at Hal's death, is $80,000. How are the suspended losses treated?",
+"choices": [
+"$50,000 is deducted on Hal's final 2025 return.",
+"$30,000 is deducted on Hal's final 2025 return, and $20,000 is added to the daughter's basis.",
+"None is deducted on Hal's final return, and the $50,000 carries over to the daughter.",
+"$30,000 is deducted on Hal's final 2025 return, and $20,000 is never deductible."
+],
+"answer": 3,
+"explain": "When a passive interest passes at death, suspended losses are allowed on the decedent's final return only to the extent they exceed the basis step-up, here $80,000 minus $60,000, or $20,000; so $30,000 is deductible and the other $20,000 is lost for good. Adding the disallowed loss to the recipient's basis is the rule for a gift of a passive interest, not a transfer at death.",
+"source": "IRC 469(g)(2); IRC 469(j)(6); IRC 1014(a); IRS Pub 925 (2025), Dispositions by death",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-011",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "C",
+"q": "Helen made each of the following transfers in 2025. Which one is a completed gift in 2025 for federal gift tax purposes?",
+"choices": [
+"She deposited $50,000 in a joint bank account with her son, from which she can withdraw the entire balance without his consent. Her son withdrew nothing in 2025.",
+"She transferred $200,000 of securities to a revocable living trust that names her children as beneficiaries.",
+"She bought a $10,000 U.S. savings bond registered as payable to \"Helen or her nephew.\" The nephew did not cash it in 2025.",
+"She transferred $80,000 of stock to an irrevocable trust for her niece and kept no power to revoke the trust or change its beneficiaries."
+],
+"answer": 3,
+"explain": "A gift is complete when the donor parts with dominion and control and keeps no power to change its disposition, which is true of the irrevocable trust with no retained powers. A transfer to a revocable trust is incomplete because Helen can take the property back. For a joint bank account or a bond payable to either owner, the gift occurs only when the other owner withdraws the funds or cashes the bond for his own benefit, which did not happen in 2025.",
+"source": "Treas. Reg. 25.2511-2(b) and (c); Treas. Reg. 25.2511-1(h)(4)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-012",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "C",
+"q": "In 2025 Ray gave his daughter land with a fair market value (FMV) of $419,000. His adjusted basis in the land was $119,000. Ray had used all of his unified credit on earlier gifts. Assume the 2025 annual exclusion is $19,000. He made no other 2025 gifts and paid $160,000 of gift tax on this gift. What is the daughter's basis in the land?",
+"choices": [
+"$119,000",
+"$233,558",
+"$239,000",
+"$279,000"
+],
+"answer": 2,
+"explain": "The donee's basis is the donor's basis increased by the gift tax attributable to the net appreciation: net appreciation is $419,000 - $119,000 = $300,000, and the amount of the gift after the annual exclusion is $419,000 - $19,000 = $400,000, so the increase is $160,000 x $300,000 / $400,000 = $120,000 and the basis is $119,000 + $120,000 = $239,000. Adding the full $160,000 of tax ($279,000) ignores the net appreciation fraction, and dividing by the $419,000 fair market value (FMV) instead of the $400,000 gift after the exclusion gives $233,558.",
+"source": "IRC 1015(a) and (d)(6); Treas. Reg. 1.1015-5(c); IRS Pub 551 (Property Received as a Gift)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-013",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "C",
+"q": "Mark, age 70, plans to keep all his property until death, expects his estate to owe estate tax, and is in the same income tax bracket as his daughter. In 2025 he wants to give her one asset worth $60,000. Asset A: stock with a $100,000 basis that is not expected to grow. Asset B: stock with a $55,000 basis that is expected to grow sharply. Asset C: land with a $10,000 basis that is not expected to grow. Which gift best reduces the family's combined future estate and income taxes?",
+"choices": [
+"Asset A, because his daughter takes his $100,000 basis and can deduct the $40,000 loss when she sells it",
+"Asset B, because its future growth is kept out of his estate while little built-in gain loses the step-up in basis at death",
+"Asset C, because removing the asset with the largest built-in gain from his estate saves the most estate tax",
+"Asset A sold to his daughter for $60,000 instead of given, so that he can deduct the $40,000 loss"
+],
+"answer": 1,
+"explain": "Gifted property counts in the estate tax base only at its value on the date of the gift, so giving the asset expected to grow keeps its future growth out of Mark's estate, and with only $5,000 of built-in gain little is lost by giving up the step-up in basis at death. For a loss gift, the daughter's basis for loss is the $60,000 fair market value, so the $40,000 loss disappears, and a sale to his daughter is a related-party sale whose loss is disallowed. Giving away Asset C saves no more estate tax than any other $60,000 asset, since estate tax uses value, not basis, and it gives up a $50,000 step-up.",
+"source": "IRC 1014(a); IRC 1015(a); IRC 2001(b); IRC 267(a)(1), (b)(1) and (c)(4); IRS Pub 551; IRS Pub 544",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-014",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "C",
+"q": "In 2025 Ana paid $50,000 of tuition directly to her grandson's university and paid $8,000 to her grandson to reimburse him for hospital bills he had already paid. She also gave him $15,000 in cash. Assume the 2025 annual exclusion is $19,000. She made no other gifts and does not elect gift-splitting. What is the amount of her 2025 taxable gifts?",
+"choices": [
+"$0",
+"$4,000",
+"$12,000",
+"$54,000"
+],
+"answer": 1,
+"explain": "Tuition paid directly to the school is excluded without limit, but the exclusion for medical care requires payment directly to the provider, so the $8,000 reimbursement is an ordinary gift. The gifts that count are $8,000 + $15,000 = $23,000, less the $19,000 annual exclusion, or $4,000. Treating the reimbursement as an excluded medical payment gives $0, which is wrong because Ana did not pay the hospital directly.",
+"source": "IRC 2503(b) and (e); Treas. Reg. 25.2503-6(b) and (c), Examples 1 and 4",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-015",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "C",
+"q": "In 2025 Tom gave his wife, a U.S. citizen, $500,000 in cash and gave his son $100,000 in cash. Assume the 2025 annual exclusion is $19,000. Tom made no other gifts and does not elect gift-splitting. What are his 2025 taxable gifts, and must he file Form 709?",
+"choices": [
+"$81,000 of taxable gifts, and Form 709 is required",
+"$562,000 of taxable gifts, and Form 709 is required",
+"$62,000 of taxable gifts, and Form 709 is required",
+"$0 of taxable gifts, because the unified credit covers the gift to his son, and Form 709 is not required"
+],
+"answer": 0,
+"explain": "Outright gifts to a citizen spouse qualify for an unlimited marital deduction for the amount left after the annual exclusion, so the $500,000 gift produces no taxable gift. The gift to his son is $100,000 - $19,000 = $81,000 taxable, and because it exceeds the annual exclusion Tom must file Form 709 even though the unified credit means no tax is due. Ignoring the marital deduction gives $562,000.",
+"source": "IRC 2523(a); IRC 2524; IRC 2503(b); IRC 6019; Form 709 instructions (2025), Who Must File and Schedule A Part 4",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-016",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "D",
+"q": "Ann was born in March 1951. In 2025 she still works full time for a company in which she owns 2% of the stock, and its 401(k) plan lets employees who are still working delay required minimum distributions (RMDs) until they retire. She holds a traditional individual retirement arrangement (IRA), pretax and designated Roth accounts in the 401(k), and a Roth IRA. Which of these accounts require an RMD for 2025?",
+"choices": [
+"Only the traditional individual retirement arrangement (IRA)",
+"The traditional individual retirement arrangement (IRA) and the pretax 401(k) account",
+"The traditional individual retirement arrangement (IRA), the pretax 401(k) account and the designated Roth account",
+"None of them, because she is still working"
+],
+"answer": 0,
+"explain": "Ann turned 72 after 2022, so her applicable age is 73, which she reached in 2024, and IRA distributions must start then whether or not she works. The still-working delay applies only to an employer plan of a non-5% owner, so her pretax 401(k) account is deferred, and designated Roth accounts (for years after 2023) and Roth IRAs have no RMDs during the owner's life. Assuming the still-working rule also covers her IRA is the common error.",
+"source": "IRC 401(a)(9)(C)(i), (ii) and (v); IRC 408(a)(6); IRC 408A(c)(4); IRC 402A(d)(5); IRS Pub 590-B (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-017",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "D",
+"q": "In 2025 Ken, age 50, has 2025 modified adjusted gross income (MAGI) of $300,000. He converts $50,000 from his only traditional individual retirement arrangement (IRA), which holds no nondeductible contributions, to a Roth IRA and pays the tax from savings. Which statement is correct?",
+"choices": [
+"The conversion is not allowed because his modified adjusted gross income (MAGI) exceeds the Roth IRA contribution limit",
+"The $50,000 is included in his 2025 gross income and is also subject to a $5,000 additional tax because he is under age 59 1/2",
+"The $50,000 is included in his 2025 gross income, no 10% additional tax applies to the conversion, and he cannot later recharacterize it",
+"The $50,000 is included in his 2025 gross income, but he can undo the conversion by recharacterizing it by the extended due date if the account loses value"
+],
+"answer": 2,
+"explain": "A conversion is treated as a distribution, so the $50,000 of pretax money is included in gross income, but the statute turns off the 10% additional tax on early distributions for the converted amount. There is no income limit on conversions, and conversions made after 2017 cannot be recharacterized, so he cannot undo it if the investments fall.",
+"source": "IRC 408A(d)(3)(A) and (C); IRC 408A(d)(6)(B)(iii); IRC 408A(c)(3); IRS Pub 590-A (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-018",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "D",
+"q": "Maya is the beneficiary of a 529 plan her parents opened in 2008. The account is worth $40,000, of which $6,000 is contributions made in the last 5 years and the earnings on them. In 2025 Maya earns $250,000 of wages, which puts her modified adjusted gross income (MAGI) above the Roth individual retirement arrangement (IRA) phaseout range, and she contributes $3,000 to a traditional IRA. Assume the 2025 IRA contribution limit is $7,000. She has never rolled 529 money to a Roth IRA. What is the most she can move tax free by direct transfer from the 529 plan to a Roth IRA for her in 2025?",
+"choices": [
+"$0",
+"$4,000",
+"$7,000",
+"$34,000"
+],
+"answer": 1,
+"explain": "A 529-to-Roth rollover is capped each year at the IRA contribution limit less the beneficiary's other IRA contributions for the year, so $7,000 - $3,000 = $4,000, and the lifetime cap is $35,000. The account has been open more than 15 years and $34,000 is old enough to qualify, so those limits do not bind. The Roth income limit is raised by the rollover amount, so her high modified adjusted gross income (MAGI) does not block it.",
+"source": "IRC 529(c)(3)(E); IRC 408A(c)(3)(E) and (c)(5)(B); IRS Pub 970 (2025)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-019",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "D",
+"q": "In March 2023 Ann sold a $500,000 policy on her own life to Bob, her friend, for $40,000. Bob is not her business partner and has no business or family relationship with her, and he named himself the beneficiary. Bob paid $12,000 of premiums after buying the policy. Ann died in August 2025, and Bob collected $500,000. How much must Bob include in his 2025 gross income?",
+"choices": [
+"$0",
+"$448,000",
+"$460,000",
+"$500,000"
+],
+"answer": 1,
+"explain": "Under the transfer-for-value rule, a buyer of a life insurance policy excludes only what he paid for it plus the premiums he paid afterward, so Bob includes $500,000 - $40,000 - $12,000 = $448,000. The full exclusion would apply only if he fit an exception, such as being the insured, her partner, or a corporation in which she was a shareholder or officer. Subtracting only the $40,000 price gives $460,000.",
+"source": "IRC 101(a)(1), (a)(2) and (a)(3)",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp1-020",
+"part": "TCP",
+"domain": "TCP-I",
+"exam": "cpa",
+"group": "D",
+"q": "Pam was disabled for 6 months of 2025 and received $12,000 of benefits from a group long-term disability policy whose premiums her employer paid without including them in her wages. She also received $12,000 from an individual disability policy she bought and paid for with after-tax dollars. How much of the $24,000 is included in her 2025 gross income?",
+"choices": [
+"$0",
+"$6,000",
+"$12,000",
+"$24,000"
+],
+"answer": 2,
+"explain": "Disability benefits from a policy the individual paid for with after-tax dollars are excluded, so the $12,000 from her own policy is tax free. Benefits from a plan paid for by the employer with premiums not included in her income are taxable, so $12,000 is included. This is why buying disability coverage with after-tax dollars protects the full benefit if a disability occurs.",
+"source": "IRC 104(a)(3); IRC 105(a); IRS Pub 525 (2025), Sickness and Injury Benefits",
+"cpa": [
+"TCP-I"
+]
+},
+{
+"id": "tcp2-001",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "A",
+"q": "A calendar-year C corporation reports the following for 2024: gross income from operations of $300,000, deductible operating expenses of $420,000, $100,000 of dividends from a domestic corporation in which it owns 30% of the stock (by vote and value), and $10,000 of cash charitable contributions. It has no other items and no carryovers into 2024. For 2025 its taxable income before any net operating loss (NOL) deduction is $90,000, and it has no deduction under section 199A or section 250. What is the corporation's 2024 NOL, and how much of it carries forward to 2026?",
+"choices": [
+"$85,000 NOL; $13,000 carries forward to 2026",
+"$85,000 NOL; $0 carries forward to 2026",
+"$95,000 NOL; $23,000 carries forward to 2026",
+"$20,000 NOL; $0 carries forward to 2026"
+],
+"answer": 0,
+"explain": "Before special deductions the corporation has a $20,000 loss ($300,000 - $420,000 + $100,000). The 65% dividends received deduction of $65,000 is allowed in full because the taxable income limit of section 246(b) does not apply in a year with an NOL, but no charitable deduction is allowed because taxable income for the 10% limit is below zero, so the NOL is $85,000. In 2025 the deduction is capped at 80% x $90,000 = $72,000, leaving $13,000 to carry forward; deducting the whole $85,000 ignores the 80% limit, and $95,000 wrongly deducts the charitable contributions.",
+"source": "IRC 172(a)(2), 172(b)(1)(A), 172(d)(5); IRC 243(c); IRC 246(b)(2); IRC 170(b)(2), 170(d)(2); IRS Pub 542",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-002",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "A",
+"q": "P Corp., a domestic C corporation, has for six years owned 85% of the only class of stock of S1 Corp. and 75% of the only class of stock of S2 Corp., both domestic C corporations. P Corp. and S1 Corp. file a consolidated return for 2025, and S2 Corp. files its own return. For 2025, P Corp.'s separate taxable income, not counting any dividends received, is $500,000; S1 Corp.'s is $200,000; and S2 Corp.'s is $100,000. During 2025 S1 Corp. paid P Corp. a $50,000 dividend and S2 Corp. paid P Corp. a $40,000 dividend, both out of earnings and profits. There are no other intercompany transactions. What is the consolidated taxable income for 2025?",
+"choices": [
+"$714,000",
+"$740,000",
+"$764,000",
+"$800,000"
+],
+"answer": 0,
+"explain": "S1 Corp. is an includible member because P Corp. owns at least 80% of its vote and value, so its $50,000 dividend to P Corp. is an intercompany distribution excluded from P Corp.'s income. S2 Corp. fails the 80% test, so it cannot join the group, and its $40,000 dividend is taxable to P Corp. with a 65% dividends received deduction: $40,000 x 35% = $14,000. Consolidated taxable income is $500,000 + $200,000 + $14,000 = $714,000; $800,000 wrongly treats S2 Corp. as a member and $740,000 forgets the dividends received deduction.",
+"source": "IRC 1504(a)(1), 1504(a)(2); Treas. Reg. 1.1502-13(f)(2)(ii); IRC 243(c); IRS Pub 542",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-003",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "A",
+"q": "In 2025 Delta Inc., a domestic C corporation, earns the following gross income: $10,000 of interest on a loan to a German corporation that has no trade or business in the United States; $20,000 of dividends from a domestic corporation; $30,000 of royalties from a domestic company for the right to use Delta's patent only in France; $40,000 of rent from a Canadian company for a warehouse Delta owns in Texas; and $50,000 of fees from a domestic customer for engineering services that Delta's employees performed entirely in Canada. How much of this gross income is foreign-source income?",
+"choices": [
+"$50,000",
+"$60,000",
+"$90,000",
+"$130,000"
+],
+"answer": 2,
+"explain": "Interest is sourced by the payer's residence, so the German corporation's $10,000 is foreign source; royalties are sourced where the property is used, so the $30,000 for use in France is foreign source; and service income is sourced where the work is performed, so the $50,000 for work in Canada is foreign source, for $90,000 in total. The dividends from a domestic corporation and the rent on Texas property are United States source. Answering $50,000 applies a payer-residence rule to every item, but only interest and dividends follow the payer.",
+"source": "IRC 861(a)(1), 861(a)(2)(A), 861(a)(4); IRC 862(a)(1), 862(a)(3), 862(a)(4)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-005",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "A",
+"q": "On June 1, 2025, a calendar-year C corporation distributes investment land to Ivy, an individual shareholder, in a nonliquidating distribution. The land has an adjusted basis of $70,000 and a fair market value of $40,000 and is not subject to any liability. The corporation has $200,000 of accumulated earnings and profits and $100,000 of current earnings and profits for 2025, before considering the distribution. Which statement is correct?",
+"choices": [
+"The corporation recognizes no loss; Ivy has a $40,000 dividend and a $40,000 basis in the land; the corporation's earnings and profits decrease by $70,000.",
+"The corporation recognizes a $30,000 loss; Ivy has a $40,000 dividend and a $40,000 basis in the land; the corporation's earnings and profits decrease by $40,000.",
+"The corporation recognizes no loss; Ivy has a $40,000 dividend and a $70,000 basis in the land; the corporation's earnings and profits decrease by $70,000.",
+"The corporation recognizes no loss; Ivy has a $70,000 dividend and a $70,000 basis in the land; the corporation's earnings and profits decrease by $70,000."
+],
+"answer": 0,
+"explain": "A corporation recognizes gain, but never loss, on a nonliquidating distribution of property, so the $30,000 decline in value is not deductible. Ivy's distribution is measured at the land's $40,000 fair market value, which is a dividend because earnings and profits are ample, and her basis is that same $40,000. Earnings and profits fall by the land's adjusted basis of $70,000; only appreciated property is reduced at fair market value after earnings and profits are first increased by the gain.",
+"source": "IRC 311(a), 311(b); IRC 301(b)(1), 301(c)(1), 301(d); IRC 312(a)(3), 312(b); IRS Pub 542",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-006",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "A",
+"q": "Max owns 90% of a calendar-year C corporation with ample earnings and profits and works full time as its chief executive. In 2025 the corporation pays him a $600,000 salary. On audit, the IRS establishes that reasonable compensation for his services is $400,000 and that the excess was paid in proportion to his stockholding. All of the following statements are correct EXCEPT:",
+"choices": [
+"The corporation may deduct $400,000 as compensation for 2025.",
+"The $200,000 excess is treated as a dividend to Max.",
+"Max includes the full $600,000 in his 2025 gross income.",
+"Max may exclude the $200,000 excess from gross income because the corporation cannot deduct it."
+],
+"answer": 3,
+"explain": "A corporation deducts only a reasonable allowance for salaries, and an excess paid to a shareholder in proportion to stockholding is a distribution of earnings, so the corporation deducts $400,000 and the $200,000 is a nondeductible dividend. Max still reports all $600,000: $400,000 as wages and $200,000 as dividend income. Losing the deduction at the corporate level creates double taxation of the $200,000; it does not give Max an exclusion.",
+"source": "IRC 162(a)(1); Treas. Reg. 1.162-7(b)(1), 1.162-8; IRC 301(c)(1); IRC 61(a)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-007",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "B",
+"q": "Ana owns all the stock of a calendar-year S corporation, and her stock basis is $25,000. On March 1, 2025, she transfers land to the corporation in exchange for additional shares in a transaction that qualifies under section 351. The land has an adjusted basis of $70,000 and a fair market value of $120,000 and is subject to a $30,000 mortgage that Ana took out in 2019 to buy it; the corporation assumes the mortgage. Immediately after the transfer, what is Ana's basis in all her stock, and what is the corporation's basis in the land?",
+"choices": [
+"Stock basis $65,000; land basis $70,000",
+"Stock basis $95,000; land basis $70,000",
+"Stock basis $65,000 plus $30,000 of debt basis; land basis $70,000",
+"Stock basis $115,000; land basis $120,000"
+],
+"answer": 0,
+"explain": "The assumed mortgage is less than the land's basis, so Ana recognizes no gain, but it is treated as money received and reduces the basis of her new shares to $70,000 - $30,000 = $40,000, for total stock basis of $25,000 + $40,000 = $65,000. The corporation takes Ana's $70,000 carryover basis in the land. Unlike a partner, an S corporation shareholder gets no basis for corporate liabilities, even one she transferred, so the $30,000 does not create debt basis.",
+"source": "IRC 351(a); IRC 357(a); IRC 358(a)(1), 358(d)(1); IRC 362(a); IRC 1366(d)(1)(B); IRC 1371(a)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-008",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "B",
+"q": "Bo is the sole shareholder of a calendar-year corporation that has been an S corporation since it was formed in 2015 and has no accumulated earnings and profits. His stock basis on January 1, 2025, is $50,000, and he has no debt basis. On July 1, 2025, the corporation distributes to Bo investment land it has held for six years, with an adjusted basis of $20,000 and a fair market value of $60,000. The corporation has no other items for 2025. Which statement is correct?",
+"choices": [
+"A $40,000 long-term capital gain passes through to Bo; his stock basis at year end is $30,000, and his basis in the land is $60,000.",
+"No gain is recognized; Bo's stock basis at year end is $30,000, and his basis in the land is $20,000.",
+"A $40,000 long-term capital gain passes through to Bo, and he also recognizes a $10,000 gain on the distribution; his stock basis is $0, and his basis in the land is $60,000.",
+"A $40,000 long-term capital gain passes through to Bo; his stock basis at year end is $70,000, and his basis in the land is $60,000."
+],
+"answer": 0,
+"explain": "An S corporation recognizes gain on distributing appreciated property as if it sold the land, and the $40,000 ($60,000 - $20,000) passes through to Bo, raising his stock basis to $90,000. The income adjustment is made before the distribution, so the $60,000 distribution reduces basis to $30,000 with no gain, and Bo's basis in the land is its $60,000 fair market value. Applying the distribution before the gain would wrongly create a $10,000 gain, and the no-gain answer applies partnership distribution rules.",
+"source": "IRC 311(b); IRC 1371(a); IRC 1366(a), 1366(b); IRC 1367(a); IRC 1368(b), 1368(d); IRC 301(d); Treas. Reg. 1.1367-1(f)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-009",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "B",
+"q": "In 2023 Lee lent $40,000 to his calendar-year S corporation in exchange for a written note. By December 31, 2024, flow-through losses had reduced his stock basis to $0 and his basis in the note to $15,000, and he has no suspended losses. For 2025 his share of the corporation's items is $20,000 of ordinary business income and $2,000 of noncapital, nondeductible expenses. The corporation makes no distributions and no loan repayments in 2025. What are Lee's stock basis and debt basis on December 31, 2025?",
+"choices": [
+"Stock basis $0; debt basis $33,000",
+"Stock basis $18,000; debt basis $15,000",
+"Stock basis $0; debt basis $35,000",
+"Stock basis $20,000; debt basis $13,000"
+],
+"answer": 0,
+"explain": "When debt basis was reduced in an earlier year, a later year's net increase restores debt basis before any of it goes to stock basis. The net increase is the $20,000 of income minus the $2,000 of nondeductible expenses, or $18,000, so debt basis rises from $15,000 to $33,000, which is still below the $40,000 note, and stock basis stays at $0. Adding the income to stock basis first is the most common error, and restoring $20,000 ignores that the nondeductible expenses reduce the net increase.",
+"source": "IRC 1367(a), 1367(b)(2)(B); Treas. Reg. 1.1367-2(c)(1); Instructions for Form 7203 (Rev. December 2022)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-010",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "B",
+"q": "On January 1, 2025, Kai's stock basis in his calendar-year S corporation is $30,000, and his basis in a $10,000 note for money he lent the corporation in 2024 is $10,000. For 2025 his share of the corporation's ordinary business loss is $45,000, and on March 1, 2025, he receives a $12,000 cash distribution. The corporation has no accumulated earnings and profits and no other items. Considering only the basis limitation, which statement is correct?",
+"choices": [
+"Kai deducts $28,000 of the loss, $17,000 carries forward, and he recognizes no gain on the distribution.",
+"Kai deducts $40,000 of the loss, $5,000 carries forward, and he recognizes a $12,000 capital gain on the distribution.",
+"Kai deducts $18,000 of the loss, $27,000 carries forward, and he recognizes no gain on the distribution.",
+"Kai deducts $40,000 of the loss, $5,000 carries forward, and he recognizes no gain on the distribution."
+],
+"answer": 0,
+"explain": "Stock basis is reduced by distributions before losses, so the $12,000 distribution is tax free and leaves stock basis of $18,000. The loss then uses the $18,000 of stock basis and the $10,000 of debt basis, so Kai deducts $28,000 and carries $17,000 forward indefinitely. Taking the loss first would allow $40,000 but leave no stock basis for the distribution, creating a $12,000 gain, and debt basis is never reduced by distributions, never by distributions.",
+"source": "IRC 1366(d)(1), 1366(d)(2); IRC 1367(a)(2), 1367(b)(2)(A); IRC 1368(b), 1368(d); Treas. Reg. 1.1367-1(f)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-011",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "C",
+"q": "On May 1, 2025, Cara buys Dan's one-third interest in a partnership for $150,000 cash. The partnership has a section 754 election in effect and no liabilities, and none of its property was contributed by a partner. Its assets are cash (adjusted basis and fair market value $60,000), land held for investment (adjusted basis $120,000, fair market value $270,000) and corporate stock held for investment (adjusted basis $90,000, fair market value $120,000). Cara's share of the partnership's adjusted basis in its property is one-third. What is the section 743(b) basis adjustment, and how is it allocated?",
+"choices": [
+"A $60,000 increase, allocated $50,000 to the land and $10,000 to the stock, with respect to Cara only",
+"A $180,000 increase to the partnership's common basis, allocated $150,000 to the land and $30,000 to the stock, shared by all partners",
+"No adjustment; Cara takes over Dan's $90,000 share of the inside basis, and her basis in her interest is $90,000",
+"A $60,000 increase with respect to Cara only, allocated $41,538 to the land and $18,462 to the stock in proportion to their fair market values"
+],
+"answer": 0,
+"explain": "Cara's outside basis is her $150,000 cost, and her share of the inside basis is $90,000 (one-third of $270,000), so the section 743(b) increase is $60,000. It is allocated to the land and stock by the gain Cara would be allocated on a hypothetical sale: one-third of $150,000 for the land ($50,000) and one-third of $30,000 for the stock ($10,000). The adjustment belongs to Cara alone and does not change common basis, so stepping up all of the partnership's appreciation ($180,000) is wrong.",
+"source": "IRC 743(a), 743(b), 754; Treas. Reg. 1.743-1(d)(1), 1.743-1(j)(1); Treas. Reg. 1.755-1(b)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-012",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "C",
+"q": "On August 1, 2025, Eli buys a 25% interest in a partnership from Fay for $300,000 cash. The partnership has never made a section 754 election and has no liabilities. Immediately after the sale, the partnership's property has a total adjusted basis of $1,600,000 and a total fair market value of $1,200,000, and Eli's share of the adjusted basis is 25%. Which statement is correct?",
+"choices": [
+"No adjustment is made, because the partnership has no section 754 election in effect",
+"No adjustment is made, because Eli would be allocated a loss of only $100,000 if the partnership sold all its property at fair market value",
+"The partnership must reduce the basis of its property by $100,000 with respect to Eli only",
+"The partnership must reduce the common basis of its property by $400,000 for all partners"
+],
+"answer": 2,
+"explain": "Without a section 754 election, a section 743(b) adjustment is still mandatory when the partnership has a substantial built-in loss: either the adjusted basis of its property exceeds its fair market value by more than $250,000, or the transferee would be allocated a loss of more than $250,000 on a sale of all its property. The partnership-level test is met ($1,600,000 minus $1,200,000 is $400,000), so Eli's share of inside basis ($400,000) is reduced to his $300,000 cost, a $100,000 decrease for Eli only. Eli's own $100,000 hypothetical loss fails the second test, but meeting either test is enough.",
+"source": "IRC 743(a), 743(b), 743(d)(1); Treas. Reg. 1.743-1(j)(1)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-013",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "C",
+"q": "Ann owns a 60% interest in a calendar-year partnership. At the close of business on June 30, 2025, she sells her entire interest to Ben, a calendar-year individual, and the remaining partner continues the business with Ben. The partners have not agreed to use the proration method, so the partnership uses the interim closing method with the calendar day convention. Its ordinary business income is $90,000 for January 1 through June 30, 2025, and $30,000 for July 1 through December 31, 2025. Which statement is correct?",
+"choices": [
+"Ann is allocated $54,000 and Ben $18,000, and the partnership's tax year does not close for the partnership",
+"Ann is allocated $36,000 and Ben $36,000, and the partnership's tax year does not close for the partnership",
+"Ann is allocated $54,000 and Ben $18,000, and the partnership terminates on June 30, 2025, because more than 50% of its interests were sold, so it files two short-year returns",
+"Ann is allocated $0 and Ben $72,000, because Ben owns the interest at the end of the partnership's tax year"
+],
+"answer": 0,
+"explain": "Under section 706(d), items are allocated to reflect each partner's varying interest, and the interim closing method is the default: Ann gets 60% of the $90,000 earned through June 30 ($54,000) and Ben gets 60% of the $30,000 earned afterward ($18,000). The partnership's tax year closes only for Ann, whose entire interest terminated. The rule that a sale of 50% or more of interests within 12 months terminates a partnership was repealed for tax years beginning after 2017, so selling a 60% interest does not close the partnership's year.",
+"source": "IRC 706(c)(1), 706(c)(2)(A), 706(d)(1), 708(b)(1); Treas. Reg. 1.706-4(a)(3), 1.706-4(c)(2)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-014",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "C",
+"q": "A calendar-year partnership began business on October 1, 2025. Before then it paid $6,000 of legal fees to draft the partnership agreement and $2,000 of state filing fees. It also paid $15,000 of brokerage commissions and $5,000 to print a prospectus to sell interests to investors. It does not elect out of deducting and amortizing its organizational expenses. What is its 2025 deduction for these costs?",
+"choices": [
+"$5,000",
+"$5,050",
+"$5,383",
+"$28,000"
+],
+"answer": 1,
+"explain": "Only the $8,000 of legal and filing fees are organizational expenses: the partnership deducts $5,000 in its first year and amortizes the other $3,000 over 180 months, or $3,000 divided by 180 times 3 months, which is $50, for a total of $5,050. The $20,000 of commissions and prospectus printing are syndication expenses, which must be capitalized and are neither deductible nor amortizable, so adding them to the pool ($5,383) is wrong.",
+"source": "IRC 709(a), 709(b)(1); Treas. Reg. 1.709-2(a), 1.709-2(b)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-015",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "D",
+"q": "Under its governing instrument, an irrevocable trust must distribute all of its income currently to Ben, and it has no charitable beneficiaries. Ann, the grantor, kept no powers or interests. In 2025 the trustee distributes all $20,000 of the trust's accounting income to Ben and, under a discretionary power, also distributes $15,000 of corpus to him. How is the trust classified for 2025, and what exemption does it claim?",
+"choices": [
+"A simple trust, because the instrument requires all income to be distributed; exemption of $300",
+"A complex trust, because it distributed corpus; exemption of $300",
+"A complex trust, because it distributed corpus; exemption of $100",
+"A grantor trust, because corpus was distributed; no exemption, and Ann reports the income"
+],
+"answer": 1,
+"explain": "A trust is a simple trust only for a year in which it is required to distribute all income currently, has no charitable set-aside and distributes nothing other than current income; distributing $15,000 of corpus makes it a complex trust for 2025. Its exemption is still $300, because that amount applies to any trust required to distribute all income currently, even though it also distributes other amounts. Distributing corpus to a beneficiary does not make it a grantor trust, since Ann kept no powers.",
+"source": "IRC 651(a), 661(a), 642(b)(2)(B); Treas. Reg. 1.651(a)-1, 1.642(b)-1",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-016",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "D",
+"q": "A simple trust must distribute all of its income to Maya each year. For 2025 it has $12,000 of taxable interest, $18,000 of dividends, an $8,000 capital gain, and a $2,000 trustee fee that is deductible in full. The trust instrument allocates capital gains to principal (corpus) and is silent on the trustee fee; under state law, half of the trustee's regular fee is charged to income and half to principal. How much must the trustee distribute to Maya for 2025, and what is the trust's income distribution deduction?",
+"choices": [
+"Distribution $30,000; deduction $28,000",
+"Distribution $29,000; deduction $29,000",
+"Distribution $29,000; deduction $28,000",
+"Distribution $37,000; deduction $36,000"
+],
+"answer": 2,
+"explain": "Trust accounting income follows the instrument and state law: $30,000 of interest and dividends minus the $1,000 half of the fee charged to income is $29,000, which Maya must receive; the gain goes to principal. Distributable net income (DNI) is $30,000 minus the full $2,000 fee, or $28,000, because the half charged to principal is still deductible and the gain allocated to principal is excluded. The deduction is the lesser of the $29,000 distributed or the $28,000 of DNI, so deducting $29,000 ignores the DNI ceiling.",
+"source": "IRC 643(a), 643(b), 651(a), 651(b); Treas. Reg. 1.643(b)-1",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-017",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "D",
+"q": "A calendar-year complex trust has 2025 trust accounting income of $40,000 and distributable net income of $36,000. During 2025 the trustee distributed $25,000 to beneficiaries; none of it had been treated as paid in 2024. On February 10, 2026, the trustee distributes another $30,000. What is the largest part of the February 10 distribution the trustee can elect to treat as paid on December 31, 2025?",
+"choices": [
+"$30,000",
+"$15,000",
+"$11,000",
+"$40,000"
+],
+"answer": 1,
+"explain": "Under the 65-day election, the amount treated as paid on the last day of the prior year cannot exceed the greater of that year's trust accounting income or distributable net income, reduced by amounts paid in that year. The greater amount is the $40,000 of accounting income, and subtracting the $25,000 paid during 2025 leaves $15,000. Using distributable net income ($36,000 minus $25,000, or $11,000) ignores the greater-of rule, and the full $30,000 exceeds the limit even though it was paid within 65 days.",
+"source": "IRC 663(b); Treas. Reg. 1.663(b)-1(a)(2)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-018",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "E",
+"q": "A nonprofit corporation organized for charitable purposes was legally formed on April 14, 2025. It is not a church and expects gross receipts of about $200,000 a year. Which statement about its application for recognition under section 501(c)(3) is correct?",
+"choices": [
+"If it files Form 1023 by July 31, 2027, and is approved, its exemption is effective as of April 14, 2025",
+"It must file Form 1023 by July 31, 2026, or its exemption will be effective only from the date it files",
+"It does not need to apply, because it expects to qualify as a public charity",
+"Until the IRS rules otherwise, it is presumed to be a public charity rather than a private foundation"
+],
+"answer": 0,
+"explain": "An organization that files Form 1023 within 27 months after the end of the month it was legally formed gets exemption back to its formation date if approved; the end of April 2025 plus 27 months is July 31, 2027. July 31, 2026, uses only the 15-month period without the automatic 12-month extension. Every 501(c)(3) organization is presumed to be a private foundation unless it shows it is a public charity, and only churches and organizations with gross receipts normally not more than $5,000 are excused from applying.",
+"source": "IRC 508(a), 508(b), 508(c)(1); Treas. Reg. 1.508-1(a)(2); Instructions for Form 1023 (Rev. December 2024)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-019",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "E",
+"q": "A 501(c)(3) organization is testing whether it is a publicly supported charity under section 170(b)(1)(A)(vi) for 2025. For 2021 through 2025 its total support is $1,000,000: $500,000 contributed by its founder, $200,000 from many individuals who each gave less than $20,000 in total, a $100,000 grant from the city for general operations, and $200,000 of dividends and interest. It did not meet the 33 1/3% support test or the facts and circumstances test for 2024. What percentage of its support is public support, and what does it mean?",
+"choices": [
+"80%, so it meets the 33 1/3% support test",
+"40%, so it meets the 33 1/3% support test",
+"32%, so it fails the 33 1/3% support test and avoids private foundation status only if it meets the 10% facts and circumstances test",
+"24%, so it fails the 33 1/3% support test and avoids private foundation status only if it meets the 10% facts and circumstances test"
+],
+"answer": 2,
+"explain": "Each donor's contributions count as public support only up to 2% of total support ($20,000), but government grants are not subject to the 2% limit, so public support is $20,000 plus $200,000 plus $100,000, or $320,000, which is 32% of $1,000,000. Investment income stays in total support, so dividing by $800,000 (40%) is wrong, and counting the founder's full $500,000 gives 80%. Below 33 1/3%, the organization is publicly supported only if public support is at least 10% and it meets the facts and circumstances test.",
+"source": "IRC 170(b)(1)(A)(vi), 509(a)(1); Treas. Reg. 1.170A-9(f)(2), (f)(3), (f)(6)(i), (f)(7)",
+"cpa": [
+"TCP-II"
+]
+},
+{
+"id": "tcp2-020",
+"part": "TCP",
+"domain": "TCP-II",
+"exam": "cpa",
+"group": "E",
+"q": "A community food bank exempt under section 501(c)(3) had these items in 2025: $25,000 of net income from a thrift shop that sells donated clothing; $8,000 of net income from a gift shop open to the public and staffed entirely by unpaid volunteers; $15,000 of dividends; and an office building rented to unrelated businesses and not used for its exempt purposes. The building produced $100,000 of rent and $40,000 of interest, property tax and straight-line depreciation; its average acquisition indebtedness was $300,000 and its average adjusted basis was $500,000. What is its 2025 unrelated business taxable income before the $1,000 specific deduction?",
+"choices": [
+"$36,000",
+"$60,000",
+"$51,000",
+"$69,000"
+],
+"answer": 0,
+"explain": "Rent from debt-financed property is included in proportion to average acquisition indebtedness over average adjusted basis ($300,000 divided by $500,000, or 60%), and the same percentage applies to the deductions: 60% of $100,000 minus 60% of $40,000 is $36,000. The thrift shop is excluded because it sells donated merchandise, the gift shop is excluded because substantially all its work is done by volunteers, and dividends are excluded passive income. Including the full $60,000 of net rent ignores the debt-financed percentage.",
+"source": "IRC 512(b)(1), 512(b)(4), 513(a)(1), 513(a)(3), 514(a)(1)-(3); IRS Pub 598",
+"cpa": [
+"TCP-II"
+]
 }
 ]
