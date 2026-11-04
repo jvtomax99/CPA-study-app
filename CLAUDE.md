@@ -24,6 +24,9 @@
   allowed domain would help you work better, ask me with a clickable button
   first. Once I approve, install it yourself if you can; if only I can (my
   computer, my accounts, environment settings), give me the exact steps.
+- When an environment setting needs to change (allowed domains, environment
+  variables, setup script and so on), give me the exact values in a code block
+  I can copy and paste, one entry per line, plus where to paste them.
 
 ## Design
 - Follow DESIGN.md for colors, type, corner radius, shadows, motion and
