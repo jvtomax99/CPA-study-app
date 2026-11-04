@@ -12822,5 +12822,805 @@
 "cpa": [
 "REG-II"
 ]
+},
+{
+"id": "tcp3-001",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "A",
+"q": "On March 1, 2025, Kim, an individual, transfers investment land she has held for six years, with an adjusted basis of $50,000 and a fair market value (FMV) of $200,000, to an existing business for a 25% ownership interest. Lou and Max, who own the other 75%, transfer nothing at that time. The business is not an investment company. What gain does Kim recognize, and what is her basis in her ownership interest, if the business is (1) a C corporation or (2) a limited liability company (LLC) taxed as a partnership?",
+"choices": [
+"C corporation: $0 gain and $50,000 basis; LLC: $0 gain and $50,000 basis",
+"C corporation: $150,000 gain and $200,000 basis; LLC: $0 gain and $50,000 basis",
+"C corporation: $150,000 gain and $200,000 basis; LLC: $150,000 gain and $200,000 basis",
+"C corporation: $0 gain and $50,000 basis; LLC: $150,000 gain and $200,000 basis"
+],
+"answer": 1,
+"explain": "Section 351 applies only if the transferors of property own at least 80% of the corporation right after the exchange; Kim is the only transferor and owns 25%, so she recognizes $200,000 - $50,000 = $150,000 of gain and takes a $200,000 cost basis in the stock. Section 721 has no control requirement, so a contribution to an LLC taxed as a partnership is tax free and her basis in the interest is her $50,000 basis in the land. Assuming section 351 protects her because the business is still owned by the same people overlooks that Lou and Max transferred nothing.",
+"source": "IRC 351(a), 368(c), 721(a), 722, 1012; Treas. Reg. 1.351-1(a)(1)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-002",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "A",
+"q": "Four individuals are organizing a new business in 2025. They want every owner protected from personal liability for the business's debts, every owner free to take part in management without losing that protection, income taxed only once at the owner level, the ability to give one owner 60% of profits while she holds 40% of capital, and to admit an owner who is a nonresident alien. Without any special tax election, which entity best meets all of these goals?",
+"choices": [
+"A corporation that elects S corporation status",
+"A limited partnership",
+"A limited liability company (LLC) with two or more members",
+"A C corporation"
+],
+"answer": 2,
+"explain": "A domestic LLC with two or more members gives every member limited liability even when the member manages, and by default it is taxed as a partnership, so income is taxed once to the members and the operating agreement can allocate profits differently from capital. An S corporation cannot have a nonresident alien shareholder or more than one class of stock, so it cannot admit that owner or skew profit shares. A limited partnership must have at least one general partner who is personally liable, and a C corporation's income is taxed at the corporate level and again when distributed.",
+"source": "Treas. Reg. 301.7701-3(b)(1); IRC 1361(b)(1)(C), (D); IRC 701, 704(a), (b); IRC 11(b); Revised Uniform Limited Partnership Act",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-003",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "A",
+"q": "P Corp. has owned 85% of the stock of Sub Corp. (by both vote and value) for six years, with a stock basis of $100,000. Dee, an individual, owns the other 15%, with a stock basis of $10,000. In 2025 Sub Corp. adopts a plan of complete liquidation and distributes land A (fair market value (FMV) $850,000, adjusted basis $300,000) to P Corp. and land B (FMV $150,000, adjusted basis $60,000) to Dee. What gain does Sub Corp. recognize, what gain does P Corp. recognize, and what is P Corp.'s basis in land A?",
+"choices": [
+"Sub Corp. $90,000; P Corp. $0; basis $300,000",
+"Sub Corp. $640,000; P Corp. $0; basis $850,000",
+"Sub Corp. $0; P Corp. $750,000; basis $850,000",
+"Sub Corp. $0; P Corp. $0; basis $100,000"
+],
+"answer": 0,
+"explain": "P Corp. owns at least 80% of Sub Corp.'s vote and value, so P Corp. recognizes no gain under section 332, Sub Corp. recognizes no gain on land A distributed to P Corp. under section 337, and P Corp. takes Sub Corp.'s $300,000 carryover basis. The distribution to the minority shareholder is taxed under section 336, so Sub Corp. recognizes $150,000 - $60,000 = $90,000 of gain, and Dee recognizes $150,000 - $10,000 = $140,000 under section 331 with a $150,000 basis in land B. Recognizing gain on both parcels, or taxing P Corp. on $850,000 - $100,000, applies the ordinary liquidation rules to an 80% corporate parent.",
+"source": "IRC 331(a), 332(a), (b), 334(a), 334(b)(1), 336(a), 337(a), (c), 1504(a)(2)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-004",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "A",
+"q": "Two unrelated individuals each own 50% of an entity. Each owner's basis in the ownership interest is $100,000. The entity's only assets are two identical parcels of investment land it bought with cash, each with an adjusted basis of $100,000 and a fair market value (FMV) of $250,000. It has no liabilities. In 2025 the entity liquidates and distributes one parcel to each owner. Ignore any income tax the entity owes. Which statement correctly compares the results if the entity is a C corporation or a partnership?",
+"choices": [
+"C corporation: no gain to the corporation, $150,000 of gain to each owner, and a $250,000 basis in each parcel. Partnership: no gain to anyone, and a $250,000 basis in each parcel.",
+"C corporation: $300,000 of gain to the corporation, no gain to the owners, and a $100,000 basis in each parcel. Partnership: no gain to anyone, and a $100,000 basis in each parcel.",
+"C corporation: $300,000 of gain to the corporation, $150,000 of gain to each owner, and a $250,000 basis in each parcel. Partnership: $300,000 of gain to the partnership, and a $250,000 basis in each parcel.",
+"C corporation: $300,000 of gain to the corporation, $150,000 of gain to each owner, and a $250,000 basis in each parcel. Partnership: no gain to anyone, and a $100,000 basis in each parcel."
+],
+"answer": 3,
+"explain": "A liquidating C corporation recognizes gain as if it sold each parcel at FMV, 2 x ($250,000 - $100,000) = $300,000, and each shareholder treats the parcel as payment for the stock, recognizing $250,000 - $100,000 = $150,000 and taking a $250,000 FMV basis. A partnership recognizes no gain on a distribution, a partner recognizes gain only if money received exceeds outside basis (no money here), and each partner's basis in the parcel equals the $100,000 basis in the partnership interest. Giving the partners an FMV basis applies the corporate rule to a partnership and would let the $150,000 of appreciation escape tax.",
+"source": "IRC 331(a), 334(a), 336(a); IRC 731(a)(1), 731(b), 732(b); IRS Pub 541; IRS Pub 542",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-005",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "A",
+"q": "On June 1, 2025, Ron contributes equipment with an adjusted basis of $80,000 and a fair market value (FMV) of $50,000, and Sue contributes $50,000 cash, to a new entity in which each receives a 50% interest. If the entity is a corporation, the transfer qualifies under Internal Revenue Code (IRC) section 351 and no election is made to reduce Ron's stock basis instead. What is the entity's basis in the equipment immediately after the contribution if it is (1) a corporation or (2) a partnership?",
+"choices": [
+"Corporation $80,000; partnership $80,000",
+"Corporation $50,000; partnership $80,000",
+"Corporation $50,000; partnership $50,000",
+"Corporation $80,000; partnership $50,000"
+],
+"answer": 1,
+"explain": "When a section 351 transferor's property has a net built-in loss, the corporation's basis is limited to FMV, $50,000, unless the transferor and corporation jointly elect to cut the transferor's stock basis to FMV instead; Ron's stock basis stays $80,000. A partnership takes the contributing partner's $80,000 basis, but section 704(c)(1)(C) lets only Ron take the $30,000 built-in loss into account and treats the basis as $50,000 for the other partners. Giving the corporation a full $80,000 carryover basis would let the same $30,000 loss be deducted twice, once on the stock and once on the equipment.",
+"source": "IRC 351(a), 358(a)(1), 362(a), 362(e)(2)(A), (C); IRC 723, 704(c)(1)(C)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-006",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "B",
+"q": "A calendar-year C corporation had a $450,000 net operating loss (NOL) for 2022 that it has not used. For 2025 its taxable income before any NOL deduction is $500,000, and it has no deduction under section 199A or section 250 and no other carryovers. Using the 21% corporate rate, by how much does the NOL deduction reduce the corporation's 2025 federal income tax, and how much of the NOL carries forward to 2026?",
+"choices": [
+"$94,500 reduction; $0 carries forward",
+"$75,600 reduction; $90,000 carries forward",
+"$84,000 reduction; $50,000 carries forward",
+"$105,000 reduction; $0 carries forward"
+],
+"answer": 2,
+"explain": "A loss arising in a tax year beginning after 2017 can offset only 80% of taxable income figured before the NOL deduction, so the 2025 deduction is the lesser of $450,000 or 80% x $500,000 = $400,000. That saves $400,000 x 21% = $84,000, and the unused $50,000 carries forward with no expiration. Deducting the full $450,000 for $94,500 of savings ignores the 80% limit, and applying 80% to the loss itself ($360,000) is a misreading of the rule.",
+"source": "IRC 172(a)(2), 172(b)(1)(A); IRC 11(b); IRS Pub 542",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-007",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "B",
+"q": "A calendar-year C corporation has a $30,000 net capital loss from its 2020 tax year. It had no capital gains in 2017 through 2024, so none of the loss has been used. It has no other capital transactions in 2025 and expects positive ordinary taxable income in 2025 and 2026. It owns investment land, a capital asset held for five years, that it can sell at a $30,000 gain with a closing date of either December 15, 2025, or January 5, 2026, at the same price. Using the 21% corporate rate, how much federal income tax does closing in 2025 save compared with closing in 2026?",
+"choices": [
+"$0, because a corporation's capital loss carries forward indefinitely",
+"$630",
+"$12,600",
+"$6,300"
+],
+"answer": 3,
+"explain": "A corporation carries a net capital loss back 3 years and forward 5 years, so a 2020 loss can be used through 2025 and then expires. Closing in 2025 lets the $30,000 carryover, treated as a short-term capital loss, offset the $30,000 gain, while a 2026 closing leaves the gain fully taxed: $30,000 x 21% = $6,300. Indefinite carryforward and the $3,000 offset against ordinary income ($630 of tax) are rules for individuals, not corporations.",
+"source": "IRC 1211(a), 1212(a)(1); IRC 11(b); IRS Pub 542",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-008",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "B",
+"q": "A calendar-year C corporation had taxable income of $1,300,000 in 2021, $600,000 in 2022, $400,000 in 2023 and $250,000 in 2024. Its 2024 return, for a full 12-month year, showed tax of $52,500. It expects 2025 tax of $160,000 and will not use the annualized income or adjusted seasonal installment method. The corporation is not a member of a controlled group. What is the smallest amount it can pay for each 2025 installment and still avoid the underpayment penalty?",
+"choices": [
+"$13,125 for each of the four installments",
+"$13,125 for the first installment, $66,875 for the second, and $40,000 for each of the last two",
+"$40,000 for each of the four installments",
+"$14,437.50 for each of the four installments"
+],
+"answer": 0,
+"explain": "A large corporation is one with taxable income of $1,000,000 or more in any of the 3 preceding tax years; for 2025 that testing period is 2022 through 2024, so the 2021 income does not count and the corporation may base every installment on 100% of last year's tax: $52,500 / 4 = $13,125. The second choice is the large-corporation rule, which allows the prior-year amount only for the first installment and adds the $26,875 shortfall ($40,000 - $13,125) to the second. The 110% figure is a rule for higher-income individuals, not corporations.",
+"source": "IRC 6655(c), 6655(d)(1)(B), 6655(d)(2), 6655(g)(2); Instructions for Form 1120-W (2025)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-009",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "B",
+"q": "An accrual-method, calendar-year C corporation does business only in State X; all of its sales, property and payroll are there, so 100% of its income is apportioned to State X. State X has enacted an increase in its corporate income tax rate from 6% for 2025 to 9% for tax years beginning on or after January 1, 2026. The federal rate is 21% in both years. The corporation can finish and bill a $200,000 project either in December 2025 or in January 2026, and can incur a $50,000 deductible repair expense either in December 2025 or in January 2026. State X follows federal rules for when income and deductions are taken into account. Ignoring federal tax effects and the time value of money, which plan minimizes State X income tax, and how much does it save compared with putting both items in 2026?",
+"choices": [
+"Put both items in 2025; it saves $7,500",
+"Put the income in 2025 and keep the repair expense in 2026; it saves $6,000",
+"Put the repair expense in 2025 and keep the income in 2026; it saves $1,500",
+"Timing makes no difference, because the corporate tax rate is a flat 21% in both years"
+],
+"answer": 1,
+"explain": "When rates are rising, income should be accelerated into the lower-rate year and deductions deferred into the higher-rate year. Moving the $200,000 of income into 2025 saves $200,000 x (9% - 6%) = $6,000, and keeping the $50,000 deduction in 2026 preserves its 9% value. Moving both items into 2025 actually saves only $6,000 - $1,500 = $4,500, because the deduction is worth $1,500 less at 6%; adding the $1,500 instead of subtracting it gives the $7,500 distractor.",
+"source": "IRC 451(a), 461(a), (h); Treas. Reg. 1.461-1(a)(2)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-010",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "B",
+"q": "Gina owns 100% of a calendar-year C corporation with ample earnings and profits. The corporation holds investment land, held for four years, with an adjusted basis of $150,000 and a fair market value (FMV) of $90,000. In 2025 it also has $100,000 of capital gains from other sales. It is considering two plans for 2025: (A) distribute the land to Gina, or (B) sell the land to an unrelated buyer for $90,000 and distribute the $90,000 cash to Gina. Using the 21% corporate rate, which statement is correct?",
+"choices": [
+"Under plan A the corporation recognizes a $60,000 capital loss, and Gina takes a $150,000 basis in the land.",
+"Under plan A Gina has a $150,000 dividend, equal to the corporation's adjusted basis in the land.",
+"Under plan B the corporation recognizes a $60,000 capital loss that offsets its capital gains and saves $12,600 of tax; under plan A it recognizes no loss.",
+"Selling the land to Gina for $90,000 cash would give the corporation the same $60,000 deductible loss as plan B."
+],
+"answer": 2,
+"explain": "A corporation recognizes gain, but never loss, when it distributes property to a shareholder, so plan A wastes the $60,000 built-in loss; Gina would have a $90,000 dividend and a $90,000 FMV basis in the land. Selling to an unrelated buyer produces a $150,000 - $90,000 = $60,000 capital loss that offsets the corporation's capital gains, saving $60,000 x 21% = $12,600, and Gina still has a $90,000 dividend. A sale to Gina is not an alternative, because she owns more than 50% of the stock and the loss on a sale between related persons is disallowed.",
+"source": "IRC 311(a), (b); IRC 301(b)(1), 301(d); IRC 267(a)(1), 267(b)(2); IRC 1211(a)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-011",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "C",
+"q": "A calendar-year C corporation elected S status effective January 1, 2022. On that date it owned land with an adjusted basis of $40,000 and a fair market value of $120,000, and its net unrealized built-in gain was $80,000. The corporation proposes to sell the land for $120,000 in 2025. Apart from the sale, its 2025 operations will produce a $30,000 loss, so its 2025 taxable income figured as if it were a C corporation, without a net operating loss deduction or special deductions, would be $50,000. It has no carryforwards or credits. If it sells in 2025, what is its 2025 built-in gains tax, and what happens to the rest of the built-in gain?",
+"choices": [
+"$16,800; all $80,000 of built-in gain is taxed in 2025",
+"$10,500; the remaining $30,000 is treated as recognized built-in gain in 2026",
+"$0, because the corporation has been an S corporation for more than three years",
+"$10,500; the remaining $30,000 permanently escapes the built-in gains tax"
+],
+"answer": 1,
+"explain": "The 2025 sale falls inside the 5-year recognition period (2022 through 2026). Net recognized built-in gain is the lesser of the $80,000 recognized built-in gain or the $50,000 taxable income limit, so the tax is $50,000 x 21% = $10,500. The $30,000 cut off by the taxable income limit carries to 2026 as recognized built-in gain; it is not taxed in full in 2025 ($16,800) and does not disappear.",
+"source": "IRC 1374(a), 1374(b)(1), 1374(d)(2)(A)-(B), 1374(d)(7)(A); IRC 11(b)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-012",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "C",
+"q": "Lena owns all the stock of a calendar-year corporation whose S election was revoked effective January 1, 2025. On that date its accumulated adjustments account (AAA) was $60,000, and it had no earnings and profits from earlier C corporation years. As a C corporation, it has $90,000 of current earnings and profits for 2025. On June 1, 2025, it distributes $50,000 cash to Lena, whose stock basis just before the distribution is $70,000. The corporation makes no election to have distributions come from earnings and profits first. How is the distribution treated?",
+"choices": [
+"$50,000 dividend; Lena's stock basis falls to $20,000",
+"$0 dividend; Lena's stock basis stays $70,000",
+"$0 dividend; Lena's stock basis falls to $20,000",
+"$50,000 dividend; Lena's stock basis stays $70,000"
+],
+"answer": 2,
+"explain": "The post-termination transition period runs from January 1, 2025 to the later of December 31, 2025 or the extended due date of the 2024 S return, so the June 1 cash distribution falls inside it. A cash distribution in that period reduces stock basis tax free to the extent of the AAA, so the full $50,000 is applied against basis: $70,000 - $50,000 = $20,000. Treating it as a dividend from the 2025 current earnings and profits ignores this transition rule.",
+"source": "IRC 1371(e)(1)-(2), 1377(b)(1)(A)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-013",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "C",
+"q": "A calendar-year corporation has been an S corporation since 2018. It had accumulated earnings and profits from its C corporation years at the close of 2023, 2024 and 2025, and passive investment income was more than 25% of its gross receipts in each of those years. All of the following statements are correct EXCEPT:",
+"choices": [
+"If it had distributed all of its accumulated earnings and profits by December 31, 2025, the election would not have terminated",
+"Its S election terminates effective January 1, 2026",
+"Its S election terminates retroactively to January 1, 2025, the first day of the third year",
+"It owes the corporate-level tax on excess net passive income for any of those years in which it had excess net passive income"
+],
+"answer": 2,
+"explain": "Termination requires accumulated earnings and profits at the close of each of 3 consecutive S years and passive investment income above 25% of gross receipts in each, and it takes effect on the first day of the next tax year, January 1, 2026, not retroactively. Because the test looks at earnings and profits at the close of each year, distributing all accumulated earnings and profits before December 31, 2025 (for example, by electing to distribute them first) would have prevented termination. The passive income tax applies separately in each year the conditions are met.",
+"source": "IRC 1362(d)(3)(A), 1375(a), 1368(e)(3)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-014",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "C",
+"q": "In 2022 Kai lent $50,000 to his S corporation, evidenced by a written note. By the end of 2024, flow-through losses had reduced his stock basis to zero and his basis in the note to $20,000. In 2025 the corporation repays $25,000 of principal. For 2025 the corporation has no income, loss or other items, so there is no net increase to restore basis. What does Kai report for 2025 on the repayment?",
+"choices": [
+"No gain, because a repayment of a shareholder's own loan is a return of capital",
+"$15,000 long-term capital gain",
+"$5,000 long-term capital gain",
+"$15,000 ordinary income"
+],
+"answer": 1,
+"explain": "Each repayment of reduced-basis debt is partly a recovery of basis and partly income, in the ratio of basis to face: $25,000 x ($20,000 / $50,000) = $10,000 of basis, so $15,000 is gain. Debt evidenced by a formal note is a capital asset, and Kai held it more than one year, so the gain is long-term capital gain; an open account advance would produce ordinary income. Subtracting the whole $20,000 basis from the $25,000 payment ($5,000) ignores that the rest of the note is still outstanding.",
+"source": "IRC 1367(b)(2), 1271(a)(1); Treas. Reg. 1.1367-2(c)-(d); Instructions for Form 7203 (12/2022), line 34",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-015",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "C",
+"q": "A calendar-year S corporation has $15,000 of accumulated earnings and profits from its C corporation years. At the end of 2025, before distributions, its accumulated adjustments account (AAA) is $40,000. Tom, its sole shareholder, has a stock basis of $60,000 before distributions. To purge the earnings and profits, the corporation distributes $20,000 cash to Tom in December 2025 and, with his consent, elects to distribute earnings and profits first. What is the result?",
+"choices": [
+"$15,000 dividend; Tom's stock basis is $40,000",
+"$20,000 dividend; Tom's stock basis is $60,000",
+"$15,000 dividend; Tom's stock basis is $55,000",
+"$0 dividend; Tom's stock basis is $40,000"
+],
+"answer": 2,
+"explain": "With the election, the distribution comes first from accumulated earnings and profits ($15,000 dividend) and then from the AAA ($5,000 tax free). Only the $5,000 that is not taxed reduces stock basis, so basis is $60,000 - $5,000 = $55,000. Without the election, the whole $20,000 would come from the AAA tax free; the election exists so the corporation can clear out earnings and profits.",
+"source": "IRC 1368(c), 1368(e)(3); IRC 1367(a)(2)(A); Treas. Reg. 1.1368-1(f)(2), (f)(5)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-016",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "D",
+"q": "In 2023 Ann, an investor, contributed land she held as a capital asset, with an adjusted basis of $50,000 and a fair market value of $30,000, to a partnership for a 50% interest. Bob contributed $30,000 cash for the other 50%. The partnership is a real estate dealer and holds the land as inventory. In 2025 it sells the land to a customer for $26,000. What is Ann's share of the loss, and its character?",
+"choices": [
+"$12,000 ordinary loss",
+"$20,000 capital loss and $2,000 ordinary loss",
+"$22,000 capital loss",
+"$22,000 ordinary loss"
+],
+"answer": 1,
+"explain": "The partnership's tax loss is $24,000 ($50,000 - $26,000). The $20,000 built-in loss at contribution is allocated only to Ann, and because the land was a capital asset to her and is sold within 5 years, that $20,000 is a capital loss; the $4,000 decline after contribution is an ordinary inventory loss shared equally, $2,000 each. Splitting the whole $24,000 equally ($12,000) ignores section 704(c), and treating all of Ann's loss as ordinary ignores section 724(c).",
+"source": "IRC 704(c)(1)(A), 704(c)(1)(C), 724(c); Treas. Reg. 1.704-3(b)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-017",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "D",
+"q": "Kim and Lee are equal partners. For 2025 the partnership agreement pays Kim a $50,000 guaranteed payment for services, determined without regard to partnership income. Before the guaranteed payment, the partnership's ordinary business income is $30,000, and it has no other items. Kim has enough basis to absorb any loss. What does Kim report for 2025?",
+"choices": [
+"$15,000 of ordinary income; the $50,000 is a distribution that reduces her basis",
+"$50,000 of guaranteed payment income and a $10,000 ordinary loss",
+"$50,000 of guaranteed payment income and $15,000 of ordinary income",
+"$30,000 of income, because guaranteed payments cannot exceed partnership income"
+],
+"answer": 1,
+"explain": "The partnership deducts the guaranteed payment, turning $30,000 of income into a $20,000 ordinary loss, and Kim's 50% share is a $10,000 loss. She also reports the full $50,000 guaranteed payment as ordinary income, for a net of $40,000. Giving her a $15,000 share of income double counts the $50,000, because it ignores the partnership's deduction.",
+"source": "IRC 707(c), 702(a); Treas. Reg. 1.707-1(c), Example 3; IRS Pub 541",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-018",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "D",
+"q": "Lia's basis in her partnership interest is $26,000. In a nonliquidating distribution in 2025, she receives $6,000 cash, parcel A (partnership basis $24,000, fair market value $30,000) and parcel B (partnership basis $10,000, fair market value $6,000). The partnership has no unrealized receivables or inventory items, neither parcel was contributed by a partner, and her share of liabilities does not change. What are Lia's bases in the parcels?",
+"choices": [
+"Parcel A $24,000; parcel B $10,000, with $14,000 of gain recognized",
+"Parcel A $14,000; parcel B $6,000",
+"Parcel A $20,000; parcel B $0",
+"Parcel A $16,000; parcel B $4,000"
+],
+"answer": 3,
+"explain": "The cash is less than her basis, so no gain; the parcels share the $20,000 of basis left ($26,000 - $6,000), a $14,000 decrease from their $34,000 partnership basis. The decrease goes first to parcel B up to its $4,000 of unrealized depreciation (B to $6,000), and the remaining $10,000 is split by adjusted bases of $24,000 and $6,000: A is reduced $8,000 to $16,000 and B $2,000 to $4,000. Writing B down to $0 is wrong because the first step stops at each property's unrealized depreciation.",
+"source": "IRC 731(a), 732(a)(2), 732(c)(1)(B), 732(c)(3); Treas. Reg. 1.732-1(c)(2)(i)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-019",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "D",
+"q": "On September 1, 2025, Nora sells her partnership interest, held for five years, for $70,000 cash, and the buyer takes over her $10,000 share of partnership liabilities. Her basis in the interest, including that share of liabilities, is $50,000. Her share of the partnership's assets includes cash-method accounts receivable with a basis of $0 and a fair market value of $15,000, and inventory with a basis of $10,000 and a fair market value of $12,000. How is her gain characterized?",
+"choices": [
+"$30,000 long-term capital gain",
+"$17,000 ordinary income and $3,000 long-term capital gain",
+"$15,000 ordinary income and $15,000 long-term capital gain",
+"$17,000 ordinary income and $13,000 long-term capital gain"
+],
+"answer": 3,
+"explain": "Her amount realized is $80,000 ($70,000 cash plus $10,000 of liability relief), so total gain is $30,000. On a sale of an interest, all unrealized receivables and inventory items are hot assets, whether or not the inventory is substantially appreciated, so $15,000 + $2,000 = $17,000 is ordinary income and the other $13,000 is capital gain. The substantial appreciation test applies only to distributions, and leaving out the liability relief understates the gain.",
+"source": "IRC 741, 751(a), 751(c)-(d), 752(d); Treas. Reg. 1.751-1(a)(2); IRS Pub 541",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp3-020",
+"part": "TCP",
+"domain": "TCP-III",
+"exam": "cpa",
+"group": "D",
+"q": "In 2022 Ann contributed land with an adjusted basis of $10,000 and a fair market value of $40,000 to a partnership. On March 1, 2025, the partnership distributes the land, now worth $50,000, to Ben, another partner, in a nonliquidating distribution. The partnership uses the traditional method for section 704(c), and Ann receives nothing in 2025. As a result of the distribution, Ann recognizes gain of:",
+"choices": [
+"$30,000",
+"$40,000",
+"$0",
+"$35,000"
+],
+"answer": 0,
+"explain": "Contributed property distributed to another partner within 7 years of its contribution makes the contributing partner recognize the gain that would have been allocated to her under section 704(c) had the property been sold for its value at distribution, which is the $30,000 precontribution gain ($40,000 - $10,000). The $10,000 of appreciation after contribution would have been shared, not allocated only to Ann, so $35,000 and $40,000 overstate it. Ann's basis in her interest and the partnership's basis in the land both increase by the $30,000.",
+"source": "IRC 704(c)(1)(B)(i), (iii); Treas. Reg. 1.704-4(a), (e)(1)-(2)",
+"cpa": [
+"TCP-III"
+]
+},
+{
+"id": "tcp4-001",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "On April 8, 2025, Marcus exchanges a warehouse held for use in his business (adjusted basis $200,000, fair market value $500,000, subject to a $120,000 mortgage that the other party assumes) for another warehouse to be held for business use (fair market value $420,000, no mortgage). Marcus also pays the other party $40,000 cash. What are Marcus's realized gain and recognized gain?",
+"choices": [
+"$300,000 realized gain and $80,000 recognized gain",
+"$300,000 realized gain and $120,000 recognized gain",
+"$300,000 realized gain and no recognized gain",
+"$340,000 realized gain and $120,000 recognized gain"
+],
+"answer": 0,
+"explain": "Marcus realizes $300,000: the $420,000 warehouse plus $120,000 of debt relief, minus his $200,000 basis and the $40,000 cash he paid. Debt relief counts as boot, but the regulations let cash he pays offset the liabilities he is relieved of, so net boot is $120,000 minus $40,000, or $80,000, and that is his recognized gain. The $120,000 choice ignores this offset. The opposite rule is different: liabilities a taxpayer takes on never offset cash he receives.",
+"source": "IRC 1031(b), (d); Treas. Reg. 1.1031(d)-2, Example 2",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-002",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "On June 2, 2025, Grace exchanges land held for investment (adjusted basis $300,000, fair market value $600,000, subject to a $200,000 mortgage that the other party assumes) for an office building to be held for investment (fair market value $450,000, subject to a $50,000 mortgage that Grace assumes). No cash changes hands. What are Grace's recognized gain and her basis in the office building?",
+"choices": [
+"$150,000 recognized gain and $300,000 basis",
+"$200,000 recognized gain and $350,000 basis",
+"$150,000 recognized gain and $250,000 basis",
+"No recognized gain and $150,000 basis"
+],
+"answer": 0,
+"explain": "Grace realizes $300,000 ($450,000 building plus $200,000 debt relief, minus $300,000 basis and $50,000 debt assumed). The $50,000 she assumes offsets the $200,000 she is relieved of, so net boot and recognized gain are $150,000, and $150,000 is deferred. Her basis is $300,000 old basis plus $50,000 debt assumed plus $150,000 gain recognized minus $200,000 debt relieved, or $300,000, which equals the $450,000 value minus the $150,000 deferred gain; the $250,000 choice forgets to add the debt she assumed.",
+"source": "IRC 1031(b), (d); Treas. Reg. 1.1031(d)-2; IRS Pub 544 (2025), ch. 1",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-003",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "On August 14, 2025, Nina exchanges land held for investment (adjusted basis $500,000, fair market value $400,000) for a rental duplex (fair market value $350,000) plus $50,000 cash. There are no liabilities. What is the result to Nina?",
+"choices": [
+"No loss is recognized, and her basis in the duplex is $450,000",
+"A $50,000 loss is recognized, and her basis in the duplex is $400,000",
+"A $100,000 loss is recognized, and her basis in the duplex is $350,000",
+"No loss is recognized, and her basis in the duplex is $500,000"
+],
+"answer": 0,
+"explain": "Nina realizes a $100,000 loss ($400,000 received minus $500,000 basis), but no loss is recognized in a like-kind exchange even when cash boot is received. Her basis is the $500,000 basis given up minus the $50,000 cash received, or $450,000, which preserves the $100,000 deferred loss ($350,000 value plus $100,000). The $500,000 choice forgets to subtract the cash.",
+"source": "IRC 1031(c), (d); IRS Pub 544 (2025), ch. 1",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-004",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "On March 10, 2025, a fire destroyed a warehouse that Victor used in his business. His adjusted basis was $180,000, and in May 2025 he received $400,000 of insurance proceeds. In June 2026 he bought a replacement warehouse for his business for $350,000 and elected to postpone gain under Section 1033. What are Victor's recognized gain and his basis in the new warehouse?",
+"choices": [
+"$50,000 recognized gain and $180,000 basis",
+"$50,000 recognized gain and $350,000 basis",
+"$220,000 recognized gain and $350,000 basis",
+"No recognized gain and $180,000 basis"
+],
+"answer": 0,
+"explain": "Victor realizes $220,000 ($400,000 minus $180,000). He bought replacement property within the replacement period, so he recognizes gain only to the extent the proceeds exceed the cost of the replacement, $400,000 minus $350,000, or $50,000, and $170,000 is postponed. His basis is the $350,000 cost minus the $170,000 postponed gain, or $180,000; the $350,000 choice forgets to reduce the cost by the postponed gain.",
+"source": "IRC 1033(a)(2)(A), (a)(2)(B), (b)(2); IRS Pub 544 (2025), ch. 1",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-005",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "In 2025 each of the following taxpayers realized a gain on an involuntary conversion and bought replacement property within the replacement period. The gain can be postponed under Section 1033 in each case EXCEPT:",
+"choices": [
+"A factory that Ruth used in her own manufacturing business was destroyed by fire, and she used the insurance proceeds to buy an apartment building to rent to tenants",
+"An office building that Sam held for rental was condemned by the state, and he used the award to buy vacant land to hold for investment",
+"A machine that Tara used in her business was destroyed by fire, and she used the insurance proceeds to buy 80% of the voting stock and 80% of all other stock of a corporation that owns a similar machine",
+"A delivery truck used in Uma's business was stolen, and she used the insurance proceeds to buy a delivery truck to use the same way"
+],
+"answer": 0,
+"explain": "For an owner-user, replacement property must be similar or related in service or use, meaning it must function the same way, and a rental apartment building does not function like a factory Ruth operated. The looser like-kind standard that lets Sam replace a rental building with investment land applies only to condemned real property held for business or investment, not to a fire. Buying a controlling interest (at least 80%) in a corporation that owns similar property is an allowed form of replacement.",
+"source": "IRC 1033(a)(1), (a)(2)(A), (a)(2)(E), (g)(1); IRS Pub 544 (2025), ch. 1, Similar or related in service or use",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-006",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "A",
+"q": "On March 3, 2025, Jordan transferred a rental building with a fair market value of $800,000 to a qualified intermediary to start a deferred like-kind exchange. The values of all properties below do not change during the exchange period. Jordan's identification of replacement property meets the Treasury Regulations if, within the 45-day identification period, he:",
+"choices": [
+"Identifies five properties with an aggregate fair market value of $1,500,000 in a written document he signs and delivers to the qualified intermediary",
+"Identifies four properties with an aggregate fair market value of $1,700,000 in a signed writing, and he receives, after the 45-day identification period ends but within the exchange period, one of them worth $900,000",
+"Identifies two properties with an aggregate fair market value of $900,000 in a phone call to the qualified intermediary",
+"Identifies six properties with an aggregate fair market value of $2,000,000 in a signed writing, and he receives, after the 45-day identification period ends but within the exchange period, three of them worth $1,800,000"
+],
+"answer": 0,
+"explain": "Any number of properties may be identified if their aggregate value does not exceed 200% of the relinquished property's value ($1,600,000), so five properties worth $1,500,000 are valid. The $1,700,000 and $2,000,000 identifications exceed both the three-property and 200% limits, and they are saved only if Jordan receives at least 95% of the identified value; $900,000 is 53% and $1,800,000 is 90%. Identification must be in a written document signed by the taxpayer, so a phone call does not count.",
+"source": "IRC 1031(a)(3); Treas. Reg. 1.1031(k)-1(c)(2), (c)(4)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-007",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "In 2025 Helen, an individual, had the following results from property used in her business and held more than one year: a $30,000 gain on the sale of land used as a parking lot, a $12,000 loss on the sale of equipment, an $8,000 gain when a storm destroyed a building depreciated straight-line (insurance exceeded adjusted basis, and she did not replace it), and a $20,000 loss when equipment was stolen. She has no nonrecaptured net Section 1231 losses from earlier years. How much of these results is treated as long-term capital gain?",
+"choices": [
+"$18,000",
+"$6,000",
+"$26,000",
+"$30,000"
+],
+"answer": 0,
+"explain": "Casualty and theft gains and losses on business property are netted first; because the $20,000 theft loss exceeds the $8,000 storm gain, neither enters Section 1231 netting, and both are ordinary. The remaining Section 1231 items net to a $18,000 gain ($30,000 minus $12,000), which is long-term capital gain. The $6,000 choice wrongly puts the casualty items into the main Section 1231 netting.",
+"source": "IRC 1231(a)(1), (a)(4)(C); IRS Pub 544 (2025), ch. 3",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-008",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "Olivia, an individual, had a net Section 1231 loss of $25,000 in 2021, which she deducted as an ordinary loss. In 2023 she had a net Section 1231 gain of $10,000, all of which was properly treated as ordinary income under the lookback rule. She had no other Section 1231 gains or losses from 2020 through 2024. In 2025 she has a net Section 1231 gain of $40,000. How is her 2025 net Section 1231 gain treated?",
+"choices": [
+"$15,000 ordinary income and $25,000 long-term capital gain",
+"$25,000 ordinary income and $15,000 long-term capital gain",
+"$40,000 long-term capital gain",
+"$40,000 ordinary income"
+],
+"answer": 0,
+"explain": "A net Section 1231 gain is ordinary income to the extent of nonrecaptured net Section 1231 losses from the 5 preceding years (2020 through 2024). The 2021 loss of $25,000 was already recaptured by $10,000 in 2023, leaving $15,000 nonrecaptured, so $15,000 is ordinary income and the remaining $25,000 is long-term capital gain. The $25,000 ordinary choice forgets the 2023 recapture.",
+"source": "IRC 1231(c); IRS Pub 544 (2025), ch. 3, Nonrecaptured section 1231 losses; Form 4797 instructions",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-009",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "In 2016 Elena, an individual, bought a residential rental property for $325,000, of which $275,000 was allocable to the building and $50,000 to the land. She claimed $90,000 of straight-line depreciation on the building. On June 20, 2025, she sold the property for $400,000, of which $300,000 was allocable to the building and $100,000 to the land. She had no other Section 1231 transactions and no nonrecaptured net Section 1231 losses. How is her $165,000 gain characterized?",
+"choices": [
+"No ordinary income, $90,000 of unrecaptured Section 1250 gain, and $75,000 of other long-term capital gain",
+"$90,000 of ordinary income and $75,000 of long-term capital gain",
+"No ordinary income, $115,000 of unrecaptured Section 1250 gain, and $50,000 of other long-term capital gain",
+"$18,000 of ordinary income and $147,000 of long-term capital gain"
+],
+"answer": 0,
+"explain": "The building gain is $115,000 ($300,000 minus the $185,000 adjusted basis) and the land gain is $50,000. Section 1250 makes only depreciation in excess of straight-line ordinary income, so there is none; unrecaptured Section 1250 gain is the building gain up to the depreciation taken, $90,000, and the other $75,000 is long-term capital gain. The $90,000 ordinary choice applies Section 1245 rules to real property, and the $18,000 choice applies the 20% Section 291 rule that reaches only corporations.",
+"source": "IRC 1250(a), (b); IRC 1(h)(6); IRC 291(a)(1); IRS Pub 544 (2025), ch. 3 and ch. 4",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-010",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "In 2025 Derek, an individual, sold three assets used in his business, each held more than one year. Machine A cost $60,000, had $40,000 of depreciation, and sold for $45,000. Machine B cost $50,000, had $20,000 of depreciation, and sold for $20,000. Land cost $28,000 and sold for $40,000. He has no nonrecaptured net Section 1231 losses from earlier years. How are these sales treated?",
+"choices": [
+"$25,000 ordinary income and $2,000 long-term capital gain",
+"$27,000 long-term capital gain",
+"$15,000 ordinary income and $12,000 long-term capital gain",
+"$25,000 ordinary income, $12,000 long-term capital gain, and a $10,000 ordinary loss"
+],
+"answer": 0,
+"explain": "Machine A has a $25,000 gain ($45,000 minus $20,000 adjusted basis), all ordinary under Section 1245 because recapture is the lesser of the gain or the $40,000 depreciation. Machine B has a $10,000 loss ($20,000 minus $30,000) and the land a $12,000 gain; both are Section 1231 items that net to a $2,000 gain, which is long-term capital gain. Recapture income is not netted with Section 1231 losses, so the $15,000 ordinary choice is wrong.",
+"source": "IRC 1245(a)(1); IRC 1231(a), (c); IRS Pub 544 (2025), ch. 3",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-011",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "Jen bought stock directly from a domestic corporation at its original issuance in 2020 for $150,000 cash. The stock qualified as Section 1244 small business stock. In 2025 she sold all of it to an unrelated buyer for $20,000. Jen and her husband, Mike, file a joint return for 2025. Mike owns no stock, and they have no other capital gains or losses for 2025. How is the $130,000 loss treated on their 2025 return?",
+"choices": [
+"$100,000 ordinary loss and a $30,000 capital loss, of which $3,000 is deductible in 2025 and $27,000 carries forward",
+"$50,000 ordinary loss, because only Jen owned the stock, and an $80,000 capital loss, of which $3,000 is deductible in 2025",
+"$130,000 ordinary loss, all deductible in 2025",
+"$100,000 ordinary loss and a $30,000 capital loss, all deductible in 2025"
+],
+"answer": 0,
+"explain": "On a joint return the Section 1244 ordinary loss limit is $100,000 a year, whether the loss is sustained by one spouse or both, so $100,000 is ordinary and the other $30,000 ($130,000 - $100,000) is a capital loss. With no capital gains, only $3,000 of that capital loss offsets other income in 2025 and $27,000 carries forward. The $50,000 limit applies only to a taxpayer who does not file a joint return.",
+"source": "IRC 1244(a), 1244(b); Treas. Reg. 1.1244(b)-1(b)(1)(ii); IRC 1211(b), 1212(b)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-012",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "In each case below, the stock was Section 1244 stock when the corporation issued it, and the holder sold it at a loss in 2025. All of the following individuals may treat the loss as an ordinary loss under Section 1244 EXCEPT:",
+"choices": [
+"Lena, who bought her shares for cash directly from the corporation when it issued them",
+"Omar, who was a partner in a partnership when the partnership bought shares from the corporation at issuance, and whose distributive share includes the partnership's loss on those shares",
+"Paul, who bought his shares for cash from Lena, the original holder",
+"Rosa, who received her shares from the corporation at issuance in exchange for equipment whose basis equaled its fair market value"
+],
+"answer": 2,
+"explain": "Only the individual to whom the corporation issued the stock, or an individual who was a partner when a partnership acquired the stock at issuance, can claim a Section 1244 ordinary loss. Anyone who acquires the stock from a shareholder, by purchase, gift or otherwise, has a capital loss, so Paul does not qualify. Stock issued for property other than stock or securities, such as Rosa's equipment, can qualify.",
+"source": "IRC 1244(a), 1244(c)(1)(B); Treas. Reg. 1.1244(a)-1(b)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-013",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "In September 2025 Nina, a sole proprietor, sold business equipment that cost $200,000 and on which she had claimed $120,000 of depreciation. The selling price was $300,000: the buyer assumed a $50,000 loan secured by the equipment, paid $50,000 cash at closing, and gave a note for $200,000 with adequate stated interest, with principal payments starting in 2026. Nina paid $10,000 of selling expenses and reports on the installment method. How much gain must she recognize for 2025?",
+"choices": [
+"$18,000",
+"$42,000",
+"$135,000",
+"$138,000"
+],
+"answer": 3,
+"explain": "The $120,000 of Section 1245 recapture is recognized in full in the year of sale and is added to basis, so installment sale basis is $80,000 + $10,000 selling expenses + $120,000 = $210,000 and gross profit is $90,000. The assumed loan does not exceed that basis, so the contract price is $300,000 - $50,000 = $250,000 and the gross profit percentage is 36%; the $50,000 payment gives $18,000, for a 2025 total of $120,000 + $18,000 = $138,000. Dividing gross profit by the selling price instead of the contract price gives 30% and the wrong $135,000.",
+"source": "IRC 453(i)(1), 1245(a); Treas. Reg. 15a.453-1(b)(2); IRS Pub 537 (2025)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-014",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "B",
+"q": "On March 1, 2025, Frank sold land he held for investment to his son for $300,000. Frank's basis was $120,000, and there were no selling expenses. The son paid $30,000 at closing and gave a note for $270,000 with adequate stated interest, payable in installments beginning March 1, 2026. On November 15, 2025, the son resold the land to an unrelated buyer for $320,000 cash. Frank reports on the installment method. How much gain must Frank recognize for 2025?",
+"choices": [
+"$18,000",
+"$162,000",
+"$180,000",
+"$200,000"
+],
+"answer": 2,
+"explain": "Frank's gross profit percentage is 60% ($180,000 / $300,000). Because his son is a related person and resold the land within two years, Frank is treated as receiving the lesser of the son's $320,000 amount realized or the $300,000 contract price, minus the $30,000 already received, or $270,000; total 2025 payments are $300,000, and 60% of that is $180,000. The $200,000 answer wrongly uses the son's resale price, and $18,000 ignores the related-party resale rule.",
+"source": "IRC 453(e)(1), 453(e)(2), 453(e)(3), 453(f)(1); IRS Pub 537 (2025)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-015",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "All of the following pairs are related persons under Section 267(b), so that a loss on a 2025 sale between them is disallowed, EXCEPT:",
+"choices": [
+"An individual and a corporation in which she owns 40% of the stock by value and her husband owns 15%",
+"The grantor of a trust and the trust's fiduciary",
+"An individual and his wife's brother",
+"An S corporation and a C corporation when the same persons own more than 50% in value of the outstanding stock of each"
+],
+"answer": 2,
+"explain": "A brother-in-law is not family under Section 267(c)(4), which covers only siblings, a spouse, ancestors and lineal descendants, so an individual and his wife's brother are not related. The wife in the first choice owns 55% (her 40% plus her husband's 15% by family attribution), which is more than 50%, so she and the corporation are related; the grantor and fiduciary, and the commonly controlled S and C corporations, are also listed relationships.",
+"source": "IRC 267(a)(1), 267(b)(2), 267(b)(4), 267(b)(12), 267(c)(2), 267(c)(4)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-016",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "Zeta Corp., a C corporation, has 1,000 shares of one class of stock outstanding, owned as follows: Mark 300, Mark's sister 200, Mark's grandson 100, Mark's father 100, Yolo Corp. 200, and an unrelated individual 100. Mark owns 40% of the only class of Yolo Corp. stock, and unrelated individuals own the rest. What percentage of Zeta stock is Mark treated as owning, directly and constructively, under Section 267(c) and under Section 318(a)?",
+"choices": [
+"78% under Section 267(c) and 50% under Section 318(a)",
+"78% under both Section 267(c) and Section 318(a)",
+"70% under Section 267(c) and 50% under Section 318(a)",
+"78% under Section 267(c) and 70% under Section 318(a)"
+],
+"answer": 0,
+"explain": "Under Section 267(c) Mark owns his 300 shares plus his sister's, grandson's and father's 400 shares as family, plus 40% of Yolo's 200 shares (80) because stock held by a corporation is attributed proportionately to any shareholder: 780 shares, or 78%. Under Section 318(a) family means only a spouse, children, grandchildren and parents, so the sister's shares are excluded, and corporate stock is attributed only to a shareholder owning 50% or more in value, so Yolo's shares are excluded: 300 + 100 + 100 = 500 shares, or 50%. Treating a sibling as family under Section 318 is the most common error.",
+"source": "IRC 267(c)(1), 267(c)(2), 267(c)(4); IRC 318(a)(1)(A), 318(a)(2)(C)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-017",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "In February 2025 Joan sold land she held for investment to her daughter, Kate, for $60,000, its fair market value. Joan's adjusted basis was $90,000. In October 2025 Kate sold the land to an unrelated buyer for $75,000. What are the 2025 results for Joan and Kate?",
+"choices": [
+"Joan deducts no loss, and Kate recognizes no gain",
+"Joan deducts no loss, and Kate recognizes a $15,000 gain",
+"Joan deducts a $15,000 loss when Kate resells, and Kate recognizes no gain",
+"Joan deducts no loss, and Kate recognizes a $15,000 loss because she takes Joan's $90,000 basis"
+],
+"answer": 0,
+"explain": "Joan's $30,000 loss ($60,000 - $90,000) is disallowed because a daughter is a related person. Kate's basis is her $60,000 cost, so she realizes a $15,000 gain, which is recognized only to the extent it exceeds Joan's $30,000 disallowed loss, so none is recognized; the other $15,000 of disallowed loss is lost for good and never returns to Joan. Kate does not take Joan's basis, so she has no loss.",
+"source": "IRC 267(a)(1), 267(b)(1), 267(c)(4), 267(d)(1); Treas. Reg. 1.267(d)-1(a)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-018",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "Sam owns 80% of the value of the outstanding stock of Delta Corp., a C corporation; unrelated persons own the rest. In June 2025 Sam sold Delta a warehouse building (not the land) that he had used in his sole proprietorship since 2015. The building cost $400,000, and he had claimed $100,000 of straight-line depreciation. Delta paid $450,000, its fair market value, and will depreciate the building. How is Sam's $150,000 gain characterized?",
+"choices": [
+"$100,000 of unrecaptured Section 1250 gain and $50,000 of other Section 1231 gain",
+"$100,000 of ordinary income and $50,000 of Section 1231 gain",
+"$150,000 of ordinary income",
+"$150,000 of Section 1231 gain"
+],
+"answer": 2,
+"explain": "Section 1239 treats all gain on a sale of property between a person and a corporation of which he owns more than 50% in value as ordinary income if the property is depreciable in the buyer's hands, so the full $150,000 ($450,000 - $300,000 adjusted basis) is ordinary. Without Section 1239 there would be no Section 1250 ordinary recapture on straight-line depreciation; the gain would be Section 1231 gain, of which $100,000 would be unrecaptured Section 1250 gain. Section 1239 does not stop at the depreciation taken.",
+"source": "IRC 1239(a), 1239(b)(1), 1239(c)(1)(A); IRC 1250(a), 1(h)(6); IRS Pub 544 (2025)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-019",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "On January 1, 2025, Ruth made an interest-free demand loan of $90,000 to her son. It was the only loan between them and was outstanding all of 2025, and tax avoidance was not a principal purpose. The son's 2025 net investment income was $3,000. Assume the blended annual rate (the applicable federal rate for a demand loan outstanding for the full year) is 4%. How much interest income must Ruth report for 2025 under Section 7872?",
+"choices": [
+"$0",
+"$2,000",
+"$3,000",
+"$3,600"
+],
+"answer": 2,
+"explain": "Forgone interest at the applicable federal rate is $90,000 x 4% = $3,600, but for a gift loan between individuals of $100,000 or less, the interest treated as paid back to the lender cannot exceed the borrower's net investment income, so Ruth reports $3,000. The $0 answer would apply only if the son's net investment income were $1,000 or less, or the loans totaled $10,000 or less.",
+"source": "IRC 7872(a)(1), 7872(c)(1)(A), 7872(c)(2), 7872(d)(1)(A), 7872(d)(1)(E)(ii), 7872(e)(2)",
+"cpa": [
+"TCP-IV"
+]
+},
+{
+"id": "tcp4-020",
+"part": "TCP",
+"domain": "TCP-IV",
+"exam": "cpa",
+"group": "C",
+"q": "On July 1, 2025, Ruth sold land she held for investment to her son for $400,000, payable in one lump sum on July 1, 2028, with no stated interest. Ruth made no other sales to her son in 2025, and neither of them is a nonresident alien. Assume the applicable federal rate for the note is 7%, compounded semiannually. Which statement about imputed interest on the sale is correct?",
+"choices": [
+"Unstated interest is imputed at 6%, compounded semiannually; it is interest income to Ruth and reduces the selling price",
+"Unstated interest is imputed at 7%, the applicable federal rate, because Section 1274 applies to sales over $250,000",
+"No interest is imputed because the sale is between family members",
+"Unstated interest is imputed at 6%, compounded semiannually, and is added to Ruth's capital gain on the land"
+],
+"answer": 0,
+"explain": "For a sale of land by an individual to a family member, the discount rate under Section 483 is capped at 6%, compounded semiannually, on up to $500,000 of sales between the same individuals in a calendar year, and Section 1274 does not apply to the extent this rule does. The unstated interest is taxed as interest, so less of the $400,000 is selling price for figuring Ruth's gain. Using the 7% applicable federal rate ignores the related-party land rule.",
+"source": "IRC 483(a), 483(b), 483(e); IRC 1274(c)(3)(F); IRS Pub 537 (2025)",
+"cpa": [
+"TCP-IV"
+]
 }
 ]
