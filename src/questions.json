@@ -11014,5 +11014,2005 @@
 "cpa": [
 "REG-IV"
 ]
+},
+{
+"id": "reg2-001",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Under the common law of agency, authority that a principal grants to an agent directly, in a written agency agreement or in clear oral instructions, is called:",
+"choices": [
+"Apparent authority",
+"Implied authority",
+"Express authority",
+"Authority by ratification"
+],
+"answer": 2,
+"explain": "Express authority is actual authority the principal grants in so many words, either in an agency agreement or by clear oral instructions. Implied authority is also actual authority, but it is inferred from the express grant or from the principal's conduct rather than stated outright, and apparent authority rests on what a third party reasonably believes, not on any grant to the agent.",
+"source": "Cornell LII Wex, express authority; Cornell LII Wex, actual authority",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-002",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Rhoda owns a bakery. She tells her manager, Eli, \"Get the delivery van's brakes fixed this week at whatever shop can do it.\" Eli takes the van to a repair shop and signs the shop's standard work order authorizing the brake repair in the bakery's name. Rhoda said nothing about signing work orders. Which statement is correct?",
+"choices": [
+"Eli had implied actual authority to sign the work order, because it was reasonably necessary to carry out Rhoda's express instruction.",
+"Eli had only apparent authority, because Rhoda never told him he could sign documents.",
+"Eli had no authority to sign, and the bakery is bound only if Rhoda later ratifies the work order.",
+"Eli had express authority to sign the work order, because any act an agent performs for the principal is expressly authorized."
+],
+"answer": 0,
+"explain": "When a principal expressly authorizes a task, the agent also has implied actual authority to take the steps reasonably necessary to complete it, and signing the shop's work order is such a step. Apparent authority is the wrong label because it depends on a third party's reasonable belief created by the principal's conduct, while here Eli's authority came from Rhoda's own instruction to him.",
+"source": "Cornell LII Wex, implied authority; Cornell LII Wex, actual authority",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-003",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Over the past year, Nadia, the office manager of a small firm, has several times ordered printer supplies on the firm's account without being told to. Each time the owner saw the invoice and paid it without objection, and he has never told her to stop. Nadia now places another, similar order. As between Nadia and the owner, Nadia most likely had:",
+"choices": [
+"No authority, because actual authority must be granted to an agent expressly in words.",
+"Express authority, because paying the earlier invoices was a written grant of authority.",
+"Authority only if the owner ratifies this new order after it is placed.",
+"Implied actual authority, because a principal's failure to object to an agent's prior acts can authorize the agent to repeat them."
+],
+"answer": 3,
+"explain": "A principal's failure to object to an agent's prior actions can give the agent implied actual authority to repeat those actions. Actual authority does not have to be granted in words, so the choice saying no authority exists misstates the rule, and ratification is needed only when an agent acted without authority.",
+"source": "Cornell LII Wex, implied authority; Cornell LII Wex, agency",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-004",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Apparent authority arises when:",
+"choices": [
+"The agent reasonably understands, from the principal's instructions, that the principal wants the act done.",
+"A third party reasonably believes, because of the principal's conduct, that the agent is authorized to act for the principal.",
+"The agent tells a third party that the agent is authorized to act for the principal.",
+"The principal approves an agent's unauthorized act after the act is done."
+],
+"answer": 1,
+"explain": "Apparent authority exists only when a third party reasonably infers from the principal's own conduct that the principal gave the agent the power to act. An agent's reasonable understanding of the principal's instructions describes implied actual authority, and an agent's own claims of authority cannot create apparent authority because the belief must trace to the principal. Approval after the fact is ratification.",
+"source": "Cornell LII Wex, apparent authority; Cornell LII Wex, actual authority",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-005",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Coastline Retail appoints Lee as manager of one of its stores. Store managers in the industry commonly sign supply contracts of $8,000 or more. Coastline privately instructs Lee in writing not to sign any supply contract over $5,000. Lee signs an $8,000 supply contract in Coastline's name with a vendor who does not know of the limit. Which statement is correct?",
+"choices": [
+"Coastline is not bound, because Lee had no actual authority to sign a contract over $5,000.",
+"Coastline is bound, because Lee had implied actual authority as store manager.",
+"Coastline is bound, because Lee had apparent authority and the vendor did not know of the private limit.",
+"Coastline is bound only if it ratifies the contract."
+],
+"answer": 2,
+"explain": "Appointing someone to a position such as store manager gives that person apparent authority to do what people in that position are normally expected to do, and a principal's private limit on the agent does not cut off apparent authority when the third party does not know of it. Implied actual authority is wrong because an agent has no implied authority to do something the principal expressly prohibited. By ignoring the limit, Lee breached the duty of obedience to Coastline.",
+"source": "Cornell LII Wex, apparent authority; Cornell LII Wex, agency",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-006",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Which statement about how an agency relationship is created is correct?",
+"choices": [
+"It must be created by a written agreement signed by both the principal and the agent.",
+"It exists only if the parties call their relationship an agency and intend its legal consequences.",
+"It can arise from the parties' conduct showing consent that one will act on the other's behalf and subject to the other's control.",
+"It arises only from the principal's statements to third parties about the agent."
+],
+"answer": 2,
+"explain": "Whether an agency exists depends on conduct showing mutual consent that one person will act on behalf of the other and subject to the other's control, and an agency can exist even if the parties did not call it one or intend its legal consequences. No signed writing is needed in general, because authority can be granted by oral instructions. The principal's statements to third parties are what create apparent authority, not the agency itself.",
+"source": "Cornell LII Wex, fiduciary relationship (quoting A. Gay Jenson Farms Co. v. Cargill, Inc., 309 N.W.2d 285 (Minn. 1981)); Cornell LII Wex, express authority",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-007",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "For five years Omar was the purchasing agent for Delta Builders, and he regularly ordered lumber on Delta's account from Pine Supply. Delta fired Omar on June 1 but did not tell Pine Supply. On June 10 Omar ordered lumber from Pine Supply in Delta's name and kept it. Pine Supply had no knowledge that Omar had been fired. Is Delta liable to Pine Supply for the lumber?",
+"choices": [
+"Yes, because Omar's apparent authority continued until Pine Supply had notice that the agency had ended.",
+"No, because firing Omar ended all of his authority on June 1.",
+"No, because only Omar received the lumber, so only Omar is liable.",
+"Yes, because Omar still had actual authority until Delta gave him written notice of termination."
+],
+"answer": 0,
+"explain": "Ending the agency terminates the agent's actual authority, but apparent authority can continue until third parties who dealt with the agent have notice that the agency has ended. Pine Supply had dealt with Omar for years and was not told, so Delta is bound. The choice saying all authority ended on June 1 is wrong because it ignores this lingering apparent authority, and Omar's actual authority did end when he was fired.",
+"source": "Cornell LII Wex, fiduciary relationship; Cornell LII Wex, apparent authority",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-008",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Paula signed a durable power of attorney naming her nephew, Sam, as her agent to manage her bank accounts. Paula died on March 3. On March 9, knowing that Paula had died, Sam withdrew funds from her account to pay a bill. Which statement is correct?",
+"choices": [
+"Sam's authority continued, because a durable power of attorney survives the principal's death.",
+"Sam's authority ended when Paula died, because even a durable power of attorney ends at the principal's death.",
+"Sam's authority continued until a court appointed an executor for Paula's estate.",
+"Sam's authority ended only when Paula's heirs revoked the power of attorney in writing."
+],
+"answer": 1,
+"explain": "A power of attorney is effective only while the principal is alive. A durable power of attorney differs from an ordinary one only in that it stays in effect if the principal becomes incapacitated, so it still ends at the principal's death. The choice saying a durable power survives death confuses incapacity with death.",
+"source": "Cornell LII Wex, durable power of attorney; Cornell LII Wex, power of attorney",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-009",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Without any authority, an agent signs a contract in her principal's name to buy a used delivery truck. Which statement about ratification of the contract is correct?",
+"choices": [
+"The principal can ratify only by signing a written ratification.",
+"Ratification makes the principal liable only for future deliveries, not for the purchase already agreed to.",
+"The principal can ratify by conduct, such as accepting the benefits of the contract.",
+"Ratification is not possible, because an unauthorized contract is void."
+],
+"answer": 2,
+"explain": "Ratification is a principal's approval of an act that did not bind the principal when it was done, and it can be shown by conduct, including accepting the benefits of the contract, not only by a signed writing. Once ratified, the act binds the principal as if it had been authorized when done, so the choice limiting ratification to future performance is wrong.",
+"source": "Cornell LII Wex, ratify",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-010",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "A lease gives the tenant, Fenwick Co., an option to renew that must be exercised by notice to the landlord no later than March 1. On February 20, Fenwick's office assistant, who had no authority to do so, sent the landlord a notice exercising the option in Fenwick's name. Fenwick learned of the notice on March 10 and ratified it that day. Was the option validly exercised?",
+"choices": [
+"Yes, because ratification relates back to February 20, when the notice was sent.",
+"Yes, because the landlord received the notice before March 1.",
+"No, because a lease option can never be exercised through an agent.",
+"No, because a ratification is not effective against the landlord if it comes after the deadline for the act has passed."
+],
+"answer": 3,
+"explain": "When an act must be done by a set time to create a right against another party, a ratification made after that time is not effective against the other party, because the person ratifying must be able to do the act both when it was done and when it is ratified. Fenwick could not have exercised the option itself on March 10, so ratification does not relate back to save it. The relation-back choice states the general effect of ratification but ignores this timing limit.",
+"source": "FEC v. NRA Political Victory Fund, 513 U.S. 88 (1994) (quoting Restatement (Second) of Agency section 90), via Cornell LII",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-011",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Gina hires Raj as her agent to find and buy a parcel of land suitable for a warehouse. Raj finds a suitable parcel, secretly buys it in his own name, and then sells it to Gina at a profit without telling her that he owned it. The price Gina paid was fair market value. Which duty did Raj breach?",
+"choices": [
+"The duty of loyalty",
+"The duty of obedience",
+"The duty of care",
+"No duty, because Gina paid fair market value"
+],
+"answer": 0,
+"explain": "An agent is a fiduciary who must act in the principal's best interests and not for personal gain, and secretly dealing with the principal for the agent's own profit is self-dealing that breaches the duty of loyalty. A fair price does not cure the breach. The duty of obedience concerns following the principal's instructions, and Raj did deliver a suitable parcel as instructed.",
+"source": "Cornell LII Wex, fiduciary duty",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-012",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Acting within his actual authority, Ben contracts in his own name to buy a building from Seller. He does not reveal that he is buying for Harbor Corp., and Seller believes Ben is buying for himself. Harbor Corp. later refuses to close, and Seller then learns that Ben was acting for Harbor. Whom may Seller hold liable on the contract?",
+"choices": [
+"Only Ben, because Seller never agreed to deal with Harbor Corp.",
+"Only Harbor Corp., because Ben acted within his actual authority.",
+"Either Ben or Harbor Corp.",
+"Neither, because the contract did not name the true buyer."
+],
+"answer": 2,
+"explain": "Harbor Corp. is an undisclosed principal: its agent acted for it without revealing its existence. An undisclosed principal is bound by its agent's acts within actual authority, and the agent, who contracted as if for himself, is also liable, so the third party may pursue either the agent or, once it learns of it, the principal. The choice naming only Harbor Corp. is wrong because Ben, who signed in his own name, remains liable to Seller as well.",
+"source": "Cornell LII Wex, undisclosed principal",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-013",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "While making a delivery for her employer, a driver negligently runs a red light and injures a pedestrian. Under the doctrine of respondeat superior, which statement is correct?",
+"choices": [
+"Only the employer is liable, because the driver was acting for the employer.",
+"Both the employer and the driver may be held liable to the pedestrian.",
+"Only the driver is liable unless the employer was negligent in hiring or supervising her.",
+"The employer is liable only if it knew about the driver's careless driving before the accident."
+],
+"answer": 1,
+"explain": "Respondeat superior makes an employer liable for the wrongful acts of an employee committed within the scope of employment, without regard to the employer's own fault or knowledge. The employee remains liable for her own tort, so the injured party typically sues both. The choice requiring negligent hiring or supervision describes the employer's direct liability, which is a separate theory that is not needed here.",
+"source": "Cornell LII Wex, respondeat superior; Cornell LII Wex, servant",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-014",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "A furniture company employs Dan as a delivery driver. In which situation is the company most likely liable under respondeat superior for Dan's negligent driving?",
+"choices": [
+"During his delivery route, Dan drives a few blocks off the route to pick up lunch and collides with another car on the way back to his next stop.",
+"On a Sunday when he is off duty, Dan takes the company van without permission to help a friend move to another city.",
+"Driving his own car from home to the warehouse before his shift, Dan hits a cyclist.",
+"Dan abandons his route for the afternoon to attend a friend's party in another town and has an accident at the party."
+],
+"answer": 0,
+"explain": "A detour, a minor departure from the employee's duties, is still within the scope of employment, so the employer is liable for it, while a frolic, a major departure undertaken for the employee's own purposes, is outside the scope of employment. A short lunch stop during a route is a detour. Commuting to and from work is generally treated as outside the employment relationship, and the Sunday trip and the afternoon party are frolics.",
+"source": "Cornell LII Wex, frolic and detour; Cornell LII Wex, agency",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-015",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "A business that hires an independent contractor is generally not vicariously liable for the contractor's torts. Which of the following is an exception that can make the hiring business liable?",
+"choices": [
+"The contractor is paid by the job rather than by the hour.",
+"The contractor supplies its own tools and equipment.",
+"The contractor performs similar work for many other customers.",
+"The work the contractor was hired to do is an inherently dangerous activity."
+],
+"answer": 3,
+"explain": "Respondeat superior applies to employees, not independent contractors, but some duties cannot be delegated, and a business that hires a contractor to perform an inherently dangerous activity remains liable for harm the work causes. The other choices are facts that point toward independent contractor status, so they support the general rule of no vicarious liability rather than an exception.",
+"source": "Cornell LII Wex, independent contractor; Cornell LII Wex, respondeat superior",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-016",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "On March 1, Rex Supply, a merchant that sells office furniture, sends Dana a signed letter offering to sell her 20 desks at $300 each. The letter states that the offer will remain open for 60 days. Dana gives nothing in return for this promise. On March 20, Rex notifies Dana that it revokes the offer. On March 30, Dana accepts. What is the result under the Uniform Commercial Code (UCC)?",
+"choices": [
+"No contract was formed, because Dana gave no consideration to keep the offer open.",
+"A contract was formed, because Rex's signed written assurance made the offer irrevocable for the 60 days stated.",
+"No contract was formed, because the offeree, Dana, is not a merchant.",
+"A contract was formed only for the desks Dana had already arranged to resell before March 20."
+],
+"answer": 1,
+"explain": "Under the UCC firm offer rule, a merchant's offer to buy or sell goods in a signed writing that gives assurance it will be held open is irrevocable without consideration for the time stated, up to three months. Rex's March 20 revocation was ineffective, so Dana's March 30 acceptance formed a contract. The need for consideration to keep an offer open is the common-law option contract rule, which the firm offer rule displaces; only the offeror must be a merchant.",
+"source": "UCC 2-205; Cornell LII Wex, firm offer",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-017",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Owen offers in writing to sell Paula a parcel of land for $200,000. Paula replies, 'I will pay $180,000.' Owen refuses. The next day Paula writes, 'All right, I accept your offer at $200,000.' Owen has not renewed his offer. Which statement is correct?",
+"choices": [
+"A contract was formed at $200,000, because Paula accepted before Owen revoked his offer.",
+"A contract was formed at $180,000, because Owen did not respond to Paula's reply in writing.",
+"No contract was formed, because Paula's counteroffer rejected Owen's offer, and her later 'acceptance' is only a new offer.",
+"No contract was formed, because an offer to sell land can be accepted only by a signed deed."
+],
+"answer": 2,
+"explain": "A counteroffer is both a rejection of the original offer and a new offer, so it ends the offeree's power to accept the original offer. Paula's later attempt to accept at $200,000 is a new offer that Owen is free to accept or reject. The first choice is tempting, but once Paula rejected the offer by countering, there was nothing left to accept.",
+"source": "Cornell LII Wex, counteroffer; Cornell LII Wex, offer",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-018",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Pat, who is not a merchant, gives Lee a signed note offering to sell Lee her used piano for $2,000 and promising to keep the offer open for 30 days. Lee gives nothing for the promise and does nothing in reliance on it. On day 10, Pat tells Lee she revokes the offer. On day 12, Lee tries to accept. Which statement is correct?",
+"choices": [
+"Pat's revocation was effective, because the firm offer rule applies only to offers by merchants and Lee gave no consideration for an option.",
+"Pat's revocation was ineffective, because the offer was a firm offer in a signed writing.",
+"Pat's revocation was ineffective, because any written offer that states a time for acceptance is irrevocable for that time.",
+"A contract was formed on day 12, because Lee accepted within the 30 days stated."
+],
+"answer": 0,
+"explain": "The Uniform Commercial Code (UCC) firm offer rule applies only to an offer by a merchant, so Pat's signed promise does not make her offer irrevocable. Without consideration (an option contract) or detrimental reliance, an offeror may revoke an offer at any time before acceptance. The firm offer choice is the common trap: a signed writing alone is not enough when the offeror is not a merchant.",
+"source": "UCC 2-205; Cornell LII Wex, option contract; Cornell LII Wex, offer",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-019",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "On May 1, Ana mails Ben an offer to provide bookkeeping services for one year at $1,500 per month. The offer says nothing about how or when acceptance is effective. Ben mails a letter of acceptance on May 5, and Ana receives it on May 8. On May 6, Ana changes her mind and sends Ben a revocation, which Ben receives on May 7. Under the common-law rule most states follow, which statement is correct?",
+"choices": [
+"No contract was formed, because Ben received the revocation before Ana received the acceptance.",
+"No contract was formed, because the revocation was effective when Ana sent it on May 6.",
+"A contract was formed on May 8, when Ana received the acceptance.",
+"A contract was formed on May 5, when Ben mailed the acceptance."
+],
+"answer": 3,
+"explain": "Under the mailbox rule, an acceptance sent by an invited medium is effective when it leaves the offeree's possession, not when the offeror receives it. A revocation, by contrast, works only when the offeree is notified of it before accepting. Ben accepted on May 5, so Ana's revocation, received May 7, came too late; the trap is to treat the acceptance as effective only on receipt.",
+"source": "Cornell LII Wex, mailbox rule (quoting Restatement (Second) of Contracts 63); Cornell LII Wex, offer",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-020",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Hart Co., a merchant, sends Ivy Corp., a merchant, a purchase order for 500 valves at $40 each. The order states that acceptance is limited to its terms. Ivy returns a signed acknowledgment stating 'We accept your order' and adding a term that all disputes go to arbitration. The acknowledgment does not say acceptance is conditional on Hart's assent to the new term. Under the Uniform Commercial Code (UCC), which statement is correct?",
+"choices": [
+"No contract was formed, because the acknowledgment did not mirror the purchase order.",
+"A contract was formed on the terms of the purchase order, and the arbitration term is not part of it.",
+"A contract was formed that includes the arbitration term, because both parties are merchants.",
+"A contract was formed that includes the arbitration term unless Hart objects in writing within 10 days."
+],
+"answer": 1,
+"explain": "Under UCC 2-207(1), a definite expression of acceptance operates as an acceptance even though it adds terms, unless it is expressly conditional on assent to them. Between merchants an additional term becomes part of the contract unless, among other things, the offer expressly limits acceptance to its terms, as Hart's order did. The 'no contract' choice applies the common-law mirror image rule, which does not govern a sale of goods, and the 10-day objection period belongs to the merchant confirmation rule of the statute of frauds.",
+"source": "UCC 2-207(1), (2)(a); Cornell LII Wex, mirror image rule",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-021",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Cara hires Dev, a contractor, to remodel her kitchen for $40,000. Halfway through, with no unforeseen difficulties, Dev says he will stop work unless Cara agrees to pay $45,000 for the same work. Cara signs a writing agreeing to pay $45,000. When Dev finishes, Cara pays only $40,000. Under the common-law rule most states follow, can Dev recover the extra $5,000?",
+"choices": [
+"Yes, because a modification of a contract needs no consideration to be binding.",
+"Yes, because Cara agreed to the modification in a signed writing.",
+"No, because Dev gave no new consideration; he was already bound to do the work for $40,000.",
+"No, because a contract for services can never be modified once performance begins."
+],
+"answer": 2,
+"explain": "A remodeling contract is for services, so the common law governs. Under the pre-existing duty rule, a promise to pay more for work the other party is already bound to do is not supported by consideration and is not enforceable. The first choice states the Uniform Commercial Code (UCC) Article 2 rule for sales of goods, which does not apply to services, and a signed writing does not supply the missing consideration.",
+"source": "Cornell LII Wex, consideration; Cornell LII Wex, accord and satisfaction (pre-existing duty rule)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-022",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under a written contract, Mill Co., a merchant, agreed to sell Baker Inc., a merchant, 1,000 bags of flour at $20 per bag. Before delivery, Mill's costs rose and it asked for $22 per bag. Baker agreed in a signed writing but received nothing new in return. Under the Uniform Commercial Code (UCC), the modification is:",
+"choices": [
+"Binding, because an agreement modifying a contract for the sale of goods needs no consideration.",
+"Not binding, because Baker received no consideration for agreeing to pay more.",
+"Binding only if a court finds Mill's cost increase made performance impracticable.",
+"Voidable by Baker at any time before delivery."
+],
+"answer": 0,
+"explain": "UCC 2-209(1) states that an agreement modifying a contract within Article 2 needs no consideration to be binding. Because the modified contract is still for goods of $500 or more, it must satisfy the statute of frauds, and Baker's signed writing does that. The 'not binding' choice applies the common-law pre-existing duty rule, which governs services and real estate, not sales of goods.",
+"source": "UCC 2-209(1), (3); UCC 2-201(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-023",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under the doctrine of promissory estoppel, a court may enforce a promise that is not supported by consideration when:",
+"choices": [
+"The promise is made in a writing signed by the promisor.",
+"The promisor is a merchant who deals in goods of the kind.",
+"The promisee pays a nominal sum, such as $1, for the promise.",
+"The promisee reasonably relied on the promise to its detriment, the promisor could reasonably foresee that reliance, and enforcement is needed to avoid injustice."
+],
+"answer": 3,
+"explain": "Promissory estoppel lets a promisee recover when it reasonably and detrimentally relied on a promise that the promisor could reasonably foresee would induce reliance, and enforcement is needed to avoid injustice. It applies even though there is no consideration. A signed writing by a merchant is the test for a firm offer under the Uniform Commercial Code (UCC), not for promissory estoppel.",
+"source": "Cornell LII Wex, promissory estoppel; Cornell LII Wex, contract",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-024",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Jo, who is 16 and a minor under state law, buys a used laptop for $900 from Max, an adult. Which statement about the contract is correct under the majority rule?",
+"choices": [
+"The contract is void, so neither Jo nor Max is bound by it.",
+"The contract is voidable at Jo's option; Jo may disaffirm it, but Max is bound unless Jo disaffirms.",
+"The contract is voidable at the option of either party, because one party lacked capacity.",
+"The contract is fully enforceable against Jo, because the price was fair."
+],
+"answer": 1,
+"explain": "Capacity is an element of a valid contract, and a contract made by a minor is generally voidable. Only the minor holds the option to disaffirm or affirm it; the adult party is bound unless the minor disaffirms. It is not void, which would mean it had no legal effect from the start for either party.",
+"source": "Cornell LII Wex, voidable; Cornell LII Wex, capacity; Cornell LII Wex, void",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-025",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Gus agrees to pay Hal $5,000 if Hal steals a competitor's customer list. Hal takes the money but never performs. Gus sues Hal for breach of contract. What is the likely result?",
+"choices": [
+"Gus recovers the $5,000 as compensatory damages.",
+"Gus may enforce the agreement, because Hal accepted payment.",
+"Gus loses, because an agreement to commit a crime lacks the legality element and is void.",
+"Gus loses only if Hal raises the statute of frauds, because the agreement was not in writing."
+],
+"answer": 2,
+"explain": "Legality, a lawful purpose, is one of the elements of a valid contract. An agreement whose object is a crime is void, meaning it has no legal effect from the start, so a court will neither compel performance nor award damages for nonperformance. The statute of frauds choice is wrong because the problem is the illegal purpose, not the lack of a writing.",
+"source": "Cornell LII Wex, contract; Cornell LII Wex, void",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-026",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Lena posts a notice offering $500 to anyone who finds and returns her lost dog. Sam reads it and phones Lena to say, 'I promise I will find your dog.' The next day, before Sam has begun searching, Lena tells Sam she withdraws the reward. Which statement is correct?",
+"choices": [
+"Lena is not bound, because her offer could be accepted only by performance and she revoked it before Sam began to perform.",
+"Lena is bound, because Sam accepted by promising to find the dog, forming a bilateral contract.",
+"Lena is bound, because a reward offer cannot be revoked once a person has read it.",
+"Lena is bound to pay Sam half the reward for his promise."
+],
+"answer": 0,
+"explain": "A reward offer seeks an act, not a promise, so it creates a unilateral contract that is formed only when the requested performance is completed. Sam's promise was not an acceptance, and the offeror may revoke a unilateral offer any time before the offeree begins performance. The bilateral contract choice is wrong because a bilateral contract is an exchange of promises, which Lena did not ask for.",
+"source": "Cornell LII Wex, unilateral contract; Cornell LII Wex, bilateral contract",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-027",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Each of the following correctly describes a type of contract EXCEPT:",
+"choices": [
+"A customer who sits in a barber's chair and gets a haircut without discussing price has formed a contract implied in fact.",
+"A contract a party signed because of an unlawful threat is voidable by that party.",
+"An express contract must be in writing to be a valid contract.",
+"A contract that has every element of a contract but lacks a writing that the statute of frauds requires is unenforceable."
+],
+"answer": 2,
+"explain": "An express contract is one whose terms the parties state in words, orally or in writing, so it need not be written. A contract implied in fact is shown by the parties' conduct, a contract induced by duress is voidable, and a contract that fails the statute of frauds is valid but unenforceable in court. The duress choice may look wrong to someone who thinks duress makes a contract void, but the victim may choose to affirm or avoid it.",
+"source": "Cornell LII Wex, express contract; Cornell LII Wex, implied contract; Cornell LII Wex, duress; Cornell LII Wex, unenforceable; Cornell LII Wex, statute of frauds",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-028",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under the statute of frauds, which of the following oral agreements is unenforceable?",
+"choices": [
+"An agreement to paint a house for $12,000, to be finished within three months.",
+"An agreement to employ a manager for a fixed term of two years beginning next month.",
+"An agreement to sell a used bicycle for $300.",
+"An agreement to provide consulting services for six months for $40,000."
+],
+"answer": 1,
+"explain": "The statute of frauds requires a signed writing for, among others, contracts for the sale of an interest in land and contracts that cannot be completed within one year. A two-year employment term cannot be performed within one year, so the oral agreement is unenforceable. The large-dollar service contracts are tempting, but the common-law statute of frauds has no dollar threshold for services, and the $500 threshold for goods does not reach a $300 sale.",
+"source": "Cornell LII Wex, statute of frauds; UCC 2-201(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-029",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "On June 1, Ace Co. and Bolt Inc., both merchants, orally agree that Bolt will buy 2,000 hinges from Ace for $9,000. On June 3, Ace sends Bolt a written confirmation of the terms, signed by Ace. Bolt receives it on June 5 and reads it but never responds. On July 1, Bolt refuses delivery and asserts the statute of frauds. Under the Uniform Commercial Code (UCC), the contract is:",
+"choices": [
+"Unenforceable against Bolt, because Bolt never signed a writing.",
+"Enforceable only against Ace, because Ace signed the confirmation.",
+"Unenforceable against both parties, because the contract was oral and the price was over $500.",
+"Enforceable against Bolt, because Bolt did not give written notice of objection within 10 days after receiving the confirmation."
+],
+"answer": 3,
+"explain": "Between merchants, a written confirmation received within a reasonable time that is sufficient against the sender satisfies the statute of frauds against the recipient who has reason to know its contents, unless the recipient gives written notice of objection within 10 days after receipt. Bolt received and read Ace's signed confirmation and did not object, so it cannot rely on the statute of frauds. The 'never signed' choice states the general rule, which this merchant exception overrides.",
+"source": "UCC 2-201(1), (2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-030",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Bea's Bakery orally orders 300 canvas tote bags printed with the bakery's name and logo from Tote Works for $4,000. The bags are not suitable for sale to others. Before receiving any notice of repudiation, Tote Works has made a substantial beginning on making them. Bea's then cancels and argues that the oral contract is unenforceable. Which statement is correct under the Uniform Commercial Code (UCC)?",
+"choices": [
+"The contract is enforceable, because the goods are specially manufactured for the buyer and the seller made a substantial beginning on them before notice of repudiation.",
+"The contract is unenforceable, because it is for goods priced at $500 or more and there is no signed writing.",
+"The contract is enforceable only to the extent of the bags Bea's has paid for and accepted.",
+"The contract is enforceable only if both parties are merchants."
+],
+"answer": 0,
+"explain": "UCC 2-201(3)(a) makes an oral contract enforceable when the goods are to be specially manufactured for the buyer, are not suitable for sale to others in the ordinary course of the seller's business, and the seller substantially began manufacture before notice of repudiation. The general $500 writing requirement in 2-201(1) gives way to this exception. The 'paid for and accepted' exception exists too, but here the specially manufactured goods exception covers the whole order.",
+"source": "UCC 2-201(1), (3)(a), (3)(c)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-031",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Kent hires Jacobs Builders to build a house for $300,000. The contract specifies one brand of plumbing pipe. Without intending to deviate, Jacobs installs a different brand of the same quality, a defect that barely affects the home's value. Kent refuses to pay anything until the walls are torn out and the pipe replaced. Which statement is correct?",
+"choices": [
+"Kent may refuse to pay, because Jacobs did not tender perfect performance.",
+"Jacobs recovers nothing on the contract and may sue only for the reasonable value of the materials.",
+"Kent may cancel the contract and recover all payments already made.",
+"Jacobs substantially performed and may recover the contract price less damages for the deviation."
+],
+"answer": 3,
+"explain": "A construction contract is governed by the common law, where the substantial performance doctrine treats an immaterial deviation that still fulfills the contract's purpose as performance. The builder recovers the contract price, and the owner may deduct damages for the difference caused by the deviation. The perfect tender choice borrows the Uniform Commercial Code (UCC) Article 2 rule for goods, which does not apply to building a house.",
+"source": "Cornell LII Wex, substantial performance",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-032",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under a single-delivery contract (not an installment contract), Fab Co. delivers 100 chairs to Dine Inc. Each chair is a separate commercial unit. Three chairs are scratched; the other 97 conform. The contract does not limit Dine's remedies. Under the Uniform Commercial Code (UCC), what may Dine do?",
+"choices": [
+"Dine must accept all 100 chairs, because Fab substantially performed.",
+"Dine may reject the whole delivery, accept the whole delivery, or accept the 97 conforming chairs and reject the rest.",
+"Dine may reject only if the defects substantially impair the value of the whole delivery.",
+"Dine must accept all 100 chairs and may only deduct the cost of repairing the three scratched chairs."
+],
+"answer": 1,
+"explain": "Under the perfect tender rule in UCC 2-601, if goods or the tender of delivery fail in any respect to conform, the buyer may reject the whole, accept the whole, or accept any commercial units and reject the rest. Substantial performance is a common-law doctrine for services and construction. The 'substantially impair' test applies to installment contracts under UCC 2-612, which this contract is not.",
+"source": "UCC 2-601; UCC 2-612(2); Cornell LII Wex, perfect tender rule",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-033",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "A contract requires Tech Co. to deliver 50 laptops of Model X to Lawson Partners by October 31. Tech delivers 50 laptops of Model Y on October 20, and Lawson rightfully rejects them on October 21. On October 22, Tech notifies Lawson that it will deliver 50 Model X laptops by October 30. Under the Uniform Commercial Code (UCC), which statement is correct?",
+"choices": [
+"Lawson may cancel the contract immediately, because the first tender was not perfect.",
+"Tech may cure only if it had reasonable grounds to believe that Model Y would be acceptable.",
+"Tech has a right to cure by making a conforming delivery by October 31, after seasonably notifying Lawson.",
+"Tech may cure only with Lawson's written consent."
+],
+"answer": 2,
+"explain": "Under UCC 2-508(1), when a nonconforming tender is rejected and the time for performance has not yet expired, the seller may seasonably notify the buyer of its intent to cure and then make a conforming delivery within the contract time. Tech still has until October 31. The 'reasonable grounds' test comes from 2-508(2), which gives a further reasonable time only after the contract time has run.",
+"source": "UCC 2-508(1), (2); UCC 2-601",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-034",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Tess hires Uma to manage Tess's rental properties for two years. After six months, Uma wants out. Tess, Uma and Vic all agree that Vic will take over Uma's duties for the rest of the term and that Uma is released from the contract. Which statement is correct?",
+"choices": [
+"Uma is discharged, because the three parties made a novation substituting Vic for Uma.",
+"Uma remains liable if Vic fails to perform, because a party can never escape a contract by transferring duties.",
+"Uma is discharged only after Vic completes the remaining term.",
+"The agreement is ineffective, because a novation requires new consideration from Tess."
+],
+"answer": 0,
+"explain": "A novation is an agreement that substitutes a new party for an original party and excuses the party who is replaced; both original parties must agree to it. Because Tess agreed to release Uma and accept Vic, Uma is discharged now. The 'remains liable' choice ignores that Tess expressly agreed to release Uma, which is what makes this a novation rather than a simple transfer of duties.",
+"source": "Cornell LII Wex, novation",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-035",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Wes rents a hotel room for one night at triple the normal rate. Both Wes and the hotel know that he is renting it only to watch a once-a-year parade from its balcony. Before the date, the parade is canceled for the first time in its history. The room is still available and Wes could still stay in it. Which doctrine best fits Wes's argument that he is excused from paying?",
+"choices": [
+"Impossibility of performance.",
+"Mutual rescission.",
+"Frustration of purpose.",
+"Novation."
+],
+"answer": 2,
+"explain": "Frustration of purpose excuses performance when an unforeseeable event destroys the principal purpose of the contract, even though performance is still possible. Impossibility is the tempting choice, but it applies only when performance itself cannot be done, and here the hotel can still provide the room and Wes can still pay. Mutual rescission would require both parties to agree to cancel.",
+"source": "Cornell LII Wex, frustration of purpose; Cornell LII Wex, impossibility; Cornell LII Wex, rescission",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-036",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "When Gear Co. contracted to sell Plant Inc. a replacement drive shaft for delivery by May 1, Plant told Gear that its production line would shut down without the part and that no other source could supply one in time. Gear delivered on May 15, and Plant lost $30,000 of profits while its line was down. Plant could not have obtained the part elsewhere. Under the Uniform Commercial Code (UCC), can Plant recover the lost profits?",
+"choices": [
+"No, because a buyer's damages for late delivery are limited to the difference between the market price and the contract price.",
+"No, unless the contract expressly listed lost profits as recoverable damages.",
+"Yes, but only as punitive damages for Gear's delay.",
+"Yes, as consequential damages, because Gear had reason to know of Plant's needs when contracting and the loss could not have been prevented by cover."
+],
+"answer": 3,
+"explain": "UCC 2-715(2)(a) lets a buyer recover consequential damages for losses from requirements and needs that the seller had reason to know of at the time of contracting and that could not reasonably be prevented by cover or otherwise. Plant told Gear about the shutdown risk and could not buy elsewhere, so the lost profits are recoverable. Punitive damages are generally not available for breach of contract.",
+"source": "UCC 2-715(2)(a); Cornell LII Wex, consequential damages; Cornell LII Wex, contract",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-037",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under the Uniform Commercial Code (UCC), a liquidated damages clause in a contract for the sale of goods is enforceable if:",
+"choices": [
+"The parties agreed to it in a signed writing, whatever the amount.",
+"The amount is reasonable in light of the anticipated or actual harm from the breach, the difficulty of proving loss, and the difficulty of otherwise obtaining an adequate remedy.",
+"The amount is large enough to deter either party from breaching.",
+"The actual damages can be calculated precisely at the time of contracting."
+],
+"answer": 1,
+"explain": "UCC 2-718(1) allows damages to be liquidated in the agreement only at an amount that is reasonable in light of the anticipated or actual harm, the difficulty of proof of loss, and the inconvenience or nonfeasibility of otherwise obtaining an adequate remedy. A term fixing unreasonably large liquidated damages is void as a penalty, so an amount set to deter breach fails. Liquidated damages are used because actual damages are hard to prove, not because they are easy to calculate.",
+"source": "UCC 2-718(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-038",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "A county hires Luten Co. to build a bridge for $500,000. After Luten has spent $100,000, the county repudiates the contract and tells Luten to stop work. Luten ignores the notice, finishes the bridge, and sues for its full costs. Which statement is correct?",
+"choices": [
+"Luten may not recover the costs it incurred after the county told it to stop, because it had a duty to mitigate damages.",
+"Luten may recover all its costs, because the county breached first.",
+"Luten may recover nothing, because it failed to stop work when told.",
+"Luten may recover all its costs plus punitive damages, because the county's repudiation was intentional."
+],
+"answer": 0,
+"explain": "Under the mitigation of damages doctrine, an injured party cannot recover damages it could have avoided with reasonable effort. Once Luten was told to stop, continuing to build only increased the losses, so the costs incurred after notice are not recoverable. Luten does not lose everything, because it can still recover damages caused by the breach up to the notice, and punitive damages are not available for breach of contract.",
+"source": "Cornell LII Wex, mitigation of damages; Cornell LII Wex, contract",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-039",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Nora signs a contract to buy a lakefront lot from Seth for $250,000. Before closing, Seth refuses to convey the lot because he has received a higher offer. Nora still wants the lot. Which remedy is Nora most likely to obtain?",
+"choices": [
+"Punitive damages, because Seth breached to get a higher price.",
+"Nominal damages only, because she has not yet paid the price.",
+"Specific performance, ordering Seth to convey the lot, because each parcel of land is treated as unique and money damages are inadequate.",
+"Rescission of the contract, which is the only remedy for breach of a contract to sell land."
+],
+"answer": 2,
+"explain": "Specific performance is an equitable remedy ordering a party to perform as promised when money damages are inadequate, most commonly for real property and rare or unique goods. Land is treated as unique, so Nora can obtain an order requiring Seth to convey the lot. Punitive damages are generally not available for breach of contract, even when the breach is deliberate.",
+"source": "Cornell LII Wex, specific performance; Cornell LII Wex, contract; UCC 2-716(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-040",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "B",
+"q": "Under the Uniform Commercial Code (UCC), when a buyer wrongfully rejects goods, the seller may do all of the following EXCEPT:",
+"choices": [
+"Withhold delivery of the goods.",
+"Resell the goods in good faith and in a commercially reasonable manner and recover the difference between the contract price and the resale price, plus incidental damages.",
+"Cancel the contract.",
+"Cover by buying substitute goods and recover the difference between the cost of cover and the contract price."
+],
+"answer": 3,
+"explain": "UCC 2-703 lists the aggrieved seller's remedies, including withholding delivery, reselling and recovering damages under 2-706, recovering damages for nonacceptance, and canceling. Cover, buying substitute goods and recovering the difference between the cost of cover and the contract price, is a buyer's remedy when the seller fails to deliver or the buyer rightfully rejects or revokes acceptance. Mixing up the buyer's cover remedy with the seller's resale remedy is a common error.",
+"source": "UCC 2-703; UCC 2-706(1); UCC 2-711(1); UCC 2-712",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-041",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Pat bought equipment from Seller and signed a promissory note payable to Seller. Kim signed the note as an accommodation party (a surety) for Pat. Seller now sues Kim on the note. Kim may raise all of the following defenses EXCEPT:",
+"choices": [
+"Seller fraudulently induced Pat to sign the note by lying about the equipment.",
+"Pat was a minor when Pat signed the note.",
+"Seller fraudulently induced Kim to sign as surety.",
+"Seller never delivered the equipment Pat paid for with the note."
+],
+"answer": 1,
+"explain": "A surety may raise its own defenses and most of the principal debtor's defenses, such as the creditor's fraud or failure to deliver what was promised. The principal's personal defenses of infancy, lack of legal capacity and discharge in insolvency proceedings are not available to the surety, because protecting the creditor against exactly those risks is why a surety is taken. Fraud on the principal is the tempting wrong choice, but it goes to the underlying obligation, so the surety can use it.",
+"source": "UCC 3-305(a), (d); UCC 3-419(a)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-042",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Sam signed a promissory note to Bank as an accommodation party (a surety) for Ron, the borrower. Ron later received a discharge in bankruptcy that included the note. Bank now demands payment from Sam. What is the result?",
+"choices": [
+"Sam is released, because a surety may assert every defense the principal debtor has.",
+"Sam is released, because the principal debtor's discharge extinguishes the debt for all obligors.",
+"Sam remains liable, because the principal debtor's discharge in bankruptcy is not a defense the surety may raise.",
+"Sam remains liable only if Bank first filed a claim in Ron's bankruptcy case."
+],
+"answer": 2,
+"explain": "Discharge of the principal debtor in an insolvency proceeding is one of the principal's personal defenses that a surety cannot raise. Sam stays liable to Bank on the note. The idea that a surety may assert every defense of the principal is wrong because infancy, lack of capacity and discharge in insolvency are carved out.",
+"source": "UCC 3-305(d)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-043",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Lee signed Tom's promissory note to Lender as an accommodation party, next to the words \"collection guaranteed.\" Tom missed a payment. Before Lender may collect from Lee, Lender generally must:",
+"choices": [
+"make no demand on anyone, because a guarantor is liable as soon as the principal debtor misses a payment.",
+"first try to collect from Tom, for example by obtaining a judgment that is returned unsatisfied, unless Tom is insolvent, cannot be served or payment from Tom is otherwise plainly unobtainable.",
+"obtain Lee's written consent to proceed.",
+"repossess and sell any collateral Tom pledged and sue Lee only for a deficiency."
+],
+"answer": 1,
+"explain": "A guarantor of collection is liable only after the creditor shows that payment cannot be obtained from the principal debtor, such as when an execution of judgment is returned unsatisfied, the debtor is insolvent or cannot be served. A guarantor of payment, by contrast, may be pursued as soon as the debtor defaults, with no prior resort to the debtor. The first choice describes a guaranty of payment, not of collection.",
+"source": "UCC 3-419(d), (e)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-044",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Kim signed Pat's promissory note to Bank as an accommodation party (a surety). When Pat defaulted, Kim paid Bank the full balance. Which statement correctly describes Kim's rights?",
+"choices": [
+"Kim may recover from Pat only if Pat signed a separate written promise to reimburse Kim.",
+"Kim and Pat must share the loss equally, because both signed the note.",
+"Kim has no claim against Pat, because Kim's payment discharged the note.",
+"Kim is entitled to reimbursement from Pat and may enforce the note against Pat in Bank's place."
+],
+"answer": 3,
+"explain": "A surety who pays the principal debtor's obligation is entitled to reimbursement from the principal debtor and may enforce the instrument against the principal, stepping into the creditor's position (subrogation). No separate reimbursement promise is needed. Sharing the loss describes contribution among co-sureties, not the relationship between a surety and the principal debtor, who bears the whole debt.",
+"source": "UCC 3-419(f)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-045",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Ann and Bo each signed Cy's promissory note to Bank as co-makers for Cy's accommodation (co-sureties). When Cy defaulted, Bank collected the entire balance from Ann. Which right lets Ann recover part of what she paid from Bo?",
+"choices": [
+"Contribution",
+"Exoneration",
+"Reimbursement",
+"Setoff"
+],
+"answer": 0,
+"explain": "Co-sureties with the same liability are jointly and severally liable to the creditor, and one who pays more than its share may recover from the other through contribution. Reimbursement is the surety's right against the principal debtor, Cy, for the full amount paid, not a right against a fellow surety.",
+"source": "UCC 3-116(a), (b); UCC 3-419(f)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-046",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Dee signed Ed's promissory note to Bank as an accommodation party (a surety), and Bank knew Dee signed as surety. The note was secured by a perfected security interest in Ed's delivery truck. Without Dee's consent, Bank released its security interest in the truck and took no substitute collateral. The note contains no waiver of suretyship defenses. Ed then defaulted. What is the effect of the release on Dee?",
+"choices": [
+"None, because Dee promised to pay if Ed did not, regardless of collateral.",
+"Dee is fully discharged, because any act by the creditor without the surety's consent releases the surety.",
+"Dee is discharged to the extent the release impaired the value of the collateral.",
+"Dee is discharged only if Bank also released Ed from the debt."
+],
+"answer": 2,
+"explain": "When the creditor impairs collateral securing the principal debtor's obligation, for example by releasing it without substitute collateral, a surety the creditor knows of is discharged to the extent of the impairment. The surety is not released in full, only by the value lost. The first choice ignores that the surety had a right to look to that collateral after paying.",
+"source": "UCC 3-605(d), (e)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-047",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Under Article 9 of the Uniform Commercial Code, a security interest attaches to collateral when all of the following have occurred EXCEPT:",
+"choices": [
+"the secured party has given value.",
+"the debtor has rights in the collateral.",
+"the debtor has signed a security agreement describing the collateral, or the secured party has possession or control of the collateral under the agreement.",
+"a financing statement covering the collateral has been filed."
+],
+"answer": 3,
+"explain": "Attachment requires value, the debtor's rights in the collateral, and either a signed security agreement describing the collateral or the secured party's possession or control under the agreement. Filing a financing statement is a method of perfection, not a requirement for attachment.",
+"source": "UCC 9-203(a), (b)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-048",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Lender lent $20,000 to Gail and, in a phone call, Gail agreed that Lender would have a security interest in Gail's piano. Nothing was put in writing or signed, and the piano stayed in Gail's home. Lender then filed a financing statement naming Gail and describing the piano. Is Lender's security interest enforceable against Gail?",
+"choices": [
+"Yes, because Lender gave value and Gail owns the piano.",
+"Yes, because the financing statement satisfies the writing requirement.",
+"No, because there is no signed security agreement and Lender does not have possession of the piano.",
+"No, because a security interest in household goods can be created only by a purchase-money seller."
+],
+"answer": 2,
+"explain": "A security interest is enforceable only if, in addition to value and rights in the collateral, the debtor signs a security agreement describing the collateral or the secured party takes possession or control under the agreement. An oral agreement with the collateral left with the debtor fails that test. Filing a financing statement does not substitute for the security agreement; a financing statement may be filed before attachment, but it does not cause attachment.",
+"source": "UCC 9-203(b); UCC 9-502(d)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-049",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Appliance Store sold a refrigerator on credit to Dana for use in her home. Dana signed a security agreement giving the store a security interest in the refrigerator to secure the unpaid price. The store did not file a financing statement. The store's security interest is:",
+"choices": [
+"unperfected, because a financing statement must be filed to perfect a security interest in goods.",
+"perfected automatically when it attached, because it is a purchase-money security interest in consumer goods.",
+"perfected only if the store files within 20 days after Dana receives the refrigerator.",
+"perfected only while the store keeps possession of the refrigerator."
+],
+"answer": 1,
+"explain": "A purchase-money security interest in consumer goods is perfected when it attaches, without filing. The refrigerator is a consumer good because Dana bought it primarily for household use, and the store's interest secures its price. The 20-day period is the grace period that lets a purchase-money filing defeat intervening lien creditors and buyers, or gain priority in non-inventory collateral, not a condition for perfecting this interest.",
+"source": "UCC 9-309(1); UCC 9-102(a)(23); UCC 9-103(b)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-050",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Appliance Store holds a purchase-money security interest (PMSI) in a refrigerator it sold on credit to Dana for her home, perfected automatically without filing. Dana later sold the refrigerator for cash to her neighbor Eli, who bought it for his own home and did not know of the store's interest. The store never filed a financing statement. Can the store reclaim the refrigerator from Eli?",
+"choices": [
+"Yes, because the PMSI was perfected.",
+"Yes, because a security interest follows the collateral into the hands of any buyer.",
+"No, because Eli is a buyer in ordinary course of business.",
+"No, because Eli bought for value, without knowledge, for household use, and before any financing statement was filed."
+],
+"answer": 3,
+"explain": "A buyer of consumer goods from a consumer takes free of a security interest, even a perfected one, if the buyer gives value without knowledge of it, buys primarily for personal, family or household use, and buys before a financing statement covering the goods is filed. Had the store filed, Eli would have taken subject to its interest. Eli is not a buyer in ordinary course because Dana is not in the business of selling refrigerators.",
+"source": "UCC 9-320(b); UCC 9-309(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-051",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Bank holds a security interest in all of Motor Dealer's inventory, perfected by filing. Rita bought a car from Dealer's showroom lot in the usual way, paid in full and drove it home. Rita knew Bank financed Dealer's inventory. Dealer then defaulted on the Bank loan. Which statement is correct?",
+"choices": [
+"Rita takes the car free of Bank's security interest.",
+"Bank may repossess the car, because its security interest was perfected before Rita bought.",
+"Bank may repossess the car, because Rita knew of Bank's security interest.",
+"Rita takes free of Bank's interest only if she bought the car primarily for business use."
+],
+"answer": 0,
+"explain": "A buyer in ordinary course of business takes free of a security interest created by its seller, even if the interest is perfected and the buyer knows it exists. Rita bought in good faith, in the usual way, from a dealer in the business of selling cars. Knowing of the security interest does not defeat her; only knowing that the sale violates the secured party's rights would.",
+"source": "UCC 9-320(a); UCC 1-201(b)(9)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-052",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Under Article 9 of the Uniform Commercial Code, a financing statement is sufficient if it provides all of the following EXCEPT:",
+"choices": [
+"the name of the debtor.",
+"the name of the secured party or its representative.",
+"an indication of the collateral covered.",
+"the amount of the debt the collateral secures."
+],
+"answer": 3,
+"explain": "A financing statement is sufficient if it gives the debtor's name, the name of the secured party or a representative, and an indication of the collateral. It is a notice filing that tells searchers to inquire further; it need not state the amount of the secured debt.",
+"source": "UCC 9-502(a)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-053",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Lender took a security interest from Oak Corp. Both the signed security agreement and the filed financing statement described the collateral only as \"all of the debtor's assets.\" Which statement is correct?",
+"choices": [
+"Both descriptions are sufficient.",
+"The financing statement's description is sufficient, but the security agreement's description does not reasonably identify the collateral.",
+"The security agreement's description is sufficient, but the financing statement must list each item of collateral.",
+"Neither description is sufficient."
+],
+"answer": 1,
+"explain": "A financing statement may indicate the collateral as all assets or all personal property, because it only gives notice. A security agreement must reasonably identify the collateral, and a supergeneric description such as \"all the debtor's assets\" does not, so the security interest does not attach on that description.",
+"source": "UCC 9-504; UCC 9-108(c); UCC 9-203(b)(3)(A)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-054",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "First Bank lent money to Nova Inc. and took a security interest in Nova's checking account at Second Bank. How may First Bank perfect its security interest in the deposit account?",
+"choices": [
+"By filing a financing statement in the state where Nova is organized",
+"By taking possession of Nova's checkbook and bank statements",
+"By obtaining control, such as through a signed agreement among Nova, First Bank and Second Bank that Second Bank will follow First Bank's instructions about the funds without Nova's further consent",
+"No action is needed, because a security interest in a deposit account is perfected when it attaches"
+],
+"answer": 2,
+"explain": "A security interest in a deposit account, as original collateral, may be perfected only by control. A secured party that is not the depositary bank gets control through an agreement among the debtor, the secured party and the bank that the bank will follow the secured party's instructions without the debtor's further consent, or by becoming the bank's customer on the account. Filing, the usual method for most collateral, does not perfect a security interest in a deposit account.",
+"source": "UCC 9-312(b)(1); UCC 9-314(a), (b); UCC 9-104(a)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-055",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Gary borrowed money from Lender and, under a signed security agreement, delivered his valuable painting to Lender to hold as collateral. Lender filed no financing statement. Two months later, at Gary's request, Lender returned the painting to Gary. Which statement is correct?",
+"choices": [
+"Lender's security interest was perfected while Lender held the painting and became unperfected when Lender returned it.",
+"Lender's security interest was never perfected, because no financing statement was filed.",
+"Lender's security interest stays perfected after the return, because it was perfected when the loan was made.",
+"Lender's security interest stays perfected for 20 days after the return in every case."
+],
+"answer": 0,
+"explain": "A secured party may perfect a security interest in goods by taking possession, without filing, and perfection by possession lasts only while the secured party keeps possession. Once Lender returned the painting with no financing statement on file, its interest became unperfected. The 20-day temporary perfection rules cover narrow cases such as goods held by a bailee or instruments released for sale or collection, not an ordinary return of goods to the debtor.",
+"source": "UCC 9-313(a), (d); UCC 9-312(f), (g)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-056",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "On March 1, Alpha Bank filed a financing statement covering Kane Co.'s equipment while it negotiated a loan. On April 1, Beta Bank lent money to Kane, took a signed security agreement covering the same equipment and filed its own financing statement. On May 1, Alpha made its loan and Kane signed Alpha's security agreement. Neither interest is a purchase-money security interest. Which bank has priority in the equipment?",
+"choices": [
+"Beta, because its security interest attached and was perfected before Alpha's.",
+"Beta, because Alpha's filing was ineffective when made before a security agreement existed.",
+"Alpha, because priority among perfected security interests dates from the earlier of filing or perfection.",
+"They share pro rata, because both interests are perfected."
+],
+"answer": 2,
+"explain": "Conflicting perfected security interests rank by the earlier of the time a filing covering the collateral is first made or the time the interest is first perfected. A financing statement may be filed before a security agreement is made, so Alpha's priority dates from its March 1 filing, ahead of Beta's April 1 filing. Beta's argument that it attached and perfected first is the common mistake; the rule is first to file or perfect, not first to perfect.",
+"source": "UCC 9-322(a)(1); UCC 9-502(d)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-057",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Bank holds a security interest in all of Rook Corp.'s present and after-acquired equipment, perfected by a financing statement filed in 2024. On June 1, Seller sold Rook a new machine for use in its plant on credit, took a signed security agreement in the machine to secure the price, and delivered the machine that day. Seller filed a financing statement on June 15. Which party has priority in the machine?",
+"choices": [
+"Bank, because it filed first.",
+"Bank, because Seller did not notify Bank before delivering the machine.",
+"Seller, because a purchase-money seller always has priority, whenever it files.",
+"Seller, because its purchase-money security interest in non-inventory goods was perfected within 20 days after Rook received the machine."
+],
+"answer": 3,
+"explain": "A perfected purchase-money security interest in goods other than inventory or livestock has priority over a conflicting security interest in the same goods if it is perfected when the debtor receives possession or within 20 days after. Seller filed 14 days after delivery, so it beats Bank's earlier-filed after-acquired property interest. Advance notice to earlier secured parties is required only for a purchase-money interest in inventory or livestock.",
+"source": "UCC 9-324(a), (b); UCC 9-103(a), (b)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-058",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Finance Co. has a security interest in Vale Corp.'s equipment under a signed security agreement, but it never filed a financing statement or took possession. A judgment creditor of Vale then had the sheriff levy on the equipment, obtaining a judicial lien. Neither party has a purchase-money interest. Who has priority in the equipment?",
+"choices": [
+"The judgment creditor, because an unperfected security interest is subordinate to a person who becomes a lien creditor before the security interest is perfected.",
+"Finance Co., because its security interest attached before the levy.",
+"Finance Co., because a judgment creditor is an unsecured creditor.",
+"They share pro rata."
+],
+"answer": 0,
+"explain": "A security interest is subordinate to the rights of a person who becomes a lien creditor before the security interest is perfected, or before a financing statement is filed with a security agreement in place. Attachment alone makes the interest enforceable against the debtor, but it must be perfected to beat a lien creditor. A judgment creditor that levies is a lien creditor, not merely an unsecured creditor.",
+"source": "UCC 9-317(a)(2); UCC 9-102(a)(52)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-059",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "In a Chapter 7 liquidation, after secured creditors have been satisfied from their collateral, the trustee distributes the remaining property of the estate in which order?",
+"choices": [
+"General unsecured claims, then priority claims under 11 U.S.C. 507, then the debtor",
+"Priority claims under 11 U.S.C. 507 in their listed order, then timely filed general unsecured claims, then the debtor",
+"All unsecured claims pro rata, with no distinction between priority and general claims, then the debtor",
+"Claims of the debtor's insiders, then priority claims, then general unsecured claims"
+],
+"answer": 1,
+"explain": "Secured creditors are paid first from the value of their collateral. The estate's remaining property then goes to priority claims in the order 11 U.S.C. 507 lists them, then to timely filed general unsecured claims, then to later-ranked items such as late claims, penalties and postpetition interest, and anything left goes to the debtor. Within a class, claims share pro rata, but priority claims as a group are paid before general unsecured claims.",
+"source": "11 U.S.C. 726(a), (b); 11 U.S.C. 506(a); 11 U.S.C. 507(a)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-060",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Under 11 U.S.C. 507(a), which allowed unsecured claim is given first priority?",
+"choices": [
+"Administrative expenses of the bankruptcy estate",
+"Unpaid wages owed to the debtor's employees",
+"Domestic support obligations, such as child support owed to a former spouse",
+"Income taxes owed to the federal government"
+],
+"answer": 2,
+"explain": "Section 507(a)(1) gives first priority to allowed unsecured claims for domestic support obligations owed to a spouse, former spouse or child of the debtor, or assigned to a governmental unit, subject to a carve-out for certain trustee administrative expenses. Administrative expenses are the tempting choice, but they rank second. Wages rank fourth and most taxes eighth.",
+"source": "11 U.S.C. 507(a)(1), (2), (4), (8)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-061",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Rex Corp. filed a Chapter 7 petition on October 1 while still operating. Which employee claim qualifies for priority under 11 U.S.C. 507(a)(4), up to the statutory dollar cap?",
+"choices": [
+"Wages Tina earned in January of the same year, about nine months before the petition",
+"A loan Uma made to Rex the month before the petition",
+"Wages Val will earn from the trustee after the petition",
+"Vacation pay Sid earned in August, two months before the petition"
+],
+"answer": 3,
+"explain": "Section 507(a)(4) gives fourth priority, up to a per-person cap, to wages, salaries, commissions, and vacation, severance and sick pay earned within 180 days before the petition or the end of the business, whichever is first. Sid's vacation pay was earned within that window. Tina's wages were earned more than 180 days before the petition, so her claim is a general unsecured claim, and any wage claim above the cap is also general unsecured.",
+"source": "11 U.S.C. 507(a)(4)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-062",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "In a Chapter 7 case, Bank's allowed claim is secured by a perfected security interest in equipment worth less than the amount Bank is owed. How is Bank's claim treated?",
+"choices": [
+"As a secured claim up to the value of the equipment and a general unsecured claim for the rest",
+"As a secured claim for the full amount owed, payable first from all estate property",
+"As a general unsecured claim for the full amount, because the collateral does not cover the debt",
+"As a priority claim under 11 U.S.C. 507 for the amount the collateral does not cover"
+],
+"answer": 0,
+"explain": "An allowed claim secured by a lien is a secured claim to the extent of the value of the creditor's interest in the collateral and an unsecured claim for the rest. The shortfall shares with other general unsecured creditors; it gets no priority under section 507 and no claim on other estate property ahead of other creditors.",
+"source": "11 U.S.C. 506(a)(1); 11 U.S.C. 726(a)(2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-063",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "In a bankruptcy case, a creditor's allowed claim is secured by collateral worth more than the claim. Under 11 U.S.C. 506(b), the creditor may also recover from the collateral:",
+"choices": [
+"nothing beyond the amount of the claim on the petition date.",
+"interest on its claim and reasonable fees, costs or charges provided for in the agreement under which the claim arose.",
+"priority under 11 U.S.C. 507 for any deficiency.",
+"the full value of the collateral, including the excess over its claim."
+],
+"answer": 1,
+"explain": "An oversecured creditor is allowed interest on its claim, plus reasonable fees, costs or charges provided for under the agreement or state statute, to the extent the collateral's value exceeds the claim. It is not entitled to the excess value itself; any equity above the claim belongs to the estate. Creditors whose collateral is worth less than the claim do not earn this postpetition interest.",
+"source": "11 U.S.C. 506(b)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-064",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "Finance Co. had a signed security agreement covering Lark Inc.'s equipment but never filed a financing statement or otherwise perfected. Lark then filed a Chapter 7 petition. What is the trustee's position with respect to Finance Co.'s security interest?",
+"choices": [
+"The trustee must honor the security interest, because it attached before the petition.",
+"The trustee may avoid it only if Finance Co. is an insider of Lark.",
+"The trustee may avoid it, because the trustee has the rights of a hypothetical lien creditor as of the petition date, so Finance Co. is left with a general unsecured claim.",
+"The trustee may avoid it only if Lark granted the security interest within 90 days before the petition."
+],
+"answer": 2,
+"explain": "Under the strong-arm clause the trustee has, as of the start of the case, the rights of a creditor holding a judicial lien on the debtor's property, whether or not such a creditor exists. An unperfected security interest is subordinate to a lien creditor, and the Uniform Commercial Code treats a trustee in bankruptcy as a lien creditor from the petition date. Finance Co. loses its collateral and shares as a general unsecured creditor; the 90-day and insider periods belong to the separate preference rules.",
+"source": "11 U.S.C. 544(a)(1); UCC 9-317(a)(2); UCC 9-102(a)(52)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-065",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "C",
+"q": "In a Chapter 7 case, the estate's unencumbered property is not enough to pay every claim. Which of the following allowed unsecured claims is paid first?",
+"choices": [
+"An income tax claim of the federal government entitled to priority",
+"A supplier's claim for goods sold on open account",
+"A claim for wages earned within 180 days before the petition",
+"The trustee's fees and other administrative expenses of the estate"
+],
+"answer": 3,
+"explain": "Among these claims, administrative expenses rank second under 11 U.S.C. 507(a)(2), ahead of wages within 180 days (fourth) and priority tax claims (eighth). The supplier's open-account claim has no priority and is paid only after all priority claims. Wages are the tempting choice, but administrative expenses come first so that the case can be run.",
+"source": "11 U.S.C. 507(a)(2), (4), (8); 11 U.S.C. 726(a)(1), (2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-066",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Delta Corp., an insolvent manufacturing corporation, wants to keep operating while it restructures its debts under a court-confirmed plan. Under which chapter of the Bankruptcy Code may Delta file a voluntary petition to do this?",
+"choices": [
+"Chapter 7, which lets a business keep operating under a repayment plan",
+"Chapter 11",
+"Chapter 13",
+"None, because a corporation can be put into bankruptcy only by an involuntary petition of its creditors"
+],
+"answer": 1,
+"explain": "Chapter 11 (reorganization) is open to corporations and other persons that may be Chapter 7 debtors, and lets the business keep operating under a confirmed plan. Chapter 13 is limited to an individual with regular income (or an individual and spouse) within the Chapter 13 debt limits, so a corporation cannot use it. Chapter 7 is liquidation, and any entity that may be a debtor under a chapter can file a voluntary petition under it.",
+"source": "11 U.S.C. 109(b), (d), (e); 11 U.S.C. 301(a)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-067",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "All of the following statements about involuntary bankruptcy petitions are correct EXCEPT:",
+"choices": [
+"An involuntary case may be commenced only under Chapter 7 or Chapter 11.",
+"Creditors may file an involuntary Chapter 13 petition against an individual who has regular income.",
+"An involuntary petition may not be filed against a farmer.",
+"If the debtor has 12 or more qualifying creditors (holders of claims that are not contingent or in bona fide dispute, not counting employees, insiders and transferees of avoidable transfers), at least three of them must join in the petition."
+],
+"answer": 1,
+"explain": "An involuntary case can be commenced only under Chapter 7 or Chapter 11; Chapter 13 is available only by the debtor's own voluntary petition. Farmers, family farmers and nonbusiness (charitable) corporations cannot be put into bankruptcy involuntarily. Three petitioning creditors are needed when there are 12 or more qualifying creditors, and one is enough when there are fewer than 12, as long as the petitioners' undisputed unsecured claims meet the statutory minimum.",
+"source": "11 U.S.C. 303(a), (b)(1), (b)(2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-068",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Kim, an individual, files a voluntary Chapter 7 petition. Which of the following may continue without relief from the automatic stay?",
+"choices": [
+"A credit card issuer's calls and letters demanding payment of a balance Kim owed before the petition",
+"A lender's repossession of Kim's car for payments she missed before the petition",
+"A pending state criminal prosecution of Kim for writing bad checks",
+"A creditor's enforcement of a money judgment it won against Kim before the petition"
+],
+"answer": 2,
+"explain": "Filing a petition automatically stays acts to collect prepetition claims, to enforce prepetition judgments, and to take possession of or enforce liens against the debtor's property. Criminal proceedings against the debtor are an express exception, as are certain domestic support actions, governmental police and regulatory actions, and tax audits. A creditor that wants to repossess collateral must first get relief from the stay from the court.",
+"source": "11 U.S.C. 362(a)(1), (2), (3), (4), (5), (6); 11 U.S.C. 362(b)(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-069",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Which statement about the trustee's power to avoid preferential transfers is correct?",
+"choices": [
+"A payment to any creditor made within one year before the petition can be avoided, whether or not the creditor is an insider.",
+"The trustee must prove that the creditor knew the debtor was insolvent when it received the payment.",
+"A payment to an insider creditor can be avoided if made within one year before the petition, while a payment to a creditor that is not an insider generally must be made within 90 days before the petition.",
+"A cash purchase of inventory that the debtor and seller intended to be, and that in fact was, a substantially contemporaneous exchange for new value can be avoided if made within 90 days before the petition."
+],
+"answer": 2,
+"explain": "A preference is a transfer to or for a creditor on an antecedent debt, made while the debtor was insolvent, that lets the creditor receive more than it would in a Chapter 7 liquidation; the look-back period is 90 days, extended to one year for insiders. Using the one-year period for a creditor that is not an insider is the common mistake. The creditor's knowledge is not an element, the debtor is presumed insolvent during the 90 days before the petition, and a substantially contemporaneous exchange for new value is an exception, along with ordinary course payments and bona fide domestic support payments.",
+"source": "11 U.S.C. 547(b), (c)(1), (c)(2), (c)(7), (f)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-070",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "On June 1, 2024, Rita, who was insolvent, sold land worth $400,000 to Ben, an unrelated buyer, for $150,000. Rita had no intent to hinder, delay or defraud her creditors. She filed a Chapter 7 petition on September 1, 2025. Can the trustee avoid the sale under the Bankruptcy Code as a fraudulent transfer?",
+"choices": [
+"No, because the sale was made more than one year before the petition",
+"No, because the trustee must prove Rita actually intended to defraud her creditors",
+"Yes, but only if Ben was an insider",
+"Yes, because Rita received less than reasonably equivalent value while insolvent, within two years before the petition"
+],
+"answer": 3,
+"explain": "The trustee may avoid a transfer made within 2 years before the petition either with actual intent to hinder, delay or defraud creditors, or (constructive fraud) for less than reasonably equivalent value while the debtor was insolvent. No intent is needed for constructive fraud, and the one-year period belongs to insider preferences, not fraudulent transfers. If Ben bought in good faith, he keeps a lien on the land to the extent of the $150,000 he paid.",
+"source": "11 U.S.C. 548(a)(1)(A), (B), (c)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-071",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Which of the following would cause the court to deny an individual debtor a Chapter 7 discharge of all debts, rather than only leaving a particular debt undischarged?",
+"choices": [
+"The debtor owes past-due child support to a former spouse.",
+"Eight months before the petition, the debtor gave her boat to a friend with intent to hinder her creditors.",
+"The debtor owes a judgment for injuries she caused while driving intoxicated.",
+"The debtor owes a debt for money she embezzled from a former employer."
+],
+"answer": 1,
+"explain": "Transferring or concealing property with intent to hinder, delay or defraud creditors within one year before the petition is a ground to deny the discharge entirely, as are destroying financial records, making a false oath in the case, and receiving a Chapter 7 discharge in a case filed within 8 years before. Domestic support obligations, debts for embezzlement, and debts for injury caused by intoxicated driving are only excepted from the discharge: those debts survive, but the debtor's other debts are still discharged. An embezzlement debt survives only if the creditor timely asks the court to except it; support and drunk-driving debts survive automatically.",
+"source": "11 U.S.C. 727(a)(2)(A), (3), (4), (8); 11 U.S.C. 523(a)(4), (5), (9), (c)(1)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-072",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Granite Inc., a privately held corporation organized in Texas, has no securities registered with the Securities and Exchange Commission (SEC) and files no SEC reports. To win a government contract, its president wires money from a Texas bank account to a foreign defense ministry official. Which statement is correct under the Foreign Corrupt Practices Act (FCPA)?",
+"choices": [
+"No violation occurred, because the anti-bribery provisions apply only to issuers with securities registered with the SEC.",
+"No violation occurred, because the official received the payment outside the United States.",
+"Granite violated the books and records provisions, which apply to every business organized in the United States.",
+"Granite violated the anti-bribery provisions, which apply to domestic concerns as well as to issuers."
+],
+"answer": 3,
+"explain": "The FCPA anti-bribery provisions cover issuers, domestic concerns (United States citizens and residents, and businesses organized in the United States or with their principal place of business here), and other persons acting within the United States. A corrupt payment to a foreign official to obtain business, made using a means of interstate commerce such as a wire from a United States bank, is prohibited even though the official is abroad. The books and records and internal control provisions apply only to issuers, so they do not reach a private company like Granite.",
+"source": "15 U.S.C. 78dd-2(a), (h)(1); 15 U.S.C. 78dd-1(a); 15 U.S.C. 78dd-3(a); 15 U.S.C. 78m(b)(2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-073",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "A corporation whose stock is registered with the Securities and Exchange Commission (SEC) pays a foreign customs clerk a small fee to speed up the routine processing of import papers for goods the company is entitled to bring into the country. Which statement is correct under the Foreign Corrupt Practices Act (FCPA)?",
+"choices": [
+"The payment violates the FCPA, because any payment of value to a foreign official is prohibited.",
+"The payment is permitted only because its amount is small.",
+"The payment falls within the exception for facilitating or expediting payments made to secure routine governmental action.",
+"The same exception would cover a payment to the official who decides whether to award the company a new government contract."
+],
+"answer": 2,
+"explain": "The anti-bribery provisions do not apply to a facilitating or expediting payment whose purpose is to secure routine governmental action, such as processing papers, issuing permits, or scheduling inspections. The exception turns on the nature of the action, not the size of the payment. A decision whether, or on what terms, to award new business or continue business with a party is never routine governmental action.",
+"source": "15 U.S.C. 78dd-1(b), (f)(3)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-074",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Under the anti-bribery provisions of the Foreign Corrupt Practices Act (FCPA), which of the following is an affirmative defense?",
+"choices": [
+"Payments of this kind are customary in the foreign country, even though no written law permits them.",
+"The payment was lawful under the written laws and regulations of the foreign official's country.",
+"The company paid the official through a local agent instead of paying the official directly.",
+"The foreign official, rather than the company, first asked for the payment."
+],
+"answer": 1,
+"explain": "The FCPA has two affirmative defenses: the payment was lawful under the written laws and regulations of the official's country, and the payment was a reasonable and bona fide expenditure, such as travel and lodging, directly related to promoting or demonstrating products or services or performing a contract with a foreign government. Local custom without a written law is not a defense. Paying through an agent while knowing the money will go to the official is itself prohibited, and a request from the official does not excuse the payment.",
+"source": "15 U.S.C. 78dd-1(a)(3), (c), (f)(2)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-075",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Lee is an unpaid, volunteer member of the board of directors of a tax-exempt charity. He serves solely in an honorary capacity, takes no part in the day-to-day or financial operations, and did not know that payroll taxes withheld from employees were not paid over. The charity's paid executive director, who signs the checks, is liable for the trust fund recovery penalty. Which statement about Lee is correct?",
+"choices": [
+"Lee is liable for the penalty, because every director has authority over the organization's finances.",
+"Lee is liable for the penalty, because it applies to every board member whether or not he knew of the failure.",
+"Lee is not liable, but only because a tax-exempt organization owes no Social Security or Medicare tax.",
+"Lee is not liable, because the penalty does not apply to an unpaid, volunteer, honorary board member of a tax-exempt organization who does not take part in its day-to-day or financial operations and did not know of the failure."
+],
+"answer": 3,
+"explain": "The trust fund recovery penalty falls on a person required to collect, account for and pay over the tax who willfully fails to do so, and the Internal Revenue Code (IRC) exempts unpaid, volunteer board members of tax-exempt organizations who serve only in an honorary capacity, stay out of day-to-day and financial operations, and lack actual knowledge of the failure. The exception does not apply if it would leave no one liable, but here the executive director is liable. Tax-exempt status does not remove an employer's duty to withhold and pay Social Security and Medicare taxes.",
+"source": "IRC 6672(a), (e)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-076",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Coastal Corp. paid wages to an employee but failed to withhold the employee's share of Social Security and Medicare taxes. Which statement about liability for the employee's share is correct?",
+"choices": [
+"Coastal is liable for the employee share it failed to withhold, as well as for its own matching employer share.",
+"Only the employee is liable for the employee share, because that tax is imposed on the employee's wages.",
+"Coastal is liable only for its employer share, and the employee pays the rest as self-employment tax.",
+"No one is liable for the employee share, because it was not withheld when the wages were paid."
+],
+"answer": 0,
+"explain": "The employee share of Social Security and Medicare tax is imposed on the employee, but the employer must collect it by deducting it from wages and is liable for paying it, whether or not it actually withheld it. The employer separately owes an equal employer share. Federal unemployment tax is imposed only on the employer and is not withheld from wages.",
+"source": "IRC 3101(a), (b)(1); IRC 3102(a), (b); IRC 3111(a), (b); IRC 3301",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-077",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Pat repairs equipment for Delta Co. The written contract calls Pat an independent contractor. Delta supplies the tools, pays Pat by the hour, and has the right to tell Pat when, where and how to do the work, though it rarely gives instructions because Pat is experienced. Pat has no investment in the business and works only for Delta. Under the common-law rules, Pat is most likely:",
+"choices": [
+"An independent contractor, because the written contract says so",
+"An independent contractor, because Delta rarely exercises control over the work",
+"An employee, because Delta has the right to control how the work is done, even though it seldom uses that right",
+"An employee only if Pat works at least 30 hours a week"
+],
+"answer": 2,
+"explain": "Under the common-law rules, a worker is an employee if the business has the right to control what will be done and how it will be done, even if it gives the worker freedom of action; the right to control, not its use, is what matters. The label in the contract does not decide status, and whether the worker is full time or part time makes no difference. Hourly pay, tools supplied by the business and no investment by the worker also point to employee status.",
+"source": "IRS Pub 15-A, Common-Law Rules; Rev. Rul. 87-41",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-078",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Throughout 2024, Bolt Inc. employed an average of 80 full-time employees (at least 30 hours of service a week) and is not part of a controlled group. In 2025 it offers no health coverage to any employee. One full-time employee enrolls in a qualified health plan through the Health Insurance Marketplace and is allowed a premium tax credit for 2025. Which statement is correct?",
+"choices": [
+"Bolt owes no payment, because the employer mandate applies only when at least 95% of its full-time employees receive a premium tax credit.",
+"Bolt is an applicable large employer for 2025 and owes an employer shared responsibility payment, because it offered no coverage and at least one full-time employee received a premium tax credit.",
+"Bolt owes no payment, because the law requires an employer only to pay part of the premiums for employees who ask for coverage.",
+"Bolt owes a payment only for the one employee who received the premium tax credit."
+],
+"answer": 1,
+"explain": "An employer is an applicable large employer for a year if it averaged at least 50 full-time employees (counting full-time equivalents) in the preceding calendar year. An applicable large employer that fails to offer coverage to its full-time employees owes a payment for any month in which at least one full-time employee is allowed a premium tax credit, and that payment is figured on all of its full-time employees minus the first 30, not just the employee who got the credit. The payment for one employee only applies when an employer does offer coverage but it is unaffordable or lacks minimum value.",
+"source": "IRC 4980H(a), (b), (c)(2)(A), (c)(2)(D), (c)(4)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-079",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Each of the following single individuals enrolled in a qualified health plan through the Health Insurance Marketplace for all of 2025, has household income of at least 100% of the federal poverty line, is not claimed as anyone's dependent, and is not eligible for Medicare, Medicaid or other government coverage. Which one cannot be allowed a premium tax credit for 2025?",
+"choices": [
+"Alan, who has no offer of employer coverage and household income of 450% of the federal poverty line",
+"Beth, who has no offer of employer coverage and household income of 200% of the federal poverty line",
+"Carl, who declined his employer's offer of coverage because his required contribution exceeded the affordability percentage",
+"Dana, who declined her employer's offer of self-only coverage that is affordable and provides minimum value"
+],
+"answer": 3,
+"explain": "An employee who is eligible for employer coverage that is affordable and provides minimum value is not allowed a premium tax credit, even if she declines it and buys Marketplace coverage instead. Employer coverage that is unaffordable to the employee does not bar the credit. For 2021 through 2025 the 400% of the federal poverty line ceiling on household income does not apply, so Alan is not barred by his income.",
+"source": "IRC 36B(c)(1)(A), (c)(1)(E), (c)(2)(B), (c)(2)(C)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-080",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "D",
+"q": "Under the individual shared responsibility provision of the Affordable Care Act, what payment does an individual owe for going without minimum essential coverage for all of 2025, if no exemption applies?",
+"choices": [
+"A flat amount of $695 per adult",
+"2.5% of household income above the filing threshold",
+"$0",
+"The greater of a flat dollar amount or a percentage of income, capped at the national average bronze plan premium"
+],
+"answer": 2,
+"explain": "The Tax Cuts and Jobs Act reduced the individual shared responsibility payment to zero for 2019 and later years by setting both the flat dollar amount and the percentage of income at zero. The requirement to have minimum essential coverage is still in the law, but no federal payment is owed for failing it. The flat amount and percentage formulas in the other choices applied only to earlier years.",
+"source": "IRC 5000A(c)(2)(B), (c)(3)(A); IRS, Questions and answers on the individual shared responsibility provision",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-081",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Ana and Ben run a food truck together. They split the profits equally and both decide the menu and the schedule. They never signed a written agreement and never filed anything with the state, and both say they never meant to become partners. A supplier claims the business is a general partnership. Which statement is correct?",
+"choices": [
+"No partnership exists, because a general partnership requires a written partnership agreement",
+"No partnership exists, because a general partnership is created only by filing with the secretary of state",
+"A general partnership exists, because two persons are carrying on as co-owners a business for profit, whatever they intended",
+"No partnership exists, because neither of them intended to form one"
+],
+"answer": 2,
+"explain": "A general partnership is formed when two or more persons associate to carry on as co-owners a business for profit; no written agreement or state filing is needed. Courts look at what the parties did, not their subjective intent, so it does not matter that Ana and Ben never meant to be partners. A state filing is needed to create a limited partnership, not a general partnership.",
+"source": "Cornell LII Wex, partnership; Cornell LII Wex, copartner (Revised Uniform Partnership Act section 202, profit-sharing presumption); Cornell LII Wex, limited partnership",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-082",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Cara is a partner in a general partnership that sells office furniture. The partnership agreement bars any partner from buying inventory without the other partners' consent. Without asking them, Cara orders desks for resale from Delta Supply. Before taking the order, Delta's sales manager had been told about the restriction. Is the partnership bound by the order?",
+"choices": [
+"Yes, because buying inventory is in the ordinary course of the partnership's business",
+"No, because Cara had no authority to place the order and Delta knew it",
+"Yes, because every general partner has unlimited authority to bind the partnership",
+"No, because a partner can never bind a partnership without the written consent of all partners"
+],
+"answer": 1,
+"explain": "Each partner is an agent of the partnership and generally binds it when acting in the ordinary course of the partnership's business. The exception is when the partner had no authority for the act and the third party knew she had none. Delta knew of the restriction, so the ordinary-course rule does not protect it. This matches the Revised Uniform Partnership Act, sections 301(1) and 306.",
+"source": "Cornell LII Wex, general partner; Cornell LII Wex, partner",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-083",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Partners in a general partnership that is not a limited liability partnership are liable for the partnership's obligations:",
+"choices": [
+"only up to the amount of each partner's capital contribution",
+"only for obligations that the partner personally incurred or approved",
+"only for a share of each obligation equal to the partner's share of profits",
+"jointly and severally, so each partner can be personally liable for the full obligation"
+],
+"answer": 3,
+"explain": "General partners have unlimited joint and several personal liability, so one partner can be held liable for the whole obligation and then seek contribution from the other partners. The partnership, and so each general partner, is liable for a loss caused by another partner's wrongful act in the ordinary course of the business. Liability capped at the capital contribution describes a limited partner, not a general partner. Under the Revised Uniform Partnership Act, a creditor generally must first try to collect from the partnership before reaching a partner's personal assets.",
+"source": "Cornell LII Wex, general partner; Cornell LII Wex, joint and several liability; Cornell LII Wex, limited partnership",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-084",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "After a general partnership is dissolved, its business is wound up. Winding up includes all of the following EXCEPT:",
+"choices": [
+"Selling the partnership's assets",
+"Paying the partnership's debts",
+"Distributing any remaining proceeds to the partners",
+"Taking on new long-term business to grow the partnership"
+],
+"answer": 3,
+"explain": "Dissolution ends the partners' relationship as a going business, and the partnership's assets are then liquidated in winding up. Winding up means collecting and selling the assets, settling the debts and distributing what is left. Starting new long-term business is the opposite of winding up.",
+"source": "Cornell LII Wex, winding up; Cornell LII Wex, liquidating partner",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-085",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Which of the following is required to create a limited partnership but is NOT required to create a general partnership?",
+"choices": [
+"A partnership agreement signed by all partners",
+"Registering the partnership with the appropriate state agency",
+"At least two general partners",
+"Equal capital contributions from all partners"
+],
+"answer": 1,
+"explain": "A general partnership can arise from conduct alone, but a limited partnership must be registered with the appropriate state agency to be created. A limited partnership needs only one general partner, and neither form requires equal contributions. A signed partnership agreement is common for both but is not what creates a limited partnership.",
+"source": "Cornell LII Wex, limited partnership; Cornell LII Wex, partnership",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-086",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Gail is the only general partner of Hill Limited Partnership. Ivan is a limited partner who contributed $50,000 and has taken no part in managing the business. The partnership fails, owing creditors $200,000 more than the value of its assets. Which statement is correct?",
+"choices": [
+"Gail is personally liable for the unpaid debts, and Ivan's loss is limited to his $50,000 contribution",
+"Gail and Ivan are each personally liable for half of the unpaid debts",
+"Neither Gail nor Ivan is personally liable, because a limited partnership shields all of its partners",
+"Ivan is personally liable for the unpaid debts, but only after Gail's personal assets are used up"
+],
+"answer": 0,
+"explain": "A limited partnership must have at least one general partner with unlimited personal liability, while a limited partner's liability generally does not exceed the partner's contribution. Gail, as general partner, is personally liable for the shortfall. Ivan is a limited partner, so his loss is limited to his $50,000 contribution.",
+"source": "Cornell LII Wex, limited partnership; Cornell LII Wex, silent partner",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-087",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Kim and Lou are partners in an accounting firm organized as a limited liability partnership. A client wins a malpractice judgment against the firm because of Lou's negligent work on an engagement. Kim had no part in that engagement. The firm's assets do not cover the judgment. Can the client collect the rest from Kim's personal assets?",
+"choices": [
+"No, because a partner in a limited liability partnership is not personally liable for the malpractice of another partner",
+"Yes, because a limited liability partnership is a general partnership and every partner is jointly and severally liable",
+"Yes, but only up to Kim's share of the partnership's profits",
+"No, but only because Kim took no part in managing the firm"
+],
+"answer": 0,
+"explain": "The point of a limited liability partnership is that a partner is not personally liable for the tort damages, such as malpractice, caused by other partners. Unlike a limited partner, a partner in a limited liability partnership keeps that protection even while managing the business, so Kim's role in management does not matter. In an ordinary general partnership Kim would be jointly and severally liable.",
+"source": "Cornell LII Wex, limited liability partnership (LLP); Cornell LII Wex, general partner",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-088",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Which feature distinguishes a limited liability partnership from a limited partnership?",
+"choices": [
+"A limited liability partnership must have at least one partner with unlimited personal liability",
+"A limited liability partnership can be formed with only one partner",
+"Every partner in a limited liability partnership can take part in management and still keep limited liability",
+"Partners in a limited liability partnership are personally liable for the torts of the other partners"
+],
+"answer": 2,
+"explain": "In a limited liability partnership every partner has limited liability for the other partners' torts, even partners who stay involved in management. A limited partnership, by contrast, must have at least one general partner with unlimited liability, and its limited partners typically keep their distance from management. Like a general partnership, a limited liability partnership must have two or more partners.",
+"source": "Cornell LII Wex, limited liability partnership (LLP); Cornell LII Wex, limited partnership",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-089",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "To form a limited liability company (LLC), its organizers must:",
+"choices": [
+"file the LLC's operating agreement with the secretary of state",
+"adopt bylaws and elect a board of directors",
+"file a certificate of limited partnership naming at least one general partner",
+"file articles of organization with the state"
+],
+"answer": 3,
+"explain": "An LLC comes into existence when articles of organization, called a certificate of formation in some states, are filed with and approved by the state, usually the secretary of state. The operating agreement is a private contract among the members and is not what creates the LLC. Bylaws and a board of directors belong to a corporation.",
+"source": "Cornell LII Wex, articles of organization; Cornell LII Wex, certificate of formation; Cornell LII Wex, operating agreement",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-090",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Mia is one of three members of a member-managed limited liability company (LLC) and takes an active part in running its business every day. The LLC defaults on a bank loan that Mia did not personally guarantee. There is no fraud or misuse of the company. Is Mia personally liable on the loan?",
+"choices": [
+"Yes, because a member who manages the business is treated as a general partner",
+"No, because members of an LLC have limited liability even when they take part in management",
+"Yes, because all members of a member-managed LLC are jointly and severally liable for its debts",
+"No, but only if Mia contributed at least as much capital as each of the other members"
+],
+"answer": 1,
+"explain": "LLC members can control the business much as general partners do, yet they have limited liability like limited partners. Taking part in management does not cost a member that shield, and the stem rules out the misconduct that could lead a court to pierce it. Mia risks only her investment, because she did not guarantee the loan.",
+"source": "Cornell LII Wex, member; Cornell LII Wex, limited liability company (LLC)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-091",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Which statement about the operating agreement of a limited liability company (LLC) is correct?",
+"choices": [
+"It must be filed with the secretary of state before the LLC can exist",
+"It binds only members who later approve it at an annual shareholders' meeting",
+"It is the members' governing contract and can set whether members or managers run the LLC",
+"It cannot change how the LLC is managed, because management is fixed by statute"
+],
+"answer": 2,
+"explain": "The operating agreement is the contract among the members that governs the LLC's affairs, including whether it is run by its members or by managers, and it overrides the state statute's default rules. Without one, the LLC runs under those default rules. The document filed with the state to create the LLC is the articles of organization, not the operating agreement.",
+"source": "Cornell LII Wex, operating agreement; Cornell LII Wex, limited liability company (LLC); Cornell LII Wex, articles of organization",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-092",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Before Pine Corp. was incorporated, its promoter, Raj, signed a one-year office lease for the corporation. After Pine was incorporated, its board adopted the lease, and the landlord, Raj and Pine all agreed that Pine would replace Raj as tenant and that Raj would be released. Pine later defaults on the lease. Is Raj liable to the landlord?",
+"choices": [
+"No, because the novation substituted Pine for Raj and released him",
+"Yes, because a promoter can never be released from a contract signed before incorporation",
+"Yes, because a corporation cannot take over a contract made before it existed",
+"Yes, because the landlord, as the other original party, cannot agree to release Raj"
+],
+"answer": 0,
+"explain": "A promoter organizes the corporation, and the corporation can adopt the promoter's acts once its board is in place. A novation, which needs the agreement of both original parties and the new party, substitutes a new party and releases the original one. Because the landlord, Raj and Pine all agreed, Raj is released and only Pine is liable.",
+"source": "Cornell LII Wex, promoter; Cornell LII Wex, novation; Cornell LII Wex, assignee",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-093",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Which document must be filed with the state to create a corporation and generally states the number and classes of shares the corporation may issue?",
+"choices": [
+"The bylaws",
+"The articles of incorporation",
+"The operating agreement",
+"The minutes of the board's first meeting"
+],
+"answer": 1,
+"explain": "The articles of incorporation, also called the corporate charter, are filed with the state at incorporation and set out matters such as the number and classes of shares. Bylaws are the internal rules for meetings, elections and officers' duties and are not filed to create the corporation. An operating agreement governs a limited liability company.",
+"source": "Cornell LII Wex, articles of incorporation; Cornell LII Wex, corporate charter; Cornell LII Wex, bylaws",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-094",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Shareholders who own 70% of the voting stock of Quill Corp. are unhappy with the corporation's president and want her removed. The articles of incorporation and bylaws say nothing special about removing officers. Who has the power to remove the president?",
+"choices": [
+"The majority shareholders, by giving written notice to the president",
+"The other officers, by majority vote",
+"Only a court, in a derivative suit brought by the shareholders",
+"The board of directors"
+],
+"answer": 3,
+"explain": "Shareholders elect the directors, the board appoints and removes the officers, and the officers run the day-to-day business as the corporation's agents. Owning a majority of the stock does not let shareholders fire an officer directly. Their route is to elect directors who will.",
+"source": "Cornell LII Wex, officer; Cornell LII Wex, corporate officers; Cornell LII Wex, board of directors",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-095",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "The directors of Reed Corp., none of whom has a personal interest in the decision, study market reports and an outside consultant's analysis for two months and then vote in good faith to open a new plant. The plant loses money and closes a year later. A shareholder sues the directors for breach of the duty of care. What is the most likely result?",
+"choices": [
+"The directors are protected by the business judgment rule",
+"The directors are liable, because their decision caused the corporation a loss",
+"The directors are liable, because they relied on an outside consultant instead of their own judgment",
+"The directors must prove that the decision was entirely fair to the corporation"
+],
+"answer": 0,
+"explain": "Under the business judgment rule, courts uphold a director's decision made in good faith, with the care of a reasonably prudent person and in the reasonable belief that it serves the corporation, even if it turns out badly. The rule is a presumption for the board, and only proof of gross negligence, bad faith or a conflict of interest overcomes it. The burden to prove fairness shifts to the directors only when the rule does not apply.",
+"source": "Cornell LII Wex, business judgment rule; Cornell LII Wex, duty of care",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-096",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Sam is a director of Tide Corp., a boat dealer. Through his position he learns that a nearby boat dealership is for sale at a bargain price. Tide has the money to buy it and has been looking to expand. Without telling Tide's board, Sam buys the dealership for himself. Which statement is correct?",
+"choices": [
+"Sam breached only his duty of care",
+"Sam did nothing wrong, because a director may buy any business in his own name",
+"Sam breached his duty of loyalty by taking a corporate opportunity",
+"Sam is protected by the business judgment rule because he acted in good faith"
+],
+"answer": 2,
+"explain": "The duty of loyalty requires a director to put the corporation's interests ahead of his own and bars diverting a corporate opportunity: one in the corporation's line of business that it can afford and is interested in. Sam had to present the opportunity to the board first. The business judgment rule does not protect a director with a personal conflict of interest.",
+"source": "Cornell LII Wex, duty of loyalty; Cornell LII Wex, corporate opportunity; Cornell LII Wex, business judgment rule",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-097",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "A shareholder who brings a derivative suit against a corporation's directors generally must meet all of the following requirements EXCEPT:",
+"choices": [
+"Have been a shareholder when the challenged act or omission occurred",
+"Make a written demand that the corporation act, and generally wait 90 days unless the demand is rejected or waiting would cause irreparable harm",
+"Fairly and adequately represent the corporation's interests",
+"Agree that any recovery will be paid to the shareholder personally"
+],
+"answer": 3,
+"explain": "In a derivative suit the shareholder enforces a claim that belongs to the corporation, so any recovery goes to the corporation, not to the shareholder, who may recover only reasonable litigation costs. The shareholder must have owned shares when the wrong occurred, make a written demand and fairly represent the corporation. A shareholder who was harmed personally brings a direct suit instead.",
+"source": "Cornell LII Wex, shareholder derivative suit; Cornell LII Wex, shareholder's derivative action",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-098",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "All of the following can support a court's decision to pierce the corporate veil and hold a shareholder personally liable for a corporation's debts EXCEPT:",
+"choices": [
+"The shareholder pays personal bills from the corporation's bank account and mixes personal and corporate funds",
+"The corporation simply cannot pay a creditor in full, and there is no other misconduct",
+"The corporation was formed with too little capital for its foreseeable obligations",
+"The corporation ignores corporate formalities and keeps no separate records"
+],
+"answer": 1,
+"explain": "Courts presume against piercing the corporate veil and do it only for serious misconduct, such as commingling personal and corporate assets, undercapitalization and disregard of corporate formalities. A creditor's inability to collect is the very risk that limited liability puts on creditors, so the injustice must be something more than an unpaid debt. Otherwise shareholders risk only their investment.",
+"source": "Cornell LII Wex, piercing the corporate veil; Cornell LII Wex, disregarding the corporate entity; Cornell LII Wex, limited liability",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-099",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "The articles of incorporation of Vale Corp. say nothing about preemptive rights. The board approves issuing 10,000 new shares to an outside investor. Wanda, who owns 20% of the outstanding shares, demands the right to buy 20% of the new shares before they are offered to anyone else. Under most state corporation laws, which statement is correct?",
+"choices": [
+"Wanda has a preemptive right, because every shareholder has one by law",
+"Wanda can block the issue by bringing a derivative suit, because any new issue dilutes her stake",
+"Wanda has a preemptive right only if she has held her shares for more than one year",
+"Wanda has no preemptive right, because preemptive rights exist only if the articles of incorporation grant them"
+],
+"answer": 3,
+"explain": "A preemptive right lets existing shareholders buy newly issued shares before outsiders, to protect against dilution. Courts once treated the right as automatic, but most state laws now deny it unless the corporate charter grants it. Vale's articles are silent, so Wanda has no preemptive right.",
+"source": "Cornell LII Wex, preemptive right",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-100",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "The board and shareholders of Wren Corp. approve its dissolution, and Wren makes the required state filings. After dissolution, which of the following may Wren do?",
+"choices": [
+"Sign a five-year contract to open a new line of business",
+"Distribute all of its assets to its shareholders before paying its creditors",
+"Collect its assets, pay its debts and distribute any remaining assets to its shareholders",
+"Nothing at all, because it ceases to exist at dissolution and can no longer sue or be sued"
+],
+"answer": 2,
+"explain": "A dissolved corporation generally may carry on only the business of winding up its affairs: collecting and selling assets, settling its liabilities and distributing what remains to shareholders. Creditors are paid before shareholders receive anything. A dissolved corporation can still sue and be sued during winding up, so it does not simply vanish.",
+"source": "Cornell LII Wex, dissolution of corporation; Cornell LII Wex, winding up a corporation; Cornell LII Wex, winding up",
+"cpa": [
+"REG-II"
+]
 }
 ]
