@@ -65,6 +65,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 @media (max-width: 350px) { .lines .ea { display: none; } }
 .bul { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #fff; opacity: 0.4; transition: opacity 0.2s; }
 .bul.on { opacity: 1; box-shadow: 0 0 0 2px #111, 0 0 0 3.5px #fff; }
+.bul.sec { width: auto; min-width: 22px; padding: 0 5px; border-radius: 4px; font: 700 12px/1 var(--f-sign); letter-spacing: 0.02em; box-sizing: border-box; }
+.bul.off { opacity: 0.25; }
+.bul[data-part="REG"] { background: #0039a6; } .bul[data-part="FAR"] { background: #6cbe45; } .bul[data-part="AUD"] { background: #ff6319; } .bul[data-part="TCP"] { background: #fccc0a; color: #111; }
+.exsw { display: inline-flex; flex: none; margin-left: 6px; border: 1.5px solid rgba(255,255,255,0.85); border-radius: 999px; overflow: hidden; }
+.exsw button { min-height: 22px; border: 0; background: none; color: rgba(255,255,255,0.82); font: 700 11px/1 var(--f-sign); letter-spacing: 0.06em; padding: 0 9px; cursor: pointer; }
+.exsw button[aria-pressed="true"] { background: #fff; color: #111; }
+.exsw button:focus-visible { outline: 2px solid var(--amber-deep); outline-offset: -2px; }
+.lines .exsw button { position: relative; } .lines .exsw button::before { content: ""; position: absolute; inset: -10px 0; } /* a 42px tall tap target on the 22px pill */
 .bul[data-part="1"] { background: #ee352e; } .bul[data-part="2"] { background: #00933c; } .bul[data-part="3"] { background: #b933ad; }
 .menubtn { position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; border: 2px solid #fff; background: #111; display: grid; place-items: center; cursor: pointer; }
 .menubtn i { display: block; width: 16px; height: 2px; background: #fff; box-shadow: 0 -5px 0 #fff, 0 5px 0 #fff; }
@@ -212,6 +220,9 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 /* Part switcher: the three line bullets, the current one ringed like the app bar's, with its name beside them */
 .ptabs { display: flex; gap: 10px; align-items: center; padding: 16px 18px 0; }
 .ptab { flex: none; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--lc); color: #fff; font: 700 19px/1 var(--f-sign); cursor: pointer; opacity: 0.45; transition: opacity 160ms; }
+.ptab.sec { width: auto; min-width: 40px; height: 32px; padding: 0 8px; border-radius: 6px; font-size: 16px; }
+.ptab[data-part="TCP"] { color: #111; }
+.ptab:disabled { opacity: 0.2; cursor: default; }
 .ptab[aria-selected="true"] { opacity: 1; box-shadow: 0 0 0 2.5px #111, 0 0 0 4.5px #fff; }
 .pname { margin-left: 4px; font: 700 16px/1.1 var(--f-sign); }
 .pname small { display: block; margin-bottom: 3px; font: 700 11px/1 var(--f-ui); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
@@ -277,6 +288,8 @@ html.town-fs-open, html.town-fs-open body { overflow: hidden; }
 .partseg button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-soft); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 160ms, color 160ms; }
 .partseg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
 .partseg button[aria-pressed="true"] .bul { opacity: 1; }
+.partseg button:disabled { cursor: default; } .partseg button:disabled .bul { opacity: 0.25; }
+body.cpa .partseg { grid-template-columns: repeat(4, 1fr); }
 /* Exam day: the countdown pill on Today (glass, like the stat pills) and the Exam day card on Exam (paper) */
 .countpill { display: inline-flex; align-items: baseline; gap: 6px; margin-bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
 .countpill b { color: #ffd27a; font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -305,6 +318,7 @@ body.tabs .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); positi
 .tabbar button[aria-current] { color: #fff; }
 .tabbar button[aria-current]::before { content: ""; position: absolute; top: -8px; left: 30%; right: 30%; height: 4px; border-radius: 0 0 4px 4px; background: var(--amber); }
 .tabbar .tb-brand, .tabbar #tbmore { display: none; }
+.tb-sw { margin-top: 12px; } .tb-sw .exsw { margin-left: 0; } .tb-sw .exsw button { min-height: 30px; padding: 0 14px; font-size: 12px; } .tabbar .tb-sw .exsw button[aria-pressed="true"] { color: #111; background: #fff; } /* beats the sidebar's button hover color */
 #tbflag { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--amber); color: var(--amber-ink); font: 700 11px/18px var(--f-ui); letter-spacing: 0; }
 #tbflag:empty { display: none; }
 body.tabs .wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
@@ -607,7 +621,7 @@ footer p { margin: 0; max-width: 70ch; }
   </header>
   <main id="app"></main>
   <nav class="tabbar" aria-label="Home sections">
-    <div class="tb-brand">EA Ledger Drill</div>
+    <div class="tb-brand">EA Ledger Drill<div class="tb-sw"></div></div>
     <button type="button" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Today</span></button>
     <button type="button" data-tab="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l4-2v14M9 21V4l6 3v14M15 21v-9l4 2v7"/></svg><span>City</span></button>
     <button type="button" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5h4a6 6 0 0 1 6 5"/></svg><span>Map</span></button>
@@ -615,7 +629,7 @@ footer p { margin: 0; max-width: 70ch; }
     <button type="button" id="tbmore" aria-label="More"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>More</span><span id="tbflag"></span></button>
   </nav>
   <footer>
-    <p>Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.</p>
+    <p id="footnote">Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.</p>
     <p>Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.</p>
     <p>Times Square's streets, plazas and buildings come from map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
     <p class="rights">© 2026 Chris Hidalgo. All rights reserved.</p>

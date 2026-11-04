@@ -262,9 +262,12 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const TDEF = {
     "P1-1": { style: 2, tint: 0x8b4b37 }, "P1-2": { style: 1, tint: 0xbfb39c }, "P1-3": { style: 0, tint: 0x33414f }, "P1-4": { style: 3, tint: 0x1a1f26 }, "P1-5": { style: 0, tint: 0x56606c }, "P1-6": { style: 1, tint: 0xa79a86 },
     "P2-1": { style: 0, tint: 0x2f3d4a }, "P2-2": { style: 1, tint: 0xd0c6b1 }, "P2-3": { style: 3, tint: 0x20262e },
-    "P3-1": { style: 1, tint: 0xb9ae99 }, "P3-2": { style: 0, tint: 0x3a4553 }, "P3-3": { style: 2, tint: 0x6f3c2d }, "P3-4": { style: 3, tint: 0x14181e }
+    "P3-1": { style: 1, tint: 0xb9ae99 }, "P3-2": { style: 0, tint: 0x3a4553 }, "P3-3": { style: 2, tint: 0x6f3c2d }, "P3-4": { style: 3, tint: 0x14181e },
+    /* CPA mode: REG's five areas stand on Part 1's lots, in place of the EA towers there */
+    "REG-I": { style: 1, tint: 0xb9ae99 }, "REG-II": { style: 2, tint: 0x8b4b37 }, "REG-III": { style: 1, tint: 0xbfb39c }, "REG-IV": { style: 0, tint: 0x33414f }, "REG-V": { style: 3, tint: 0x1a1f26 }
   };
-  const WEIGHT = { "P1-1": 14, "P1-2": 17, "P1-3": 17, "P1-4": 15, "P1-5": 11, "P1-6": 11, "P2-1": 30, "P2-2": 37, "P2-3": 18, "P3-1": 26, "P3-2": 25, "P3-3": 20, "P3-4": 14 };
+  const WEIGHT = { "P1-1": 14, "P1-2": 17, "P1-3": 17, "P1-4": 15, "P1-5": 11, "P1-6": 11, "P2-1": 30, "P2-2": 37, "P2-3": 18, "P3-1": 26, "P3-2": 25, "P3-3": 20, "P3-4": 14,
+    "REG-I": 15, "REG-II": 20, "REG-III": 10, "REG-IV": 27, "REG-V": 28 }; /* REG: the midpoint of each area's 2026 blueprint range */
   /* slot order: alternate sides, nearest the part's camera first */
   const ORDER = { 1: [6, 7, 4, 5, 2, 3, 0, 1], 2: [2, 3, 0, 1], 3: [2, 3, 0, 1] };
   for (const p of [1, 2, 3]) { const s = slots[p]; slots[p] = ORDER[p].map(i => s[i]).filter(Boolean); }
@@ -280,11 +283,11 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const redLightM = new THREE.MeshBasicMaterial({ color: new THREE.Color(4, 0.3, 0.2) });
   const netM = new THREE.MeshStandardMaterial({ color: 0xff6a1a, emissive: 0xff4a00, emissiveIntensity: 0.25, alphaMap: netTex, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false });
   const B = {}, pickables = [];
-  for (const p of [1, 2, 3]) {
-    const ids = Object.keys(TDEF).filter(d => d.startsWith("P" + p));
+  for (const p of [1, 2, 3, "REG"]) {
+    const ids = Object.keys(TDEF).filter(d => d.startsWith(p === "REG" ? "REG-" : "P" + p));
     ids.forEach((d, i) => {
-      const lot = slots[p][i]; if (!lot) return;
-      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + p * 101;
+      const lot = slots[p === "REG" ? 1 : p][i]; if (!lot) return;
+      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + (p === "REG" ? 505 : p * 101);
       const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); g.rotation.y = lot.yaw; lot.used = true; scene.add(g);
       const below = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0), above = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const clad = facadeMat({ color: def.tint, clippingPlanes: [below] }), frame = facadeMat({ clippingPlanes: [above] });
@@ -324,7 +327,7 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       } else crown = new THREE.Mesh(new THREE.BoxGeometry(w - 16, 9, dd - 13).translate(0, H + 4.5, 0), crownM);
       g.add(crown);
       const top = mdl ? new THREE.Box3().setFromObject(crown).max.y : H + 8; /* highest point when finished: labels and fireworks clear it */
-      B[d] = { id: d, part: p, g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
+      B[d] = { id: d, part: p, exam: p === "REG" ? "cpa" : "ea", g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
       walls.push({ ax: lot.front[0], az: lot.front[1], bx: lot.front[2], bz: lot.front[3], nx: lot.fn[0], nz: lot.fn[1], h: 22 });
     });
   }
@@ -363,7 +366,11 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     }
     OTS.outward = outward;
   }
-  let viewTS = false, currentPart = "1";
+  let viewTS = false, currentPart = "1", exam = "ea";
+  /* only the current exam's towers stand: hidden ones aren't drawn, labeled or tappable */
+  const live = d => B[d] && B[d].exam === exam;
+  function showExam(x) { exam = x === "cpa" ? "cpa" : "ea"; for (const d in B) B[d].g.visible = live(d); shadowDirty = true; }
+  showExam("ea");
   function applyCut(b) {
     shadowDirty = true;
     const done = b.m >= 0.999, cut = done ? b.H + 200 : Math.max(0.3, Math.round(b.H * b.m / 4) * 4);
@@ -672,7 +679,7 @@ void main() {
     const g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, pal[0]); g.addColorStop(1, pal[1]); x.fillStyle = g; x.fillRect(0, 0, W, H);
     x.fillStyle = "rgba(255,255,255,0.07)"; for (let y = 0; y < H; y += 6) x.fillRect(0, y, W, 2);
     let big, small;
-    if (kind === "ready") { big = HUD.ready + "%"; small = "PART " + HUD.part + " READY"; }
+    if (kind === "ready") { big = HUD.ready + "%"; small = (/^\d$/.test(HUD.part) ? "PART " + HUD.part : HUD.part) + " READY"; }
     else if (kind === "due") { big = String(HUD.due); small = HUD.due === 1 ? "REVIEW DUE" : "REVIEWS DUE"; }
     else if (kind === "streak") { big = String(HUD.streak); small = "DAY STREAK"; }
     else if (kind === "today") { big = HUD.today + "/" + HUD.goal; small = "QUESTIONS TODAY"; }
@@ -835,7 +842,8 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   }
 
   /* ---------- camera: each part is seen down the lit square: Part 1 from the north toward One Times Square, Parts 2 and 3 from high over the towers south of 42nd ---------- */
-  const FOCUS = { ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: -0.25, pitch: 0.74, dist: 420 }, 3: { t: [5, 50, 110], yaw: -0.25, pitch: 0.82, dist: 380 } };
+  const FOCUS = { REG: null, ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: -0.25, pitch: 0.74, dist: 420 }, 3: { t: [5, 50, 110], yaw: -0.25, pitch: 0.82, dist: 380 } };
+  FOCUS.REG = FOCUS[1]; /* REG stands on Part 1's blocks */
   const rig = { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400, off: 0, zoom: 1, anim: null };
   let aspect = 1;
   function placeCamera() {
@@ -857,7 +865,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     if (!labels) return; labels.innerHTML = ""; tagEls = {};
     const names = (window.__townLabels && window.__townLabels().names) || {};
     for (const d in B) {
-      if (!fs && !d.startsWith("P" + currentPart)) continue;
+      if (!live(d) || (!fs && String(B[d].part) !== currentPart)) continue;
       const el = document.createElement("button"); el.className = "tag"; el.type = "button";
       el.innerHTML = `<b class="fl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 11V1.5M2.6 1.8 10 3.6 2.6 5.6Z" fill="currentColor" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></b>${names[d] || d}<i></i>`; el.onclick = () => fs ? select(d) : window.__townPick && window.__townPick(d);
       labels.appendChild(el); tagEls[d] = el;
@@ -915,7 +923,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     if (ptrs.size === 0 && downAt && !moved) {
       const r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ndc, camera);
-      const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d);
+      const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d && live(h.object.userData.d));
       if (hit && window.__townPick) window.__townPick(hit.object.userData.d);
     }
     if (ptrs.size === 0) downAt = null;
@@ -1082,7 +1090,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     if (keys.has("in")) zoomAbout(tgt.clone(), Math.exp(-1.2 * dt / 1000)); if (keys.has("out")) zoomAbout(tgt.clone(), Math.exp(1.2 * dt / 1000));
     lastInput = performance.now(); }
   function pickAt(x, y) { const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -(y - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
-    const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d); select(hit ? hit.object.userData.d : null); }
+    const hit = ray.intersectObjects(pickables, false).find(h => h.object.userData.d && live(h.object.userData.d)); select(hit ? hit.object.userData.d : null); }
   /* a tapped tower: fly to it and show its card */
   function select(d) {
     picked = d; for (const k in B) { B[k].hl = k === d; B[k].clad.emissive.setHex(B[k].hl ? 0x3a2a08 : 0x000000); }
@@ -1132,7 +1140,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
     fs.innerHTML = `<div class="labels"></div>
       <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
-        <div class="fs-views">${[["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]].map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
       <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
       <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
       <div class="fs-card" hidden></div>`;
@@ -1259,20 +1267,21 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     unmount() { if (io) io.disconnect(); if (ro) ro.disconnect(); if (canvas.parentNode) canvas.parentNode.removeChild(canvas); stage = null; labels = null; },
     update(data) {
       if (!data) return;
+      if ((data.exam || "ea") !== exam) showExam(data.exam);
       const partChanged = data.part !== currentPart; currentPart = data.part;
       let maxGap = -1; focusD = null;
       for (const d in B) {
         const b = B[d], t = Math.max(0, Math.min(1, data.mastery[d] || 0));
         const from = data.from && d in data.from ? data.from[d] : t;
         b.from = reduce ? t : from; b.target = t; b.m = b.from; applyCut(b);
-        if (d.startsWith("P" + currentPart)) { const gp = (1 - t) * WEIGHT[d]; if (gp > maxGap && t < 0.999) { maxGap = gp; focusD = d; } }
+        if (live(d) && String(B[d].part) === currentPart) { const gp = (1 - t) * WEIGHT[d]; if (gp > maxGap && t < 0.999) { maxGap = gp; focusD = d; } }
       }
       paintAnim = reduce ? null : { t0: performance.now() + 350, dur: 1300 };
       if (data.view) viewTS = data.view === "ts";
       if (data.sky) setSky(data.sky, !skyInit);
       if (data.hud) { HUD = Object.assign({}, HUD, data.hud); stats.forEach(drawStat); }
       if (!reduce) { let k = 0; for (const d in B) if (B[d].from < 0.999 && B[d].target >= 0.999) pending.push({ d, k: k++, at: paintAnim.t0 + paintAnim.dur + 150 }); }
-      const due = Object.entries(data.due || {}).filter(([k]) => k.startsWith("P" + currentPart)).reduce((a, [, v]) => a + v, 0);
+      const due = Object.entries(data.due || {}).filter(([k]) => live(k) && String(B[k].part) === currentPart).reduce((a, [, v]) => a + v, 0);
       nCars = Math.min(cars.length, due); cars.bodies.count = cars.cabs.count = nCars; cars.lights.geometry.setDrawRange(0, nCars * 4);
       for (let i = 0; i < nCars; i++) { const c = cars[i]; M4.makeTranslation(c.lane, 0, c.z); cars.bodies.setMatrixAt(i, M4); cars.cabs.setMatrixAt(i, M4); }
       cars.bodies.instanceMatrix.needsUpdate = cars.cabs.instanceMatrix.needsUpdate = true;
