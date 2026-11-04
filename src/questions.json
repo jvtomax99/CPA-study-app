@@ -13014,5 +13014,125 @@
 "cpa": [
 "REG-II"
 ]
+},
+{
+"id": "reg2-101",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Gina, Hal and Ivy are partners in a general partnership at will. Their partnership agreement says nothing about dissociation, dissolution or buyouts. Gina dies, and Hal and Ivy want to keep running the business. Under the Revised Uniform Partnership Act, which statement is correct?",
+"choices": [
+"The partnership is dissolved by Gina's death and must be wound up, although Hal and Ivy may then form a new partnership",
+"Gina is dissociated as a partner, the partnership continues, and the partnership must cause her interest to be purchased for a buyout price",
+"Gina's estate becomes a partner in her place, with her full management rights",
+"Gina is not dissociated until her estate gives the partnership written notice that she is withdrawing"
+],
+"answer": 1,
+"explain": "A partner's death dissociates that partner, but in a partnership at will only a partner's express will to withdraw dissolves the partnership, so the business continues without Gina. When a dissociation does not cause dissolution, the partnership must cause the dissociated partner's interest to be bought out, and her estate is not a partner. Dissolution on any partner's departure was the rule of the original 1914 Uniform Partnership Act, which the revised act changed.",
+"source": "Uniform Business Organizations Code 3-601(7)(A); Revised Uniform Partnership Act section 603 (Uniform Business Organizations Code 3-603(a)); Revised Uniform Partnership Act section 701 (Uniform Business Organizations Code 3-701(a)); Revised Uniform Partnership Act section 801 (Uniform Business Organizations Code 3-801 and comment)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-102",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Unless the partnership agreement provides otherwise, which of the following events dissolves a general partnership at will that has five partners?",
+"choices": [
+"One partner dies",
+"One partner becomes a debtor in bankruptcy",
+"The other four partners expel one partner under an expulsion clause in the partnership agreement",
+"The partnership learns that one partner has expressed the will to withdraw as a partner"
+],
+"answer": 3,
+"explain": "In a partnership at will, the partnership is dissolved when it knows or has notice of a partner's express will to withdraw. Death, bankruptcy and expulsion each dissociate the partner involved, but under the Revised Uniform Partnership Act they do not dissolve the partnership; the official comments note that even expelling a partner from a partnership at will does not dissolve it. Instead the remaining partners continue the business and buy out the dissociated partner's interest.",
+"source": "Revised Uniform Partnership Act section 801(1) (Uniform Business Organizations Code 3-801(1) and comment); Uniform Business Organizations Code 3-601(3), (6)(A), (7)(A); Revised Uniform Partnership Act section 701 (Uniform Business Organizations Code 3-701(a))",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-103",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Jo, Kai and Lee formed a general partnership for a definite term of five years. After two years, with no other partner having left, Jo gives the partnership written notice that she is withdrawing immediately. The partnership agreement says nothing about withdrawal or buyouts, and Kai and Lee continue the business. Which statement is correct?",
+"choices": [
+"Jo's withdrawal has no effect, because a partner in a partnership for a definite term cannot withdraw before the term ends",
+"Jo's withdrawal automatically dissolves the partnership, and its business must be wound up",
+"Jo is dissociated, and because the dissociation is wrongful, she is liable for the damages it causes, which may be offset against her buyout price",
+"Jo is dissociated and is entitled to immediate payment of her full buyout price, with no deduction for damages"
+],
+"answer": 2,
+"explain": "A partner always has the power to dissociate by express will, but withdrawing from a partnership for a definite term before the term ends is wrongful, and the partner is liable to the partnership and the other partners for the damages caused. Those damages are offset against the buyout price, and a wrongfully dissociating partner generally gets no payment until the term expires unless a court finds that earlier payment will not cause undue hardship to the business. A wrongful dissociation does not dissolve a term partnership unless at least half of the remaining partners agree to wind up within 90 days, and Kai and Lee chose to continue.",
+"source": "Uniform Business Organizations Code 3-602(a), (b)(2)(A), (c); Revised Uniform Partnership Act section 701 (Uniform Business Organizations Code 3-701(c), (h)); Revised Uniform Partnership Act section 801 (Uniform Business Organizations Code 3-801(2)(A))",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-104",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Under the Revised Uniform Partnership Act, a person to whom a partner has transferred the partner's entire transferable interest, and whom the partners have not admitted as a partner, is entitled while the partnership continues to:",
+"choices": [
+"receive the distributions the transferor would otherwise have received, but not to take part in management or to see the partnership's records",
+"vote on partnership matters in the transferor's place, because the transferee holds the transferor's entire interest",
+"inspect the partnership's books and records, but not to receive any distributions until the partnership dissolves",
+"an ownership share in specific partnership property equal to the transferor's share of the profits"
+],
+"answer": 0,
+"explain": "A transferee of a transferable interest has the right to receive, in accordance with the transfer, the distributions to which the transferor would otherwise be entitled. The transferee has no right to take part in management or to access partnership records or information, except an account of the partnership's transactions from the date of dissolution if the partnership dissolves. A partner has no transferable interest in specific partnership property, so the transferee cannot acquire one.",
+"source": "Revised Uniform Partnership Act section 503 (Uniform Business Organizations Code 3-503(a)(3), (b), (c)); Uniform Business Organizations Code 3-501",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-105",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Olga, a partner in a four-partner general partnership, gives all of her transferable interest in the partnership to her daughter. The partnership agreement says nothing about transfers or expulsion. Which statement is correct?",
+"choices": [
+"Olga is automatically dissociated as a partner when the transfer takes effect",
+"The partnership is dissolved, and its business must be wound up",
+"Olga remains a partner with all of a partner's duties, although the other three partners may expel her by unanimous vote",
+"Olga remains a partner but is released from her duties to the partnership, because she no longer has an economic interest in it"
+],
+"answer": 2,
+"explain": "A transfer of a transferable interest does not by itself dissociate the transferor or dissolve the partnership, and the transferor keeps the rights of a partner other than the interest transferred and all the duties and obligations of a partner. Because Olga transferred all of her transferable interest, the other partners may expel her by the affirmative vote or consent of all of them. Until they do, she is still a partner.",
+"source": "Revised Uniform Partnership Act section 503 (Uniform Business Organizations Code 3-503(a)(2), (f)); Uniform Business Organizations Code 3-601(4)(B)",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-106",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Pat, a partner in a general partnership, owes Quinn a personal debt unrelated to the partnership's business. Quinn obtains a court judgment against Pat that remains unpaid. Which remedy may Quinn use to collect the judgment from Pat's interest in the partnership?",
+"choices": [
+"Levy on and sell specific partnership equipment in proportion to Pat's share of the partnership",
+"Obtain a charging order, which requires the partnership to pay Quinn any distributions that would otherwise be paid to Pat",
+"Take Pat's place as a partner and vote on partnership decisions until the judgment is paid",
+"Obtain a court order requiring the partnership to make distributions large enough to pay the judgment"
+],
+"answer": 1,
+"explain": "A judgment creditor of a partner may obtain a charging order against the partner's transferable interest; it is a lien that requires the partnership to pay the creditor any distribution that would otherwise be paid to the partner, and it is the creditor's exclusive remedy against that interest. The creditor has no say in the timing or amount of distributions and cannot interfere in the management of the partnership. Specific partnership property belongs to the partnership, not to Pat, so it cannot be seized for Pat's personal debt.",
+"source": "Uniform Business Organizations Code 3-504(a), (g) and comment; Uniform Business Organizations Code 3-501",
+"cpa": [
+"REG-II"
+]
 }
 ]
