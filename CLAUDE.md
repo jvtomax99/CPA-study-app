@@ -20,6 +20,10 @@
 - When you suggest UI or design options, mock up every option before I
   choose: build them on a scratch copy of the app (never the repo), render
   them with Playwright, and send the screenshots with the suggestions.
+- When another program, package, plugin, connector, browser extension or
+  allowed domain would help you work better, ask me with a clickable button
+  first. Once I approve, install it yourself if you can; if only I can (my
+  computer, my accounts, environment settings), give me the exact steps.
 
 ## Design
 - Follow DESIGN.md for colors, type, corner radius, shadows, motion and
