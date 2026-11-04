@@ -11,7 +11,9 @@ Read first:
 - **Timing.** The blueprint says that where tax treatment depends on timing, the question gives clear dates, and that candidates otherwise apply current law under the CPA Exam Policy on New Pronouncements. This bank keys tax year 2025 law as amended through December 31, 2025, including P.L. 119-21. Put a 2025 date in every stem where timing matters. Do not write a question whose answer differs between 2025 law and law effective in 2026; write a different question instead.
 
 ## What to cover
-Stay inside the area your task names. The blueprint's representative tasks for the two areas this round:
+Stay inside the area your task names. The blueprint's representative tasks by area:
+- **Area I, Individuals and Personal Financial Planning (30 to 40%).** A. Nonroutine compliance and planning: incentive compensation, timing income and deductions, estimated tax safe harbors. B. Passive activity and at-risk limits. C. Gift tax compliance and planning, including the donee's basis. D. Personal financial planning: retirement accounts and distributions, education funding, insurance. Routine compliance (filing status, dependents, the standard deduction, basic credits) belongs to REG; don't write it here.
+- **Area II, Entity Tax Compliance (30 to 40%).** A. C corporations: net operating losses, consolidated returns, international sourcing as general concepts, and noncash transactions with owners. B. S corporations: noncash contributions and distributions and owner basis. C. Partnerships: elections such as Section 754, and the effects of ownership changes. D. Trusts: types, distributable net income, and allocating between income and corpus. E. Tax-exempt organizations: obtaining and keeping exempt status, and unrelated business income.
 - **Area III, Entity Tax Planning (10 to 20%).** A. Formation and liquidation: the tax effects of forming and liquidating each entity type compared side by side, and which entity fits a set of legal characteristics. B. C corporations: using net operating loss and capital loss carryovers, the effect of changing rates on timing income and deductions, estimated tax payments that avoid the underpayment penalty, and shareholder-corporation transactions in noncash property. State and local apportionment questions must give every apportionment factor in the stem. C. S corporations: built-in gains tax on a proposed sale, terminating the election, shareholder loans and repayments, and the election to distribute from accumulated earnings and profits before the accumulated adjustments account. D. Partnerships: contributing appreciated or depreciated property, guaranteed payments and nonliquidating distributions, and selling a partnership interest.
 - **Area IV, Property Transactions (10 to 20%).** A. Like-kind exchanges and involuntary conversions: realized, recognized and deferred gain, and the basis of what is received. B. Character of gains and losses: Section 1231 netting and the five-year lookback, Section 1245 and 1250 recapture, unrecaptured Section 1250 gain, Section 1244 losses, and installment sales. C. Related parties: who is related, attribution of stock and partnership ownership, a later sale to an outsider of property bought from a related party, and imputed interest. Imputed interest questions must give the applicable federal rate in the stem.
 
@@ -31,9 +33,9 @@ Confirm every rule from a primary source with WebSearch or WebFetch: the Interna
 
 ## Output
 Write ONLY a JSON array of question objects to the output file named in your task, with these fields:
-- "id": "tcp3-" (Area III) or "tcp4-" (Area IV) plus a three-digit number in the range your task gives you.
-- "part": "TCP". "domain": "TCP-III" or "TCP-IV". "exam": "cpa". "cpa": ["TCP-III"] or ["TCP-IV"].
-- "group": the blueprint group letter (A to D in Area III, A to C in Area IV).
+- "id": "tcp" plus the area number ("tcp1-" to "tcp4-") plus a three-digit number in the range your task gives you.
+- "part": "TCP". "domain": the area tag, "TCP-I" to "TCP-IV". "exam": "cpa". "cpa": [the same tag].
+- "group": the blueprint group letter within the area.
 - "q", "choices", "answer" (0-based index into "choices"), "explain", "source", as in questions.json.
 
 Validate that the file parses with python3 before finishing. Then reply with the count per group, and a short list of any rules you could not confirm from a primary source (there should be none in the file).
