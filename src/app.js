@@ -3,7 +3,7 @@
    Progress is keyed by question id, so an answer counts in both modes. useExam() swaps BANK, DOMAINS, PARTS and byId. */
 const BANK_ALL = __BANK__;
 const EA_BANK = BANK_ALL.filter(q => q.exam !== "cpa");
-const REG_BANK = BANK_ALL.filter(q => q.exam === "cpa" || (q.cpa || []).some(t => t.startsWith("REG")))
+const REG_BANK = BANK_ALL.filter(q => q.exam === "cpa" ? q.part === "REG" : (q.cpa || []).some(t => t.startsWith("REG")))
   .map(q => q.exam === "cpa" ? q : Object.assign({}, q, { part: "REG", domain: q.cpa.find(t => t.startsWith("REG")) }));
 /* TCP: every question tagged TCP, filed under its TCP area. A question can sit in both REG and TCP, so CPA mode holds a copy per
    section and byId follows the current section (indexById). */
