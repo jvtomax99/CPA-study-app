@@ -264,10 +264,12 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     "P2-1": { style: 0, tint: 0x2f3d4a }, "P2-2": { style: 1, tint: 0xd0c6b1 }, "P2-3": { style: 3, tint: 0x20262e },
     "P3-1": { style: 1, tint: 0xb9ae99 }, "P3-2": { style: 0, tint: 0x3a4553 }, "P3-3": { style: 2, tint: 0x6f3c2d }, "P3-4": { style: 3, tint: 0x14181e },
     /* CPA mode: REG's five areas stand on Part 1's lots, in place of the EA towers there */
-    "REG-I": { style: 1, tint: 0xb9ae99 }, "REG-II": { style: 2, tint: 0x8b4b37 }, "REG-III": { style: 1, tint: 0xbfb39c }, "REG-IV": { style: 0, tint: 0x33414f }, "REG-V": { style: 3, tint: 0x1a1f26 }
+    "REG-I": { style: 1, tint: 0xb9ae99 }, "REG-II": { style: 2, tint: 0x8b4b37 }, "REG-III": { style: 1, tint: 0xbfb39c }, "REG-IV": { style: 0, tint: 0x33414f }, "REG-V": { style: 3, tint: 0x1a1f26 },
+    /* TCP's four areas stand on Part 3's lots */
+    "TCP-I": { style: 0, tint: 0x56606c }, "TCP-II": { style: 1, tint: 0xd0c6b1 }, "TCP-III": { style: 2, tint: 0x6f3c2d }, "TCP-IV": { style: 3, tint: 0x20262e }
   };
   const WEIGHT = { "P1-1": 14, "P1-2": 17, "P1-3": 17, "P1-4": 15, "P1-5": 11, "P1-6": 11, "P2-1": 30, "P2-2": 37, "P2-3": 18, "P3-1": 26, "P3-2": 25, "P3-3": 20, "P3-4": 14,
-    "REG-I": 15, "REG-II": 20, "REG-III": 10, "REG-IV": 27, "REG-V": 28 }; /* REG: the midpoint of each area's 2026 blueprint range */
+    "REG-I": 15, "REG-II": 20, "REG-III": 10, "REG-IV": 27, "REG-V": 28, "TCP-I": 35, "TCP-II": 35, "TCP-III": 15, "TCP-IV": 15 }; /* REG: the midpoint of each area's 2026 blueprint range */
   /* slot order: alternate sides, nearest the part's camera first */
   const ORDER = { 1: [6, 7, 4, 5, 2, 3, 0, 1], 2: [2, 3, 0, 1], 3: [2, 3, 0, 1] };
   for (const p of [1, 2, 3]) { const s = slots[p]; slots[p] = ORDER[p].map(i => s[i]).filter(Boolean); }
@@ -283,11 +285,12 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const redLightM = new THREE.MeshBasicMaterial({ color: new THREE.Color(4, 0.3, 0.2) });
   const netM = new THREE.MeshStandardMaterial({ color: 0xff6a1a, emissive: 0xff4a00, emissiveIntensity: 0.25, alphaMap: netTex, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false });
   const B = {}, pickables = [];
-  for (const p of [1, 2, 3, "REG"]) {
-    const ids = Object.keys(TDEF).filter(d => d.startsWith(p === "REG" ? "REG-" : "P" + p));
+  const LOTS = { REG: 1, TCP: 3 }; /* the EA part whose lots a CPA section borrows */
+  for (const p of [1, 2, 3, "REG", "TCP"]) {
+    const ids = Object.keys(TDEF).filter(d => d.startsWith(p in LOTS ? p + "-" : "P" + p));
     ids.forEach((d, i) => {
-      const lot = slots[p === "REG" ? 1 : p][i]; if (!lot) return;
-      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + (p === "REG" ? 505 : p * 101);
+      const lot = slots[LOTS[p] || p][i]; if (!lot) return;
+      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + (p === "REG" ? 505 : p === "TCP" ? 606 : p * 101);
       const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); g.rotation.y = lot.yaw; lot.used = true; scene.add(g);
       const below = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0), above = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const clad = facadeMat({ color: def.tint, clippingPlanes: [below] }), frame = facadeMat({ clippingPlanes: [above] });
@@ -327,7 +330,7 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
       } else crown = new THREE.Mesh(new THREE.BoxGeometry(w - 16, 9, dd - 13).translate(0, H + 4.5, 0), crownM);
       g.add(crown);
       const top = mdl ? new THREE.Box3().setFromObject(crown).max.y : H + 8; /* highest point when finished: labels and fireworks clear it */
-      B[d] = { id: d, part: p, exam: p === "REG" ? "cpa" : "ea", g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
+      B[d] = { id: d, part: p, exam: p in LOTS ? "cpa" : "ea", g, H, top, x: g.position.x, z: g.position.z, below, above, clad, net, hoist, crane, jib, crown, crownM, m: 0, target: 0, from: 0, hl: false };
       walls.push({ ax: lot.front[0], az: lot.front[1], bx: lot.front[2], bz: lot.front[3], nx: lot.fn[0], nz: lot.fn[1], h: 22 });
     });
   }
@@ -843,7 +846,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
 
   /* ---------- camera: each part is seen down the lit square: Part 1 from the north toward One Times Square, Parts 2 and 3 from high over the towers south of 42nd ---------- */
   const FOCUS = { REG: null, ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: -0.25, pitch: 0.74, dist: 420 }, 3: { t: [5, 50, 110], yaw: -0.25, pitch: 0.82, dist: 380 } };
-  FOCUS.REG = FOCUS[1]; /* REG stands on Part 1's blocks */
+  FOCUS.REG = FOCUS[1]; FOCUS.TCP = FOCUS[3]; /* REG stands on Part 1's blocks, TCP on Part 3's */
   const rig = { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400, off: 0, zoom: 1, anim: null };
   let aspect = 1;
   function placeCamera() {
@@ -1140,7 +1143,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
     fs.innerHTML = `<div class="labels"></div>
       <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
-        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["TCP", "TCP"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
       <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
       <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
       <div class="fs-card" hidden></div>`;
