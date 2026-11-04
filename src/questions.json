@@ -14402,5 +14402,805 @@
 "cpa": [
 "TCP-II"
 ]
+},
+{
+"id": "aud2-001",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "A",
+"q": "A senior is drafting planning documents for an audit of a nonissuer's financial statements for the year ended December 31, 2025. Which of the following belongs in the audit plan rather than in the overall audit strategy?",
+"choices": [
+"The audit hours budgeted for the inventory area and the assignment of an experienced manager to attend the year-end count at both warehouses",
+"The date by which the entity's lender requires the auditor's report, which sets the timing of the audit and the communications required",
+"The nature, timing and extent of substantive procedures for the existence of accounts receivable, including the confirmation sample size and the date the requests will be sent",
+"The financial reporting framework used and the industry-specific reports required by a regulator, which together define the scope of the engagement"
+],
+"answer": 2,
+"explain": "The audit plan describes the nature, timing and extent of planned risk assessment procedures and of further audit procedures at the relevant assertion level, so a detailed receivables program belongs there. The overall audit strategy sets the scope, timing and direction of the audit: the framework and reporting requirements that define the scope, the reporting deadlines, and the resources to deploy. Budgeted hours and experienced staff for high-risk areas feel detailed, but the standard lists them as strategy decisions about resources.",
+"source": "AU-C 300.07, 300.08, 300.09, 300.A10, 300.A16, 300.A30",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-002",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the audit plan assessed control risk for the occurrence of sales below the maximum, based on tests of controls performed in October 2025, and reduced year-end substantive testing. In February 2026, cutoff testing finds several sales recorded in December 2025 for goods not shipped until January 2026, which contradicts the evidence from the tests of controls. What should the auditor do?",
+"choices": [
+"Revise the risk assessment, update the overall audit strategy and audit plan to change the further audit procedures as needed, and document the significant changes and why they were made",
+"Finish the procedures in the original audit plan, because the overall audit strategy and audit plan are fixed once the engagement partner has reviewed them, and address the matter in next year's plan",
+"Expand substantive procedures for sales cutoff but leave the control risk assessment unchanged, because the tests of controls performed in October 2025 found no deviations",
+"Expand substantive procedures for sales cutoff without documenting the change in plan, because the procedures performed and their results will already appear in the working papers"
+],
+"answer": 0,
+"explain": "The auditor updates and changes the overall audit strategy and audit plan as necessary during the audit, and substantive evidence that contradicts tests of controls is the standard's own example of when that may be needed. New information inconsistent with the original risk assessment requires the auditor to revise that assessment, and misstatements found by substantive procedures must be considered in judging whether controls operated effectively. Expanding procedures without documentation is not enough: significant changes to the strategy or plan, and the reasons for them, must be documented.",
+"source": "AU-C 300.10, 300.14, 300.A19, 300.A28; AU-C 315.41; AU-C 330.16",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-003",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "B",
+"q": "During risk assessment procedures in an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor learns that the bonuses of the chief executive officer and the sales vice president are paid only if revenue grows at least 15% over 2024. The entity's internal sales report shows 2025 revenue growth of 22%, while trade association data show that competitors grew about 3%. Which conclusion is most appropriate?",
+"choices": [
+"Because management reviews the sales report each month, the report is a monitoring control that by itself supports assessing control risk for revenue below the maximum",
+"The bonus plan is an internal measure that is not used by lenders or other outside parties, so the auditor need not consider it in identifying and assessing the risks of material misstatement",
+"Revenue is materially overstated, so the auditor should propose an adjustment that reduces 2025 revenue growth to the 3% rate reported for the industry",
+"The bonus targets create pressure that increases susceptibility to misstatement due to management bias or fraud, and growth far above competitors may signal a risk of misstatement of revenue"
+],
+"answer": 3,
+"explain": "The auditor obtains an understanding of the measures used, internally and externally, to assess the entity's financial performance, including incentive compensation, because such measures can create pressure that increases the susceptibility to misstatement due to management bias or fraud. Unusually rapid growth compared with other entities in the industry may also indicate a risk of material misstatement, but it is a risk indicator, not evidence of a misstatement. Management's review of performance is not the same as monitoring the system of internal control, and control risk can be assessed below the maximum only when the auditor plans to test operating effectiveness.",
+"source": "AU-C 315.19, 315.38, 315.A83, 315.A84, 315.A86, 315.A89",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-004",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "B",
+"q": "While obtaining an understanding of ownership and governance in an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor learns that the president owns all of the voting stock, is the only director, and also personally owns the entity's largest supplier and the warehouse the entity leases. How should the auditor use this information?",
+"choices": [
+"Treat it only as a control risk matter, because the owner's involvement in management affects the auditor's assessment of controls but not inherent risk",
+"Use it to help determine whether related party transactions are properly identified, accounted for and disclosed, an area susceptible to misstatement due to management bias or fraud",
+"Conclude that, because the owner, the governing body and management are the same person, the auditor need not obtain an understanding of the entity's governance",
+"Conclude that the supplier purchases and the warehouse lease are outside the scope of the audit, because the supplier and the warehouse belong to the president rather than to the entity"
+],
+"answer": 1,
+"explain": "Understanding the ownership of the entity and the relationships between owners and other people or entities, including related parties, helps the auditor determine whether related party transactions have been appropriately identified, accounted for and disclosed. The standard lists significant transactions with related parties under susceptibility to misstatement due to management bias or other fraud risk factors, an inherent risk factor assessed before considering controls. In less complex entities there may be little or no distinction between owners, governance and management, but the auditor is still required to understand governance, and the entity's purchases and lease payments are its own transactions.",
+"source": "AU-C 315.12 (inherent risk factors), 315.19, 315.A64, 315.A275 (appendix B)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-005",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor plans to test the operating effectiveness of an automated credit-limit check in the entity's sales application. While identifying general information technology (IT) controls, the auditor learns that the same two programmers write changes to the sales application and move those changes into production, with no independent approval or testing. Which statement is correct?",
+"choices": [
+"The weakness is in the process to manage access, specifically deprovisioning, and it does not affect automated controls, because programmed controls perform the same way every time",
+"The weakness is in the process to manage IT operations, specifically job scheduling, and the auditor can still use a single test of the credit-limit check as evidence for the whole year",
+"The weakness is in the process to manage program changes, and it may affect reliance on the automated check, because general IT controls cannot be counted on to keep it operating consistently",
+"The weakness is in the process to manage program changes, but it affects only manual controls, so the auditor's planned reliance on the automated credit-limit check is unaffected"
+],
+"answer": 2,
+"explain": "Controls over the design, testing and migration of changes, and segregation of the ability to make changes from the ability to move them into production, are general IT controls in the process to manage program changes. When those controls do not prevent unauthorized program changes, that may affect the auditor's decision to rely on automated controls in the affected application. A test of an automated control at one point can serve for the whole period only if general IT controls provide for its consistent operation, which is what is missing here.",
+"source": "AU-C 315.12 (IT environment), 315.28, 315.29, 315.A191, 315.A208, 315.A279 (appendix F, par. 2)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-006",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor performed a walkthrough in June 2025 of a manual three-way match in purchasing. The auditor inquired of the accounts payable clerk, observed the clerk compare a purchase order, receiving report and vendor invoice, and inspected the clerk's sign-off, then concluded that the control was designed effectively and implemented. The senior now proposes to assess control risk for recorded purchases below the maximum and cut year-end substantive procedures, citing only the walkthrough. What is the best evaluation of the proposal?",
+"choices": [
+"Not appropriate, because evaluating design and implementation does not test operating effectiveness, and a manual control seen working in June shows nothing about other months",
+"Appropriate, because the walkthrough went beyond inquiry and is therefore sufficient evidence that the control operated effectively throughout 2025",
+"Not appropriate, because the walkthrough included inquiry of the clerk, and a procedure that includes inquiry cannot be used to evaluate design and implementation",
+"Appropriate, provided the accounts payable clerk signs a written statement that the three-way match operated the same way throughout 2025"
+],
+"answer": 0,
+"explain": "A walkthrough that combines inquiry with observation, inspection or reperformance is ordinarily enough to evaluate design and determine implementation; inquiry is allowed as part of it, just not alone. Evaluating design and implementation is not sufficient to test operating effectiveness, and for a manual control, evidence of implementation at one point says nothing about other times in the period. To assess control risk below the maximum, the auditor must plan and perform tests of operating effectiveness; otherwise control risk is assessed at the maximum.",
+"source": "AU-C 315.30, 315.38, 315.A203, 315.A204, 315.A208; AU-C 330.08",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-007",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the entity uses a service organization to process payroll. The auditor plans to rely on controls at the service organization and obtains a System and Organization Controls (SOC) 1 type 2 report covering January 1 through September 30, 2025. The report lists a complementary user entity control: the entity reviews each payroll register before approving the funding transfer, which addresses the accuracy of payroll expense. Which approach is appropriate?",
+"choices": [
+"Rely on the report for the full year without further work, because a type 2 report expresses an opinion on the operating effectiveness of the controls it covers",
+"Obtain additional evidence about October through December, but do not consider the payroll register review, because controls listed in the report are tested by the service auditor",
+"Use the service organization's SOC 2 report on security and availability instead, because a SOC 2 report is designed to address controls relevant to a user entity's internal control over financial reporting",
+"Use the report, obtain additional evidence about October through December, such as about changes in controls after September 30, and test the entity's payroll register review"
+],
+"answer": 3,
+"explain": "When using a type 2 report as evidence that controls operated effectively, the user auditor evaluates whether the period covered is appropriate and the time elapsed since the tests, and may need additional evidence for the remaining period, such as about significant changes in controls or by testing the entity's monitoring. If complementary user entity controls address risks for the relevant assertions, the auditor must understand them and, when relying on the service organization's controls, test their operating effectiveness. A SOC 2 report is not specifically designed to address controls relevant to a user entity's internal control over financial reporting, and a SOC 1 report is the preferred report.",
+"source": "AU-C 402.08, 402.16, 402.17, 402.A34, 402.A35, 402.A36; AU-C 9402.03-.04",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-008",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor found a strong control environment and identified no risks of material misstatement due to fraud beyond the presumed risks. Management argues that its strong controls make procedures aimed at management override unnecessary, and the auditor does not plan to rely on controls over journal entries. In responding to the risk of management override of controls, the auditor is required to do all of the following EXCEPT:",
+"choices": [
+"Test the appropriateness of journal entries and other adjustments, including entries made at the end of the reporting period",
+"Review accounting estimates for bias, including a retrospective review of management's judgments and assumptions behind significant prior-year estimates",
+"Test the operating effectiveness of controls over journal entries throughout the year, because the risk of management override is a significant risk",
+"Evaluate whether the business purpose, or lack of one, of significant unusual transactions suggests fraudulent financial reporting or concealment of misappropriation of assets"
+],
+"answer": 2,
+"explain": "Controls can be circumvented by management override, so that risk is present in every entity and is treated as a significant risk; the auditor must test journal entries and other adjustments, review estimates for bias with a retrospective review, and evaluate the business purpose of significant unusual transactions, whatever the other risk assessments show. For controls over journal entries, the requirement is to understand them and evaluate their design and implementation, not to test operating effectiveness. Operating effectiveness must be tested in the current period only if the auditor intends to rely on controls over a significant risk.",
+"source": "AU-C 240.31, 240.32; AU-C 315.27, 315.30, 315.A276 (appendix C, par. 24); AU-C 330.15",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-009",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "D",
+"q": "An auditor is planning an audit of a nonissuer's financial statements for the year ended December 31, 2025. The nonissuer is a manufacturer whose preliminary 2025 pretax income from continuing operations is $1,000,000, after a one-time $3,000,000 loss on a lawsuit settlement; pretax income from continuing operations was about $4,000,000 in each of the two prior years. Because of the exceptional decrease, the auditor bases materiality on normalized pretax income from continuing operations, computed as the 2025 amount excluding the settlement loss. Materiality for the financial statements as a whole is 5% of the benchmark, and performance materiality is 75% of materiality. What is performance materiality?",
+"choices": [
+"$37,500",
+"$150,000",
+"$50,000",
+"$200,000"
+],
+"answer": 1,
+"explain": "Normalized pretax income is $1,000,000 plus the $3,000,000 settlement loss, or $4,000,000; materiality is 5% of $4,000,000, or $200,000, and performance materiality is 75% of $200,000, or $150,000. Using the unadjusted $1,000,000 gives materiality of $50,000 and performance materiality of $37,500, which ignores the exceptional item that the standard says may justify a normalized figure. $200,000 is materiality for the financial statements as a whole, not performance materiality.",
+"source": "AU-C 320.09, 320.10, 320.11, 320.A7, 320.A8",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-010",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "D",
+"q": "In planning an audit of a nonissuer's financial statements for the year ended December 31, 2025, the auditor set materiality for the financial statements as a whole at $300,000 (5% of forecast pretax income of $6,000,000) and performance materiality at $210,000 (70% of materiality). In February 2026, the draft financial statements show actual 2025 pretax income of $4,000,000 because a major customer was lost in the fourth quarter. The auditor concludes that, had this been known, materiality would have been based on actual results using the same percentages. What should the auditor do?",
+"choices": [
+"Revise materiality to $200,000, then determine whether to revise performance materiality (to $140,000 at 70%) and whether the planned further audit procedures remain appropriate",
+"Keep materiality at $300,000, because materiality is determined when the overall audit strategy is established and is not changed after fieldwork begins",
+"Revise materiality to $200,000 but keep performance materiality at $210,000, because performance materiality is set only once, when the audit is planned",
+"Revise materiality to $200,000 only for evaluating uncorrected misstatements at the end of the audit, without reconsidering performance materiality or the further audit procedures already planned"
+],
+"answer": 0,
+"explain": "The auditor must revise materiality on becoming aware of information that would have caused a different amount initially: 5% of $4,000,000 is $200,000. When materiality is lowered, the auditor determines whether performance materiality needs revising (70% of $200,000 is $140,000) and whether further audit procedures remain appropriate, and documents any revisions. Keeping performance materiality at $210,000 would leave it above materiality, which defeats its purpose of leaving a margin for undetected misstatements.",
+"source": "AU-C 320.09, 320.12, 320.13, 320.14, 320.A15, 320.A17",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-011",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer, a jewelry retailer, for the year ending December 31, 2025, the auditor notes four conditions while performing risk assessment procedures. Which condition is a fraud risk factor in the opportunities category for misappropriation of assets?",
+"choices": [
+"Store managers were told in November 2025 that some of them will be laid off in 2026",
+"Several employees with access to the cash registers have large personal debts",
+"Employees who reconcile cash and inventory are not required to take vacations",
+"Management has not fixed a control deficiency over cash that the auditor reported last year"
+],
+"answer": 2,
+"explain": "A lack of mandatory vacations for employees who perform key control functions is an inadequate control over assets, which AU-C 240 classifies as an opportunity to misappropriate assets. Anticipated layoffs and personal financial obligations are incentives or pressures. Failing to take remedial action on a known control deficiency is listed under attitudes and rationalizations, not opportunities, even though it involves a control weakness.",
+"source": "AU-C 240.11; AU-C 240.A76 (appendix A)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-012",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer for the year ended December 31, 2025, the engagement partner concludes that the owner-manager has high integrity, and the engagement team has identified no specific risks of material misstatement due to fraud. To address the risk of management override of controls, the auditor is required to perform all of the following EXCEPT:",
+"choices": [
+"Test journal entries and other adjustments, including those made at the end of the reporting period",
+"Perform a retrospective review of management's judgments and assumptions behind significant prior-year accounting estimates",
+"Evaluate whether the business purpose of significant unusual transactions suggests fraudulent financial reporting",
+"Observe inventory counts at locations where the auditor's attendance was not announced in advance"
+],
+"answer": 3,
+"explain": "The risk of management override is present in every entity and is a significant risk, so the auditor must address it even when no specific fraud risks are identified, by testing journal entries, reviewing accounting estimates for bias (including a retrospective review) and evaluating the business purpose of significant unusual transactions. Unannounced inventory observation is only an example of a possible response to an assessed fraud risk, not a required procedure. The partner's view of the owner's integrity does not remove the required procedures.",
+"source": "AU-C 240.31; AU-C 240.32; AU-C 240.A77 (appendix B)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-013",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer for the year ending December 31, 2025, the auditor has determined that the occurrence of revenue from bill-and-hold sales is a significant risk. The auditor plans to rely on a manual control under which the sales director approves each bill-and-hold arrangement. The auditor tested this control's operating effectiveness in the 2024 audit and found no deviations, and inquiry combined with observation in 2025 shows the control has not changed. Which approach meets the auditing standards?",
+"choices": [
+"Test the operating effectiveness of the control during the 2025 audit before relying on it",
+"Rely on the 2024 test results, because an unchanged control needs testing only once in every three audits",
+"Rely on the 2024 test results after obtaining a written representation that the control is unchanged",
+"Rely on the control without testing it and perform only substantive analytical procedures on that revenue"
+],
+"answer": 0,
+"explain": "When the auditor intends to rely on controls over a significant risk, the auditor must test their operating effectiveness in the current period, so evidence from the 2024 audit cannot be carried forward. The once-in-every-third-audit rotation applies only to unchanged controls that do not address a significant risk. Relying on an untested control is not permitted, and a substantive-only response to a significant risk must include tests of details, not only analytical procedures.",
+"source": "AU-C 330.14; AU-C 330.15; AU-C 330.22",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-014",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "E",
+"q": "In the prior-year audit of a nonissuer, the auditor performed many substantive procedures at an interim date because the control environment was effective. For the year ending December 31, 2025, the auditor learns that a new chief executive officer dominates all decisions, the board of directors has stopped meeting, and the controller resigned after disputes about expense approvals. The auditor concludes that the control environment is no longer effective. Which change to the audit plan is the most appropriate overall response?",
+"choices": [
+"Raise performance materiality, because a larger share of the audit work will be substantive",
+"Perform more procedures as of the period end rather than at an interim date, and obtain more extensive substantive evidence",
+"Keep the interim substantive procedures and cover the remaining period by inquiry of the new chief executive officer",
+"Place more reliance on tests of controls to offset the higher risk at the financial statement level"
+],
+"answer": 1,
+"explain": "Deficiencies in the control environment reduce the auditor's confidence in internal control and in evidence generated within the entity, so the auditor may respond by performing more procedures as of the period end rather than at an interim date and by obtaining more extensive evidence from substantive procedures. Relying more on controls is the opposite of that response, and raising performance materiality would reduce the work at the moment risk has risen. Covering the period after an interim date requires further substantive procedures, alone or with tests of controls, not inquiry of the person who dominates management.",
+"source": "AU-C 330.05; AU-C 330.A1; AU-C 330.A2; AU-C 330.23",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-015",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "F",
+"q": "In an audit of a nonissuer for the year ending December 31, 2025, the external auditor has concluded that the entity's internal audit function is objective and competent and applies a systematic and disciplined approach. The auditor plans to use the function's tests of cash disbursements and fixed asset additions, both areas with a low assessed risk of material misstatement, to reduce the auditor's own testing. Which procedure is required?",
+"choices": [
+"Evaluate whether the work was properly planned, performed, supervised, reviewed and documented, and reperform some of it",
+"Reperform internal audit work in each of the two areas, because reperformance is required in every area used",
+"No further procedures, because the function's objectivity and competence have already been evaluated",
+"Refer to the internal audit function in the auditor's report to show that responsibility for those areas is shared"
+],
+"answer": 0,
+"explain": "Before using the function's work, the external auditor must perform procedures on the body of that work as a whole, including evaluating whether it was properly planned, performed, supervised, reviewed and documented, and must reperform some of it. Reperformance is required on the body of work as a whole, not in each area used. The external auditor keeps sole responsibility for the opinion, so the work is not cited to share responsibility.",
+"source": "AU-C 610.09; AU-C 610.22; AU-C 610.23; AU-C 610.A36",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-016",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "F",
+"q": "In an audit of a nonissuer for the year ending December 31, 2025, the auditor engages an external real estate appraiser as an auditor's specialist to help evaluate the fair value of the entity's investment properties. The appraisal uses market capitalization rates and the entity's rent roll, which is significant to the appraiser's work. The appraiser's conclusion is close to management's estimate. Which procedure must the auditor perform?",
+"choices": [
+"Accept the appraiser's significant assumptions without evaluation, because the appraiser has expertise the auditor lacks",
+"Refer to the appraiser in the unmodified opinion so users know the fair values were independently supported",
+"Evaluate the relevance, completeness and accuracy of the rent roll data the appraiser used",
+"Omit any evaluation of the appraiser's objectivity, because the auditor, not management, engaged the appraiser"
+],
+"answer": 2,
+"explain": "When source data is significant to the work of an auditor's specialist, the auditor must evaluate its relevance, completeness and accuracy, and must also understand and evaluate the specialist's significant assumptions and methods. The auditor must evaluate an external specialist's objectivity, including inquiring about interests and relationships, whoever engaged the specialist. The auditor may not refer to the specialist in a report containing an unmodified opinion.",
+"source": "AU-C 620.09; AU-C 620.12; AU-C 620.14",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-017",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "G",
+"q": "In an audit of a nonissuer, a chemical manufacturer, for the year ending December 31, 2025, the entity must comply with a state environmental permit that limits wastewater discharges. Violations could bring material fines, but the permit does not determine any amounts or disclosures in the financial statements. The auditor has not identified or suspected any noncompliance. Apart from remaining alert during other procedures and requesting a written representation, what does the auditor's responsibility for this permit require?",
+"choices": [
+"Obtaining sufficient appropriate audit evidence about compliance with each discharge limit, as is required for income tax laws",
+"Engaging an environmental specialist to test discharge samples against the permit limits for the whole year",
+"Inquiring of management and, when appropriate, those charged with governance about compliance, and inspecting any regulator correspondence",
+"Nothing, because laws without a direct effect on the financial statements are outside the scope of a financial statement audit"
+],
+"answer": 2,
+"explain": "The permit falls in the category of other laws and regulations that do not directly determine financial statement amounts, so absent identified or suspected noncompliance, the auditor's responsibility is limited to the general understanding of the legal and regulatory framework that AU-C 250.12 requires, inquiry of management and, when appropriate, those charged with governance, and inspection of correspondence with the licensing or regulatory authority. Obtaining sufficient appropriate audit evidence is the requirement for laws with a direct effect, such as tax and pension laws. The auditor cannot ignore the permit, because noncompliance could have a material effect through fines.",
+"source": "AU-C 250.06; AU-C 250.12; AU-C 250.13; AU-C 250.14; AU-C 250.15; AU-C 250.16",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-018",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "G",
+"q": "In an audit of a nonissuer for the year ending December 31, 2025, the auditor developed ranges for the entity's allowance for credit losses, inventory obsolescence reserve and warranty liability. Each of management's point estimates falls within the auditor's range, but each is near the end that increases net income, as was also true in 2023 and 2024. This year management also changed its obsolescence method, citing a change in circumstances that it assessed subjectively. The entity is close to violating a debt covenant based on net income. How should the auditor treat these findings?",
+"choices": [
+"As misstatements equal to the differences between management's point estimates and the midpoints of the auditor's ranges",
+"As indicators of possible management bias whose implications for the audit, including the risk assessments, must be evaluated",
+"As needing no further consideration, because each estimate is individually reasonable",
+"As evidence that the 2023 and 2024 estimates were misstated, so management must restate those years"
+],
+"answer": 1,
+"explain": "The auditor must evaluate whether management's judgments are indicators of possible management bias even when each estimate is individually reasonable, and a consistent trend toward the favorable end of the auditor's ranges, together with a subjectively justified change in method, are such indicators. Indicators of bias are not themselves misstatements, so recording differences from the midpoints is wrong. A review of prior-period estimates is not meant to call into question judgments that were appropriate when they were made.",
+"source": "AU-C 540.13; AU-C 540.32; AU-C 540.A133; AU-C 540.A134",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-019",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "G",
+"q": "In an audit of a nonissuer for the year ending December 31, 2025, the auditor reads a bank confirmation showing that the entity guaranteed a $2,000,000 loan to a company owned by the spouse of the entity's chief executive officer. That company was not on management's list of related parties, and the auditor confirms the relationship exists. The draft disclosure makes no statement about whether the guarantee's terms were equivalent to those in an arm's-length transaction. The auditor is required to do all of the following EXCEPT:",
+"choices": [
+"Promptly communicate the newly identified related party to the other members of the engagement team",
+"Request that management identify all transactions with the spouse's company",
+"Inquire why the entity's controls failed to identify the related party relationship",
+"Obtain audit evidence that the guarantee's terms match those of an arm's-length transaction"
+],
+"answer": 3,
+"explain": "When the auditor finds a related party that management did not identify, the auditor must promptly tell the engagement team, ask management to identify all transactions with that party, inquire why controls failed, perform substantive procedures and reconsider whether other undisclosed related parties exist. Evidence about arm's-length terms is required only when management asserts in the financial statements that a related party transaction was conducted on such terms, and this disclosure makes no such assertion.",
+"source": "AU-C 550.17; AU-C 550.24; AU-C 550.25; AU-C 550.27",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud2-020",
+"part": "AUD",
+"domain": "AUD-II",
+"exam": "cpa",
+"group": "G",
+"q": "An auditor is planning an audit of a nonissuer, a not-for-profit organization whose fiscal year runs from July 1, 2025, to June 30, 2026. During that year the organization expended $1,400,000 under a single federal program that is not a research and development program, all received as a subrecipient through a state agency, and the program's terms do not require a financial statement audit. It also received $500,000 from a second state agency that bought supplies from it, as a vendor under a contract, to carry out that agency's own federal award. Under the Uniform Guidance, which statement is correct?",
+"choices": [
+"It is exempt from federal audit requirements, because awards received through a pass-through entity are audited at the state agency",
+"It must have a single audit or may elect a program-specific audit, and the contract payments are not subject to audit",
+"It must have a single audit, and a program-specific audit is not available because the awards came through a pass-through entity",
+"It must have a single audit covering $1,900,000 of federal awards, with the contract payments treated as a second program"
+],
+"answer": 1,
+"explain": "A non-federal entity that expends $1,000,000 or more of federal awards in its fiscal year must have an audit, and awards it expends as a subrecipient count, so the $1,400,000 meets the threshold. Because it expends awards under only one program, not research and development, whose terms do not require a financial statement audit, it may elect a program-specific audit instead of a single audit. Payments it receives as a vendor selling goods or services to a recipient under a contract are not subject to audit under the Uniform Guidance, so they do not add a second program.",
+"source": "2 CFR 200.1 (contract); 2 CFR 200.501(a), (b), (c), (e), (g)",
+"cpa": [
+"AUD-II"
+]
+},
+{
+"id": "aud3-001",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer, the auditor plans to test payment authorization by selecting a sample of cash disbursements from a listing that the entity's controller exported from the accounting system. Before selecting the sample, the auditor wants audit evidence that the listing is complete. Each of the following procedures would provide that evidence EXCEPT:",
+"choices": [
+"Reconciling the total of the listing to the cash disbursements recorded in the general ledger for the period",
+"Tracing a selection of disbursements shown on the bank statements into the listing",
+"Testing the operating effectiveness of controls over the preparation and maintenance of the listing",
+"Inspecting each disbursement selected from the listing for an approver's signature"
+],
+"answer": 3,
+"explain": "The auditor must obtain evidence about the accuracy and completeness of information used as audit evidence as necessary, and a population tested for payment authorization is only as good as the completeness of the listing the items are drawn from. Reconciling the listing to the ledger, tracing items from an independent record into it, and testing controls over its preparation all address completeness. Inspecting the selected items for approval is the test of authorization itself and covers only items already on the listing, so it says nothing about disbursements left off.",
+"source": "AU-C 500.08, 500.A40-.A41; AU-C 530.A8",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-002",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer, the entity has a control requiring that sales invoices be prenumbered and accounted for. The auditor uses an automated tool to sort the full year's sales invoice file by invoice number and list every gap and duplicate in the sequence. The tool reports no gaps and no duplicates. This result provides audit evidence mainly about:",
+"choices": [
+"Whether each invoiced sale actually occurred",
+"Controls over the completeness of sales invoices issued during the period",
+"The valuation of accounts receivable arising from the invoiced sales",
+"Whether invoice prices agree with the approved price list"
+],
+"answer": 1,
+"explain": "The auditing standards give this test as an example: using automated tools to look for gaps or duplicates in sequentially numbered sales invoices can provide evidence about the controls over the completeness of invoices issued during the period. An unbroken sequence does not show that each invoice reflects a real shipment, because a fictitious invoice could still carry the next number, so it is weak evidence of occurrence. It says nothing about prices or collectibility.",
+"source": "AU-C 500.A45, 500.A47",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-003",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "B",
+"q": "In an audit of a nonissuer, the entity used two items from the same real estate research firm in measuring its investment properties: a regional commercial property price index that the firm sells by subscription to anyone who pays its fee, and a valuation of the entity's own properties that the entity commissioned from the firm. For the purposes of the auditing standards, the firm is acting as:",
+"choices": [
+"An external information source for both items",
+"A management's specialist for both items",
+"An external information source for the index and a management's specialist for the commissioned valuation",
+"A management's specialist for the index and an external information source for the commissioned valuation"
+],
+"answer": 2,
+"explain": "An external information source provides information suitable for use by a broad range of users, and information sold to a wide range of users for a fee meets that description. A party cannot be both an external information source and a management's specialist for the same set of information, but it can play different roles for different sets, and a valuation tailored to the entity's own properties makes the firm a management's specialist for that work. Calling the firm an external information source for both items ignores that the valuation was commissioned for this entity.",
+"source": "AU-C 500.06, 500.A34, 500.A67 (appendix A, items 1, 3 and 4)",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-004",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "B",
+"q": "In an audit of a nonissuer that holds a large portfolio of commercial real estate loans, management supports the collateral values used in its allowance for credit losses with appraisals prepared by an outside appraiser that management engaged. While reading local business news, the auditor finds reports that commercial property values in the county where most of the collateral is located have fallen sharply since the appraisal dates. What should the auditor do?",
+"choices": [
+"Rely on the appraisals, because information from an outside appraiser is more reliable than news reports",
+"Disregard the news reports, because audit evidence consists only of information that supports management's assertions",
+"Determine what additional audit procedures are needed to obtain evidence about the current value of the collateral, taking the contradictory reports into account",
+"Issue a qualified opinion because the auditor cannot rely on the appraisals"
+],
+"answer": 2,
+"explain": "The auditor must take into account whether information corroborates or contradicts the assertions, and contradictory information can be relevant even when its source is less reliable than the corroborating information. When evidence from different sources is inconsistent, the auditor must determine whether modified or additional procedures are needed, such as obtaining further evidence about property values. Relying on the appraisals simply because they come from an outside party ignores the contradictory evidence, and an opinion is not modified before the auditor has tried to resolve the inconsistency.",
+"source": "AU-C 500.06, 500.07, 500.10, 500.A35, 500.A37",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-005",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer, the auditor tests the existence and accuracy of trade accounts receivable with a recorded balance of $2,400,000. The auditor examines all 8 accounts over $40,000, which total $400,000, and finds overstatements of $2,000. From the remaining $2,000,000, the auditor selects a nonstatistical sample with a recorded amount of $200,000 and finds overstatements of $3,000. Using ratio projection for the sampled stratum, what is the total projected misstatement for the account?",
+"choices": [
+"$5,000",
+"$30,000",
+"$32,000",
+"$38,000"
+],
+"answer": 2,
+"explain": "Misstatements in the stratum examined 100% are actual amounts and are not projected. For the sampled stratum, the misstatement ratio is $3,000 divided by $200,000, or 1.5%, and 1.5% times $2,000,000 is $30,000; adding the $2,000 found in the large accounts gives $32,000. The $30,000 answer leaves out the large accounts, and $38,000 wrongly applies the 1.5% ratio to the whole $2,400,000 and then adds the $2,000 again.",
+"source": "AU-C 530.13, 530.A15, 530.A24; ratio projection per current auditing textbooks",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-006",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer, the auditor tests a control requiring approval of each disbursement check, using 60 checks selected at random from the year's checks. One selected check had been properly voided, so the auditor examined an appropriately chosen replacement check, which was approved. Two checks lacked approval. For one check, the entity could not locate the supporting documentation, and no suitable alternative procedure could be applied. All other checks were approved. What deviation rate should the auditor project to the population?",
+"choices": [
+"3.3%",
+"5.0%",
+"5.1%",
+"6.7%"
+],
+"answer": 1,
+"explain": "A properly voided check is not a deviation and is replaced, so the sample stays at 60; an item to which the auditor cannot apply the procedure or a suitable alternative is treated as a deviation. That gives 3 deviations (2 unapproved plus 1 undocumented) out of 60, or 5.0%, and for tests of controls the sample deviation rate is the projected rate for the population. The 3.3% answer ignores the undocumented check, 5.1% divides by 59 instead of using the replacement, and 6.7% wrongly counts the voided check.",
+"source": "AU-C 530.10, 530.11, 530.A18, 530.A25",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-007",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "C",
+"q": "In an audit of a nonissuer, the auditor designs a sample for a test of details of inventory pricing using tolerable misstatement (TM) of $60,000 and an expected misstatement of $10,000, which was used to determine the sample size. The projected misstatement from the sample is $40,000. No other procedures address the same assertion. Which conclusion is most appropriate?",
+"choices": [
+"The inventory pricing is acceptable, because the $40,000 projected misstatement is less than TM",
+"The auditor should treat $40,000 as a known misstatement and have management record that exact amount",
+"Because the projected misstatement is well above the misstatement expected when the sample was sized, there may be an unacceptable risk that actual misstatement exceeds TM, so the auditor should consider steps such as asking management to investigate or extending the testing",
+"The sample must be discarded and a new sample of the same size selected"
+],
+"answer": 2,
+"explain": "The projected misstatement is the auditor's best estimate, and as it approaches TM, the chance that actual misstatement exceeds TM rises; when it is larger than the expected misstatement used to set the sample size, the auditor may conclude that sampling risk is unacceptable. The auditor may then ask management to investigate and adjust, or tailor further procedures. Accepting the result just because $40,000 is below $60,000 ignores sampling risk, and a projection is not a known misstatement to be booked as is.",
+"source": "AU-C 530.13, 530.14, 530.A24, 530.A27, 530.A28",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-008",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "D",
+"q": "In an audit of a nonissuer that owns one apartment building, the auditor uses a substantive analytical procedure as the main test of rental revenue for the year ended December 31, 2025. The auditor has tested the inputs: the building has 120 units, monthly rent was $1,500 per unit for the whole year, and the average vacancy rate was 5%. Recorded rental revenue is $2,190,000. Overall materiality is $250,000, and the auditor set $60,000 as the difference that is acceptable without further investigation. What should the auditor do next?",
+"choices": [
+"Accept recorded revenue, because the $30,000 difference is below the $60,000 threshold",
+"Accept recorded revenue, because the $138,000 difference is below overall materiality",
+"Investigate the $138,000 difference by inquiring of management, obtaining audit evidence relevant to its responses and performing other procedures as necessary",
+"Propose an adjustment reducing rental revenue by $138,000"
+],
+"answer": 2,
+"explain": "The expectation is 120 units times $1,500 times 12 months, or $2,160,000, times 95% occupancy, which is $2,052,000; recorded revenue is $138,000 higher, well over the $60,000 threshold. A difference over the threshold must be investigated by inquiring of management, obtaining evidence about its responses and performing other procedures as needed. Comparing against overall materiality skips the threshold the auditor set, the $30,000 answer leaves out vacancies, and the difference is not treated as a misstatement before it is investigated.",
+"source": "AU-C 520.05, 520.07, 520.A13, 520.A24, 520.A28-.A29",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-009",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "D",
+"q": "In an audit of a nonissuer for the year ended December 31, 2025, the auditor sends positive confirmation requests to test the existence of accounts receivable with a recorded balance of $1,500,000. The requests cover a sample with a recorded amount of $600,000. Customers with balances totaling $9,000 do not respond, even after follow-up requests. The nonresponses are spread across customers, dates and locations, and the auditor has found no unusual qualitative factors. Other unadjusted differences total $40,000, and overall materiality is $150,000. The auditor treats the nonresponses as 100% misstatements and projects them using ratio projection. Which conclusion is appropriate?",
+"choices": [
+"The nonresponses can be treated as confirming the balances, because no customer reported a disagreement",
+"The auditor must examine subsequent cash receipts for every nonresponse, whatever the result of the evaluation",
+"The auditor must modify the opinion, because a written response is required for every positive confirmation request",
+"The projected $22,500 plus the other $40,000 of unadjusted differences is $62,500, which would not change the auditor's conclusion, so the auditor may decide no further alternative procedures are needed"
+],
+"answer": 3,
+"explain": "The ratio of nonresponses is $9,000 divided by $600,000, or 1.5%, and 1.5% times $1,500,000 is $22,500; added to the $40,000 of other unadjusted differences, the total is $62,500, far below $150,000. When testing for overstatement, the auditor may decide that no alternative procedures beyond this evaluation are needed if that total would not affect the decision about material misstatement and the nonresponses show no unusual qualitative factors or systematic pattern. A nonresponse to a positive request is never evidence that the balance is correct.",
+"source": "AU-C 505.06, 505.12, 505.A26 (current text; carried forward unchanged as 505.A47 by SAS No. 150)",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-010",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "D",
+"q": "In an audit of a nonissuer for the year ended December 31, 2025, the auditor intends to rely on a control in which an accounts payable clerk matches each vendor invoice to a purchase order and receiving report and initials the voucher before payment. Together with inquiry of the clerk, which procedure would provide the most persuasive audit evidence that the control operated effectively throughout the year?",
+"choices": [
+"Observing the clerk perform the match on one day during interim fieldwork in October",
+"Reading the entity's written accounts payable procedures manual",
+"Selecting vouchers from throughout the year, inspecting them for the clerk's initials and reperforming the match to the purchase order and receiving report",
+"Obtaining the controller's written statement that the clerk performed the match all year"
+],
+"answer": 2,
+"explain": "Inquiry alone is not enough to test operating effectiveness, and the auditor must obtain evidence about how the control was applied at relevant times during the period it relies on. Inspecting and reperforming the control on vouchers drawn from the whole year covers the full period and is independent evidence that the control worked. Observation is pertinent only to the moment it is made, a procedures manual shows design rather than operation, and the controller's statement is just another form of inquiry.",
+"source": "AU-C 330.10, 330.11, 330.A28; AU-C 500.A54, 500.A58",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-011",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, management records a product warranty liability of $410,000. Based on sufficient appropriate audit evidence, the auditor develops a range of reasonable amounts for the liability of $450,000 to $520,000. What misstatement should the auditor accumulate for the warranty liability?",
+"choices": [
+"$0, because a difference between an estimate and the auditor's range is a matter of judgment, not a misstatement",
+"$40,000 understatement",
+"$75,000 understatement",
+"$110,000 understatement"
+],
+"answer": 1,
+"explain": "When the auditor's range does not include management's point estimate, the misstatement is the difference between management's point estimate and the nearest point of the auditor's range: $450,000 - $410,000 = $40,000, accumulated as a judgmental misstatement. Measuring to the $485,000 midpoint ($75,000) would be right only if the auditor had developed a point estimate rather than a range.",
+"source": "AU-C 540.35, 540.A139; AU-C 450.A6",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-012",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "E",
+"q": "An auditor of a nonissuer with a December 31, 2025 year end planned to attend the physical inventory count at the entity's only warehouse on December 31, 2025. Inventory is material. A winter storm closed the roads that day, so the auditor could not attend, although the entity completed its count. Which response is required?",
+"choices": [
+"Qualify the opinion for a scope limitation, because the auditor could not attend the count on December 31, 2025",
+"Rely on the entity's count sheets, supported by a written representation from management about inventory quantities",
+"Make or observe some physical counts on an alternative date and perform audit procedures on the intervening transactions",
+"Perform only alternative procedures, such as examining subsequent sales and shipping documents, without any physical counts"
+],
+"answer": 2,
+"explain": "When the auditor cannot attend the count because of unforeseen circumstances, AU-C 501.14 requires the auditor to make or observe some physical counts on an alternative date and perform procedures on intervening transactions. Alternative procedures without counts apply only when attendance is impracticable (AU-C 501.15), and a written representation does not on its own provide sufficient appropriate evidence.",
+"source": "AU-C 501.12, 501.14, 501.15; AU-C 580.04",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-013",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer, the entity's in-house general counsel is responsible for its litigation, claims and assessments. The auditor's review of legal expense accounts shows that two pending lawsuits were referred to an outside law firm, and the in-house general counsel has replied to the auditor's letter of inquiry describing both suits. Regarding the outside law firm, the auditor should:",
+"choices": [
+"Do nothing further, because the in-house general counsel's reply is a direct communication from the counsel responsible for the matters",
+"Ask management to write to the outside law firm itself and forward the firm's reply to the auditor",
+"Obtain a written representation from management about the two suits instead of contacting the outside law firm",
+"Seek direct communication with the outside law firm through a letter of inquiry prepared by management and sent by the auditor"
+],
+"answer": 3,
+"explain": "Because procedures identified actual litigation, the auditor must seek direct communication with external legal counsel through a letter of inquiry that management prepares and the auditor sends, asking counsel to respond directly to the auditor. Evidence from in-house counsel is not a substitute for that communication with external counsel, and a reply routed through management is not a direct communication.",
+"source": "AU-C 501.17, 501.19, 501.20",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-014",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "E",
+"q": "Ridgeway Corp., a nonissuer that is not a conduit bond obligor, prepares its financial statements in accordance with U.S. generally accepted accounting principles. For its audit of the year ended December 31, 2025, the financial statements will be available to be issued on April 10, 2026. Management's going concern evaluation looks only through December 31, 2026. A $6 million balloon payment on Ridgeway's term loan is due February 15, 2027, and no refinancing has been arranged. What should the auditor conclude about the period of management's evaluation?",
+"choices": [
+"It is too short, because the reasonable period of time runs through April 10, 2027, which includes the February 15, 2027 payment",
+"It is appropriate, because the reasonable period of time is 12 months after the balance sheet date",
+"It is appropriate, and the auditor considers the February 15, 2027 payment only by inquiring about events beyond management's evaluation period",
+"It is too short, because the reasonable period of time runs through December 31, 2027, the end of the following fiscal year"
+],
+"answer": 0,
+"explain": "AU-C 570.11 defines the reasonable period of time as the period the applicable framework requires, and under Financial Accounting Standards Board (FASB) standards that is one year after the date the financial statements are issued or available to be issued; Ridgeway is neither a Securities and Exchange Commission filer nor a conduit bond obligor, so the available-to-be-issued date applies, and the period runs through April 10, 2027 (AU-C 570.A6). Twelve months after the balance sheet date is the period the Governmental Accounting Standards Board (GASB) sets for governments, so management's evaluation misses the February 2027 payment that the auditor's evaluation must cover.",
+"source": "AU-C 570.11, 570.14, 570.15, 570.A6",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-015",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "E",
+"q": "In an audit of a nonissuer, a nonprofit organization, that is also a single audit under subpart F of Title 2 of the Code of Federal Regulations (CFR), part 200, the auditor concludes during planning that internal control over the eligibility compliance requirement of one major program is likely to be ineffective in preventing or detecting noncompliance. Which response is correct for that compliance requirement?",
+"choices": [
+"Plan and perform tests of the eligibility controls anyway, to support a low assessed level of control risk",
+"Skip testing those controls, report a significant deficiency or material weakness, assess control risk at the maximum and consider whether additional compliance tests are needed",
+"Skip both tests of controls and tests of compliance for eligibility, because ineffective controls make compliance testing unnecessary",
+"Skip testing those controls and report nothing about them unless compliance testing finds material noncompliance"
+],
+"answer": 1,
+"explain": "The auditor normally plans and performs tests of internal control over compliance to support a low assessed level of control risk, but when controls are likely to be ineffective that testing is not required; the auditor instead reports a significant deficiency or material weakness, assesses control risk at the maximum and considers whether more compliance testing is needed. Compliance testing itself is still required, because the auditor must support an opinion on compliance with requirements that may have a direct and material effect on each major program.",
+"source": "2 CFR 200.514(c)(3), 200.514(c)(4), 200.514(d)(1), 200.514(d)(4)",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-016",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "F",
+"q": "In an audit of a nonissuer for 2025, the auditor set the clearly trivial threshold at $4,000. The summary of misstatements shows: unrecorded December utility invoices of $42,000, which management has now recorded; an allowance for doubtful accounts the auditor judges unreasonable, understated by $30,000 and not corrected; a projected misstatement of $25,000 from a sample of inventory price tests, not corrected; and a $1,500 misposting in petty cash, not corrected, with nothing about its nature or circumstances suggesting it matters. What total of uncorrected misstatements should the auditor evaluate for materiality?",
+"choices": [
+"$30,000",
+"$56,500",
+"$55,000",
+"$97,000"
+],
+"answer": 2,
+"explain": "Uncorrected misstatements include judgmental and projected misstatements but not those management has corrected or those below the clearly trivial amount, so the total is $30,000 + $25,000 = $55,000. Including the corrected $42,000 utility invoices gives $97,000, but those invoices are no longer uncorrected, and leaving out the $25,000 projected misstatement ignores that projections are misstatements too.",
+"source": "AU-C 450.04, 450.05, 450.11, 450.12, 450.A3, 450.A6",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-017",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "F",
+"q": "In an audit of a nonissuer, the auditor planned to rely on a control requiring a manager's approval of vendor invoices before payment, and expected few deviations. Tests of the control found missing approvals on 7 of 60 invoices sampled, well above the expected rate. Substantive procedures performed so far on accounts payable have found no misstatements. What should the auditor do next?",
+"choices": [
+"Make specific inquiries to understand the deviations and their consequences, then decide whether more tests of controls are needed or the risk must be addressed with substantive procedures",
+"Continue to rely on the control as planned, because substantive procedures found no misstatements in accounts payable",
+"Withdraw from the engagement, because a control the auditor planned to rely on did not operate as designed",
+"Treat the 7 deviations as misstatements and add them to the summary of uncorrected misstatements"
+],
+"answer": 0,
+"explain": "When deviations are found in a control the auditor intends to rely on, the auditor makes specific inquiries and determines whether the tests performed still support reliance, whether more tests of controls are needed or whether the risk must be addressed with substantive procedures. Finding no misstatements in substantive testing does not provide evidence that the control is effective, so continuing to rely on it is wrong.",
+"source": "AU-C 330.16, 330.17, 330.A46",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-018",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "G",
+"q": "An auditor's report on a nonissuer's comparative financial statements for 2025 and 2024 is dated March 12, 2026. The chief financial officer joined the entity in August 2025 and says she can sign representations only for 2025. Which approach to the management representation letter is correct?",
+"choices": [
+"Date it December 31, 2025, and cover only 2025, the period the chief financial officer was employed",
+"Date it as of the last day of fieldwork, which may be before the report date, and cover both years",
+"Date it March 12, 2026, cover 2025 only, and obtain a separate letter for 2024 from the former chief financial officer instead",
+"Date it March 12, 2026, cover both 2025 and 2024, and still request it from the current chief financial officer"
+],
+"answer": 3,
+"explain": "Written representations are dated as of the date of the auditor's report and cover all periods referred to in the report, so the letter is dated March 12, 2026 and covers 2025 and 2024. Current management who were not present for all periods remain responsible for the financial statements as a whole, so the auditor still requests representations from them covering the whole of both periods rather than replacing them with a former officer's letter.",
+"source": "AU-C 580.09, 580.20, 580.A23, 580.A25, 580.A26",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-019",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "H",
+"q": "In an audit of a nonissuer, the balance sheet date is December 31, 2025, the auditor's report will be dated March 6, 2026, and the financial statements are expected to be issued on March 20, 2026. All of the following are appropriate parts of the auditor's subsequent events procedures EXCEPT:",
+"choices": [
+"Inquiring of management and, when appropriate, those charged with governance about events after December 31, 2025",
+"Reading minutes of board meetings held after December 31, 2025, and asking about meetings with no minutes yet",
+"Reading the entity's latest interim financial statements, such as those for January 2026",
+"Extending these procedures through March 20, 2026, because the auditor must cover events up to the issuance date"
+],
+"answer": 3,
+"explain": "Subsequent events procedures cover the period from the date of the financial statements to the date of the auditor's report, here December 31, 2025, through March 6, 2026, or as near to it as practicable. After the report date the auditor is not required to perform any audit procedures, so extending them to the March 20 issuance date is not required; the auditor acts after March 6 only if a subsequently discovered fact becomes known.",
+"source": "AU-C 560.07, 560.09, 560.10, 560.12",
+"cpa": [
+"AUD-III"
+]
+},
+{
+"id": "aud3-020",
+"part": "AUD",
+"domain": "AUD-III",
+"exam": "cpa",
+"group": "H",
+"q": "In an audit of a nonissuer, the balance sheet date is December 31, 2025, and the auditor's report is dated March 6, 2026. On March 20, 2026, before the report release date, the auditor learns that a major customer filed for bankruptcy on March 18 after a fire on March 10, 2026 destroyed its only plant. Management revises Note 14 to disclose the event, and the auditor completes procedures on that revision on March 24, 2026. If the auditor dual-dates the report, which is correct?",
+"choices": [
+"The report is dated March 24, 2026, and subsequent events procedures are extended to that date for all matters",
+"The report is dated March 6, 2026, except as to Note 14, which is as of March 24, 2026, and procedures after March 6 are limited to that revision",
+"The report keeps only the March 6, 2026 date, because the auditor has no responsibility for facts learned after the report date",
+"The report is dated March 6, 2026, except as to Note 14, which is as of March 18, 2026, the date of the bankruptcy filing"
+],
+"answer": 1,
+"explain": "With a dual date, the original date stays and an additional date limited to the revision is added; that date cannot be earlier than completion of the procedures on the revision (March 24, not March 18), and the auditor requests written representations as of it. Redating the whole report to March 24 with subsequent events procedures extended to that date is the other permitted method, not dual dating.",
+"source": "AU-C 560.12, 560.13, 560.A11, 560.A13, 560.A14",
+"cpa": [
+"AUD-III"
+]
 }
 ]
