@@ -13,10 +13,7 @@
 "answer": 2,
 "explain": "The gross income test for a qualifying relative uses the exemption amount, which is $5,200 for 2025. It was $5,050 for 2024 and $4,700 for 2023.",
 "source": "IRS Pub 501 (2025); Rev. Proc. 2024-40",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-002",
@@ -33,8 +30,7 @@
 "explain": "A surviving spouse can file jointly for the year the spouse died. Qualifying surviving spouse status is only for the two years after the year of death, and it requires a dependent child.",
 "source": "IRS Pub 501 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -69,10 +65,7 @@
 "answer": 2,
 "explain": "For 2025 the Form 8615 threshold is $2,700. It was $2,600 for 2024.",
 "source": "Form 8615 instructions (2025); Rev. Proc. 2024-40",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-005",
@@ -89,8 +82,7 @@
 "explain": "Head of household requires paying more than half the cost of keeping up a home that was the main home of a qualifying person for more than half the year (a dependent parent may live elsewhere).",
 "source": "IRS Pub 501 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -127,8 +119,7 @@
 "explain": "Inherited property generally takes a basis equal to fair market value at the date of death (or the alternate valuation date if the executor elects it).",
 "source": "IRS Pub 551; IRC 1014",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -184,8 +175,7 @@
 "explain": "Depending on provisional income, 0%, up to 50%, or up to 85% of benefits are taxable. 85% is the ceiling.",
 "source": "IRS Pub 915 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -221,10 +211,7 @@
 "answer": 2,
 "explain": "The 2025 limits are $4,300 self-only and $8,550 family, plus a $1,000 catch-up at 55 or older. $8,300 was the 2024 family limit.",
 "source": "IRS Pub 969 (2025); Rev. Proc. 2024-25",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-013",
@@ -240,10 +227,7 @@
 "answer": 2,
 "explain": "P.L. 119-21 (the 2025 reconciliation act) raised the 2025 amount from $15,000 to $15,750. $14,600 was 2024 and $16,100 is 2026, both outside this exam's tax year.",
 "source": "Form 1040 instructions (2025); IRC 63(c)(7) as amended by P.L. 119-21",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-014",
@@ -260,8 +244,7 @@
 "explain": "For 2025 the state and local tax (SALT) cap is $40,000 ($20,000 married filing separately). It phases down only when MAGI exceeds $500,000 ($250,000 married filing separately), so this couple gets the full $40,000.",
 "source": "Schedule A instructions (2025); IRC 164(b)(7) as amended by P.L. 119-21",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -279,8 +262,7 @@
 "explain": "P.L. 119-21 raised the credit to $2,200 per qualifying child for 2025. The refundable portion (additional child tax credit) is capped at $1,700 per child.",
 "source": "Schedule 8812 instructions (2025); IRC 24(h) as amended by P.L. 119-21",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -298,8 +280,7 @@
 "explain": "For 2025 through 2028, each qualifying individual 65 or older gets up to $6,000, whether or not they itemize. The phaseout starts at MAGI over $150,000 for joint filers, so both spouses get the full amount.",
 "source": "Schedule 1-A instructions (2025); IRC 151(d)(5)(C) as amended by P.L. 119-21",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -317,8 +298,7 @@
 "explain": "The 60% limit for cash gifts to 50%-limit organizations applies for 2025. Capital gain property to public charities is generally limited to 30%, and gifts to most private nonoperating foundations to 30% (cash) or 20% (capital gain property).",
 "source": "IRS Pub 526 (2025); IRC 170(b)(1)(G)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -336,8 +316,7 @@
 "explain": "Only medical expenses above 7.5% of AGI are deductible. 7.5% of $80,000 is $6,000, so $9,000 minus $6,000 leaves $3,000.",
 "source": "IRS Pub 502 (2025); IRC 213(a)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -355,8 +334,7 @@
 "explain": "The $750,000 limit ($375,000 married filing separately) applies to debt incurred after December 15, 2017. P.L. 119-21 made it permanent. The $1,000,000 limit applies only to grandfathered older debt.",
 "source": "IRS Pub 936 (2025); IRC 163(h)(3)(F)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -374,8 +352,7 @@
 "explain": "Net earnings subject to self-employment (SE) tax are 92.35% of net profit: $46,175. Multiply by 15.3% to get $7,064.78, about $7,065. Half of that is an adjustment to income.",
 "source": "Schedule SE instructions (2025); IRC 1402(a)(12)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -393,8 +370,7 @@
 "explain": "The 0.9% additional Medicare tax applies to wages over $200,000 for a single filer. $50,000 times 0.9% is $450.",
 "source": "Form 8959 instructions (2025); IRC 3101(b)(2)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -412,8 +388,7 @@
 "explain": "Net investment income tax (NIIT) is 3.8% of the lesser of net investment income ($40,000) or MAGI over $250,000 ($30,000). 3.8% of $30,000 is $1,140.",
 "source": "Form 8960 instructions (2025); IRC 1411",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -542,8 +517,7 @@
 "explain": "The general refund statute is the later of 3 years from filing or 2 years from payment. A return filed early is treated as filed on the due date.",
 "source": "Form 1040-X instructions (2025); IRC 6511(a)",
 "cpa": [
-"REG-I",
-"TCP-I"
+"REG-I"
 ]
 },
 {
@@ -560,10 +534,7 @@
 "answer": 1,
 "explain": "The 2025 annual exclusion is $19,000 per donee, so splitting covers $38,000. But the election itself requires filing Form 709, even when no taxable gift results.",
 "source": "Form 709 instructions (2025); IRC 2513",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-031",
@@ -579,9 +550,7 @@
 "answer": 2,
 "explain": "The 2025 basic exclusion is $13,990,000. $13,610,000 was 2024. P.L. 119-21 sets $15,000,000 starting in 2026.",
 "source": "Form 706 instructions (2025); Rev. Proc. 2024-40",
-"cpa": [
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1-032",
@@ -633,9 +602,7 @@
 "answer": 1,
 "explain": "Form 706 is due 9 months after death. A 6-month extension to file is available with Form 4768.",
 "source": "Form 706 instructions (2025); IRC 6075(a)",
-"cpa": [
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p2-001",
@@ -672,7 +639,7 @@
 "source": "Form 2553 instructions; IRC 1362(b)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-III"
 ]
 },
 {
@@ -728,8 +695,7 @@
 "explain": "The dividends received deduction (DRD) is 50% for less than 20% ownership, 65% for 20% to less than 80%, and 100% for 80% or more in the same affiliated group.",
 "source": "IRS Pub 542; IRC 243",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -766,8 +732,7 @@
 "explain": "Partnership returns are due the 15th day of the 3rd month after year-end. A 6-month extension (Form 7004) moves it to September 15.",
 "source": "Form 1065 instructions; IRC 6072(b)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -785,8 +750,7 @@
 "explain": "Business meals are generally 50% deductible. The temporary 100% restaurant rule applied only to 2021 and 2022.",
 "source": "IRS Pub 463 (2025); IRC 274(n)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -803,10 +767,7 @@
 "answer": 2,
 "explain": "P.L. 119-21 raised the limit to $2,500,000, reduced dollar for dollar once qualifying property placed in service exceeds $4,000,000. $1,250,000 was the pre-act 2025 figure.",
 "source": "Form 4562 instructions (2025); IRC 179(b) as amended by P.L. 119-21",
-"cpa": [
-"REG-V",
-"TCP-IV"
-]
+"cpa": []
 },
 {
 "id": "p2-010",
@@ -823,8 +784,7 @@
 "explain": "P.L. 119-21 restored 100% bonus depreciation for qualified property acquired after January 19, 2025. Property acquired earlier and placed in service in 2025 gets 40%.",
 "source": "Form 4562 instructions (2025); IRC 168(k) as amended by P.L. 119-21",
 "cpa": [
-"REG-V",
-"TCP-IV"
+"REG-V"
 ]
 },
 {
@@ -842,8 +802,7 @@
 "explain": "The $5,000 immediate deduction is reduced dollar for dollar by start-up costs over $50,000. $5,000 minus $3,000 is $2,000. The rest is amortized over 180 months.",
 "source": "IRC 195(b)",
 "cpa": [
-"REG-V",
-"TCP-III"
+"REG-V"
 ]
 },
 {
@@ -878,9 +837,7 @@
 "answer": 2,
 "explain": "The 2025 business rate is 70 cents per mile. It was 67 cents in 2024.",
 "source": "IRS Notice 2025-5",
-"cpa": [
-"REG-V"
-]
+"cpa": []
 },
 {
 "id": "p2-014",
@@ -915,8 +872,7 @@
 "explain": "For 2025 the limit is 10% of taxable income figured without the deduction and certain other items, with a 5-year carryforward. P.L. 119-21 adds a 1% floor starting in 2026.",
 "source": "IRS Pub 542; IRC 170(b)(2)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -971,10 +927,7 @@
 "answer": 2,
 "explain": "The 2025 defined contribution limit is $70,000. $69,000 was 2024 and $23,500 is the 2025 401(k) elective deferral limit.",
 "source": "IRS Pub 560 (2025); Notice 2024-80",
-"cpa": [
-"REG-V",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p2-019",
@@ -991,8 +944,7 @@
 "explain": "If a dwelling unit used as a home is rented fewer than 15 days, the rental income is not reported and the rental expenses are not deductible.",
 "source": "IRS Pub 527 (2025); IRC 280A(g)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1009,9 +961,7 @@
 "answer": 1,
 "explain": "A trust must file if it has any taxable income or gross income of $600 or more, or has a nonresident alien beneficiary.",
 "source": "Form 1041 instructions (2025); IRC 6012(a)(4)",
-"cpa": [
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p3-001",
@@ -1202,8 +1152,7 @@
 "explain": "The trust fund recovery penalty (TFRP) under Internal Revenue Code (IRC) section 6672 is 100% of the unpaid withheld income tax and employee share of Federal Insurance Contributions Act (FICA), assessed against responsible persons who willfully failed to pay.",
 "source": "IRC 6672",
 "cpa": [
-"REG-I",
-"TCP-II"
+"REG-I"
 ]
 },
 {
@@ -1289,8 +1238,7 @@
 "explain": "The test counts all 2025 days, one-third of 2024 days, and one-sixth of 2023 days: 140 + 40 + 15 = 195, which is at least 183, and she was present at least 31 days in 2025. Being under 183 days in the current year alone does not make her a nonresident; that only matters for the closer connection exception, which she does not claim.",
 "source": "IRS Pub 519 (2025); IRC 7701(b)(3)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1308,8 +1256,7 @@
 "explain": "A student is generally not an exempt individual if he or she was exempt as a teacher, trainee, or student for any part of more than 5 calendar years, unless the student shows no intent to reside permanently and has substantially complied with the visa. The 2 calendar year figure is the teacher and trainee rule (exempt in 2 of the prior 6 years), a common mix-up.",
 "source": "IRS Pub 519 (2025); IRC 7701(b)(5)(E)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1327,8 +1274,7 @@
 "explain": "Under the green card test, when a person does not also meet the substantial presence test, the residency starting date is the first day in the calendar year on which the person is present in the United States as a lawful permanent resident. Mei is therefore a resident only from September 20, making 2025 a dual-status year; the green card does not make her a resident for the whole year.",
 "source": "IRS Pub 519 (2025); IRC 7701(b)(2)(A)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1346,8 +1292,7 @@
 "explain": "A dual-status taxpayer cannot claim the standard deduction, even if he or she is a resident at year end. The other statements are true: head of household rates are not available, the return form depends on status on the last day of the year, and a joint return is possible only if a dual-status individual married to a U.S. citizen or resident elects to file jointly.",
 "source": "IRS Pub 519 (2025); IRS: Taxation of Dual-Status Individuals",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1365,8 +1310,7 @@
 "explain": "When the choice is made, both spouses are treated as U.S. residents for the entire year, are taxed on worldwide income, and must file a joint return for the year of the choice. The election stays in effect for later years until it is terminated, so it does not have to be remade each year.",
 "source": "IRS Pub 519 (2025); IRC 6013(g)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1419,10 +1363,7 @@
 "answer": 2,
 "explain": "For 2025 a single filer age 65 or older must file if gross income is at least $17,750 (the $15,750 basic standard deduction plus the $2,000 additional amount). Ruth's $17,000 is below that, so she is not required to file. The $15,750 figure is the threshold for a single filer under 65.",
 "source": "Form 1040 instructions (2025), Chart A; IRS Pub 501 (2025)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d1-009",
@@ -1438,10 +1379,7 @@
 "answer": 2,
 "explain": "A dependent must file if gross income is more than the larger of $1,350 or earned income (up to $15,300) plus $450. Here that is $3,000 + $450 = $3,450, and her gross income is $3,000 + $1,000 = $4,000, so she must file. Passing the separate unearned-income and earned-income tests does not end the analysis; the gross income test still applies.",
 "source": "Form 1040 instructions (2025), Chart B; Rev. Proc. 2024-40",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d1-010",
@@ -1458,8 +1396,7 @@
 "explain": "A U.S. citizen or resident living outside the United States and Puerto Rico with a tax home abroad on the regular due date gets an automatic 2-month extension, to June 15, 2026, and attaches a statement showing eligibility. October 15, 2026 is available only by also filing Form 4868 by June 15. Interest still runs on unpaid tax from April 15.",
 "source": "Form 1040 instructions (2025); Treas. Reg. 1.6081-5",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1496,8 +1433,7 @@
 "explain": "Qualifying surviving spouse status is available for the 2 years after the year of death (2024 and 2025 here) if the taxpayer has not remarried, could have filed jointly in the year of death, and keeps up a home for a dependent child or stepchild. It uses joint return rates and the $31,500 standard deduction, which beats head of household ($23,625). Married filing jointly is allowed only for the year of death.",
 "source": "IRS Pub 501 (2025); IRC 2(a)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1515,8 +1451,7 @@
 "explain": "To be considered unmarried for head of household purposes, the spouse must not have lived in the home during the last 6 months of the year. Her husband lived there through July 31, which is within the last 6 months (July through December), so Rosa cannot use head of household and must file married filing separately if they do not file jointly. Single status requires being unmarried on December 31.",
 "source": "IRS Pub 501 (2025); IRC 7703(b)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1534,8 +1469,7 @@
 "explain": "A dependent parent does not have to live with the taxpayer for head of household status, as long as the taxpayer pays more than half the cost of keeping up the parent's main home for the entire year and can claim the parent as a dependent. The live-with requirement that disqualifies other relatives does not apply to a parent.",
 "source": "IRS Pub 501 (2025); IRC 2(b)(1)(B)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1553,8 +1487,7 @@
 "explain": "To meet the age test, a qualifying child must be younger than the taxpayer (or the spouse if filing jointly), in addition to being under 19, or under 24 if a full-time student, unless permanently and totally disabled. Marco is older than Carlos, so he fails the age test even though he is a student under 24. Carlos would have to look at the qualifying relative rules instead.",
 "source": "IRS Pub 501 (2025); IRC 152(c)(3)(A)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1572,8 +1505,7 @@
 "explain": "The joint return test does not disqualify a child who files a joint return only to claim a refund of income tax withheld or estimated tax paid. That exception would not apply if the couple filed jointly to claim a credit such as the American opportunity credit.",
 "source": "IRS Pub 501 (2025); IRC 152(b)(2), 152(c)(1)(E)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1591,8 +1523,7 @@
 "explain": "When a parent can claim the child but no parent does, another taxpayer may claim the child only if that taxpayer's AGI is higher than the highest AGI of any parent who can claim the child. Rosa's $30,000 is lower than Ana's $35,000, so she cannot. Simply having the parent decline to claim the child is not enough.",
 "source": "IRS Pub 501 (2025); IRC 152(c)(4)(C)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1610,8 +1541,7 @@
 "explain": "Under the special rule for divorced or separated parents, a release lets the noncustodial parent claim the child as a dependent and for the child tax credit or credit for other dependents. It does not allow the noncustodial parent to claim head of household status, the earned income credit, the child and dependent care credit, or the exclusion for dependent care benefits; those stay with the custodial parent.",
 "source": "IRS Pub 501 (2025); IRC 152(e); Form 8332",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1629,8 +1559,7 @@
 "explain": "Cousins are not on the list of relatives who do not have to live with the taxpayer, so a cousin can be a qualifying relative only by living with the taxpayer all year as a member of the household. Nieces and nephews, in-laws, and stepparents are all on the relationship list.",
 "source": "IRS Pub 501 (2025); IRC 152(d)(2)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1648,8 +1577,7 @@
 "explain": "Under a multiple support agreement, a person who provided over 10% of the support may claim the dependent if together the eligible group provided over half, and every other person who provided over 10% signs a written statement not to claim. David provided exactly 10%, not over 10%, so he cannot claim her and does not need to sign. The claimant uses Form 2120 to identify the others.",
 "source": "IRS Pub 501 (2025); IRC 152(d)(3); Form 2120",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1704,8 +1632,7 @@
 "explain": "Household income is the MAGI of the taxpayer and spouse plus the MAGI of dependents who are required to file a return. The son is not required to file, so his wages are left out: $52,000 + $28,000 = $80,000. Family size counts everyone in the tax family, including dependents claimed, so it is 3.",
 "source": "Form 8962 instructions (2025); IRC 36B(d)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1723,8 +1650,7 @@
 "explain": "A married taxpayer who files separately is generally not an applicable taxpayer for the premium tax credit, unless the domestic abuse or spousal abandonment exception applies. They must still file Form 8962 to reconcile the advance payments. For 2025, income above 400% of the federal poverty line does not by itself bar the credit.",
 "source": "Form 8962 instructions (2025); IRC 36B(c)(1)(C)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -1759,10 +1685,7 @@
 "answer": 1,
 "explain": "Net unearned income is unearned income minus $2,700 (when the child does not itemize), limited to taxable income: $5,000 - $2,700 = $2,300. His taxable income is $5,000 - $1,350 = $3,650, so the $2,300 limit applies. The $3,650 figure is his total taxable income, not the part taxed at the parents' rate.",
 "source": "Form 8615 instructions (2025); IRC 1(g)(4); Rev. Proc. 2024-40",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d1-027",
@@ -1797,9 +1720,7 @@
 "answer": 3,
 "explain": "For 2025, Social Security and Medicare taxes apply only if cash wages to one household employee are $2,800 or more, and FUTA applies only if total cash wages are $1,000 or more in a calendar quarter. Maria paid $2,700 and $675 per quarter, so neither applies, and income tax withholding is never required unless the employee asks and the employer agrees.",
 "source": "Schedule H (Form 1040) instructions (2025)",
-"cpa": [
-"REG-IV"
-]
+"cpa": []
 },
 {
 "id": "p1d6-001",
@@ -1941,9 +1862,7 @@
 "answer": 1,
 "explain": "The filing threshold is the basic exclusion amount ($13,990,000 for 2025 deaths), reduced by adjusted taxable gifts and any specific exemption used. Equivalently, $12,500,000 + $2,000,000 = $14,500,000 exceeds $13,990,000, so a return is required whether or not tax is due. Comparing only the gross estate to $13,990,000 is the common error.",
 "source": "IRC 6018(a)(1), (a)(3); Rev. Proc. 2024-40; Form 706 instructions",
-"cpa": [
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d6-009",
@@ -1959,9 +1878,7 @@
 "answer": 1,
 "explain": "DSUE is the lesser of the basic exclusion amount or the decedent's applicable exclusion amount minus the sum of the taxable estate and adjusted taxable gifts: $13,990,000 - ($3,500,000 + $500,000) = $9,990,000. The $10,490,000 choice forgets to subtract the adjusted taxable gifts.",
 "source": "IRC 2010(c)(4); Rev. Proc. 2024-40; Form 706 instructions",
-"cpa": [
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d6-010",
@@ -1977,9 +1894,7 @@
 "answer": 3,
 "explain": "An estate with gross income of $600 or more must file Form 1041, due the 15th day of the 4th month after its tax year ends. The year ends February 28, 2026, so the return is due June 15, 2026; Form 7004 can extend it 5 1/2 months. December 10, 2025 is the 9-month Form 706 deadline, and April 15 applies only to a calendar-year return.",
 "source": "Form 1041 instructions (2025); IRC 6012(a)(3), 6072(a)",
-"cpa": [
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p1d6-011",
@@ -1995,10 +1910,7 @@
 "answer": 3,
 "explain": "Tuition paid directly to an educational organization and medical costs paid directly to the provider are not gifts at all, and outright gifts to a U.S. citizen spouse generally need no return because of the unlimited marital deduction. Room and board is not tuition, so the $25,000 is a gift to the grandson that exceeds the $19,000 annual exclusion and must be reported.",
 "source": "Form 709 instructions (2025); IRC 2503(b), 2503(e), 2523",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d6-012",
@@ -2014,10 +1926,7 @@
 "answer": 0,
 "explain": "Gifts to a spouse who is not a U.S. citizen do not qualify for the unlimited marital deduction, but for 2025 the annual exclusion for such gifts is $190,000. $200,000 - $190,000 = $10,000 taxable gift, and a return is required because present-interest gifts exceeded $190,000. The $181,000 choice wrongly uses the regular $19,000 exclusion.",
 "source": "Form 709 instructions (2025); IRC 2523(i); Rev. Proc. 2024-40",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d6-013",
@@ -2035,7 +1944,6 @@
 "source": "Form 709 instructions (2025); IRC 6075(b)",
 "cpa": [
 "REG-IV",
-"TCP-I",
 "REG-I"
 ]
 },
@@ -2200,10 +2108,7 @@
 "answer": 1,
 "explain": "For 2025 the monthly exclusion for transit passes is $325, so $75 a month is taxable ($400 minus $325). Over 12 months that is $900. The $1,020 choice uses the 2024 limit of $315.",
 "source": "Rev. Proc. 2024-40, sec. 2.17; IRC 132(f); IRS Pub 15-B (2025)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-002",
@@ -2220,8 +2125,7 @@
 "explain": "Interest on obligations of a state or political subdivision is generally excluded from federal gross income, although it is still reported as tax-exempt interest on the return. Original issue discount (OID) must be included as it accrues even though no cash is received, and savings bond interest is federally taxable unless the education exclusion applies.",
 "source": "IRC 103; IRC 1272; IRS Pub 550 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2238,10 +2142,7 @@
 "answer": 1,
 "explain": "Because qualified expenses exceed the bond proceeds, all $3,000 of interest is eligible before the income limit. For 2025 the joint phaseout runs from $149,250 to $179,250, so MAGI that is $15,000 into the $30,000 range cuts the exclusion by half: $3,000 x 50% = $1,500. Excluding the full $3,000 ignores the phaseout.",
 "source": "IRS Pub 970 (2025), ch. 9; Rev. Proc. 2024-40, sec. 2.18; IRC 135",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-004",
@@ -2258,8 +2159,7 @@
 "explain": "To get qualified dividend rates, the shareholder must hold the stock more than 60 days during the 121-day period beginning 60 days before the ex-dividend date. Lisa held the shares about 30 days, so the dividend is taxed at ordinary rates even though the payer showed it in box 1b.",
 "source": "IRC 1(h)(11)(B)(iii); IRS Pub 550 (2025); Form 1040 instructions (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2296,8 +2196,7 @@
 "explain": "For 2025, wagering losses are deductible as an itemized deduction only to the extent of wagering gains, so the deduction is $8,000. The $7,200 choice applies the 90 percent limit added by P.L. 119-21, which only applies to tax years beginning after December 31, 2025.",
 "source": "IRC 165(d); P.L. 119-21 sec. 70114(b); IRS Pub 525 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2333,10 +2232,7 @@
 "answer": 1,
 "explain": "The 2025 exclusion limit is $130,000, prorated by qualifying days: $130,000 x 219/365 = $78,000. That is less than his $120,000 of foreign earned income, so $78,000 is the maximum. The $75,900 choice prorates the 2024 limit of $126,500.",
 "source": "Rev. Proc. 2024-40, sec. 2.39; IRC 911(b)(2); IRS Pub 54 (2025); Form 2555 instructions (2025)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-009",
@@ -2372,8 +2268,7 @@
 "explain": "Hobby income is included in gross income. Hobby expenses would be miscellaneous itemized deductions subject to the 2 percent floor, which are not allowed for 2025, so none are deductible. The idea of deducting expenses up to income was the rule before 2018.",
 "source": "IRC 183; IRC 67(g); IRS Pub 525 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2391,8 +2286,7 @@
 "explain": "Under the tax benefit rule, a recovery is taxable only to the extent the earlier deduction reduced tax. Her itemized deductions exceeded the standard deduction by $500 ($15,100 minus $14,600), so only $500 of the refund is taxable. Including the full $1,200 ignores the fact that $700 gave her no tax benefit.",
 "source": "IRC 111; Rev. Proc. 2023-34; IRS Pub 525 (2025), Recoveries",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2580,10 +2474,7 @@
 "answer": 2,
 "explain": "The 2025 qualified charitable distribution (QCD) limit is $108,000 per IRA owner, so the other $12,000 is a taxable distribution. The $105,000 figure was the 2024 limit, and $100,000 was the limit before SECURE 2.0 indexing began.",
 "source": "IRS Notice 2024-80; IRC 408(d)(8); IRS Pub 590-B (2025)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-022",
@@ -2618,10 +2509,7 @@
 "answer": 2,
 "explain": "Her ordinary taxable income is $40,000. The 2025 0% bracket for single filers goes up to $48,350 of taxable income, so $8,350 of the gains fit in it and the remaining $6,650 is taxed at 15%. The $7,025 choice uses the 2024 threshold of $47,025.",
 "source": "Rev. Proc. 2024-40, sec. 2.03; IRC 1(h); Form 1040 instructions (2025), Qualified Dividends and Capital Gain Tax Worksheet",
-"cpa": [
-"REG-III",
-"TCP-IV"
-]
+"cpa": []
 },
 {
 "id": "p1d2-024",
@@ -2696,7 +2584,7 @@
 "source": "IRC 421(a); IRC 422(a)(1); IRS Pub 525 (2025), Incentive Stock Options",
 "cpa": [
 "REG-III",
-"TCP-IV"
+"TCP-I"
 ]
 },
 {
@@ -2733,8 +2621,7 @@
 "explain": "The deduction is not allowed for any month the taxpayer is eligible to participate in a subsidized plan of an employer of the taxpayer or spouse, even if coverage is declined. Only January through August qualify: 8 x $600 = $4,800, which is well under her net profit limit.",
 "source": "IRC 162(l)(2)(B); Form 7206 instructions (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2751,10 +2638,7 @@
 "answer": 2,
 "explain": "For 2025 the phaseout for a single filer covered by a workplace plan runs from $79,000 to $89,000. He is $4,000 into the $10,000 range, so the deduction is reduced by 40%: $7,000 x 60% = $4,200. The $2,800 choice uses the 2024 range of $77,000 to $87,000.",
 "source": "IRS News Release (Nov. 1, 2024), 401(k) limit increases to $23,500 for 2025, IRA limit remains $7,000; IRC 219(g); IRS Pub 590-A (2025)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-031",
@@ -2770,10 +2654,7 @@
 "answer": 2,
 "explain": "For 2025 the deduction phases out for single filers with MAGI between $85,000 and $100,000. She is $6,000 into the $15,000 range, so the $2,500 is reduced by 40% ($1,000), leaving $1,500. The $667 choice uses the 2024 range of $80,000 to $95,000.",
 "source": "Rev. Proc. 2024-40, sec. 2.30; IRC 221(b); IRS Pub 970 (2025), ch. 4",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d2-032",
@@ -2790,8 +2671,7 @@
 "explain": "The deduction is capped at $25,000, then reduced by $100 for each $1,000 of MAGI over $150,000. Her MAGI is $20,000 over, so the reduction is $2,000 and the deduction is $25,000 minus $2,000 = $23,000. The $28,000 choice wrongly applies the reduction to the full $30,000 of tips before the cap.",
 "source": "IRC 224(b); P.L. 119-21 sec. 70201; IRS newsroom, One, Big, Beautiful Bill: How to take advantage of no tax on tips and overtime",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2809,8 +2689,7 @@
 "explain": "Only the overtime pay in excess of the regular rate (the half-time premium) is qualified overtime compensation, so the deduction is $14,000. That is under the $25,000 joint cap and their MAGI is below the $300,000 phaseout threshold. The $12,500 figure is the cap for a non-joint return.",
 "source": "IRC 225(b), (c) and (e); P.L. 119-21; IRS newsroom, What to know about the No Tax on Overtime deduction",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2828,8 +2707,7 @@
 "explain": "The American opportunity credit is limited to the first four years of postsecondary education, so a graduate student uses the lifetime learning credit: 20% of up to $10,000 of expenses, or $2,000. That amount phases out between $80,000 and $90,000 of MAGI for single filers, so it is cut in half to $1,000.",
 "source": "IRC 25A(c) and (d); IRS Pub 970 (2025), ch. 2 and 3",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -2905,7 +2783,7 @@
 "source": "IRC 671; IRC 676(a); Form 1041 instructions (2025), Grantor Type Trust",
 "cpa": [
 "REG-IV",
-"TCP-I"
+"TCP-II"
 ]
 },
 {
@@ -2981,7 +2859,7 @@
 "source": "IRC 1041(a) and (b); IRS Pub 504 (2025)",
 "cpa": [
 "REG-III",
-"TCP-I"
+"TCP-IV"
 ]
 },
 {
@@ -2999,8 +2877,7 @@
 "explain": "The repeal of the alimony deduction applies only to divorce or separation instruments executed after December 31, 2018, or older instruments modified to adopt the new rule. Kevin's 2018 decree keeps the old treatment: he deducts the payments and his former spouse includes them in income.",
 "source": "IRC 215 (pre-2019); P.L. 115-97 sec. 11051(c); IRS Pub 504 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3018,8 +2895,7 @@
 "explain": "In a community property state, wages earned by either spouse during the marriage are community income, owned half by each. On separate returns each spouse generally reports half of the total community wages, $50,000 each. Reporting only one's own wages ignores state community property law.",
 "source": "IRS Pub 555; IRS Pub 504 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3037,8 +2913,7 @@
 "explain": "For NOLs arising after 2017, the deduction is limited to 80% of taxable income figured without the NOL and qualified business income (QBI) deductions: $40,000 x 80% = $32,000. The remaining $18,000 carries forward indefinitely. Deducting the full $40,000 is the pre-2018 rule.",
 "source": "IRC 172(a)(2) and (b)(1)(A); IRS Pub 536",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3057,7 +2932,7 @@
 "source": "IRS Pub 559 (2025); IRS Pub 550 (2025); Rev. Rul. 74-175",
 "cpa": [
 "REG-IV",
-"TCP-I"
+"TCP-IV"
 ]
 },
 {
@@ -3094,8 +2969,7 @@
 "explain": "A negative QBI amount carries forward and reduces QBI in the next year, so 2025 QBI is $50,000 minus $10,000 = $40,000. His taxable income is under the 2025 threshold of $197,300, so the deduction is 20% of $40,000 = $8,000, which is less than 20% of taxable income ($20,000). The $10,000 choice ignores the carryover.",
 "source": "IRC 199A(c)(2); Rev. Proc. 2024-40, sec. 2.27; Form 8995 instructions (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3113,8 +2987,7 @@
 "explain": "Innocent spouse relief and separation of liability relief apply only to understated tax. Equitable relief is the only type that can cover an underpayment of tax properly shown on a joint return. All three are requested on Form 8857, while injured spouse claims on Form 8379 deal with refund offsets.",
 "source": "IRC 6015(b), (c) and (f); IRS Innocent Spouse Relief page; IRS Pub 971",
 "cpa": [
-"REG-I",
-"TCP-I"
+"REG-I"
 ]
 },
 {
@@ -3170,8 +3043,7 @@
 "explain": "The child tax credit can be claimed on a separate return, subject to its own rules. Education credits, the student loan interest deduction and the new deduction for qualified tips all require a joint return if the taxpayer is married.",
 "source": "IRC 25A(g)(6); IRC 221(e)(2); IRC 224(f); IRS Pub 501 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3189,8 +3061,7 @@
 "explain": "Spouses who file jointly are jointly and severally liable for the entire tax, including tax on the other spouse's unreported income. Filing separately limits her liability to her own return, which can be worth a higher tax bill. Head of household requires living apart from the spouse for the last 6 months of the year.",
 "source": "IRC 6013(d)(3); IRS Pub 501 (2025)",
 "cpa": [
-"REG-I",
-"TCP-I"
+"REG-I"
 ]
 },
 {
@@ -3208,8 +3079,7 @@
 "explain": "Once the due date has passed, spouses who filed jointly cannot elect to file separately for that year, except that a decedent's executor may in some cases. The reverse is allowed: separate filers can generally switch to a joint return within 3 years by filing Form 1040-X.",
 "source": "Treas. Reg. 1.6013-1(a)(1); IRC 6013(b); Form 1040-X instructions",
 "cpa": [
-"REG-I",
-"TCP-I"
+"REG-I"
 ]
 },
 {
@@ -3245,8 +3115,7 @@
 "explain": "Amounts paid for drugs that do not require a prescription, such as nicotine gum or patches, are not medical expenses; insulin is the only nonprescription exception. Fees for a stop-smoking program are deductible, as are hearing aid batteries and a weight-loss program that treats a diagnosed disease.",
 "source": "IRS Pub 502 (2025); IRC 213(b)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3263,10 +3132,7 @@
 "answer": 1,
 "explain": "For 2025, the eligible long-term care premium limit for a person older than 60 but not older than 70 at year end is $4,810, so only $4,810 of the $6,000 counts. $6,020 is the limit for someone older than 70, and $1,800 is the limit for ages 51 to 60.",
 "source": "IRS Pub 502 (2025); Rev. Proc. 2024-40, sec. 2.28; IRC 213(d)(10)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-003",
@@ -3282,10 +3148,7 @@
 "answer": 1,
 "explain": "Mileage is 600 x $0.21 = $126, plus $24 parking = $150. Lodging is limited to $50 per person per night, so the cap is $100 per night for two people, giving 3 x $100 = $300; meals are not deductible. Total is $150 + $300 = $450. Using the full $140 room rate would give $570.",
 "source": "IRS Pub 502 (2025); IRS 2025 standard mileage rates (IR-2024-312)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-004",
@@ -3302,8 +3165,7 @@
 "explain": "Foreign real property taxes are not deductible on Schedule A. State income taxes, U.S. real estate taxes, and personal property taxes that are based on value alone and imposed yearly are deductible, subject to the 2025 SALT limit.",
 "source": "Instructions for Schedule A (Form 1040) (2025); IRC 164(b)(6)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3321,8 +3183,7 @@
 "explain": "Points paid to refinance a mortgage generally are not deductible in full in the year paid; they are deducted over the life of the loan. $3,000 / 360 payments = $8.33 per payment, x 6 payments = $50. Deducting all $3,000 is allowed only for points on a loan to buy or build the main home that meets all the tests.",
 "source": "IRS Pub 936 (2025); IRC 461(g)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3340,8 +3201,7 @@
 "explain": "Interest on a home equity loan is deductible only to the extent the proceeds were used to buy, build, or substantially improve the home securing the loan. $25,000 / $40,000 x $3,200 = $2,000. The $15,000 used for credit cards is personal interest and is not deductible.",
 "source": "IRS Pub 936 (2025); Instructions for Schedule A (Form 1040) (2025); IRC 163(h)(3)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3359,8 +3219,7 @@
 "explain": "The itemized deduction for mortgage insurance premiums expired and is not available on 2025 returns. The phaseout above $100,000 of AGI applied when the deduction existed, which is why that choice is tempting.",
 "source": "IRS Pub 936 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3378,8 +3237,7 @@
 "explain": "Investment interest is deductible only up to net investment income. Without the election, qualified dividends are excluded, so investment income is $3,000 + $2,000 = $5,000. The disallowed $3,000 carries forward to the next year. Counting the qualified dividends ($9,000) requires the election.",
 "source": "Form 4952 and instructions; Instructions for Schedule A (Form 1040) (2025); IRC 163(d)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3435,8 +3293,7 @@
 "explain": "No deduction is allowed for a single contribution of $250 or more unless the donor has a contemporaneous written acknowledgment from the organization, obtained by the earlier of the filing date or the due date including extensions. A bank record alone is enough only for gifts under $250. Form 8283 and appraisals apply to noncash gifts.",
 "source": "IRC 170(f)(8)(A); IRS Pub 526 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3454,8 +3311,7 @@
 "explain": "Noncash property with a deduction over $5,000 per item or group of similar items is reported in Section B of Form 8283 and requires a qualified appraisal. Publicly traded securities are reported in Section A in any amount and need no appraisal, even above $5,000.",
 "source": "Instructions for Form 8283 (Rev. Dec. 2025); IRC 170(f)(11)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3473,8 +3329,7 @@
 "explain": "The loss is the $30,000 decrease in value less $10,000 insurance = $20,000. Subtract $100 for the event = $19,900, then subtract 10% of AGI ($6,000) = $13,900. Stopping before the 10% of AGI reduction gives $19,900.",
 "source": "IRS Pub 547 (2025); IRC 165(h)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3492,8 +3347,7 @@
 "explain": "For 2025, gambling losses are an other itemized deduction allowed up to the amount of gambling winnings, so all $10,000 is deductible. The rule limiting the deduction to 90% of losses ($9,000) was added by P.L. 119-21 but applies only to tax years beginning after December 31, 2025.",
 "source": "Instructions for Schedule A (Form 1040) (2025); IRC 165(d) as amended by P.L. 119-21, sec. 70114",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3511,8 +3365,7 @@
 "explain": "Schedule A (Form 1040-NR) has lines only for state and local income taxes, gifts to U.S. charities, casualty and theft losses from a federally declared disaster, and certain other itemized deductions. Home mortgage interest, real estate taxes, and medical expenses are not on the schedule.",
 "source": "Schedule A (Form 1040-NR) (2025); Instructions for Form 1040-NR (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3529,10 +3382,7 @@
 "answer": 2,
 "explain": "The 2025 threshold is $197,300 for single and most other filers and $394,600 for married filing jointly. $191,950 was the 2024 figure and $182,100 was the 2023 figure.",
 "source": "Instructions for Form 8995 (2025); Rev. Proc. 2024-40, sec. 2.27",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-017",
@@ -3548,10 +3398,7 @@
 "answer": 0,
 "explain": "For 2025 the specified service trade or business (SSTB) phase-in range for a single filer runs from $197,300 to $247,300. Above $247,300 an SSTB is not a qualified trade or business, so the deduction is $0. 20% of QBI ($30,000) would apply only at or below the $197,300 threshold.",
 "source": "Instructions for Form 8995-A (2025); Rev. Proc. 2024-40, sec. 2.27; IRC 199A(d)(3)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-018",
@@ -3568,8 +3415,7 @@
 "explain": "The deduction is the lesser of 20% of QBI ($16,000) or 20% of taxable income before the QBI deduction minus net capital gain (20% x $70,000 = $14,000). The taxable income limit controls, so the deduction is $14,000.",
 "source": "Instructions for Form 8995 (2025); IRC 199A(a)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3587,8 +3433,7 @@
 "explain": "For 2025, expenses are limited to $6,000 for two or more qualifying persons, and the credit rate is 20% for AGI over $43,000. $6,000 x 20% = $1,200. Applying 20% to the full $8,000 gives $1,600, which ignores the dollar limit.",
 "source": "IRS Pub 503 (2025); IRC 21(c)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3606,8 +3451,7 @@
 "explain": "The $6,000 dollar limit for two children is reduced by the $5,000 of excluded benefits, leaving $1,000. At AGI over $43,000 the rate is 20%, so the credit is $1,000 x 20% = $200. Forgetting the reduction gives $1,200.",
 "source": "IRS Pub 503 (2025); Form 2441 instructions (2025); IRC 21(c)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3625,8 +3469,7 @@
 "explain": "A child who is 17 at year end cannot be used for the child tax credit (CTC), but he and the dependent mother each qualify for the $500 nonrefundable credit for other dependents, for $1,000. $4,400 wrongly treats both as CTC qualifying children.",
 "source": "Instructions for Schedule 8812 (2025); IRC 24(h)(4)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3644,8 +3487,7 @@
 "explain": "The American opportunity tax credit (AOTC) is 100% of the first $2,000 plus 25% of the next $2,000: $2,000 + $250 = $2,250. Up to 40% is refundable: $2,250 x 40% = $900. $1,000 is 40% of the $2,500 maximum, which applies only with $4,000 of expenses.",
 "source": "IRS Pub 970 (2025); IRC 25A(b) and 25A(i)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3663,8 +3505,7 @@
 "explain": "The lifetime learning credit is 20% of up to $10,000 of expenses, or $2,000. For 2025 it phases out between $80,000 and $90,000 of MAGI for single filers: ($90,000 - $85,000) / $10,000 = 50%, so the credit is $1,000. $2,500 is the American opportunity tax credit (AOTC) maximum.",
 "source": "IRS Pub 970 (2025); IRC 25A(c) and 25A(d)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3682,8 +3523,7 @@
 "explain": "A taxpayer can claim the foreign tax credit without Form 1116 if all foreign income is passive, it is reported on a payee statement such as Form 1099-DIV, and creditable foreign taxes are not over $300 ($600 on a joint return). With the election, no carryover to or from that year is allowed. The $300 limit applies only to non-joint returns.",
 "source": "Instructions for Form 1116 (2025); IRC 904(j)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3700,10 +3540,7 @@
 "answer": 2,
 "explain": "For 2025 the EIC is not allowed if investment income exceeds $11,950. Her $8,000 + $4,500 = $12,500 is over the limit, so she gets no credit. The limit applies whether or not there is a qualifying child, and there is no partial credit.",
 "source": "IRS Pub 596 (2025); Rev. Proc. 2024-40, sec. 2.06(2); IRC 32(i)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-026",
@@ -3720,8 +3557,7 @@
 "explain": "Without a qualifying child, the taxpayer must be at least 25 but under 65 at the end of the year and cannot be anyone's dependent. Fay at 64 qualifies. Ed is too young, Gus is too old, and Hal is a dependent. The temporary age rules for 2021 do not apply to 2025.",
 "source": "IRS Pub 596 (2025); IRC 32(c)(1)(A)(ii)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3739,8 +3575,7 @@
 "explain": "A final determination of reckless or intentional disregard of the rules bars the EIC for 2 tax years. The 10-year ban applies only to fraud. After the ban ends, she must generally file Form 8862 to claim the credit again.",
 "source": "IRC 32(k)(1); IRS Pub 596 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3758,8 +3593,7 @@
 "explain": "Form 8867 covers the earned income credit (EIC), the child tax credit (CTC), additional child tax credit (ACTC) and credit for other dependents (ODC), the American opportunity tax credit (AOTC), and head of household filing status. The lifetime learning credit is not covered. The AOTC is covered, which is why the education credit choice is tempting.",
 "source": "Instructions for Form 8867 (Rev. Nov. 2025); IRC 6695(g)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3776,10 +3610,7 @@
 "answer": 2,
 "explain": "For a U.S. special needs adoption that becomes final in 2025, the full $17,280 is allowed regardless of actual expenses. Under P.L. 119-21, up to $5,000 per child is refundable starting in 2025; the rest is nonrefundable and can carry forward 5 years. $16,810 is the 2024 figure.",
 "source": "Instructions for Form 8839 (2025); Rev. Proc. 2024-40, sec. 2.04; IRC 23(a)(3) and 23(h) as amended by P.L. 119-21",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-030",
@@ -3795,10 +3626,7 @@
 "answer": 0,
 "explain": "For 2025, the repayment limit for a single filer with household income from 200% to under 300% of the poverty line is $975. $1,950 is the limit for other filing statuses in that band, and full repayment applies only at 400% or more.",
 "source": "Instructions for Form 8962 (2025), Table 5; IRC 36B(f)(2)(B)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d3-031",
@@ -3815,8 +3643,7 @@
 "explain": "The residential clean energy credit is 30% of the cost for property placed in service in 2025: $24,000 x 30% = $7,200. For solar electric property the home does not have to be the main home. P.L. 119-21 ends the credit for expenditures made after December 31, 2025, and an expenditure is made when installation is completed, so this one qualifies.",
 "source": "Instructions for Form 5695 (2025); IRS FAQs on P.L. 119-21 energy credit changes; IRC 25D",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3834,8 +3661,7 @@
 "explain": "The credit is 30% of costs. The heat pump gives $2,400, capped at $2,000. The windows give $900, capped at $600 for windows within the $1,200 general limit. $2,000 + $600 = $2,600. $3,300 is 30% of the total cost without any caps.",
 "source": "Instructions for Form 5695 (2025); IRC 25C(b)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -3852,10 +3678,7 @@
 "answer": 1,
 "explain": "For 2025, joint filers with AGI over $47,500 but not over $51,000 get a 20% rate. Eligible contributions are $2,000 each, or $4,000, so the credit is $4,000 x 20% = $800. $2,000 would be the 50% rate, which applies only at AGI of $47,500 or less.",
 "source": "Form 8880 (2025); IRC 25B",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-001",
@@ -3871,10 +3694,7 @@
 "answer": 3,
 "explain": "The 2025 AMT exemption is $137,000 for joint filers and qualifying surviving spouses. $133,300 was the 2024 amount and $126,500 the 2023 amount; $88,100 is the 2025 amount for single and head of household filers.",
 "source": "Instructions for Form 6251 (2025); Rev. Proc. 2024-40, sec. 2.11",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-002",
@@ -3890,10 +3710,7 @@
 "answer": 2,
 "explain": "The $88,100 exemption is reduced by 25% of alternative minimum taxable income (AMTI) over $626,350. ($700,000 - $626,350) x 25% = $18,412.50, so the exemption is $88,100 - $18,412.50 = $69,687.50. Using 50% instead of 25% gives $51,275.",
 "source": "Instructions for Form 6251 (2025); Rev. Proc. 2024-40, sec. 2.11; IRC 55(d)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-003",
@@ -3947,10 +3764,7 @@
 "answer": 2,
 "explain": "The 2025 threshold is $2,800 of cash wages to any one household employee. $2,700 was the 2024 figure, $3,000 is the 2026 figure, and $1,000 in a quarter is the separate Federal Unemployment Tax Act (FUTA) test.",
 "source": "Instructions for Schedule H (Form 1040) (2025); IRC 3121(a)(7)(B) and 3121(x)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-006",
@@ -3966,10 +3780,7 @@
 "answer": 2,
 "explain": "Social Security and Medicare apply only if cash wages to one employee reach $2,800 in 2025, and $2,400 is below that. FUTA applies if total cash wages to household employees are $1,000 or more in any calendar quarter, which happened, so Schedule H is required for the FUTA tax.",
 "source": "Instructions for Schedule H (Form 1040) (2025); IRC 3306(c)(2)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-007",
@@ -4043,8 +3854,7 @@
 "explain": "Church employee income of $108.28 or more is subject to self-employment (SE) tax. The $400 net earnings test applies to other self-employment income, not to church employee income.",
 "source": "Instructions for Schedule SE (Form 1040) (2025); IRC 1402(j)(2)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4061,10 +3871,7 @@
 "answer": 1,
 "explain": "Net earnings are $60,000 x 92.35% = $55,410. Only $176,100 - $150,000 = $26,100 is left for Social Security: $26,100 x 12.4% = $3,236.40. Medicare applies to all of it: $55,410 x 2.9% = $1,606.89. Total $4,843.29. Ignoring the wages gives $8,477.73.",
 "source": "Instructions for Schedule SE (Form 1040) (2025); IRC 1402(b)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-012",
@@ -4080,10 +3887,7 @@
 "answer": 1,
 "explain": "The farm optional method is available because gross farm income is not more than $10,860. Net earnings equal two-thirds of gross farm income, up to $7,240: 2/3 x $9,000 = $6,000. $1,385 is the regular method result ($1,500 x 92.35%).",
 "source": "Instructions for Schedule SE (Form 1040) (2025); IRC 1402(a)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-013",
@@ -4100,8 +3904,7 @@
 "explain": "When a single employer withholds too much Social Security tax, the employee cannot claim the excess as a credit on the income tax return; the employer should adjust it, and if not, the employee files Form 843. The Schedule 3 credit is for excess caused by two or more employers.",
 "source": "IRS Tax Topic 608; IRS Pub 505 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4118,10 +3921,7 @@
 "answer": 0,
 "explain": "Excess Social Security tax is figured separately for each spouse. Tim's total wages of $150,000 are under the 2025 wage base of $176,100, and Ursula had one employer, so there is no excess. Combining the spouses' $210,000 would wrongly give ($210,000 - $176,100) x 6.2% = $2,101.80.",
 "source": "IRS Tax Topic 608; Instructions for Schedule SE (Form 1040) (2025); IRC 31(b)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p1d4-015",
@@ -4138,8 +3938,7 @@
 "explain": "Form 4361 must be filed by the due date, including extensions, of the return for the second tax year in which the minister had $400 or more of net SE earnings, any part from ministerial services. Her second such year is 2024.",
 "source": "IRS Pub 517 (2025); IRC 1402(e)(3)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4157,8 +3956,7 @@
 "explain": "The Form 4361 exemption covers only self-employment tax on ministerial earnings; those earnings remain subject to income tax. The exemption must rest on religious opposition, not economic reasons, it is irrevocable, and it does not apply to other self-employment income.",
 "source": "IRS Pub 517 (2025); IRC 1402(e)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4176,8 +3974,7 @@
 "explain": "Enlisted members and warrant officers exclude all qualifying pay, while other commissioned officers are capped at the highest rate of enlisted pay plus imminent danger or hostile fire pay. Service in any part of a month counts as the whole month, and a member may elect to include nontaxable combat pay in earned income for the EIC.",
 "source": "IRS Pub 3 (2025); IRC 112",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4195,8 +3992,7 @@
 "explain": "Service in a combat zone for any part of a month is treated as service for the whole month. March through September is 7 months. Counting only full months gives 5.",
 "source": "IRS Pub 3 (2025); IRC 112(a)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4214,8 +4010,7 @@
 "explain": "The period of service in a combat zone, plus any continuous qualified hospitalization, plus the next 180 days is disregarded in determining whether tax acts such as filing and paying were timely.",
 "source": "IRC 7508(a); IRS Pub 3 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4233,8 +4028,7 @@
 "explain": "A recipient of income in respect of a decedent can deduct the estate tax attributable to it under Internal Revenue Code (IRC) section 691(c). Individuals may claim it only as an itemized deduction on Schedule A, line 16. It is not an adjustment to income or a credit.",
 "source": "IRS Pub 559 (2025); Instructions for Schedule A (Form 1040) (2025); IRC 691(c)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4252,8 +4046,7 @@
 "explain": "Income in respect of a decedent (IRD) is income the decedent had a right to but had not received, such as unpaid wages, IRA balances, and accrued interest. IRD does not get a stepped-up basis. Stock owned at death is not IRD; it gets a basis equal to fair market value at death.",
 "source": "IRS Pub 559 (2025); IRC 691(a) and 1014(c)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4309,8 +4102,7 @@
 "explain": "The married filing separately (MFS) threshold is $125,000. Her wages are under it, so no tax on wages. The self-employment (SE) threshold is reduced by wages: $125,000 - $60,000 = $65,000. SE income over that is $100,000 - $65,000 = $35,000, x 0.9% = $315. Using the $200,000 single threshold would wrongly give $0.",
 "source": "Instructions for Form 8959 (2025); IRC 1401(b)(2)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4328,8 +4120,7 @@
 "explain": "Form 4137 figures Social Security and Medicare tax on tips not reported to the employer, including allocated tips, and the tax goes on Schedule 2. Form 8919 is for misclassified workers, Form 8959 is the additional Medicare tax, and Schedule SE is for self-employment income.",
 "source": "Form 4137 (2025); IRC 3102(c) and 3121(q)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4347,8 +4138,7 @@
 "explain": "Form 8919 is used by a worker who was an employee but was treated as an independent contractor, and it figures only the employee share of Social Security and Medicare tax. Schedule SE would charge both halves, which is the common mistake.",
 "source": "IRS About Form 8919; Instructions for Form 8919 (2025)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4366,8 +4156,7 @@
 "explain": "Credits for homes bought in 2008 were repaid in 15 equal installments of 6 2/3% beginning with the 2010 return, so the last installment was due on the 2024 return. Nothing is due for 2025 while the home remains his main home.",
 "source": "IRC 36(f)(1) and 36(f)(7); Instructions for Form 5405 (Rev. Nov. 2024)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -4480,8 +4269,7 @@
 "explain": "A single-member LLC owned by an individual is disregarded for income tax, so its income goes on the owner's Schedule C. For employment tax purposes, however, it is treated as a corporation, and the IRS says a single-member LLC that must file employment or excise taxes needs its own EIN.",
 "source": "Treas. Reg. 301.7701-2(c)(2)(iv) and 301.7701-3(b)(1)(ii); IRS, Do You Need a New EIN",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4499,8 +4287,7 @@
 "explain": "IRS guidance says a partnership needs a new EIN if it incorporates, if a partner takes it over as a sole proprietorship, or if it ends and a new partnership begins. A change of name or location, a change in ownership that does not terminate the partnership, and a conversion to an LLC classified as a partnership do not require a new EIN.",
 "source": "IRS, Do You Need a New EIN; IRS Pub 541 (12/2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4594,8 +4381,7 @@
 "explain": "Payments to corporations, including S corporations, are generally exempt from Form 1099 reporting, but attorneys' fees are an exception and must be reported even when paid to a corporation. For 2025 the threshold for nonemployee compensation and rents is $600, so the $1,200 and $900 payments are reportable; the $2,000 threshold applies only to payments made after December 31, 2025.",
 "source": "Instructions for Forms 1099-MISC and 1099-NEC (Rev. April 2025); IRC 6041(a); P.L. 119-21, sec. 70433",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4613,8 +4399,7 @@
 "explain": "Section 6071(c) requires Form 1099-NEC to be filed with the IRS by January 31, the same date it must be furnished to the recipient, with no later date for electronic filing. The February 28 (paper) and March 31 (electronic) dates apply to Form 1099-MISC.",
 "source": "Instructions for Forms 1099-MISC and 1099-NEC (Rev. April 2025); IRC 6071(c)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4632,8 +4417,7 @@
 "explain": "Form 8809 relates to filing Copy A with the SSA, and that 30-day extension is not automatic. An extension of time to furnish employee copies is a separate request (on Form 15397) and is also not automatically granted. For 2025, both the SSA filing and employee copies were due February 2, 2026, because January 31 fell on a Saturday.",
 "source": "General Instructions for Forms W-2 and W-3 (2025); IRC 6071(c)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4651,8 +4435,7 @@
 "explain": "Under the current Form W-4 rules, an employee who does not furnish a W-4 is treated as single or married filing separately with no other adjustments. Withholding allowances were eliminated from the W-4 starting in 2020, so the old single-with-zero-or-one-allowance rule no longer applies.",
 "source": "IRS Pub 15 (2025); Form W-4 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4671,7 +4454,7 @@
 "source": "IRS Pub 541 (12/2025); IRC 722, 731(a), 733, 752(b)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4690,7 +4473,7 @@
 "source": "IRC 704(c)(1)(A); Treas. Reg. 1.704-3(b); IRS Pub 541 (12/2025)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4709,7 +4492,7 @@
 "source": "IRS Pub 541 (12/2025); IRC 61 and 83; Treas. Reg. 1.721-1(b)(1)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4823,7 +4606,7 @@
 "source": "IRC 731(a)(1), 733; IRS Pub 541 (12/2025)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4842,7 +4625,7 @@
 "source": "IRC 731(a), 732(a), 733; IRS Pub 541 (12/2025)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4861,7 +4644,7 @@
 "source": "IRC 731(a), 732(b); IRS Pub 541 (12/2025)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -4880,7 +4663,7 @@
 "source": "IRC 704(e); IRS Pub 541 (12/2025)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-I"
 ]
 },
 {
@@ -4955,8 +4738,7 @@
 "explain": "Partnerships with more than 100 partners must file electronically, and Schedules K-1 must be furnished by the date the return is required to be filed, determined with regard to extensions. Form 7004 gives an automatic 6-month extension, to September 15, 2026, for a calendar-year 2025 return. An extension never extends the time to pay any tax.",
 "source": "Form 1065 instructions (2025); Form 7004 instructions (12/2025); IRC 6031(b); Treas. Reg. 1.6031(b)-1T(b)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -4993,8 +4775,7 @@
 "explain": "To elect out, a partnership must furnish 100 or fewer Schedules K-1, and every partner must be an individual, a C corporation, an eligible foreign entity, an S corporation, or the estate of a deceased partner. Disregarded entities, trusts and partnerships are ineligible partners. An S corporation partner's shareholders count toward the 100 limit, so 50 + 1 + 60 = 111 statements disqualifies the last partnership.",
 "source": "IRC 6221(b); Treas. Reg. 301.6221(b)-1; Form 1065 instructions (2025), Schedule B-2",
 "cpa": [
-"REG-I",
-"TCP-II"
+"REG-I"
 ]
 },
 {
@@ -5012,8 +4793,7 @@
 "explain": "The partnership representative has sole authority to act for the partnership in a Bipartisan Budget Act of 2015 (BBA) proceeding, and the partnership and all its partners are bound by those actions and by any final decision. The representative can be a partner or another person with a substantial presence in the United States, and an entity can serve only through a designated individual who meets that test. The designation is made separately for each tax year on the return.",
 "source": "IRC 6223(a) and (b); Treas. Reg. 301.6223-1 and 301.6223-2; Form 1065 instructions (2025)",
 "cpa": [
-"REG-I",
-"TCP-II"
+"REG-I"
 ]
 },
 {
@@ -5031,8 +4811,7 @@
 "explain": "A calendar-year C corporation's return is due the 15th day of the 4th month after year end (April 15, 2026), and Form 7004 gives an automatic 6-month extension to October 15, 2026. The extension covers filing only, not payment, so the tax is still due April 15, 2026. September 15 is the extended date for S corporations and partnerships, and the 7-month extension applies only to C corporations with June 30 year ends beginning before 2026.",
 "source": "Instructions for Form 1120 (2025); Instructions for Form 7004 (12/2025); IRC 6072(a), 6081",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5051,7 +4830,7 @@
 "source": "IRC 6655(d)(1)(B), 6655(d)(2), 6655(g)(2); IRS Pub 542; Instructions for Form 1120 (2025)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-III"
 ]
 },
 {
@@ -5088,8 +4867,7 @@
 "explain": "For a less-than-20%-owned corporation the tentative deduction is 50% x $100,000 = $50,000, but it is limited to 50% of taxable income figured without the dividends received deduction (DRD): 50% x $80,000 = $40,000. The limit applies because taking the full $50,000 would not create an NOL ($80,000 - $50,000 = $30,000 is still positive). The $52,000 choice wrongly uses the 65% rate for 20%-owned corporations.",
 "source": "IRC 243(a), 246(b)(1)-(3); IRS Pub 542",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5107,8 +4885,7 @@
 "explain": "For 2025 the deduction is limited to 10% of taxable income figured without the charitable deduction and without the dividends-received deduction: 10% x $500,000 = $50,000. The $10,000 excess carries forward to the next 5 years. The $45,000 choice wrongly subtracts the $50,000 dividends received deduction (DRD) before applying the 10% limit.",
 "source": "IRC 170(b)(2), 170(d)(2); Instructions for Form 1120 (2025), line 19; IRS Pub 542",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5278,8 +5055,7 @@
 "explain": "The minimum tax credit, figured on Form 8827, is limited to the excess of regular tax (after certain credits) over tentative minimum tax, so it cannot push regular tax below tentative minimum tax. The other statements are true: CAMT reaches only applicable corporations above the $1 billion 3-year average test, S corporations, regulated investment companies (RICs) and real estate investment trusts (REITs) are excluded, and all other corporations have a tentative minimum tax of zero.",
 "source": "IRC 53(c), 53(e), 55(b)(2), 59(k)(1); About Form 8827 (irs.gov)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5298,7 +5074,7 @@
 "source": "IRC 351(b), 358(a)(1), 362(a); IRS Pub 542",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -5317,7 +5093,7 @@
 "source": "IRC 351(a), 351(d)(1), 368(c); Treas. Reg. 1.351-1(a)(1)(i)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -5336,7 +5112,7 @@
 "source": "IRC 357(a), 357(c)(1), 358(a)(1), 358(d)(1)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -5374,7 +5150,7 @@
 "source": "Instructions for Form 2553 (12/2020); IRC 1362(b)(1)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-III"
 ]
 },
 {
@@ -5393,7 +5169,7 @@
 "source": "IRC 1362(b)(2)(B)(ii); Instructions for Form 2553 (12/2020)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-III"
 ]
 },
 {
@@ -5450,7 +5226,7 @@
 "source": "IRC 1366(d)(1)-(2), 1367(b)(2)(A); Instructions for Form 7203 (12/2022)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -5469,7 +5245,7 @@
 "source": "IRC 1366(d)(1), 1367(a); Treas. Reg. 1.1367-1(f), (g); Instructions for Form 7203 (12/2022)",
 "cpa": [
 "REG-V",
-"TCP-III"
+"TCP-II"
 ]
 },
 {
@@ -5506,8 +5282,7 @@
 "explain": "Items whose separate treatment could affect any shareholder's tax liability are separately stated, including charitable contributions, the section 179 deduction, and capital gains and losses. Ordinary wages paid to employees are simply netted into ordinary business income. A section 179 deduction is separately stated because each shareholder applies his or her own limits.",
 "source": "IRC 1366(a)(1); Instructions for Form 1120-S (2025), Schedule K",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5564,7 +5339,7 @@
 "source": "IRC 1361(b)(1)(B), 1362(d)(2), 1362(e)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-III"
 ]
 },
 {
@@ -5639,8 +5414,7 @@
 "explain": "Sales taxes imposed on the buyer that a business is required to collect and pay over to the state are neither included in gross receipts nor deducted. Including the tax on line 1 and deducting it on line 23 is the method for a sales tax imposed on the seller, which is not the case here. Only an amount the state lets the seller keep would be reported, as other income on line 6.",
 "source": "Instructions for Schedule C (Form 1040) (2025), line 23 (Taxes and licenses)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5658,8 +5432,7 @@
 "explain": "Money borrowed through a bona fide loan is not income because the borrower has an obligation to repay it. Kickbacks, the fair market value of property or services received in a barter, and recoveries of items deducted in an earlier year that reduced tax are all business income. The recovered bad debt is income because the earlier deduction produced a tax benefit.",
 "source": "IRS Pub 334 (2025), ch. 5; Instructions for Schedule C (Form 1040) (2025), line 6",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5676,10 +5449,7 @@
 "answer": 3,
 "explain": "The section 448(c) gross receipts test amount for tax years beginning in 2025 is $31 million, and sections 263A(i) and 471(c) both use that test. The $30 million figure applied for 2024, and $25 million is the unindexed amount written in the statute.",
 "source": "Rev. Proc. 2024-40; Instructions for Form 1120 (2025); IRC 448(c), 263A(i), 471(c)",
-"cpa": [
-"REG-V",
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p2d2a-004",
@@ -5696,8 +5466,7 @@
 "explain": "A small business taxpayer is not required to keep inventories under the general rule, so it is not required to use the accrual method for inventory purchases and sales. It may treat inventory as non-incidental materials and supplies or conform to its applicable financial statement or, if it has none, its books and records, and it is exempt from uniform capitalization (UNICAP). The accrual requirement applies only to taxpayers that do not qualify as small business taxpayers.",
 "source": "IRC 471(c)(1), 263A(i); Instructions for Schedule C (Form 1040) (2025), Part III",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5715,8 +5484,7 @@
 "explain": "Inventory includes goods you own: merchandise to which title has passed (even in transit) and goods you have out on consignment, but not goods consigned to you. The computation is $80,000 minus $10,000 plus $15,000 plus $5,000, which equals $90,000. The $100,000 choice wrongly keeps the $10,000 of goods the retailer does not own.",
 "source": "IRS Pub 538 (Rev. 01/2022), Inventories; Treas. Reg. 1.471-1",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5735,7 +5503,7 @@
 "source": "IRC 465(a), (b)(1), (b)(2), (b)(4); Instructions for Schedule C (Form 1040) (2025), line 32; Form 6198",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-I"
 ]
 },
 {
@@ -5754,7 +5522,7 @@
 "source": "IRC 465(b)(4), (b)(6); IRC 49(a)(1)(D)(iv)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-I"
 ]
 },
 {
@@ -5773,7 +5541,7 @@
 "source": "IRC 108(a)(1)(D), (c)(1), (c)(2); IRS Pub 4681 (2025); Form 982",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-I"
 ]
 },
 {
@@ -5792,7 +5560,7 @@
 "source": "IRC 108(a)(1)(A), (e)(2), (e)(5); IRS Pub 334 (2025), ch. 5, Canceled Debt",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-I"
 ]
 },
 {
@@ -5829,8 +5597,7 @@
 "explain": "The employer can deduct only $400 for a nonqualified plan award. Ana includes the greater of the cost that is not deductible ($600 minus $400 = $200) or the excess of the award's value over the deductible amount ($750 minus $400 = $350), so she includes $350. The $200 choice uses only the first measure.",
 "source": "IRC 74(c), 274(j)(2), (j)(4)(B); IRS Pub 15-B (2025), Achievement Awards",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5848,8 +5615,7 @@
 "explain": "Holiday gifts other than cash that have a low fair market value can be de minimis fringe benefits. Cash and cash equivalents, including gift cards, are never excludable as de minimis benefits no matter how small. Meal money is excludable only if provided occasionally for overtime work, not if figured on the basis of hours worked.",
 "source": "IRC 132(e)(1); IRS Pub 15-B (2025), De Minimis (Minimal) Benefits",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5867,8 +5633,7 @@
 "explain": "Section 274(a)(4) disallows any deduction for the expense of a qualified transportation fringe, which includes qualified parking. The employees can exclude the parking because $300 is under the 2025 monthly limit of $325, but the employer gets no deduction. The $9,000 choice wrongly applies the 50% meals limit.",
 "source": "IRC 274(a)(4), 132(f); IRS Pub 15-B (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5886,8 +5651,7 @@
 "explain": "Wages a parent's sole proprietorship pays a child under 18 are exempt from Social Security and Medicare taxes, and wages paid to a child under 21 are exempt from FUTA tax. The 16-year-old is exempt from all three, while the 19-year-old is exempt only from FUTA. Income tax withholding applies to both regardless of age.",
 "source": "IRC 3121(b)(3)(A), 3306(c)(5); IRS Family Employees page; IRS Pub 15 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5905,8 +5669,7 @@
 "explain": "Services performed by an individual in the employ of his or her spouse are excluded from FUTA employment, so the sole proprietor's wages to his wife are not subject to FUTA (though they are subject to Social Security and Medicare). The family exemptions do not apply when the employer is a corporation, or a partnership unless each partner is a parent of the child, so the other wages are fully subject to FUTA.",
 "source": "IRC 3306(c)(5); IRS Family Employees page; IRS Pub 15 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5924,8 +5687,7 @@
 "explain": "For FUTA, the definition of employee includes agent-drivers or commission-drivers and full-time traveling or city salespersons, but excludes full-time life insurance salespersons and home workers. Statutory employees are always employees for Social Security and Medicare purposes, so 'none' is wrong.",
 "source": "IRC 3306(i), 3121(d)(3); IRS Pub 15-A, Statutory Employees",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5943,8 +5705,7 @@
 "explain": "Statutory employees report their W-2 wages and related business expenses on Schedule C. Their employer already withheld Social Security and Medicare tax, so the Schedule C net profit is not included on Schedule SE. Employers do not withhold federal income tax from statutory employees' wages.",
 "source": "Instructions for Schedule C (Form 1040) (2025), line 1; Instructions for Schedule SE (2025); IRS Statutory Employees page",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -5962,8 +5723,7 @@
 "explain": "Office furniture, fixtures, and equipment (asset class 00.11) are 7-year property, not 5-year property. Computers and automobiles are 5-year property, and depreciable land improvements are 15-year property.",
 "source": "IRS Pub 946 (2025), ch. 4 and Table B-1; IRC 168(c), (e)(3); Rev. Proc. 87-56",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -5981,8 +5741,7 @@
 "explain": "Nonresidential real property is excluded from the 40% test, so the test compares $80,000 to $180,000, or 44%, and the mid-quarter convention applies. Basis expensed under section 179 is removed from the test, so expensing $14,000 of the November equipment leaves $66,000 of $166,000, or 39.8%, which is not more than 40%. The building always uses the mid-month convention, and counting it in the test is a common error.",
 "source": "IRC 168(d)(3); Treas. Reg. 1.168(d)-1(b)(4); Instructions for Form 4562 (2025)",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6000,8 +5759,7 @@
 "explain": "Nonresidential real property is depreciated straight line over 39 years, which is $10,000 a year ($390,000 divided by 39). The mid-month convention treats the building as placed in service in the middle of May, giving 7.5 months: $10,000 times 7.5/12 equals $6,250. The $5,000 choice wrongly uses the half-year convention.",
 "source": "IRC 168(b)(3), (c), (d)(2); IRS Pub 946 (2025), ch. 4",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6018,10 +5776,7 @@
 "answer": 1,
 "explain": "For a passenger automobile placed in service in 2025 with bonus depreciation, the first-year limit is $20,200, and the limit is reduced to the business-use percentage. The deduction is $20,200 times 60%, or $12,120, even though 100% bonus on the $30,000 business basis would otherwise be larger. The $7,320 choice uses the $12,200 limit that applies only when no bonus depreciation is claimed.",
 "source": "Rev. Proc. 2025-16, Table 1; IRC 280F(a); Treas. Reg. 1.280F-2T(i); IRS Pub 463 (2025)",
-"cpa": [
-"REG-III",
-"TCP-IV"
-]
+"cpa": []
 },
 {
 "id": "p2d2a-022",
@@ -6038,8 +5793,7 @@
 "explain": "Listed property that is not predominantly (more than 50%) used in a qualified business use does not qualify for section 179 or the special depreciation allowance and must use the alternative depreciation system. If business use later falls to 50% or less, excess depreciation is recaptured as income even without a sale. Computers have not been listed property since the 2017 tax law.",
 "source": "IRC 280F(b), (d)(4); Instructions for Form 4562 (2025); IRS Pub 946 (2025), ch. 2 and 5",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6056,10 +5810,7 @@
 "answer": 2,
 "explain": "For tax years beginning in 2025, the section 179 deduction for an SUV rated over 6,000 pounds (and not over 14,000 pounds) is limited to $31,300. The $30,500 figure was the 2024 limit, and $20,200 is the passenger automobile first-year depreciation limit, which does not apply to a vehicle over 6,000 pounds.",
 "source": "Instructions for Form 4562 (2025); IRS Pub 946 (2025); IRC 179(b)(5)",
-"cpa": [
-"REG-III",
-"TCP-IV"
-]
+"cpa": []
 },
 {
 "id": "p2d2a-024",
@@ -6076,8 +5827,7 @@
 "explain": "The section 179 deduction is limited to taxable income from the active conduct of any trade or business, which for an individual includes wages earned as an employee. His limit is $25,000 plus $20,000, or $45,000, and the $15,000 disallowed amount carries over to 2026. Leaving out the wages produces the $25,000 choice.",
 "source": "IRC 179(b)(3); Instructions for Form 4562 (2025), line 11; IRS Pub 946 (2025), ch. 2",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6095,8 +5845,7 @@
 "explain": "The 100% allowance applies only to property acquired after January 19, 2025, and property bought under a written binding contract is treated as acquired when the contract became binding, here December 15, 2024. Because that date is before January 20, 2025, the machine is treated as acquired before the cutoff, and the 40% rate applies. The 100% choice wrongly looks only at the placed in service date.",
 "source": "IRC 168(k); P.L. 119-21, sec. 70301; Treas. Reg. 1.168(k)-2(b)(5)(ii); Instructions for Form 4562 (2025); Notice 2026-11, sec. 2.02",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6114,8 +5863,7 @@
 "explain": "Using the same impermissible depreciation method on two or more consecutively filed returns means the taxpayer has adopted a method of accounting. A change requires Form 3115, and the cumulative difference is taken into account as a section 481(a) adjustment. An amended return is the right fix only when the error appears on one return and no method has been adopted.",
 "source": "IRS Pub 946 (2025), ch. 1, How Do You Correct Depreciation Deductions; Instructions for Form 3115",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6171,8 +5919,7 @@
 "explain": "Goodwill and a covenant not to compete entered into with the purchase of a business are both section 197 intangibles, amortized ratably over 15 years (180 months) starting with the month acquired. The total is $216,000 divided by 180, times 6 months (July through December), or $7,200. The $10,500 choice wrongly amortizes the covenant over its 4-year term.",
 "source": "IRC 197(a), (d)(1); IRS Pub 946 (2025), ch. 9",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6190,8 +5937,7 @@
 "explain": "Tentative percentage depletion is 15% of $500,000, or $75,000, but it cannot exceed 50% of taxable income from the property before depletion, which is $60,000. The deduction is the larger of cost depletion ($40,000) or allowable percentage depletion ($60,000), so it is $60,000. The $75,000 choice ignores the taxable income limit.",
 "source": "IRC 611, 613(a), (b)",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6323,8 +6069,7 @@
 "explain": "Without an applicable financial statement, the de minimis safe harbor covers amounts up to $2,500 per invoice or per item as substantiated by the invoice. The $2,800 printer exceeds that amount and must be capitalized unless another rule applies. The laptops qualify because each item is $2,500 or less, even though the invoice total is higher.",
 "source": "Treas. Reg. 1.263(a)-1(f); Notice 2015-82; IRS Tangible Property Final Regulations FAQ",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6342,8 +6087,7 @@
 "explain": "The safe harbor for small taxpayers (average annual gross receipts of $10 million or less) applies to building property with an unadjusted basis of $1 million or less. Total annual amounts may not exceed the lesser of 2% of the unadjusted basis ($16,000) or $10,000, so the limit is $10,000. The $16,000 choice ignores the $10,000 cap.",
 "source": "Treas. Reg. 1.263(a)-3(h); IRS Tangible Property Final Regulations FAQ",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6361,8 +6105,7 @@
 "explain": "For buildings, the routine maintenance safe harbor applies to recurring activities the taxpayer expects to perform more than once during the 10-year period beginning when the building structure or system is placed in service. The class life test applies to property other than buildings. The safe harbor does not cover betterments.",
 "source": "Treas. Reg. 1.263(a)-3(i); IRS Tangible Property Final Regulations FAQ",
 "cpa": [
-"REG-III",
-"TCP-IV"
+"REG-III"
 ]
 },
 {
@@ -6400,7 +6143,7 @@
 "source": "Treas. Reg. 1.469-2(f)(6); IRC 469(d)(1)",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-I"
 ]
 },
 {
@@ -6418,8 +6161,7 @@
 "explain": "A bad debt deduction is allowed only for amounts previously included in gross income. A cash-method taxpayer never reported the unpaid fee, so there is nothing to deduct; the loss is simply income never received. An accrual-method business that had already reported the fee would deduct it as a business bad debt.",
 "source": "IRS Topic No. 453; IRC 166; Treas. Reg. 1.166-1(e)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6437,8 +6179,7 @@
 "explain": "An assignment realistically expected to last 1 year or less is temporary, but it becomes indefinite once the realistic expectation changes to more than 1 year. Phoenix became her tax home on August 1, so only the first 6 months qualify.",
 "source": "IRS Pub 463 (2025), Temporary Assignment or Job (Example 3); IRC 162(a)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6456,8 +6197,7 @@
 "explain": "Per diem up to the federal rate ($200 x 4 = $800) is treated as substantiated and paid under an accountable plan. The $200 excess is treated as paid under a nonaccountable plan and is wages, but keeping it does not taint the portion that equals the federal rate.",
 "source": "Treas. Reg. 1.62-2(h)(2)(i)(B); IRS Pub 15 (2025); IRS Pub 463 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6475,8 +6215,7 @@
 "explain": "Once a Section 179 deduction, special depreciation allowance, or modified accelerated cost recovery system (MACRS) depreciation has been claimed on a car, the standard mileage rate can never be used for that car. Switching the other way is allowed: a taxpayer who started with the standard mileage rate may move to actual expenses with straight-line depreciation.",
 "source": "IRS Pub 463 (2025), chapter 4",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6494,8 +6233,7 @@
 "explain": "For tax years beginning after December 31, 2024, P.L. 119-21 again adds back depreciation, amortization and depletion in figuring adjusted taxable income (ATI). ATI is $1,000,000 + $400,000 = $1,400,000, and 30% is $420,000. The other $80,000 carries forward. $300,000 (30% of $1,000,000) applies the 2022 to 2024 rule without the depreciation addback.",
 "source": "IRC 163(j)(1), (2), (8) as amended by P.L. 119-21; IRS Questions and answers about the limitation on the deduction for business interest expense; IRS Fact Sheet 2025-09",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6512,10 +6250,7 @@
 "answer": 3,
 "explain": "The small business exemption applies to a taxpayer meeting the section 448(c) gross receipts test ($31 million for tax years beginning in 2025), but a tax shelter cannot use it regardless of size. The other three taxpayers are under $31 million and are not tax shelters, so they are exempt.",
 "source": "IRC 163(j)(3); IRC 448(c), (d)(3); Rev. Proc. 2024-40, sec. 2.31",
-"cpa": [
-"REG-V",
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p2d2b-008",
@@ -6532,8 +6267,7 @@
 "explain": "No deduction is allowed for premiums on a life insurance policy when the taxpayer is directly or indirectly a beneficiary under the policy. Property, liability and workers' compensation coverage for the business are ordinary and necessary expenses.",
 "source": "IRC 264(a)(1); IRC 162(a)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6551,8 +6285,7 @@
 "explain": "Taxes assessed against local benefits of a kind that tend to increase the value of the property are not deductible; they are added to the property's basis (except any part for maintenance or interest charges). Employer payroll taxes and real estate taxes on business property are deductible business expenses.",
 "source": "IRC 164(a), 164(c)(1)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6570,8 +6303,7 @@
 "explain": "Amounts paid to a government in relation to a violation of law are not deductible, but an exception applies to amounts the taxpayer establishes are restitution or remediation and that the court order or settlement agreement identifies as such. Only the $20,000 qualifies; the $30,000 civil penalty is nondeductible.",
 "source": "IRC 162(f)(1), (2)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6589,8 +6321,7 @@
 "explain": "For 2025 the lookback period is July 1, 2023, through June 30, 2024: $12,000 + $13,000 + $14,000 + $12,000 = $51,000. Because that is more than $50,000, the employer is a semiweekly depositor for all of 2025. The calendar-year 2024 total is not the test.",
 "source": "Treas. Reg. 31.6302-1(b); IRS Pub 15 (2025), section 11",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6608,8 +6339,7 @@
 "explain": "When $100,000 or more accumulates on any day, the tax must be deposited by the close of the next business day. A monthly depositor that triggers this rule becomes a semiweekly depositor immediately for the rest of the calendar year and for the following calendar year.",
 "source": "Treas. Reg. 31.6302-1(c)(3); IRS Pub 15 (2025), section 11",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6627,8 +6357,7 @@
 "explain": "FUTA tax is 6.0% of the first $7,000 of each employee's wages, reduced by a credit of up to 5.4%, for a net rate of 0.6%. 15 x $7,000 x 0.6% = $630. $6,300 ignores the credit, and $5,670 is the credit itself.",
 "source": "Instructions for Form 940 (2025); IRC 3301, 3302",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6683,10 +6412,7 @@
 "answer": 2,
 "explain": "Her taxable income is above the 2025 phase-in range ($197,300 to $247,300), so the deduction is the lesser of 20% of QBI ($60,000) or the greater of 50% of W-2 wages ($40,000) or 25% of wages plus 2.5% of UBIA ($20,000 + $25,000 = $45,000). The limit is $45,000, which is also less than 20% of taxable income ($80,000).",
 "source": "IRC 199A(b)(2), (b)(3); Instructions for Form 8995-A (2025); Rev. Proc. 2024-40, sec. 2.27",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p2d2b-017",
@@ -6741,8 +6467,7 @@
 "explain": "The credit is 50% of eligible access expenditures over $250 and up to $10,250: ($8,000 - $250) x 50% = $3,875. The business qualifies because its prior-year gross receipts did not exceed $1,000,000. $4,000 ignores the $250 floor, and $5,000 is the maximum credit.",
 "source": "IRC 44(a), (b), (c)(4); Form 8826",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6760,8 +6485,7 @@
 "explain": "The credit is available only for a credit period of 2 consecutive tax years. The uniform 50% contribution, SHOP coverage, and the general business credit carryback and carryforward rules are all correct. The maximum credit is 50% of premiums (35% for tax-exempt employers).",
 "source": "Instructions for Form 8941 (2025); IRC 45R; IRC 39(a)(1)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6779,8 +6503,7 @@
 "explain": "A qualified small business has gross receipts under $5 million for the year and no gross receipts before the 5-tax-year period ending with that year, which this company meets. For tax years beginning after December 31, 2022, the election limit is $250,000 plus an additional $250,000, or $500,000. $250,000 was the limit for earlier years.",
 "source": "IRC 41(h)(3), (h)(4)(B)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6817,8 +6540,7 @@
 "explain": "The deduction is limited to gross income from the business use of the home less expenses not related to the home: $5,000 - $2,000 = $3,000. Mortgage interest is subtracted first (leaving $1,500), then operating expenses ($1,000, leaving $500), and depreciation last. $500 of depreciation is allowed and $700 carries over.",
 "source": "IRS Pub 587 (2025); IRC 280A(c)(5); Form 8829 instructions",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -6836,8 +6558,7 @@
 "explain": "The exclusive use test has two exceptions: regular use for storage of inventory or product samples of a retail or wholesale business whose only fixed location is the home, and use as a daycare facility. Any personal use of a client meeting room or administrative office fails the exclusive use test.",
 "source": "IRS Pub 587 (2025); IRC 280A(c)(1), (c)(2), (c)(4)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -6854,10 +6575,7 @@
 "answer": 2,
 "explain": "A C corporation can use the cash method for 2025 only if average annual gross receipts for the 3 prior tax years do not exceed $31 million. ($28M + $32M + $34M) / 3 = $31.33 million, which exceeds the limit. The test uses the 3-year average, not any single year.",
 "source": "IRC 448(a), (b)(3), (c); Rev. Proc. 2024-40, sec. 2.31; Instructions for Form 1120 (2025)",
-"cpa": [
-"REG-V",
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p2d2b-026",
@@ -6874,8 +6592,7 @@
 "explain": "A positive section 481(a) adjustment is generally spread over 4 tax years (the year of change and the next 3), while a negative adjustment is generally taken entirely in the year of change. The other statements correctly describe automatic and non-automatic filing procedures.",
 "source": "Instructions for Form 3115 (Rev. December 2022); IRC 446(e), 481(a)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6893,8 +6610,7 @@
 "explain": "Schedule M-2 analyzes unappropriated retained earnings per books: beginning balance plus net income per books minus distributions. $200,000 + $90,000 - $30,000 = $260,000. Using taxable income ($110,000) gives the wrong answer of $280,000, because M-2 uses book income.",
 "source": "Form 1120 (2025), Schedule M-2; Instructions for Form 1120 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6912,8 +6628,7 @@
 "explain": "Schedule M-1 starts with book income, adds back federal income tax per books and nondeductible expenses, and subtracts book income that is not taxable: $150,000 + $30,000 + $5,000 - $4,000 = $181,000. Federal income tax and the fine are not deductible, and the bond interest is tax exempt.",
 "source": "Form 1120 (2025), Schedule M-1; IRC 275(a)(1), 162(f), 103",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6931,8 +6646,7 @@
 "explain": "A corporation filing Form 1120 must file Schedule M-3 if its total assets at the end of the tax year are $10 million or more. The test uses year-end assets, not mid-year assets or gross receipts. A corporation with total receipts and total assets under $250,000 does not have to complete Schedules L, M-1 or M-2 at all.",
 "source": "Instructions for Schedule M-3 (Form 1120); Form 1120 (2025), Schedule K, question 13",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -6988,8 +6702,7 @@
 "explain": "Related payments received within one year are added together, and a report is due within 15 days after the payment that causes the total to exceed $10,000. $6,000 + $5,000 = $11,000 on June 10, so Form 8300 is due by June 25, 2025. January 31 is the deadline for the written statement to the payer, not the Form 8300 itself.",
 "source": "Treas. Reg. 1.6050I-1(a)(1), (b)(2), (e)(1), (f); IRC 6050I",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7007,8 +6720,7 @@
 "explain": "Payments to corporations are generally exempt from Form 1099 reporting, but the exemption does not apply to attorneys' fees, so the $1,500 is reported on Form 1099-NEC. For 2025 the general threshold is $600 (the $2,000 threshold applies to payments made after December 31, 2025), so the $500 payment is not reported, and rents paid to real estate agents are excluded.",
 "source": "Treas. Reg. 1.6041-3(p)(1); IRC 6041(a) as amended by P.L. 119-21; Instructions for Forms 1099-MISC and 1099-NEC",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7026,8 +6738,7 @@
 "explain": "Backup withholding is 24% of reportable payments when the payee fails to furnish a correct taxpayer identification number (TIN): $3,000 x 24% = $720. The payer reports the withholding on Form 945 and on the payee's Form 1099-NEC.",
 "source": "IRS Pub 15 (2025); IRC 3406(a)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7045,8 +6756,7 @@
 "explain": "Under the fixed date method, an advance within 30 days of the expense, substantiation within 60 days, and return of excess within 120 days are treated as reasonable. The 30-day figure applies to when an advance is paid, not to substantiation.",
 "source": "Treas. Reg. 1.62-2(g)(2)(i); IRS Pub 15 (2025)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7064,8 +6774,7 @@
 "explain": "Evidence of the degree of control and independence falls into behavioral control, financial control, and the type of relationship. No single fact, such as a written contract or method of payment, decides the issue. Either the business or the worker can file Form SS-8 to request an IRS determination.",
 "source": "IRS Pub 15-A (2025); IRS About Form SS-8",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7083,8 +6792,7 @@
 "explain": "Section 530 relief requires a reasonable basis, reporting consistency (filing required information returns), and substantive consistency (no similar worker treated as an employee). A prior Form SS-8 determination is not a requirement.",
 "source": "IRS Pub 15-A (2025), Relief provision; Revenue Act of 1978, section 530",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7121,8 +6829,7 @@
 "explain": "Full-time equivalents are figured by adding the monthly hours of non-full-time employees (up to 120 each) and dividing by 120: 30 x 80 = 2,400 / 120 = 20. 40 + 20 = 60, which is at least 50, so the company is an ALE for 2025 and files Forms 1094-C and 1095-C. Headcount alone (70) is not the test.",
 "source": "IRS Determining if an employer is an applicable large employer; Instructions for Forms 1094-C and 1095-C (2025); IRC 4980H(c)(2)(A), (E)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7235,8 +6942,7 @@
 "explain": "Form 7004 gives an estate or trust an automatic 5 1/2-month extension to file Form 1041, not 6 months. The other statements are correct: trusts generally use a calendar year, an estate may choose a fiscal year, and a calendar-year return and the K-1s are due April 15, 2026.",
 "source": "Form 1041 instructions (2025); IRC 644, 6072(a)",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7253,10 +6959,7 @@
 "answer": 0,
 "explain": "For 2025 the top 37% rate for estates and trusts starts at taxable income over $15,650, and the tax at that point is $3,777. The tax is $3,777 plus 37% of $1,000 ($16,650 minus $15,650), or $4,147. A flat 37% on the full $16,650 ($6,161) ignores the lower brackets.",
 "source": "Rev. Proc. 2024-40, Table 5; IRC 1(j)(2)(E)",
-"cpa": [
-"REG-V",
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p2d3-008",
@@ -7292,8 +6995,7 @@
 "explain": "A decedent's estate does not have to pay estimated tax for any tax year ending before the date 2 years after the decedent's death, so no estimated payments are required for years ending before May 10, 2027. The $1,000 test applies to trusts and to estates after that 2-year period. Form 1041-T is used to allocate estimated payments to beneficiaries, not to pay estimated tax.",
 "source": "IRC 6654(l)(2); Form 1041 instructions (2025), Estimated Tax",
 "cpa": [
-"REG-V",
-"TCP-II"
+"REG-V"
 ]
 },
 {
@@ -7462,10 +7164,7 @@
 "answer": 2,
 "explain": "For 2025 the elective deferral limit is $23,500, and a participant who attains age 60, 61, 62 or 63 during the year may make a catch-up of $11,250 instead of the regular $7,500. Nora's maximum is $23,500 plus $11,250, or $34,750. $31,000 is the limit for a participant age 50 to 59 or 64 and older, and $35,750 uses 2026 figures.",
 "source": "IRS News Release IR-2024-285; Notice 2024-80; IRC 414(v)(2)(E)",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p2d3-019",
@@ -7519,10 +7218,7 @@
 "answer": 0,
 "explain": "His employer nonelective contribution is limited to 20% of net earnings after the half self-employment (SE) tax deduction: $60,000 minus $4,239 equals $55,761, and 20% of that is $11,152. He may also defer the full $23,500 elective deferral limit, for a total of $34,652, which is under the $70,000 annual additions limit. Using 25% of $55,761 ($13,940) to reach $37,440 ignores the self-employed reduced rate.",
 "source": "IRS Pub 560 (2025); Notice 2024-80; IRS: One-Participant 401(k) Plans",
-"cpa": [
-"REG-IV",
-"TCP-I"
-]
+"cpa": []
 },
 {
 "id": "p2d3-022",
@@ -7539,8 +7235,7 @@
 "explain": "A one-participant plan must file an annual return (Form 5500-EZ, or Form 5500-SF electronically) when the total year-end assets of all the sponsor's one-participant plans exceed $250,000; here $190,000 plus $110,000 equals $300,000, so both plans must file. A single plan with $240,000 is under the threshold. SEPs and SIMPLE IRA plans are IRA-based and do not file the Form 5500 series.",
 "source": "IRS: Are the assets in your client's one-participant plans more than $250,000?; IRS: Form 5500 Corner",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -7559,7 +7254,7 @@
 "source": "IRC 4975(a), (b), (c)(1)(A) and (e)(2); IRS Pub 560 (2025), Prohibited Transactions",
 "cpa": [
 "REG-V",
-"TCP-II"
+"TCP-IV"
 ]
 },
 {
@@ -7691,8 +7386,7 @@
 "explain": "A landowner who receives crop-share rent and does not materially participate reports the income and expenses on Form 4835 and carries the net income or loss to Schedule E (Form 1040), page 2. Because he does not materially participate, the crop-share income is rental income excluded from net earnings from self-employment. Schedule F is for a landowner who materially participates.",
 "source": "IRS Pub 225 (2025), chapter 3; IRC 1402(a)(1)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -7710,8 +7404,7 @@
 "explain": "Grain bins, cotton ginning assets, fences and other land improvements are specifically excluded from the 5-year class for new farm machinery and equipment. The other statements are true: new farm machinery placed in service after 2017 is 5-year property, the 150% declining balance requirement for farm property was removed after 2017 except for 15-year and 20-year property, and electing out of section 263A requires alternative depreciation system (ADS).",
 "source": "IRC 168(b)(2), 168(e)(3)(B)(vii), 263A(e)(2); IRS: Tax reform changes to depreciation deduction affect farmers' bottom line",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -7824,8 +7517,7 @@
 "explain": "An expense must be capitalized as an improvement if it results in a betterment, a restoration or an adaptation of the property; replacing the entire roof is a restoration of a major component of the building, so it is depreciated rather than deducted. Repainting, patching a leak and replacing a broken pane keep the property in ordinary operating condition and are deductible repairs.",
 "source": "IRS Pub 527 (2025), chapter 1; Treas. Reg. 1.263(a)-3(k)",
 "cpa": [
-"REG-IV",
-"TCP-I"
+"REG-IV"
 ]
 },
 {
@@ -8761,8 +8453,7 @@
 "explain": "For a C corporation, an understatement is substantial if it exceeds the lesser of 10% of the tax required to be shown (or $10,000 if greater) or $10,000,000. 10% of $3,000,000 = $300,000, which is less than $10,000,000, and the $250,000 understatement does not exceed it.",
 "source": "IRC 6662(d)(1)(B)",
 "cpa": [
-"REG-I",
-"TCP-II"
+"REG-I"
 ]
 },
 {
@@ -10196,8 +9887,7 @@
 "explain": "A responsible person has the duty and power to direct the collecting, accounting and paying of trust fund taxes, which can include officers and employees with check-signing authority. Willfulness means knowing of the unpaid taxes and intentionally disregarding the law or being plainly indifferent; no evil motive is needed, and paying other creditors instead is a sign of it. The penalty covers withheld income tax and the employee share of Federal Insurance Contributions Act (FICA).",
 "source": "IRC 6672(a); IRM 8.25.1.3.1, 8.25.1.3.2; IRS, Employment taxes and the Trust Fund Recovery Penalty",
 "cpa": [
-"REG-I",
-"TCP-II"
+"REG-I"
 ]
 },
 {
@@ -10214,9 +9904,7 @@
 "answer": 2,
 "explain": "Letter 1153 proposes the trust fund recovery penalty (TFRP) and gives the person 60 days (75 days if addressed outside the United States) to protest to Appeals before assessment. If he does not respond, the IRS assesses the penalty and issues notice and demand.",
 "source": "IRC 6672(b); IRM 5.7.6.2, 5.7.6.4; IRS, Employment taxes and the Trust Fund Recovery Penalty",
-"cpa": [
-"TCP-II"
-]
+"cpa": []
 },
 {
 "id": "p3d3-027",
