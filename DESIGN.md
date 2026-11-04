@@ -61,6 +61,7 @@ The app is a phone-width column. Home is split into four sections, each one scre
 | Part 1 line | `#ee352e` | Part 1 bullet, rail and progress line |
 | Part 2 line | `#00933c` | Part 2 bullet, rail and progress line |
 | Part 3 line | `#b933ad` | Part 3 bullet, rail and progress line |
+| CPA section signs | REG `#0039a6` · FAR `#6cbe45` · AUD `#ff6319` · TCP `#fccc0a` (black text) | The same official route colors, reused for the four CPA sections (see Section signs) |
 | Route colors | A C E `#0039a6` · B D F M `#ff6319` · G `#6cbe45` · J Z `#996633` · L `#a7a9ac` · N Q R W `#fccc0a` (black text) · 1 2 3 `#ee352e` · 4 5 6 `#00933c` · 7 `#b933ad` | Transfer bullets at map stations (`ROUTE_COLOR` in app.js). Official subway colors; never approximate them |
 | Map Tan | `#f1e3bf` | Map ground; white street lines run across it at 62° and −28° |
 | River | `#b4d6ee`, label `#2a7cc0` | The river strip down the map's left edge |
@@ -127,8 +128,14 @@ The stylesheet holds 28 distinct font sizes today. New work picks from the sizes
 
 ## Components
 
+### Exam switch
+Picks the exam: EA or CPA. A two-segment pill on the black sign: 1.5px white border at 85%, 999px radius, each segment Helvetica 11px/700 with 0.06em tracking. The current segment is white with Sign Black text; the other is white text at 82% on black. It is 22px tall in the app bar, with an invisible 42px tap target per segment, and 30px tall (12px text) under the app name in the desktop sidebar. EA is the default, and the choice is saved with progress.
+
+### Section signs (CPA mode)
+CPA sections are rounded rectangles instead of round bullets, so they read as signs, not lines: 22px tall, 4px radius, Helvetica 12px/700 with 0.02em tracking, padded 5px each side, each in an existing route color: REG `#0039a6` (A C E), FAR `#6cbe45` (G), AUD `#ff6319` (B D F M), TCP `#fccc0a` (N Q R W) with Sign Black text. The current section gets the bullets' double ring. Sections with no questions yet (FAR, AUD, TCP) sit at 25% and can't be picked. In the City's switcher they grow to 32px tall with a 6px radius and 16px text.
+
 ### Station sign app bar
-Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%). A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
+Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and a row under it: three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%), then the exam switch, then "Tax Year 2025". In CPA mode the title reads "CPA Ledger Drill", section signs replace the bullets and the tax year drops out. A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
 
 ### Night scene: greeting, El train, Today card
 One continuous dark piece with 28px outer corners on Today: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic; the quote is hidden under 560px wide so Play stays above the tab bar), then the elevated subway line with a two-car train parked at the part's readiness, then the Today card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
@@ -152,7 +159,7 @@ The 3D town on the dusk gradient with 28px corners: the part switcher, then the 
 The town legend (what cabs, netting and cranes mean) lives in How to use, not on Home.
 
 ### Part switcher (City)
-Three 40px round line bullets in the part colors, the current one at full opacity with the app bar's black and white double ring, the others at 45%, and the current part's name beside them ("PART 1" eyebrow over "Individuals" in Helvetica 16px/700).
+Three 40px round line bullets in the part colors, the current one at full opacity with the app bar's black and white double ring, the others at 45%, and the current part's name beside them ("PART 1" eyebrow over "Individuals" in Helvetica 16px/700). In CPA mode the switcher holds the four section signs (FAR, AUD and TCP dimmed and not tappable), and REG's five areas stand as towers on Part 1's blocks in place of the EA towers, each as tall as its blueprint weight. Only the current exam's towers are drawn, labeled or tappable; full screen offers REG and Times Sq.
 
 ### Glass controls
 Every secondary control on a night scene shares one style: white at 10% with a 1px white border at 22%, 999px radius, a 6 to 8px backdrop blur, white 13 to 14px/700 text. That covers the greeting badge (its text in Lit Window gold), How to use, the stat pills and Exam sim. The 3D, Times Sq and Day buttons sit on the moving 3D scene, so they use a darker glass (`rgba(18,16,46,0.6)`) to stay readable. So do the full-screen city's controls: Close and the Part 1, Part 2, Part 3 and Times Sq views along the top; along the bottom the compass, Street, Day/Dusk and Reset view. The compass is the same pill holding only a 15px needle, its north half Lit Window gold and its south half white at 60%, turned to show which way is up the avenues; tapping it turns the view to face north. The only solid button on a night scene is gold Play.
@@ -178,10 +185,10 @@ A date per part, saved with your progress (`state.examDates`, ISO dates), set in
 ### Tab bar and sidebar (Home only)
 A station-sign band fixed to the bottom of the screen: Sign Black `#111` with a 2px white rule along its top edge, four equal buttons (Today, City, Map, Exam), each a 24px line icon (1.8 stroke, round caps) over an 11px/700 uppercase label with 0.06em tracking. Labels are white at 60% at rest and full white when current; the current tab also gets a 4px Amber bar sitting on the white rule. Buttons are at least 52px tall, the bar pads for the home indicator, and on screens wider than 640px the buttons stay inside the 640px column. z-index 30: above the page, below bottom sheets (40), toasts (50) and full-screen 3D (60).
 
-At 1024px and wider the same element becomes a 232px sidebar down the left edge: the app name in Helvetica 20px/700 under a 2px white rule, then the sections as rows (icon beside a 13px label, 48px tall, 10px radius), with the current row on white at 10% and a 3px Amber bar at the sidebar's left edge. Map drops out because the map sits beside Today, and More (with the flag count in an Amber pill) sits at the bottom. The app bar is hidden while the sidebar shows.
+At 1024px and wider the same element becomes a 232px sidebar down the left edge: the app name in Helvetica 20px/700 under a 2px white rule with the exam switch under it, then the sections as rows (icon beside a 13px label, 48px tall, 10px radius), with the current row on white at 10% and a 3px Amber bar at the sidebar's left edge. Map drops out because the map sits beside Today, and More (with the flag count in an Amber pill) sits at the bottom. The app bar is hidden while the sidebar shows.
 
 ### Part switcher (Map)
-A segmented control on Paper with a 1px Line border, 14px radius and the card shadow: three 42px buttons, each a part bullet and "Part n" in 15px/600. The current part sits on the Page color in Ink with its bullet at full strength; the others are Ink Soft with bullets at 40%.
+A segmented control on Paper with a 1px Line border, 14px radius and the card shadow: three 42px buttons, each a part bullet and "Part n" in 15px/600. In CPA mode it holds four section signs with no label. The current part sits on the Page color in Ink with its bullet at full strength; the others are Ink Soft with bullets at 40%.
 
 ### Cards
 `.card`: Paper fill, 1px Line border, 22px radius, `--shadow`. Section titles inside use the eyebrow style (13px/700 uppercase, Ink Soft).

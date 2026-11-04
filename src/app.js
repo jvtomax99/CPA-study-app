@@ -1,5 +1,12 @@
-const BANK = __BANK__.filter(q => q.exam !== "cpa"); /* CPA-only questions (REG business law) stay out until CPA mode ships */
-const DOMAINS = {
+/* Two exams share one bank. EA mode drills the EA questions. CPA mode (state.exam "cpa") drills REG: every question
+   tagged REG, filed under its first REG area, plus the CPA-only questions (exam "cpa", such as business law).
+   Progress is keyed by question id, so an answer counts in both modes. useExam() swaps BANK, DOMAINS, PARTS and byId. */
+const BANK_ALL = __BANK__;
+const EA_BANK = BANK_ALL.filter(q => q.exam !== "cpa");
+const REG_BANK = BANK_ALL.filter(q => q.exam === "cpa" || (q.cpa || []).some(t => t.startsWith("REG")))
+  .map(q => q.exam === "cpa" ? q : Object.assign({}, q, { part: "REG", domain: q.cpa.find(t => t.startsWith("REG")) }));
+let BANK = EA_BANK;
+const EA_DOMAINS = {
   "P1-1": { part: 1, name: "Preliminary Work and Taxpayer Data", short: "Prelim work", n: 14, bld: "the tax prep shop" },
   "P1-2": { part: 1, name: "Income and Assets", short: "Income", n: 17, bld: "the Bank" },
   "P1-3": { part: 1, name: "Deductions and Credits", short: "Deductions", n: 17, bld: "the brownstones" },
@@ -14,15 +21,28 @@ const DOMAINS = {
   "P3-3": { part: 3, name: "Specific Areas of Representation", short: "Collections", n: 20, bld: "the collections office" },
   "P3-4": { part: 3, name: "Filing Process", short: "Filing", n: 14, bld: "the post office" }
 };
-const PARTS = { 1: "Individuals", 2: "Businesses", 3: "Representation" };
+/* REG areas from the AICPA's 2026 blueprint (effective January 2026). n is the midpoint of each area's weight range, w the range itself. */
+const REG_DOMAINS = {
+  "REG-I": { part: "REG", name: "Ethics, Professional Responsibilities and Federal Tax Procedures", short: "Ethics and procedures", n: 15, w: "10–20%", bld: "the practitioner's office" },
+  "REG-II": { part: "REG", name: "Business Law", short: "Business law", n: 20, w: "15–25%", bld: "the courthouse" },
+  "REG-III": { part: "REG", name: "Federal Taxation of Property Transactions", short: "Property", n: 10, w: "5–15%", bld: "the Bank" },
+  "REG-IV": { part: "REG", name: "Federal Taxation of Individuals", short: "Individuals", n: 27, w: "22–32%", bld: "the brownstones" },
+  "REG-V": { part: "REG", name: "Federal Taxation of Entities", short: "Entities", n: 28, w: "23–33%", bld: "the Midtown tower" }
+};
+let DOMAINS = EA_DOMAINS;
+const EA_PARTS = { 1: "Individuals", 2: "Businesses", 3: "Representation" };
+/* CPA sections in the order of the section signs. Only REG has questions so far; the others show dimmed. */
+const CPA_PARTS = { REG: "Regulation", FAR: "Financial Accounting and Reporting", AUD: "Auditing and Attestation", TCP: "Tax Compliance and Planning" };
+const LIVE_SECTIONS = new Set(["REG"]);
+let PARTS = EA_PARTS;
 const CPA = { "REG-I": "REG ethics and procedures", "REG-III": "REG property", "REG-IV": "REG individuals", "REG-V": "REG entities", "TCP-I": "TCP individuals", "TCP-II": "TCP entity compliance", "TCP-III": "TCP entity planning", "TCP-IV": "TCP property" };
 const MIN = 60e3, DAY = 864e5;
 const INTERVALS = [5 * MIN, DAY, 3 * DAY, 7 * DAY, 16 * DAY, 35 * DAY];
 const KEY = "eaTaxTown.v2", OLDKEY = "eaLedgerDrill.v1";
-const byId = Object.fromEntries(BANK.map(q => [q.id, q]));
+let byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
-function blank() { return { v: 2, items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, examDates: {} }; }
+function blank() { return { v: 2, exam: "ea", items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, examDates: {} }; }
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -37,6 +57,39 @@ function load() {
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 let state = load();
+const isCpa = () => state.exam === "cpa";
+/* The parts (EA) or sections (CPA) in order: numbers for EA, as the rest of the app expects, codes for CPA */
+const partKeys = () => isCpa() ? Object.keys(CPA_PARTS) : [1, 2, 3];
+const PL = p => isCpa() ? String(p) : 'Part ' + p;
+const isLive = p => !isCpa() || LIVE_SECTIONS.has(String(p));
+/* a part bullet (EA: round, numbered) or section sign (CPA: rounded rectangle, its code) */
+const partSign = (p, cls = "") => `<span class="bul${isCpa() ? " sec" : ""}${cls}" data-part="${p}" aria-hidden="true">${p}</span>`;
+function useExam(x) {
+  const cpa = x === "cpa";
+  if (cpa && !isCpa() && !(state.part in CPA_PARTS)) state.eaPart = state.part;
+  state.exam = cpa ? "cpa" : "ea";
+  BANK = cpa ? REG_BANK : EA_BANK; DOMAINS = cpa ? REG_DOMAINS : EA_DOMAINS; PARTS = cpa ? CPA_PARTS : EA_PARTS;
+  byId = Object.fromEntries(BANK.map(q => [q.id, q]));
+  if (cpa && !LIVE_SECTIONS.has(state.part)) state.part = "REG";
+  if (!cpa && !(state.part in EA_PARTS)) state.part = state.eaPart || "1";
+  drawSignage();
+}
+/* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
+function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
+function drawSignage() {
+  const title = isCpa() ? "CPA Ledger Drill" : "EA Ledger Drill", lines = document.querySelector(".appbar .lines");
+  if (!lines) return;
+  document.body.classList.toggle("cpa", isCpa());
+  document.querySelector(".appbar h1").textContent = title;
+  lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">Tax Year 2025</span>`);
+  document.querySelector(".tb-brand").innerHTML = `${title}<div class="tb-sw">${examSwitch()}</div>`;
+  const f = document.querySelector("#footnote");
+  f.textContent = isCpa() ? "CPA mode covers REG on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it."
+    : "Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.";
+  document.querySelectorAll(".exsw button").forEach(b => b.onclick = () => { if (b.dataset.ex === state.exam) return; useExam(b.dataset.ex); tsView = false; save(); updateFlagDot(); if (view === "more") renderMore(); else renderHome(); });
+}
+/* an exam sim in progress belongs to the exam it was started in */
+useExam(state.examRun ? state.examRun.exam || "ea" : state.exam);
 let view = "home";
 let drill = null;        // { domain|null, q, reason, perm, picked, flagging }
 let sess = null;         // the current drill session: { t, domain, rows: [{ id, ok, g, first }], m0: { area: mastery at its first answer } }
@@ -169,7 +222,7 @@ function skyNow() { if (state.sky === "day" || state.sky === "dusk") return stat
 function townData() {
   const m = {}, due = {}, now = Date.now();
   for (const d in DOMAINS) { m[d] = mastery(d); due[d] = BANK.filter(q => q.domain === d && isDue(q, now)).length; }
-  return { mastery: m, due, part: state.part, from: Object.assign({}, state.shown) };
+  return { exam: state.exam, mastery: m, due, part: state.part, from: Object.assign({}, state.shown) };
 }
 function pushTown() {
   const data = townData(); data.sky = skyNow(); data.view = tsView ? "ts" : "part";
@@ -182,10 +235,10 @@ function pushTown() {
 }
 /* ---------- home: each part drawn as a subway strip map ---------- */
 /* Each area is a station on its part's line (LINE, below). The bullet at a station is a transfer to a real line, in that line's official color. */
-const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2" };
+const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L" };
 const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
   N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
-const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River" };
 const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
 /* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
    Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
@@ -227,6 +280,8 @@ const BLD = {
   "P3-4": { s: '<rect class="t" x="29.3" y="14" width="1.4" height="20"/><path class="t" d="M30.7 14h9v6h-9z" opacity=".9"/><rect class="b" x="2" y="38" width="56" height="31"/><rect class="t" x="1" y="35" width="58" height="4"/>' + [4, 12, 20, 28, 36, 44, 52].map(x => `<rect class="t" x="${x}" y="44" width="3" height="25"/>`).join("") + '<rect class="t" x="1" y="69" width="58" height="2.5"/><rect class="t" x="0" y="71.5" width="60" height="2.5"/>',
     w: grid(8, 48, 6, 1, 8, 0, 3, 16).concat(grid(8, 40, 6, 1, 8, 0, 3, 2.5)) }
 };
+/* REG areas reuse the EA buildings that fit them */
+Object.assign(BLD, { "REG-I": BLD["P3-1"], "REG-II": BLD["P3-2"], "REG-III": BLD["P1-2"], "REG-IV": BLD["P1-3"], "REG-V": BLD["P2-1"] });
 function bldSvg(d, m) {
   const B = BLD[d], order = B.w.map((w, i) => i).sort((a, b) => B.w[b][1] - B.w[a][1] || B.w[a][0] - B.w[b][0]);
   const on = new Set(order.slice(0, Math.floor(m * B.w.length + 1e-9)));
@@ -236,7 +291,7 @@ const stopsLine = m => `<span class="stops" aria-hidden="true"><i style="width:c
 function stripMap(p, focus) {
   const now = Date.now();
   const rows = partDomains(p).map(d => {
-    const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = Math.round(D.n / 85 * 100);
+    const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = D.w ? D.w.replace(/%$/, "") : Math.round(D.n / 85 * 100);
     const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : bldSvg(d, m);
     const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : "Not started"}</span></span>`;
     const where = `<span class="hood">${esc(D.bld.replace(/^the /, ""))}</span><span>${share}% of exam</span>${due ? `<b>${due} due</b>` : ""}`;
@@ -252,7 +307,8 @@ function stripMap(p, focus) {
   return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${RIVER[p]}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
 }
 /* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
-const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad" };
+/* CPA sections take the colors of their section signs: REG A C E blue, FAR G green, AUD B D F M orange, TCP N Q R W yellow */
+const LINE = { 1: "#ee352e", 2: "#00933c", 3: "#b933ad", REG: "#0039a6", FAR: "#6cbe45", AUD: "#ff6319", TCP: "#fccc0a" };
 function elCar(p, lead) {
   const c = LINE[p], id = lead ? "elB" : "elA", wx = lead ? [8, 42, 76, 110] : [8, 46, 84, 122], sx = lead ? [38, 72, 106] : [40, 78, 116];
   return `<svg class="el-car" viewBox="0 0 180 46" aria-hidden="true">
@@ -286,28 +342,28 @@ function countPill(p) {
   const iso = examDate(p); if (!iso) return "";
   const d = daysTo(iso);
   if (d < 0) return "";
-  return `<div class="countpill">${d === 0 ? `<b>Exam day</b> Good luck on Part ${p}` : `<b>${d}</b> day${d === 1 ? "" : "s"} to Part ${p} <span>· ${fmtDay(iso)}</span>`}</div>`;
+  return `<div class="countpill">${d === 0 ? `<b>Exam day</b> Good luck on ${PL(p)}` : `<b>${d}</b> day${d === 1 ? "" : "s"} to ${PL(p)} <span>· ${fmtDay(iso)}</span>`}</div>`;
 }
 function examDayCard(p) {
   const iso = examDate(p), d = iso ? daysTo(iso) : null;
-  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">Set your Part ${p} date to count down to it.</p>`
-    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">Part ${p} was on ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric" })}. Set your next date.</p>`
+  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">Set your ${PL(p)} date to count down to it.</p>`
+    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">${PL(p)} was on ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric" })}. Set your next date.</p>`
     : `<div class="ed-days">${d === 0 ? "Today" : d}${d === 0 ? "" : `<span>day${d === 1 ? "" : "s"}</span>`}</div>
-      <div class="muted small">Part ${p} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${iso > WINDOW_END ? ` · <b class="ed-warn">after the window closes Feb 28</b>` : d === 0 ? " · good luck" : " · the window closes Feb 28"}</div>`;
+      <div class="muted small">${PL(p)} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${isCpa() ? (d === 0 ? " · good luck" : "") : iso > WINDOW_END ? ` · <b class="ed-warn">after the window closes Feb 28</b>` : d === 0 ? " · good luck" : " · the window closes Feb 28"}</div>`;
   return `<section class="card pad examday"><div class="ed-top"><div><h2>Exam day</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? "Change" : "Set date"}</button></div>
-    <div class="ed-parts">${[1, 2, 3].map(n => { const r = readiness(String(n)), b = bestSim(n), di = examDate(String(n));
-      return `<button class="ed-row" type="button" data-setdate="${n}" aria-label="Part ${n}, ${PARTS[n]}: ${pct(r)}% ready${di ? ", exam " + fmtDay(di) : ", no date set"}"><span class="bul" data-part="${n}" aria-hidden="true">${n}</span>
+    <div class="ed-parts">${partKeys().map(n => { const r = readiness(String(n)), b = bestSim(n), di = examDate(String(n));
+      return !isLive(n) ? `<div class="ed-row off">${partSign(n)}<span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="ed-sub">Not in the app yet</span></span></div>` : `<button class="ed-row" type="button" data-setdate="${n}" aria-label="${PL(n)}, ${PARTS[n]}: ${pct(r)}% ready${di ? ", exam " + fmtDay(di) : ", no date set"}">${partSign(n)}
         <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : "No date"}${b != null ? ` · best sim ${pct(b)}%` : ""}</span></span>
         <span class="ed-num">${pct(r)}%</span></button>`; }).join("")}</div></section>`;
 }
 function askExamDate(p) {
   const iso = examDate(p), today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="Part ${p} exam date"><div class="grab"></div>
-    <h3>When is your Part ${p} exam?</h3>
-    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="Part ${p} exam date">
-    <p class="hint" id="datewarn" style="margin:0">The current testing window closes February 28, 2027.</p>
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="${PL(p)} exam date"><div class="grab"></div>
+    <h3>When is your ${PL(p)} exam?</h3>
+    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="${PL(p)} exam date">
+    <p class="hint" id="datewarn" style="margin:0"></p>
     <div class="row"><button class="btn primary" type="submit">Save</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">Clear date</button>` : ""}<button class="btn ghost" type="button" id="datecancel">Cancel</button></div></form></div>`;
-  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = v && v > WINDOW_END ? "That's after the window closes on February 28, 2027. Check the date with PSI." : "The current testing window closes February 28, 2027."; };
+  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = isCpa() ? "Pick the date on your Prometric appointment." : v && v > WINDOW_END ? "That's after the window closes on February 28, 2027. Check the date with PSI." : "The current testing window closes February 28, 2027."; };
   $("#datein").oninput = warn; warn();
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#datecancel").onclick = closeLayer;
@@ -341,14 +397,14 @@ function renderHome() {
   const heroTop = firstRide && next
     ? `<div class="eyebrow">Your first stop</div>
       <div class="first">${routeBullet(ROUTE[next])}<div><div class="first-nm">${esc(DOMAINS[next].name)}</div>
-        <div class="first-sub">${esc(DOMAINS[next].bld.replace(/^the /, "The "))} · ${Math.round(DOMAINS[next].n / 85 * 100)}% of exam · ${inBank(next).length} questions</div></div></div>`
-    : `<div class="eyebrow">Your tax city</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for Part ${p}</div></div>
-      <div class="next-line">${next ? `<b>Next stop</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : `Every building in Part ${p} is finished. Keep reviews up to date.`}</div>`;
+        <div class="first-sub">${esc(DOMAINS[next].bld.replace(/^the /, "The "))} · ${DOMAINS[next].w || Math.round(DOMAINS[next].n / 85 * 100) + "%"} of exam · ${inBank(next).length} questions</div></div></div>`
+    : `<div class="eyebrow">Your tax city</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for ${PL(p)}</div></div>
+      <div class="next-line">${next ? `<b>Next stop</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : `Every building in ${PL(p)} is finished. Keep reviews up to date.`}</div>`;
   const pills = [dueP ? `${ICON.clock}${dueP} due` : "", done ? `${ICON.goal}${done}/${state.goal} today` : ""].filter(Boolean);
   const exams = state.exams.slice(-6);
   $("#app").innerHTML = `<div class="panes" data-tab="${homeTab}">
   <div class="pane pane-today">
-  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
+  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : isCpa() ? "★ Future CPA" : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
   <section class="today-card${night}" aria-label="Today">
     <div class="hero-top">${countPill(p)}${heroTop}</div>
     ${pills.length && !firstRide ? `<div class="pills">${pills.map(x => `<span class="pill">${x}</span>`).join("")}</div>` : ""}
@@ -364,31 +420,31 @@ function renderHome() {
   <div class="pane pane-city">
   <section class="hero${night}" aria-label="Your tax city">
     <div class="ptabs" role="tablist" aria-label="Exam part">
-      ${[1, 2, 3].map(n => `<button class="ptab" role="tab" data-part="${n}" aria-selected="${String(n) === p}" aria-label="Part ${n}, ${PARTS[n]}" style="--lc:${LINE[n]}">${n}</button>`).join("")}
-      <span class="pname" aria-hidden="true"><small>Part ${p}</small>${PARTS[p]}</span>
+      ${partKeys().map(n => `<button class="ptab${isCpa() ? " sec" : ""}" role="tab"${isLive(n) ? "" : " disabled"} data-part="${n}" aria-selected="${String(n) === p}" aria-label="${PL(n)}, ${PARTS[n]}" style="--lc:${LINE[n]}">${n}</button>`).join("")}
+      <span class="pname" aria-hidden="true"><small>${PL(p)}</small>${PARTS[p]}</span>
     </div>
     <div class="stage-fade" aria-hidden="true"></div>
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
       <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? "Part " + p : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? PL(p) : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
     </div>
   </section>
   </div>
   <div class="pane pane-map">
-    <div class="partseg" role="group" aria-label="Exam part">${[1, 2, 3].map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"><span class="bul" data-part="${n}" aria-hidden="true">${n}</span>Part ${n}</button>`).join("")}</div>
-    <div class="spread part-head"><h2>Part ${p} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
+    <div class="partseg" role="group" aria-label="Exam part">${partKeys().map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"${isLive(n) ? "" : " disabled"}>${partSign(n)}${isCpa() ? "" : PL(n)}</button>`).join("")}</div>
+    <div class="spread part-head"><h2>${PL(p)} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
     ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
   </div>
   <div class="pane pane-exam">
     ${examDayCard(p)}
     <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
-      <p class="muted small" style="margin:0">A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.</p>
+      <p class="muted small" style="margin:0">${isCpa() ? "A sim is the multiple-choice half of REG: 72 questions in two locked testlets of 36, in 2 hours." : "A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test."}</p>
       <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
     </section>
     <section class="card pad"><h2>Past sims</h2>
-      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>P${e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
+      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>${/^\d$/.test(e.part) ? "P" + e.part : e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
         : `<p class="muted small" style="margin:8px 0 0">No exam sims yet.</p>`}
     </section>
   </div>
@@ -397,7 +453,7 @@ function renderHome() {
   const pickPart = n => { state.part = n; tsView = false; save(); renderHome(); };
   $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
-  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? "Part " + state.part : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
+  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(firstRide ? next : null);
   if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
@@ -521,7 +577,7 @@ function openMachine(fig, n) {
 const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,\d{3})+\b/g, m => `<mark class="fig">${m}</mark>`);
 function renderDrill() {
   view = "drill";
-  const scope = drill.domain ? DOMAINS[drill.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
+  const scope = drill.domain ? DOMAINS[drill.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
   const top = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>`;
   if (!drill.q) {
     $("#app").innerHTML = top + `<div class="sheet pad"><p>No questions available in ${esc(scope)}. They may all be flagged.</p></div>`;
@@ -537,7 +593,7 @@ function renderDrill() {
   }).join("");
   let after = "";
   if (answered) {
-    const ok = drill.picked === q.answer, cpa = (q.cpa || []).map(t => CPA[t] || t).join("; ");
+    const ok = drill.picked === q.answer, cpa = isCpa() || q.exam === "cpa" ? "" : (q.cpa || []).map(t => CPA[t] || t).join("; ");
     const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
     const sub = ok && !drill.guessed && drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line;
     after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? "Right, but a guess" : ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
@@ -550,7 +606,7 @@ function renderDrill() {
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
-      <div class="dhead"><div class="id"><span class="k">Part ${q.part} · ${PARTS[q.part]} · TY 2025</span><span class="d">${esc(D.name)}</span>
+      <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
         <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
         ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
@@ -600,7 +656,7 @@ function renderSession() {
   const right = rows.filter(good).length, guessed = rows.filter(r => r.g).length;
   const fresh = rows.filter(r => r.first), rev = rows.filter(r => !r.first);
   const mins = Math.max(1, Math.round((Date.now() - S.t) / MIN));
-  const scope = S.domain ? DOMAINS[S.domain].name : `Part ${state.part} · ${PARTS[state.part]}`;
+  const scope = S.domain ? DOMAINS[S.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
   const missed = [...new Map(rows.filter(r => !good(r)).map(r => [r.id, r])).values()];
   const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${list.filter(good).length} of ${list.length}</b><span class="small muted">${pct(list.filter(good).length / list.length)}% right</span></div>` : "";
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
@@ -660,29 +716,36 @@ function renderSummary() {
 function buildExam(p) {
   const ds = partDomains(p), W = ds.reduce((a, d) => a + DOMAINS[d].n, 0);
   const avail = Object.fromEntries(ds.map(d => [d, shuffle(inBank(d))]));
-  const total = Math.min(100, ds.reduce((a, d) => a + avail[d].length, 0));
+  const SIM = isCpa() ? 72 : 100, total = Math.min(SIM, ds.reduce((a, d) => a + avail[d].length, 0));
   const want = Object.fromEntries(ds.map(d => [d, Math.round(total * DOMAINS[d].n / W)]));
   let ids = [];
   for (const d of ds) ids.push(...avail[d].splice(0, want[d]).map(q => q.id));
   const rest = shuffle(ds.flatMap(d => avail[d]));
   while (ids.length < total && rest.length) ids.push(rest.pop().id);
   ids = shuffle(ids.slice(0, total));
-  const n = ids.length, s1 = Math.round(n * 0.34), s2 = Math.round(n * 0.67);
-  return { part: p, ids, fresh: ids.filter(id => !st(id).seen), perms: Object.fromEntries(ids.map(id => [id, shuffle([0, 1, 2, 3])])), ans: {}, marked: {},
-    sections: [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
-    dur: Math.round(210 * MIN * n / 100), confirm: false };
+  const n = ids.length, s1 = Math.round(n * 0.34), s2 = Math.round(n * 0.67), half = Math.round(n / 2);
+  return { exam: state.exam, part: p, ids, fresh: ids.filter(id => !st(id).seen), perms: Object.fromEntries(ids.map(id => [id, shuffle([0, 1, 2, 3])])), ans: {}, marked: {},
+    sections: isCpa() ? [[0, half], [half, n]] : [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
+    dur: isCpa() ? Math.round(120 * MIN * n / 72) : Math.round(210 * MIN * n / 100), confirm: false };
+}
+function eaSimText(n, avail, p) { return `<p style="margin:0">${n} questions, ${Math.round(210 * n / 100)} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.</p>
+${n < 100 ? `<p class="hint" style="margin:0">The real exam has 100 questions. The ${PL(p)} bank only has ${avail} so far, so this sim is shorter.</p>` : `<p class="hint" style="margin:0">Questions are drawn in proportion to the official outline, so heavier areas get more.</p>`}`; }
+function cpaSimText(n, avail) {
+  const short = Object.keys(DOMAINS).filter(d => inBank(d).length < Math.round(72 * DOMAINS[d].n / 100));
+  return `<p style="margin:0">${n} multiple-choice questions in ${Math.round(120 * n / 72)} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.</p>
+    <p class="hint" style="margin:0">The real REG exam has 72 multiple-choice questions and 8 task-based simulations in 4 hours, each half the score. This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.</p>
+    <p class="hint" style="margin:0">Questions are drawn by the 2026 blueprint weights.${short.length ? ` ${short.map(d => DOMAINS[d].short).join(", ")} ${short.length > 1 ? "have" : "has"} too few questions so far, so the sim fills in from other areas.` : ""}</p>`;
 }
 function renderExamSetup() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "examsetup";
-  const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(100, avail);
+  const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(isCpa() ? 72 : 100, avail);
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
   <section class="card pad" style="display:grid;gap:14px">
-    <div><div class="eyebrow" style="color:var(--ink-soft)">Exam sim</div><h3 style="font-size:22px;margin-top:4px">Part ${p}: ${PARTS[p]}</h3></div>
-    <div class="row">${[1, 2, 3].map(k => `<button class="btn${String(k) === p ? " primary" : ""}" data-p="${k}">Part ${k}</button>`).join("")}</div>
-    <p style="margin:0">${n} questions, ${Math.round(210 * n / 100)} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.</p>
-    ${n < 100 ? `<p class="hint" style="margin:0">The real exam has 100 questions. The Part ${p} bank only has ${avail} so far, so this sim is shorter.</p>` : `<p class="hint" style="margin:0">Questions are drawn in proportion to the official outline, so heavier areas get more.</p>`}
-    ${state.examRun ? `<div class="confirm"><b>You have an exam in progress (Part ${state.examRun.part}).</b><div class="row"><button class="btn amber" id="resume">Resume it</button><button class="btn danger" id="discard">Discard it</button></div></div>`
+    <div><div class="eyebrow" style="color:var(--ink-soft)">Exam sim</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
+    <div class="row">${partKeys().map(k => `<button class="btn${String(k) === p ? " primary" : ""}" data-p="${k}"${isLive(k) ? "" : " disabled"}>${PL(k)}</button>`).join("")}</div>
+    ${isCpa() ? cpaSimText(n, avail) : eaSimText(n, avail, p)}
+    ${state.examRun ? `<div class="confirm"><b>You have an exam in progress (${PL(state.examRun.part)}).</b><div class="row"><button class="btn amber" id="resume">Resume it</button><button class="btn danger" id="discard">Discard it</button></div></div>`
       : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>Start the exam</button></div>`}
   </section>`;
   $("#back").onclick = renderHome;
@@ -697,6 +760,7 @@ let examTick = null;
 function renderExam() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "exam"; const E = state.examRun; if (!E) return renderHome();
+  if ((E.exam || "ea") !== state.exam) useExam(E.exam || "ea");
   clearInterval(examTick);
   if (E.onBreak) return renderBreak();
   if (examLeft(E) <= 0) return finishExam(true);
@@ -794,7 +858,7 @@ function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
   const flagged = BANK.filter(q => st(q.id).flag);
-  const counts = [1, 2, 3].map(p => `Part ${p}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
+  const counts = partKeys().filter(isLive).map(p => `${PL(p)}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
   /* daily reminder: one calendar file per half hour lives in reminders/ (made by tools/make_reminders.py) */
   const REM_TIMES = []; for (let h = 5; h < 24; h++) for (const m of ["00", "30"]) REM_TIMES.push(String(h).padStart(2, "0") + m);
   const fmtT = t => { const h = +t.slice(0, 2); return `${h % 12 || 12}:${t.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
@@ -858,15 +922,15 @@ function renderMore() {
       const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
       const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
       $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;
-      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); save(); updateFlagDot(); toast("Backup loaded."); renderMore(); };
+      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); useExam(state.exam); save(); updateFlagDot(); toast("Backup loaded."); renderMore(); };
       $("#loadno").onclick = () => { $("#loadconfirm").innerHTML = ""; };
     };
     r.readAsText(f); e.target.value = "";
   };
-  $("#import").onclick = () => { try { const s = JSON.parse($("#importtext").value); if (!s || typeof s.items !== "object") throw 0; s.examRun = null; state = Object.assign(blank(), s); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
+  $("#import").onclick = () => { try { const s = JSON.parse($("#importtext").value); if (!s || typeof s.items !== "object") throw 0; s.examRun = null; state = Object.assign(blank(), s); useExam(state.exam); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
   $("#reset").onclick = () => {
     $("#resetrow").innerHTML = `<span>Erase everything on this device?</span><button class="btn danger" id="ry">Yes, erase</button><button class="btn ghost" id="rn">Cancel</button>`;
-    $("#ry").onclick = () => { state = blank(); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
+    $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
     $("#rn").onclick = renderMore;
   };
 }
