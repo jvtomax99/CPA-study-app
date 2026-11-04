@@ -1,4 +1,4 @@
-const BANK = __BANK__;
+const BANK = __BANK__.filter(q => q.exam !== "cpa"); /* CPA-only questions (REG business law) stay out until CPA mode ships */
 const DOMAINS = {
   "P1-1": { part: 1, name: "Preliminary Work and Taxpayer Data", short: "Prelim work", n: 14, bld: "the tax prep shop" },
   "P1-2": { part: 1, name: "Income and Assets", short: "Income", n: 17, bld: "the Bank" },
