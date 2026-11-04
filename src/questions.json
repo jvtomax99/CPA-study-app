@@ -16002,5 +16002,405 @@
 "cpa": [
 "AUD-IV"
 ]
+},
+{
+"id": "aud1-021",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm audits the financial statements of Calder Tool Co., a nonissuer and an attest client. The lead engagement partner on the audit primarily practices in the firm's Denver office. Under the Code of Professional Conduct of the American Institute of CPAs, each of the following individuals is a covered member with respect to Calder EXCEPT",
+"choices": [
+"a tax manager in the firm's Chicago office who provided 14 hours of tax planning services to Calder during Calder's current fiscal year",
+"an audit partner in the Denver office who has never worked on any engagement for Calder",
+"a staff accountant in the Denver office who has never worked on any engagement for Calder",
+"the firm's managing partner in Chicago, who directly supervises the partner who oversees the lead engagement partner"
+],
+"answer": 2,
+"explain": "Covered members include partners and partner equivalents in the office where the lead engagement partner primarily practices, but not staff in that office who have no role on the engagement. The tax manager is covered because a partner, partner equivalent or manager who provides 10 or more hours of nonattest services to the attest client in a fiscal year is a covered member. The managing partner is covered as an individual in a position to influence the attest engagement, which includes every successively senior level above the engagement partner through the firm's chief executive.",
+"source": "ET 0.400.14; ET 0.400.25",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-022",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm has audited the annual financial statements of Brightwater Supply, a nonissuer and an attest client, for six years, and neither the firm nor Brightwater has given notice of ending the relationship. Ana Kim is the lead engagement partner each year. The firm issued its report on the 2025 financial statements on March 12, 2026. Kim's spouse bought 100 shares of Brightwater stock on April 6, 2026, and sold them on June 22, 2026. The engagement letter for the 2026 audit was signed on August 3, 2026. The shares were immaterial to Kim and her spouse. Under the Code of Professional Conduct of the American Institute of CPAs, what is the effect on the firm's independence for the 2026 audit?",
+"choices": [
+"Independence is impaired, because the period of the professional engagement continued after the 2025 report was issued",
+"Independence is not impaired, because the period of the professional engagement ended on March 12, 2026, and began again when the 2026 engagement letter was signed",
+"Independence is not impaired, because the shares were immaterial and were sold before the 2026 engagement letter was signed",
+"Independence is not impaired, because shares owned by a spouse are an indirect financial interest of the covered member and were immaterial"
+],
+"answer": 0,
+"explain": "The period of the professional engagement lasts for the entire professional relationship and ends only on notice of termination or issuance of a report, whichever is later, so it does not stop when one year's report is issued and restart with the next year's engagement letter. A covered member's immediate family must comply with the Independence Rule, and any direct financial interest, even an immaterial one, held during that period impairs independence. Shares the spouse owns outright are a direct financial interest, so materiality and the early sale do not help.",
+"source": "ET 0.400.21; ET 0.400.42; ET 1.240.010.01; ET 1.270.010.01; ET 1.210.010.02",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-023",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Maya Chen, a senior on the engagement team for the audit of Ostrow Instruments, a nonissuer and an attest client, owns shares of a nondiversified mutual fund worth $500,000. The fund has net assets of $25 million, so Chen owns 2 percent of its outstanding shares, and 8 percent of the fund's assets are invested in Ostrow common stock. Chen does not control the fund or take part in its investment decisions. Under the Code of Professional Conduct of the American Institute of CPAs, how should Chen evaluate her interest in Ostrow?",
+"choices": [
+"Because she owns 5 percent or less of the fund's outstanding shares, the fund's underlying investments are immaterial indirect financial interests and no further evaluation is needed",
+"Her $40,000 indirect financial interest in Ostrow is compared with her net worth combined with that of her immediate family, and independence is impaired only if it is material",
+"Because the fund holds Ostrow stock, her $500,000 investment in the fund is a direct financial interest in Ostrow that impairs independence whatever its amount",
+"Her $40,000 indirect financial interest in Ostrow is compared with the fund's $25 million of net assets, and independence is impaired only if it is material to the fund"
+],
+"answer": 1,
+"explain": "Chen's interest in Ostrow is $500,000 x 8% = $40,000, and because she does not control the fund or direct its investments it is an indirect financial interest, which impairs independence only if material, judged against her net worth combined with her immediate family's. The 5 percent safe harbor applies only to a diversified fund, so for a nondiversified fund she must look through to the underlying holdings. Her fund shares are a direct financial interest in the fund, not in Ostrow.",
+"source": "ET 0.400.24; ET 1.240.010.02; ET 1.240.030.01-.04; ET 1.270.010.03",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-024",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm audits the financial statements of Harmon Community Bank, a nonissuer and an attest client that makes loans as part of its normal business. Assume no regulator imposes requirements stricter than the Code of Professional Conduct of the American Institute of CPAs. Each loan below is held by a different member of the engagement team, and each was made under the bank's normal lending procedures, terms and requirements. Which loan impairs independence?",
+"choices": [
+"A home mortgage obtained in 2019, before Harmon became an attest client in 2023, with payments current and the home's estimated fair value exceeding the balance",
+"An automobile loan obtained in March 2026, while the borrower was on the engagement team, secured by the automobile and with payments current",
+"Two credit cards issued by Harmon with an aggregate outstanding balance of $7,200 on a current basis",
+"A home equity loan obtained in 2020, before Harmon became an attest client, whose maturity date Harmon extended by five years in 2026 at the borrower's request"
+],
+"answer": 3,
+"explain": "A grandfathered home mortgage or other secured loan stays permitted only if, after the borrower becomes a covered member, the loan is kept current and its terms do not change in any way the original agreement did not provide for, and a new or extended maturity date is a changed term. Automobile loans secured by the automobile may be obtained at any time under normal lending terms, and consumer loans such as credit cards are permitted when the aggregate balance from the same lending institution is $10,000 or less on a current basis. The 2019 mortgage was obtained before Harmon became an attest client and meets the collateral test.",
+"source": "ET 1.260.010.01; ET 1.260.020.02, .03, .05, .06",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-025",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm audits the financial statements of Ridgeview Manufacturing, a nonissuer and an attest client. None of the relatives below holds a key position at Ridgeview, and none of the holdings gives the relative significant influence over Ridgeview. Under the Code of Professional Conduct of the American Institute of CPAs, which situation impairs independence?",
+"choices": [
+"A staff auditor on the engagement team knows that her sister owns Ridgeview shares that are material to the sister's net worth",
+"A partner in the office where the lead engagement partner primarily practices, who does not work on the engagement, knows that his brother owns Ridgeview shares that are material to the brother's net worth",
+"A senior on the engagement team has a father who works at Ridgeview as a warehouse supervisor and owns no Ridgeview shares",
+"A manager on the engagement team has an adult, nondependent son who owns Ridgeview shares that are immaterial to the son"
+],
+"answer": 0,
+"explain": "A sister is a close relative, and for an individual on the attest engagement team, a close relative's financial interest impairs independence if the individual knows or has reason to believe it is material to the relative or if it gives the relative significant influence. For a partner in the lead engagement partner's office who is not on the team, both conditions must be met, so the brother's material but noninfluential holding does not impair independence. A close relative employed by the attest client outside a key position, or holding an immaterial, noninfluential interest, does not impair independence.",
+"source": "ET 0.400.08; ET 1.270.100.02, .03",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-026",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm audits the financial statements of Linden Dental Group, a nonissuer and an attest client, for the year ending December 31, 2026, and will also prepare Linden's financial statements from its trial balance. Linden's owner accepts responsibility for the financial statements and designates the office manager, who has bookkeeping experience and understands the service well enough to oversee it and evaluate the results but could not prepare the statements herself, to oversee the work. Before the work began, the engagement partner and the owner agreed orally on the objectives, the services, each party's responsibilities and the limitations of the engagement, but the firm never put that understanding in writing. Under the Code of Professional Conduct of the American Institute of CPAs, which statement is correct?",
+"choices": [
+"Independence is impaired, because the individual who oversees a nonattest service must be able to perform or reperform it",
+"Independence is impaired, because the understanding with the attest client was not documented in writing before the service was performed",
+"Independence is not impaired, but the failure to document the understanding in writing violates the Compliance With Standards Rule",
+"Independence is impaired, because preparing an attest client's financial statements is a management responsibility"
+],
+"answer": 2,
+"explain": "When the firm established the understanding with the attest client but failed to document it in writing, independence is not impaired, but the missing documentation violates the Compliance With Standards Rule. The individual who oversees the service must have suitable skill, knowledge or experience and understand the service well enough to oversee it, but need not have the expertise to perform or reperform it. Preparing financial statements is a nonattest service the firm may perform under the general requirements; the management responsibility is accepting responsibility for their preparation and presentation, which the owner kept.",
+"source": "ET 1.295.010.06; ET 1.295.030.02(j); ET 1.295.040.01; ET 1.295.050.01, .02",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-027",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm audits the financial statements of Harbor Components, Inc., a nonissuer and an attest client. Harbor is wholly owned by Lakeline Holdings, which also wholly owns Westfield Logistics. Harbor and Westfield are each material to Lakeline, so Lakeline and Westfield are affiliates of Harbor. Under the Code of Professional Conduct of the American Institute of CPAs, which of the following impairs independence with respect to Harbor?",
+"choices": [
+"The spouse of a covered member is the controller of Westfield, a position with no responsibility for or influence over Harbor's financial statements",
+"A covered member owns a small ownership interest in Lakeline that is immaterial to the covered member's net worth",
+"A covered member has a personal loan from a director of Westfield who has no ability to affect decision-making at Harbor",
+"The firm designs Westfield's financial information system, a service that would impair independence if performed for Harbor, and the system's results will not be subject to audit procedures in the Harbor audit"
+],
+"answer": 1,
+"explain": "A member applies the Independence Rule and its interpretations to a financial statement attest client's affiliates, except in situations the Client Affiliates interpretation lists, and a financial interest in an affiliate is not among those exceptions, so even an immaterial direct financial interest in the parent impairs independence. The listed exceptions permit an immediate family member to hold a key position at a sister entity that is not a key position with respect to the attest client, and a loan from a director of an affiliate who cannot affect the attest client's decision-making. A service that would be prohibited for the attest client may be provided to a sister entity when its results will not be subject to audit procedures, with safeguards applied to any remaining threats such as management participation.",
+"source": "ET 0.400.02(c), (e); ET 1.224.010.02(a), (b), (d); ET 1.240.010.01",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-028",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Dana Ortiz was the accounts payable supervisor of Alder Foods, a nonissuer, until May 31, 2026, and joined a CPA firm as an audit senior on June 15, 2026. The firm audits Alder's calendar-year financial statements. Before joining the firm, Ortiz sold her Alder stock, transferred her vested balance out of Alder's retirement plan and left Alder's health plan, and she has no loans to or from Alder. Under the Code of Professional Conduct of the American Institute of CPAs, may Ortiz serve on the engagement team for the audit of Alder's financial statements for the year ending December 31, 2026?",
+"choices": [
+"Yes, because she disassociated from Alder before becoming a covered member",
+"Yes, provided she is not assigned to audit accounts payable or other areas she worked on",
+"Yes, because an accounts payable supervisor does not hold a key position at Alder",
+"No, because the audit covers a period that includes her employment at Alder"
+],
+"answer": 3,
+"explain": "If a covered member participates on the attest engagement, or is in a position to influence it, for any period that includes the member's former employment with the attest client, independence is impaired and safeguards cannot fix it. The 2026 financial statements cover January 1 to May 31, 2026, when Ortiz worked at Alder, so her disassociation from Alder's plans, stock and loans does not cure the problem, and the rule does not depend on whether her former position was a key position. Keeping her away from accounts payable is not a safeguard the interpretation allows.",
+"source": "ET 1.277.010.01-.04",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-029",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm is about to issue its report, dated March 20, 2026, on the financial statements of Garnet Logistics, a nonissuer and an attest client, for the year ended December 31, 2025. Garnet, which is not in bankruptcy, still owes the firm $48,000 for consulting services the firm completed in January 2025, and the amount is significant to the firm. The firm concludes that threats to its independence are not at an acceptable level. Under the Code of Professional Conduct of the American Institute of CPAs, each of the following could serve as a safeguard EXCEPT",
+"choices": [
+"communicating the unpaid fees and the firm's evaluation of them to Garnet's board of directors, with no other action",
+"obtaining partial payment before the report is issued, so that the remaining balance is insignificant to the firm",
+"obtaining Garnet's agreement to a payment schedule before the report is issued",
+"having a reviewer who has not provided attest or nonattest services to Garnet review the attest work before the report is issued"
+],
+"answer": 0,
+"explain": "When unpaid fees are significant to the covered member and relate to services provided more than one year before the current-year attest report, threats are not at an acceptable level, and the firm must apply safeguards such as partial payment that leaves an insignificant balance, an agreed payment schedule or an independent review of the attest work, all before the report is issued. Communicating with those charged with governance is not a sufficient safeguard when applied alone, although it may count when combined with another safeguard. Before the revision effective December 31, 2022, any unpaid fees for services more than one year old impaired independence regardless of safeguards; the current interpretation allows safeguards.",
+"source": "ET 1.230.010.01-.05",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-030",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "During planning for the audit of Pellham Outdoor, a nonissuer and an attest client, the engagement partner learns that the audit senior and Pellham's controller have been close friends for years and take vacations together. No independence interpretation addresses this relationship. Under the conceptual framework in the Code of Professional Conduct of the American Institute of CPAs, how should the firm proceed?",
+"choices": [
+"Conclude that no independence issue exists, because the Code does not address friendships with client personnel",
+"Identify the familiarity threat, evaluate whether it is at an acceptable level, and if it is not, apply and document safeguards such as reassigning the senior",
+"Treat the friendship as a self-interest threat that no safeguard can reduce, and resign from the engagement",
+"Rely on the controller's written promise not to discuss audit matters with the senior, which reduces the threat to an acceptable level by itself"
+],
+"answer": 1,
+"explain": "When no interpretation addresses a relationship, the member applies the conceptual framework: identify threats, evaluate whether a reasonable and informed third party would conclude each is at an acceptable level, and if not, apply safeguards and document the threats and safeguards. A team member's close friendship with someone in a key position at the attest client is the Code's example of a familiarity threat, which safeguards such as removing the senior from the team can address. A safeguard implemented by the attest client cannot be relied on alone to reduce a significant threat.",
+"source": "ET 1.000.010.07; ET 1.200.005.01; ET 1.210.010.01, .07, .09, .14(d), .20(b)",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-031",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Ana is a CPA in public practice whose firm audits nonissuers and also provides tax and consulting services. Ben is a CPA in business who prepares his employer's financial statements. Under the Objectivity and Independence principle in the Principles of Professional Conduct in the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which statement is correct?",
+"choices": [
+"Ana should be independent in fact and appearance when providing auditing and other attestation services, and should maintain objectivity and avoid conflicts of interest when providing all other services",
+"Ana should be independent in fact and appearance in every professional service she provides, including tax and consulting services",
+"Ben should be independent in fact and appearance of his employer when he prepares its financial statements",
+"Only Ana has an obligation to maintain objectivity, because the principle applies only to members in public practice who perform attestation services"
+],
+"answer": 0,
+"explain": "The principle requires independence in fact and appearance only for auditing and other attestation services; for all other services a member in public practice should maintain objectivity and avoid conflicts of interest. A member in business such as Ben cannot maintain the appearance of independence from his employer, but he carries the same responsibility for objectivity as a member in public practice, so objectivity is not limited to attest work.",
+"source": "ET 0.300.050.01, 0.300.050.04, 0.300.050.05",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-032",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Reyes and Lin, CPAs, provides tax and consulting services to the clients described below and performs no audit, review, compilation or other attest services for any of them. Under the Integrity and Objectivity Rule of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which situation is a violation that no safeguard can cure?",
+"choices": [
+"The firm advises two clients that are competing to acquire the same company, after disclosing the conflict to both, obtaining each client's specific consent, and staffing separate engagement teams with restricted access to files",
+"A partner attends a dinner hosted by a client after a business meeting, along with representatives of other clients; the cost is reasonable and breaks no law or policy of the client or the firm",
+"A partner accepts $900 concert tickets from a client's chief financial officer, knowing that the client's written policy bars gifts over $100 to service providers, and reports the gift to the firm's ethics partner, who then reviews the partner's work for that client",
+"A partner advises a client to invest in a business in which the partner's spouse holds an interest, after concluding the threat is at an acceptable level, disclosing the spouse's interest and obtaining the client's specific consent"
+],
+"answer": 2,
+"explain": "Accepting a gift that the member knows violates the client's policy puts the threat beyond an acceptable level and the member is presumed to lack integrity; review by an ethics partner is a safeguard, and the Code says no safeguard can fix this. The competing bidders and the spouse's interest are conflicts of interest, which the member may handle by reducing threats to an acceptable level and disclosing the conflict and obtaining consent (required even when threats are already acceptable), and reasonable entertainment tied to business is at an acceptable level.",
+"source": "ET 1.120.010.03, 1.120.010.04; ET 1.110.010.04, 1.110.010.10, 1.110.010.12",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-033",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Dana Okoro, CPA, prepares the corporate income tax return of Brightline Inc., a nonissuer for which her firm performs no attest services. Brightline's chief executive officer tells Dana that the company will not award her firm a planned consulting engagement unless she stops disagreeing with management about how a deduction should be reported on the return. Under the Conceptual Framework for Members in Public Practice in the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which statement is correct?",
+"choices": [
+"The statement creates a self-interest threat that Dana can reduce to an acceptable level by relying solely on a safeguard implemented by the client, such as review of the return by Brightline's board of directors",
+"The statement creates an undue influence threat; if Dana concludes it is not at an acceptable level and no safeguard can reduce it, she should determine whether to decline or discontinue the service or resign from the engagement",
+"Because a threat now exists, Dana is already in violation of the Integrity and Objectivity Rule, whatever safeguards she applies",
+"The statement creates an advocacy threat, and Dana may use the conceptual framework to justify reporting the deduction the way management wants if she documents the safeguards she applied"
+],
+"answer": 1,
+"explain": "The Code lists a client's statement that it will not award additional engagements if the firm keeps disagreeing on an accounting or tax matter as an example of an undue influence threat, and when no safeguard can reduce a threat to an acceptable level the member should decide whether to decline, discontinue or resign. The existence of a threat is not itself a violation, safeguards implemented by the client cannot be relied on alone, and the framework can never be used to overcome the prohibition on subordinating judgment.",
+"source": "ET 1.000.010.02, 1.000.010.07, 1.000.010.16, 1.000.010.18",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-034",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "In an audit of a nonissuer's financial statements for the year ended December 31, 2025, prepared under generally accepted accounting principles (GAAP), management departs from a requirement of the Financial Accounting Standards Board Accounting Standards Codification. Under the Accounting Principles Rule of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which circumstance could justify the departure as one in which literal application of the principle would make the financial statements misleading?",
+"choices": [
+"The departure has an unusually large effect on the financial statements, so applying the principle would dominate the reported results",
+"Other entities in the same industry commonly follow a practice that conflicts with the promulgated principle",
+"The entity's lender has asked management to use a method the lender considers more useful for its credit analysis",
+"New legislation or a new form of business transaction that the promulgated principle did not anticipate"
+],
+"answer": 3,
+"explain": "The Code gives new legislation and the evolution of a new form of business transaction as circumstances that may justify a departure from GAAP, and the member then complies with the rule by describing the departure, its approximate effects if practicable, and why compliance would be misleading. It names an unusual degree of materiality and conflicting industry practices as circumstances that do not justify a departure, and a user's preference for another method is not an unusual circumstance.",
+"source": "ET 1.320.001.01, 1.320.030.01, 1.320.030.02, 1.320.030.03",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-035",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Harbor CPAs prepares individual income tax returns, a nonattest service, for its clients. It plans to engage an outside vendor whose staff use the vendor's artificial intelligence (AI) platform to extract data from clients' tax documents and prepare draft returns, which Harbor's staff will then review. Under the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which approach meets Harbor's obligations before it discloses confidential client information to the vendor?",
+"choices": [
+"Inform clients, preferably in writing, that it may use a third-party service provider, and either sign a contract requiring the vendor to keep the information confidential, with reasonable assurance that the vendor has procedures to prevent unauthorized release, or obtain each client's specific consent",
+"Take no client-facing steps, because using a vendor's technology platform is an administrative support service, like software application hosting, that clients need not be told about",
+"Obtain each client's specific written consent, because a confidentiality agreement with the vendor can never satisfy the Confidential Client Information Rule",
+"Tell clients about the vendor after the returns are filed, and rely on the vendor to review its own output, because the vendor is responsible for the quality of the drafts it prepares"
+],
+"answer": 0,
+"explain": "Because the vendor assists in providing the professional service, Harbor should tell clients beforehand, preferably in writing, that it may use a third-party service provider, and before disclosing confidential information it should either have a confidentiality contract with reasonable assurance about the vendor's procedures or obtain the client's specific consent. The administrative support exception covers services such as record storage or software hosting, not a vendor whose staff prepare the returns. Harbor also remains subject to the General Standards Rule and the Compliance With Standards Rule, so it must check the vendor's qualifications and plan and supervise its work.",
+"source": "ET 1.150.040.02, 1.150.040.03; ET 1.700.040.02; ET 1.300.040.01",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-036",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A member in public practice audits the financial statements of Elm Street Bakery, a nonissuer, and has not obtained Elm Street's consent to any disclosure. Under the Confidential Client Information Rule of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), disclosing Elm Street's confidential information in each of the following situations would be permitted EXCEPT:",
+"choices": [
+"Producing Elm Street's records in response to a validly issued and enforceable subpoena, without telling Elm Street about the subpoena",
+"Giving the member's professional liability insurance carrier the information needed solely to defend a threatened claim against the member",
+"Responding to an inquiry from the investigative body of the state board of accountancy about the member's work on the engagement",
+"Submitting Elm Street's gross margin and payroll data, which are not publicly available, to an industry benchmarking organization that has promised not to name the bakery"
+],
+"answer": 3,
+"explain": "Confidential client information may not be disclosed for a benchmarking study, even when the client will not be named, unless the client gives specific consent, preferably in writing. The rule does not prohibit compliance with an enforceable subpoena, and the member need not notify the client, nor does it prohibit responding to a board of accountancy's investigative inquiry; disclosure to the member's liability carrier to defend a claim is also permitted.",
+"source": "ET 1.700.001.02; ET 1.700.060.01, 1.700.060.02; ET 1.700.070.01; ET 1.700.100.01, 1.700.100.02",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-037",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "A CPA firm has the four arrangements below for the year ending December 31, 2026. Each client is a nonissuer, and the firm discloses every commission and referral fee to the affected client in writing. Under the Contingent Fees Rule and the Commissions and Referral Fees Rule of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which arrangement is prohibited?",
+"choices": [
+"For a tax client for which the firm performs no attest services, a fee that depends on the outcome of the firm's representation of the client in a revenue agent's examination of its federal income tax return",
+"For a client whose 2026 financial statements the firm compiles for use by the client's bank, with a compilation report that discloses the firm's lack of independence, a commission for referring the client to a payroll software vendor",
+"For a client whose 2026 financial statements the firm is engaged to review in a review engagement, a commission from a software vendor for recommending its inventory system to the client",
+"For a new client referred by another CPA firm, a referral fee the firm pays to that firm for the referral"
+],
+"answer": 2,
+"explain": "A member may not receive a commission for recommending a product to a client for which the firm performs an audit or review of financial statements, during the engagement and the period the statements cover, and disclosure does not cure this. A compilation is covered only when a third party is expected to use the statements and the report does not disclose a lack of independence, so the payroll referral is permitted with written disclosure. The Code lists a contingent fee for representing a client in a revenue agent's examination as permitted, and a referral fee paid to obtain a client is allowed once disclosed to the client.",
+"source": "ET 1.510.001.01, 1.510.010.04; ET 1.520.001.01, 1.520.001.02, 1.520.001.03, 1.520.001.04; ET 1.520.080.01",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-038",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Kim Alvarez, CPA, a member in public practice, prepared the 2025 federal income tax return of Lakeside Pottery, a nonattest client. While preparing it she proposed adjusting journal entries that Lakeside had not recorded and that she was not engaged to prepare. The return is complete, but Kim has not released it because Lakeside has not paid her $4,000 fee for that return. On March 2, 2026, Lakeside ends the engagement and asks for the original bank statements and invoices it gave her, the adjusting entries, the completed return and her working papers. No agreement with Lakeside and no state board rule provides otherwise. Under the Records Requests interpretation of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), what must Kim make available?",
+"choices": [
+"The bank statements, invoices and adjusting entries, because member-prepared records may never be withheld for unpaid fees",
+"Only the bank statements and invoices, which she may not withhold for the unpaid fee, no later than 45 days after the request absent extenuating circumstances",
+"Nothing until Lakeside pays the $4,000 fee, because all of the requested records relate to the unpaid engagement",
+"All four items, including the working papers, because a former client is entitled to every record that relates to its engagement"
+],
+"answer": 1,
+"explain": "Client-provided records must be made available even when fees are unpaid, as soon as practicable and, absent extenuating circumstances, within 45 days. Member-prepared records such as the adjusting entries are owed only for a completed and issued work product and may be withheld when fees for that work product are due, the return itself may be withheld for its unpaid fee, and working papers are the member's property that she need not provide.",
+"source": "ET 1.400.200.01, 1.400.200.06, 1.400.200.07, 1.400.200.09, 1.400.200.11",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-039",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Walsh and Ortiz, CPAs, audits the financial statements of several nonissuers and plans to admit non-CPA owners. Under the Form of Organization and Name Rule of the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA) and the Council resolution it refers to, which ownership plan is permitted?",
+"choices": [
+"CPAs hold 60% of both the financial interests and the voting rights; the non-CPA owners, a data analytics director and an information technology consultant who work full time in the firm, use the title \"principal\" and do not hold themselves out as CPAs",
+"CPAs hold 70% of both the financial interests and the voting rights, and a private equity fund whose personnel do not work in the firm holds the other 30%",
+"CPAs hold 55% of the financial interests but only 45% of the voting rights, and all of the non-CPA owners work full time in the firm",
+"CPAs hold 80% of both the financial interests and the voting rights, and a non-CPA owner who works full time in the firm takes ultimate responsibility for its compilation engagements"
+],
+"answer": 0,
+"explain": "A firm that performs audits must have CPAs owning a majority of both the financial interests and the voting rights, every non-CPA owner must be actively engaged in the firm, and non-CPA owners may use titles such as principal but may not hold themselves out as CPAs. Ownership by investors not actively engaged in the firm is prohibited, and a CPA must have ultimate responsibility for the firm's audit, review, compilation and similar engagements.",
+"source": "ET 1.800.001.01, 1.800.001.05; ET Appendix B, Council Resolution Concerning the Form of Organization and Name Rule, paragraphs A.1, A.2 and A.3",
+"cpa": [
+"AUD-I"
+]
+},
+{
+"id": "aud1-040",
+"part": "AUD",
+"domain": "AUD-I",
+"exam": "cpa",
+"group": "A",
+"q": "Priya Shah, CPA, is the controller of Carver Tools Inc., a nonissuer, and is not in public practice. Her annual bonus equals 2% of reported operating income, and she is setting the year-end reserve for obsolete inventory, which directly affects that income. Under the Conceptual Framework for Members in Business in the Code of Professional Conduct of the American Institute of Certified Public Accountants (AICPA), which statement is correct?",
+"choices": [
+"The bonus creates a management participation threat, which no safeguard can reduce, because Priya makes management decisions for her employer",
+"The bonus creates a self-review threat, and only safeguards applied by Carver's external auditor can reduce it to an acceptable level",
+"The bonus creates a self-interest threat, and safeguards implemented by the employing organization, such as an audit committee charter with independent audit committee members, may help reduce it to an acceptable level",
+"No threat exists, because a member in business cannot be independent of her employer and the Code therefore does not require her to be objective"
+],
+"answer": 2,
+"explain": "A performance bonus whose value is directly affected by the member's own decisions is the Code's example of a self-interest threat for members in business, and their safeguards come from the profession, legislation or regulation and from the employing organization, including an audit committee charter with independent members. The management participation threat appears only in the framework for members in public practice, and members in business must maintain objectivity even though they cannot appear independent.",
+"source": "ET 2.000.010.06, 2.000.010.07, 2.000.010.12, 2.000.010.16, 2.000.010.20; ET 0.300.050.05",
+"cpa": [
+"AUD-I"
+]
 }
 ]
