@@ -5,6 +5,11 @@ const BANK_ALL = __BANK__;
 const EA_BANK = BANK_ALL.filter(q => q.exam !== "cpa");
 const REG_BANK = BANK_ALL.filter(q => q.exam === "cpa" || (q.cpa || []).some(t => t.startsWith("REG")))
   .map(q => q.exam === "cpa" ? q : Object.assign({}, q, { part: "REG", domain: q.cpa.find(t => t.startsWith("REG")) }));
+/* TCP: every question tagged TCP, filed under its TCP area. A question can sit in both REG and TCP, so CPA mode holds a copy per
+   section and byId follows the current section (indexById). */
+const TCP_BANK = BANK_ALL.filter(q => (q.cpa || []).some(t => t.startsWith("TCP")))
+  .map(q => Object.assign({}, q, { part: "TCP", domain: q.cpa.find(t => t.startsWith("TCP")) }));
+const CPA_BANK = REG_BANK.concat(TCP_BANK);
 let BANK = EA_BANK;
 const EA_DOMAINS = {
   "P1-1": { part: 1, name: "Preliminary Work and Taxpayer Data", short: "Prelim work", n: 14, bld: "the tax prep shop" },
@@ -27,13 +32,20 @@ const REG_DOMAINS = {
   "REG-II": { part: "REG", name: "Business Law", short: "Business law", n: 20, w: "15–25%", bld: "the courthouse" },
   "REG-III": { part: "REG", name: "Federal Taxation of Property Transactions", short: "Property", n: 10, w: "5–15%", bld: "the Bank" },
   "REG-IV": { part: "REG", name: "Federal Taxation of Individuals", short: "Individuals", n: 27, w: "22–32%", bld: "the brownstones" },
-  "REG-V": { part: "REG", name: "Federal Taxation of Entities", short: "Entities", n: 28, w: "23–33%", bld: "the Midtown tower" }
+  "REG-V": { part: "REG", name: "Federal Taxation of Entities", short: "Entities", n: 28, w: "23–33%", bld: "the Midtown tower" },
+  /* TCP areas from the same 2026 blueprint */
+  "TCP-I": { part: "TCP", name: "Tax Compliance and Planning for Individuals and Personal Financial Planning", short: "Individuals and planning", n: 35, w: "30–40%", bld: "the planner's office" },
+  "TCP-II": { part: "TCP", name: "Entity Tax Compliance", short: "Entity compliance", n: 35, w: "30–40%", bld: "the loft building" },
+  "TCP-III": { part: "TCP", name: "Entity Tax Planning", short: "Entity planning", n: 15, w: "10–20%", bld: "the townhouse mansion" },
+  "TCP-IV": { part: "TCP", name: "Property Transactions (disposition of assets)", short: "Property transactions", n: 15, w: "10–20%", bld: "the Bank" }
 };
 let DOMAINS = EA_DOMAINS;
 const EA_PARTS = { 1: "Individuals", 2: "Businesses", 3: "Representation" };
 /* CPA sections in the order of the section signs. Only REG has questions so far; the others show dimmed. */
 const CPA_PARTS = { REG: "Regulation", FAR: "Financial Accounting and Reporting", AUD: "Auditing and Attestation", TCP: "Tax Compliance and Planning" };
-const LIVE_SECTIONS = new Set(["REG"]);
+/* the sim each live section gets: the multiple-choice half of the real exam, as the 2026 blueprint counts it */
+const SIMS = { REG: { mcq: 72, tbs: 8 }, TCP: { mcq: 68, tbs: 7 } };
+const LIVE_SECTIONS = new Set(Object.keys(SIMS));
 let PARTS = EA_PARTS;
 const CPA = { "REG-I": "REG ethics and procedures", "REG-III": "REG property", "REG-IV": "REG individuals", "REG-V": "REG entities", "TCP-I": "TCP individuals", "TCP-II": "TCP entity compliance", "TCP-III": "TCP entity planning", "TCP-IV": "TCP property" };
 const MIN = 60e3, DAY = 864e5;
@@ -68,12 +80,15 @@ function useExam(x) {
   const cpa = x === "cpa";
   if (cpa && !isCpa() && !(state.part in CPA_PARTS)) state.eaPart = state.part;
   state.exam = cpa ? "cpa" : "ea";
-  BANK = cpa ? REG_BANK : EA_BANK; DOMAINS = cpa ? REG_DOMAINS : EA_DOMAINS; PARTS = cpa ? CPA_PARTS : EA_PARTS;
-  byId = Object.fromEntries(BANK.map(q => [q.id, q]));
+  BANK = cpa ? CPA_BANK : EA_BANK; DOMAINS = cpa ? REG_DOMAINS : EA_DOMAINS; PARTS = cpa ? CPA_PARTS : EA_PARTS;
   if (cpa && !LIVE_SECTIONS.has(state.part)) state.part = "REG";
   if (!cpa && !(state.part in EA_PARTS)) state.part = state.eaPart || "1";
+  indexById();
   drawSignage();
 }
+/* byId: every EA question, or in CPA mode the current section's copies */
+function indexById() { byId = Object.fromEntries((isCpa() ? BANK.filter(q => q.part === state.part) : BANK).map(q => [q.id, q])); }
+function setPart(p) { state.part = String(p); if (isCpa()) indexById(); }
 /* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
 function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
 function drawSignage() {
@@ -84,7 +99,7 @@ function drawSignage() {
   lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">Tax Year 2025</span>`);
   document.querySelector(".tb-brand").innerHTML = `${title}<div class="tb-sw">${examSwitch()}</div>`;
   const f = document.querySelector("#footnote");
-  f.textContent = isCpa() ? "CPA mode covers REG on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it."
+  f.textContent = isCpa() ? "CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it."
     : "Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.";
   document.querySelectorAll(".exsw button").forEach(b => b.onclick = () => { if (b.dataset.ex === state.exam) return; useExam(b.dataset.ex); tsView = false; save(); updateFlagDot(); if (view === "more") renderMore(); else renderHome(); });
 }
@@ -235,10 +250,10 @@ function pushTown() {
 }
 /* ---------- home: each part drawn as a subway strip map ---------- */
 /* Each area is a station on its part's line (LINE, below). The bullet at a station is a transfer to a real line, in that line's official color. */
-const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L" };
+const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L", "TCP-I": "5", "TCP-II": "M", "TCP-III": "Z", "TCP-IV": "Q" };
 const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
   N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
-const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River", TCP: "Harlem River" };
 const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
 /* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
    Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
@@ -281,7 +296,7 @@ const BLD = {
     w: grid(8, 48, 6, 1, 8, 0, 3, 16).concat(grid(8, 40, 6, 1, 8, 0, 3, 2.5)) }
 };
 /* REG areas reuse the EA buildings that fit them */
-Object.assign(BLD, { "REG-I": BLD["P3-1"], "REG-II": BLD["P3-2"], "REG-III": BLD["P1-2"], "REG-IV": BLD["P1-3"], "REG-V": BLD["P2-1"] });
+Object.assign(BLD, { "REG-I": BLD["P3-1"], "REG-II": BLD["P3-2"], "REG-III": BLD["P1-2"], "REG-IV": BLD["P1-3"], "REG-V": BLD["P2-1"], "TCP-I": BLD["P1-5"], "TCP-II": BLD["P2-2"], "TCP-III": BLD["P1-6"], "TCP-IV": BLD["P1-2"] });
 function bldSvg(d, m) {
   const B = BLD[d], order = B.w.map((w, i) => i).sort((a, b) => B.w[b][1] - B.w[a][1] || B.w[a][0] - B.w[b][0]);
   const on = new Set(order.slice(0, Math.floor(m * B.w.length + 1e-9)));
@@ -385,7 +400,7 @@ function setHomeTab(t) {
   /* the buddy's thought cloud floats on <body>, so it would stay on screen over another section */
   if (!todayShown) document.querySelectorAll(".buddy-thought").forEach(e => e.remove());
   /* the greeting's hello can't play while it's hidden: if Home was drawn on another section, draw it again now it shows */
-  if (greetStale && todayShown) renderHome();
+  if (greetStale && todayShown) { greetStale = false; renderHome(); } /* clear it first: renderHome calls setHomeTab before it re-checks */
 }
 function renderHome() {
   view = "home";
@@ -440,7 +455,7 @@ function renderHome() {
   <div class="pane pane-exam">
     ${examDayCard(p)}
     <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
-      <p class="muted small" style="margin:0">${isCpa() ? "A sim is the multiple-choice half of REG: 72 questions in two locked testlets of 36, in 2 hours." : "A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test."}</p>
+      <p class="muted small" style="margin:0">${isCpa() ? `A sim is the multiple-choice half of ${p}: ${SIMS[p].mcq} questions in two locked testlets of ${SIMS[p].mcq / 2}, in 2 hours.` : "A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test."}</p>
       <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
     </section>
     <section class="card pad"><h2>Past sims</h2>
@@ -450,7 +465,7 @@ function renderHome() {
   </div>
   </div>`;
   setHomeTab(homeTab);
-  const pickPart = n => { state.part = n; tsView = false; save(); renderHome(); };
+  const pickPart = n => { setPart(n); tsView = false; save(); renderHome(); };
   $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
   $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
@@ -716,7 +731,7 @@ function renderSummary() {
 function buildExam(p) {
   const ds = partDomains(p), W = ds.reduce((a, d) => a + DOMAINS[d].n, 0);
   const avail = Object.fromEntries(ds.map(d => [d, shuffle(inBank(d))]));
-  const SIM = isCpa() ? 72 : 100, total = Math.min(SIM, ds.reduce((a, d) => a + avail[d].length, 0));
+  const SIM = isCpa() ? SIMS[p].mcq : 100, total = Math.min(SIM, ds.reduce((a, d) => a + avail[d].length, 0));
   const want = Object.fromEntries(ds.map(d => [d, Math.round(total * DOMAINS[d].n / W)]));
   let ids = [];
   for (const d of ds) ids.push(...avail[d].splice(0, want[d]).map(q => q.id));
@@ -726,34 +741,37 @@ function buildExam(p) {
   const n = ids.length, s1 = Math.round(n * 0.34), s2 = Math.round(n * 0.67), half = Math.round(n / 2);
   return { exam: state.exam, part: p, ids, fresh: ids.filter(id => !st(id).seen), perms: Object.fromEntries(ids.map(id => [id, shuffle([0, 1, 2, 3])])), ans: {}, marked: {},
     sections: isCpa() ? [[0, half], [half, n]] : [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
-    dur: isCpa() ? Math.round(120 * MIN * n / 72) : Math.round(210 * MIN * n / 100), confirm: false };
+    dur: isCpa() ? Math.round(120 * MIN * n / SIMS[p].mcq) : Math.round(210 * MIN * n / 100), confirm: false };
 }
 function eaSimText(n, avail, p) { return `<p style="margin:0">${n} questions, ${Math.round(210 * n / 100)} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.</p>
 ${n < 100 ? `<p class="hint" style="margin:0">The real exam has 100 questions. The ${PL(p)} bank only has ${avail} so far, so this sim is shorter.</p>` : `<p class="hint" style="margin:0">Questions are drawn in proportion to the official outline, so heavier areas get more.</p>`}`; }
-function cpaSimText(n, avail) {
-  const short = Object.keys(DOMAINS).filter(d => inBank(d).length < Math.round(72 * DOMAINS[d].n / 100));
-  return `<p style="margin:0">${n} multiple-choice questions in ${Math.round(120 * n / 72)} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.</p>
-    <p class="hint" style="margin:0">The real REG exam has 72 multiple-choice questions and 8 task-based simulations in 4 hours, each half the score. This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.</p>
+function cpaSimText(n, avail, p) {
+  const S = SIMS[p], short = partDomains(p).filter(d => inBank(d).length < Math.round(S.mcq * DOMAINS[d].n / 100));
+  return `<p style="margin:0">${n} multiple-choice questions in ${Math.round(120 * n / S.mcq)} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.</p>
+    <p class="hint" style="margin:0">The real ${p} exam has ${S.mcq} multiple-choice questions and ${S.tbs} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.</p>
     <p class="hint" style="margin:0">Questions are drawn by the 2026 blueprint weights.${short.length ? ` ${short.map(d => DOMAINS[d].short).join(", ")} ${short.length > 1 ? "have" : "has"} too few questions so far, so the sim fills in from other areas.` : ""}</p>`;
 }
 function renderExamSetup() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "examsetup";
-  const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(isCpa() ? 72 : 100, avail);
+  const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(isCpa() ? SIMS[p].mcq : 100, avail);
   $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
   <section class="card pad" style="display:grid;gap:14px">
     <div><div class="eyebrow" style="color:var(--ink-soft)">Exam sim</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
     <div class="row">${partKeys().map(k => `<button class="btn${String(k) === p ? " primary" : ""}" data-p="${k}"${isLive(k) ? "" : " disabled"}>${PL(k)}</button>`).join("")}</div>
-    ${isCpa() ? cpaSimText(n, avail) : eaSimText(n, avail, p)}
+    ${isCpa() ? cpaSimText(n, avail, p) : eaSimText(n, avail, p)}
     ${state.examRun ? `<div class="confirm"><b>You have an exam in progress (${PL(state.examRun.part)}).</b><div class="row"><button class="btn amber" id="resume">Resume it</button><button class="btn danger" id="discard">Discard it</button></div></div>`
       : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>Start the exam</button></div>`}
   </section>`;
   $("#back").onclick = renderHome;
-  $("#app").querySelectorAll("[data-p]").forEach(b => b.onclick = () => { state.part = b.dataset.p; save(); renderExamSetup(); });
+  $("#app").querySelectorAll("[data-p]").forEach(b => b.onclick = () => { setPart(b.dataset.p); save(); renderExamSetup(); });
   if ($("#start")) $("#start").onclick = () => { state.examRun = buildExam(p); save(); renderExam(); };
   if ($("#resume")) $("#resume").onclick = renderExam;
   if ($("#discard")) $("#discard").onclick = () => { state.examRun = null; save(); renderExamSetup(); };
 }
+/* an EA sim has three sections, a CPA sim two testlets */
+const lastSec = E => E.sec >= E.sections.length - 1;
+const secWord = E => (E.exam || "ea") === "cpa" ? "testlet" : "section";
 function examLeft(E) { const now = E.onBreak || Date.now(); return E.dur - (now - E.start - E.breakMs); }
 function fmt(ms) { ms = Math.max(0, ms); const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(x).padStart(2, "0"); }
 let examTick = null;
@@ -761,6 +779,7 @@ function renderExam() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "exam"; const E = state.examRun; if (!E) return renderHome();
   if ((E.exam || "ea") !== state.exam) useExam(E.exam || "ea");
+  if (String(E.part) !== state.part) setPart(E.part);
   clearInterval(examTick);
   if (E.onBreak) return renderBreak();
   if (examLeft(E) <= 0) return finishExam(true);
@@ -768,13 +787,13 @@ function renderExam() {
   const answeredInSec = E.ids.slice(a, b).filter(x => E.ans[x] != null).length;
   $("#app").innerHTML = `
   <div class="exam-top">
-    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">Part ${E.part} sim · section ${E.sec + 1} of 3</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
-      <button class="btn" id="endsec">${E.sec < 2 ? "Finish section" : "Finish exam"}</button></div>
+    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">${PL(E.part)} sim · ${secWord(E)} ${E.sec + 1} of ${E.sections.length}</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
+      <button class="btn" id="endsec">${!lastSec(E) ? "Finish " + secWord(E) : "Finish exam"}</button></div>
     <div class="progressbar"><i style="width:${100 * Object.keys(E.ans).length / E.ids.length}%"></i></div>
   </div>
-  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${E.sec < 2 ? `Leave section ${E.sec + 1}? You can't come back to these questions.` : "Submit the exam?"}</b>
+  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${!lastSec(E) ? `Leave ${secWord(E)} ${E.sec + 1}? You can't come back to these questions.` : "Submit the exam?"}</b>
     <span class="small">${b - a - answeredInSec ? `${b - a - answeredInSec} unanswered in this section count as wrong.` : "Every question in this section is answered."}</span>
-    <div class="row"><button class="btn amber" id="yes">${E.sec < 2 ? "Leave section" : "Submit"}</button><button class="btn ghost" id="no">Keep working</button></div></div>` : ""}
+    <div class="row"><button class="btn amber" id="yes">${!lastSec(E) ? "Leave " + secWord(E) : "Submit"}</button><button class="btn ghost" id="no">Keep working</button></div></div>` : ""}
   <article class="sheet">
     <div class="sheet-head"><div class="id"><span class="k">Question ${E.idx + 1} of ${E.ids.length}</span><span class="d">${esc(DOMAINS[q.domain].name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
     <div class="qbody"><p class="qtext">${esc(q.q)}</p></div>
@@ -782,7 +801,7 @@ function renderExam() {
     <div class="actions"><button class="btn" id="prev" ${E.idx <= a ? "disabled" : ""}>‹ Previous</button><button class="btn primary" id="nxt" ${E.idx >= b - 1 ? "disabled" : ""}>Next ›</button>
       <button class="btn ghost" id="mark">${E.marked[id] ? "Unmark" : "Mark for review"}</button></div>
   </article>
-  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>Section ${E.sec + 1}</h2><span class="hint">${answeredInSec} of ${b - a} answered</span></div>
+  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>${secWord(E) === "testlet" ? "Testlet" : "Section"} ${E.sec + 1}</h2><span class="hint">${answeredInSec} of ${b - a} answered</span></div>
     <div class="nav">${E.ids.slice(a, b).map((x, k) => `<button data-go="${a + k}" class="${E.ans[x] != null ? "ans" : ""}${a + k === E.idx ? " cur" : ""}${E.marked[x] ? " mk" : ""}">${a + k + 1}</button>`).join("")}</div>
     <span class="hint">Dark: answered. Dot: marked for review.</span></section>`;
   const t = $("#timer");
@@ -795,7 +814,8 @@ function renderExam() {
   if ($("#no")) $("#no").onclick = () => { E.confirm = false; save(); renderExam(); };
   if ($("#yes")) $("#yes").onclick = () => {
     E.confirm = false;
-    if (E.sec < 2) { E.sec++; E.idx = E.sections[E.sec][0]; E.onBreak = Date.now(); save(); renderBreak(); }
+    /* EA: a break between sections, like PSI. CPA: straight on to the next testlet */
+    if (!lastSec(E)) { E.sec++; E.idx = E.sections[E.sec][0]; if ((E.exam || "ea") === "cpa") { save(); renderExam(); } else { E.onBreak = Date.now(); save(); renderBreak(); } }
     else finishExam(false);
   };
   $("#app").querySelectorAll("[data-go]").forEach(btn => btn.onclick = () => { E.idx = +btn.dataset.go; save(); renderExam(); });
@@ -853,11 +873,11 @@ function renderResults(res) {
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = BANK.filter(q => st(q.id).flag).length; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
+function updateFlagDot() { const n = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
-  const flagged = BANK.filter(q => st(q.id).flag);
+  const flagged = [...new Map(BANK.filter(q => st(q.id).flag).map(q => [q.id, q])).values()];
   const counts = partKeys().filter(isLive).map(p => `${PL(p)}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
   /* daily reminder: one calendar file per half hour lives in reminders/ (made by tools/make_reminders.py) */
   const REM_TIMES = []; for (let h = 5; h < 24; h++) for (const m of ["00", "30"]) REM_TIMES.push(String(h).padStart(2, "0") + m);
