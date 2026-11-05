@@ -11,7 +11,9 @@ const TCP_BANK = BANK_ALL.filter(q => (q.cpa || []).some(t => t.startsWith("TCP"
   .map(q => Object.assign({}, q, { part: "TCP", domain: q.cpa.find(t => t.startsWith("TCP")) }));
 /* AUD: the CPA-only questions written for it (exam "cpa", part "AUD"); no EA question carries an AUD tag */
 const AUD_BANK = BANK_ALL.filter(q => q.exam === "cpa" && q.part === "AUD");
-const CPA_BANK = REG_BANK.concat(AUD_BANK, TCP_BANK);
+/* FAR: the CPA-only questions written for it (exam "cpa", part "FAR") */
+const FAR_BANK = BANK_ALL.filter(q => q.exam === "cpa" && q.part === "FAR");
+const CPA_BANK = REG_BANK.concat(FAR_BANK, AUD_BANK, TCP_BANK);
 let BANK = EA_BANK;
 const EA_DOMAINS = {
   "P1-1": { part: 1, name: "Preliminary Work and Taxpayer Data", short: "Prelim work", n: 14, bld: "the tax prep shop" },
@@ -44,14 +46,18 @@ const REG_DOMAINS = {
   "TCP-I": { part: "TCP", name: "Tax Compliance and Planning for Individuals and Personal Financial Planning", short: "Individuals and planning", n: 35, w: "30–40%", bld: "the planner's office" },
   "TCP-II": { part: "TCP", name: "Entity Tax Compliance", short: "Entity compliance", n: 35, w: "30–40%", bld: "the loft building" },
   "TCP-III": { part: "TCP", name: "Entity Tax Planning", short: "Entity planning", n: 15, w: "10–20%", bld: "the townhouse mansion" },
-  "TCP-IV": { part: "TCP", name: "Property Transactions (disposition of assets)", short: "Property transactions", n: 15, w: "10–20%", bld: "the Bank" }
+  "TCP-IV": { part: "TCP", name: "Property Transactions (disposition of assets)", short: "Property transactions", n: 15, w: "10–20%", bld: "the Bank" },
+  /* FAR areas from the same 2026 blueprint */
+  "FAR-I": { part: "FAR", name: "Financial Reporting", short: "Financial reporting", n: 35, w: "30–40%", bld: "the Midtown tower" },
+  "FAR-II": { part: "FAR", name: "Select Balance Sheet Accounts", short: "Balance sheet accounts", n: 35, w: "30–40%", bld: "the Bank" },
+  "FAR-III": { part: "FAR", name: "Select Transactions", short: "Select transactions", n: 30, w: "25–35%", bld: "the loft building" }
 };
 let DOMAINS = EA_DOMAINS;
 const EA_PARTS = { 1: "Individuals", 2: "Businesses", 3: "Representation" };
-/* CPA sections in the order of the section signs. FAR has no questions yet and shows dimmed. */
+/* CPA sections in the order of the section signs */
 const CPA_PARTS = { REG: "Regulation", FAR: "Financial Accounting and Reporting", AUD: "Auditing and Attestation", TCP: "Tax Compliance and Planning" };
 /* the sim each live section gets: the multiple-choice half of the real exam, as the 2026 blueprint counts it */
-const SIMS = { REG: { mcq: 72, tbs: 8 }, AUD: { mcq: 78, tbs: 7 }, TCP: { mcq: 68, tbs: 7 } };
+const SIMS = { REG: { mcq: 72, tbs: 8 }, FAR: { mcq: 50, tbs: 7 }, AUD: { mcq: 78, tbs: 7 }, TCP: { mcq: 68, tbs: 7 } };
 const LIVE_SECTIONS = new Set(Object.keys(SIMS));
 let PARTS = EA_PARTS;
 const CPA = { "REG-I": "REG ethics and procedures", "REG-III": "REG property", "REG-IV": "REG individuals", "REG-V": "REG entities", "TCP-I": "TCP individuals", "TCP-II": "TCP entity compliance", "TCP-III": "TCP entity planning", "TCP-IV": "TCP property" };
@@ -257,10 +263,10 @@ function pushTown() {
 }
 /* ---------- home: each part drawn as a subway strip map ---------- */
 /* Each area is a station on its part's line (LINE, below). The bullet at a station is a transfer to a real line, in that line's official color. */
-const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L", "AUD-I": "B", "AUD-II": "D", "AUD-III": "F", "AUD-IV": "M", "TCP-I": "5", "TCP-II": "M", "TCP-III": "Z", "TCP-IV": "Q" };
+const ROUTE = { "P1-1": "A", "P1-2": "B", "P1-3": "G", "P1-4": "N", "P1-5": "4", "P1-6": "7", "P2-1": "E", "P2-2": "L", "P2-3": "J", "P3-1": "D", "P3-2": "C", "P3-3": "W", "P3-4": "2", "REG-I": "1", "REG-II": "7", "REG-III": "J", "REG-IV": "4", "REG-V": "L", "AUD-I": "B", "AUD-II": "D", "AUD-III": "F", "AUD-IV": "M", "TCP-I": "5", "TCP-II": "M", "TCP-III": "Z", "TCP-IV": "Q", "FAR-I": "G", "FAR-II": "6", "FAR-III": "R" };
 const ROUTE_COLOR = { A: "#0039a6", C: "#0039a6", E: "#0039a6", B: "#ff6319", D: "#ff6319", F: "#ff6319", M: "#ff6319", G: "#6cbe45", J: "#996633", Z: "#996633", L: "#a7a9ac",
   N: "#fccc0a", Q: "#fccc0a", R: "#fccc0a", W: "#fccc0a", 1: "#ee352e", 2: "#ee352e", 3: "#ee352e", 4: "#00933c", 5: "#00933c", 6: "#00933c", 7: "#b933ad" };
-const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River", AUD: "East River", TCP: "Harlem River" };
+const RIVER = { 1: "Hudson River", 2: "East River", 3: "Harlem River", REG: "Hudson River", AUD: "East River", TCP: "Harlem River", FAR: "Bronx River" };
 const routeBullet = r => `<span class="rbul${"NQRW".includes(r) ? " dk" : ""}" style="background:${ROUTE_COLOR[r]}">${r}</span>`;
 /* Painted building art per area goes in art/area-<id>.webp (e.g. art/area-p1-1.webp), transparent background.
    Add the id here once its file is in; until then the station shows the drawn building below, lit to mastery. */
@@ -303,7 +309,7 @@ const BLD = {
     w: grid(8, 48, 6, 1, 8, 0, 3, 16).concat(grid(8, 40, 6, 1, 8, 0, 3, 2.5)) }
 };
 /* REG areas reuse the EA buildings that fit them */
-Object.assign(BLD, { "REG-I": BLD["P3-1"], "REG-II": BLD["P3-2"], "REG-III": BLD["P1-2"], "REG-IV": BLD["P1-3"], "REG-V": BLD["P2-1"], "AUD-I": BLD["P3-1"], "AUD-II": BLD["P2-1"], "AUD-III": BLD["P3-2"], "AUD-IV": BLD["P3-4"], "TCP-I": BLD["P1-5"], "TCP-II": BLD["P2-2"], "TCP-III": BLD["P1-6"], "TCP-IV": BLD["P1-2"] });
+Object.assign(BLD, { "REG-I": BLD["P3-1"], "REG-II": BLD["P3-2"], "REG-III": BLD["P1-2"], "REG-IV": BLD["P1-3"], "REG-V": BLD["P2-1"], "AUD-I": BLD["P3-1"], "AUD-II": BLD["P2-1"], "AUD-III": BLD["P3-2"], "AUD-IV": BLD["P3-4"], "TCP-I": BLD["P1-5"], "TCP-II": BLD["P2-2"], "TCP-III": BLD["P1-6"], "TCP-IV": BLD["P1-2"], "FAR-I": BLD["P2-1"], "FAR-II": BLD["P1-2"], "FAR-III": BLD["P2-2"] });
 function bldSvg(d, m) {
   const B = BLD[d], order = B.w.map((w, i) => i).sort((a, b) => B.w[b][1] - B.w[a][1] || B.w[a][0] - B.w[b][0]);
   const on = new Set(order.slice(0, Math.floor(m * B.w.length + 1e-9)));
@@ -628,7 +634,7 @@ function renderDrill() {
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
-      <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" || q.part === "AUD" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
+      <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" || q.part === "AUD" || q.part === "FAR" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
         <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
         ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
       <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>

@@ -268,10 +268,11 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
     /* AUD's four areas stand on Part 2's lots */
     "AUD-I": { style: 2, tint: 0x7a4030 }, "AUD-II": { style: 0, tint: 0x3d4856 }, "AUD-III": { style: 1, tint: 0xc4b8a2 }, "AUD-IV": { style: 3, tint: 0x181c22 },
     /* TCP's four areas stand on Part 3's lots */
-    "TCP-I": { style: 0, tint: 0x56606c }, "TCP-II": { style: 1, tint: 0xd0c6b1 }, "TCP-III": { style: 2, tint: 0x6f3c2d }, "TCP-IV": { style: 3, tint: 0x20262e }
+    "TCP-I": { style: 0, tint: 0x56606c }, "TCP-II": { style: 1, tint: 0xd0c6b1 }, "TCP-III": { style: 2, tint: 0x6f3c2d }, "TCP-IV": { style: 3, tint: 0x20262e },
+    "FAR-I": { style: 0, tint: 0x3a4553 }, "FAR-II": { style: 1, tint: 0xb9ae99 }, "FAR-III": { style: 2, tint: 0x7a4030 }
   };
   const WEIGHT = { "P1-1": 14, "P1-2": 17, "P1-3": 17, "P1-4": 15, "P1-5": 11, "P1-6": 11, "P2-1": 30, "P2-2": 37, "P2-3": 18, "P3-1": 26, "P3-2": 25, "P3-3": 20, "P3-4": 14,
-    "REG-I": 15, "REG-II": 20, "REG-III": 10, "REG-IV": 27, "REG-V": 28, "AUD-I": 20, "AUD-II": 30, "AUD-III": 35, "AUD-IV": 15, "TCP-I": 35, "TCP-II": 35, "TCP-III": 15, "TCP-IV": 15 }; /* REG: the midpoint of each area's 2026 blueprint range */
+    "REG-I": 15, "REG-II": 20, "REG-III": 10, "REG-IV": 27, "REG-V": 28, "AUD-I": 20, "AUD-II": 30, "AUD-III": 35, "AUD-IV": 15, "TCP-I": 35, "TCP-II": 35, "TCP-III": 15, "TCP-IV": 15, "FAR-I": 35, "FAR-II": 35, "FAR-III": 30 }; /* REG: the midpoint of each area's 2026 blueprint range */
   /* slot order: alternate sides, nearest the part's camera first */
   const ORDER = { 1: [6, 7, 4, 5, 2, 3, 0, 1], 2: [2, 3, 0, 1], 3: [2, 3, 0, 1] };
   for (const p of [1, 2, 3]) { const s = slots[p]; slots[p] = ORDER[p].map(i => s[i]).filter(Boolean); }
@@ -287,12 +288,12 @@ ${HASH}`).replace("#include <emissivemap_fragment>", "#include <emissivemap_frag
   const redLightM = new THREE.MeshBasicMaterial({ color: new THREE.Color(4, 0.3, 0.2) });
   const netM = new THREE.MeshStandardMaterial({ color: 0xff6a1a, emissive: 0xff4a00, emissiveIntensity: 0.25, alphaMap: netTex, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false });
   const B = {}, pickables = [];
-  const LOTS = { REG: 1, AUD: 2, TCP: 3 }; /* the EA part whose lots a CPA section borrows */
-  for (const p of [1, 2, 3, "REG", "AUD", "TCP"]) {
+  const LOTS = { REG: 1, AUD: 2, TCP: 3, FAR: 1 }; const OFF = { FAR: 5 }; /* the EA part whose lots a CPA section borrows; OFF skips the lots REG already holds */
+  for (const p of [1, 2, 3, "REG", "AUD", "TCP", "FAR"]) {
     const ids = Object.keys(TDEF).filter(d => d.startsWith(p in LOTS ? p + "-" : "P" + p));
     ids.forEach((d, i) => {
-      const lot = slots[LOTS[p] || p][i]; if (!lot) return;
-      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + (p === "REG" ? 505 : p === "AUD" ? 707 : p === "TCP" ? 606 : p * 101);
+      const lot = slots[LOTS[p] || p][i + (OFF[p] || 0)]; if (!lot) return;
+      const def = TDEF[d], w = lot.x1 - lot.x0, dd = lot.z1 - lot.z0, H = Math.round(100 + WEIGHT[d] * 3.2), seed = 13.7 * (i + 1) + (p === "REG" ? 505 : p === "AUD" ? 707 : p === "TCP" ? 606 : p === "FAR" ? 808 : p * 101);
       const g = new THREE.Group(); g.position.set((lot.x0 + lot.x1) / 2, 0, (lot.z0 + lot.z1) / 2); g.rotation.y = lot.yaw; lot.used = true; scene.add(g);
       const below = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0), above = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       const clad = facadeMat({ color: def.tint, clippingPlanes: [below] }), frame = facadeMat({ clippingPlanes: [above] });
@@ -849,6 +850,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   /* ---------- camera: each part is seen down the lit square: Part 1 from the north toward One Times Square, Parts 2 and 3 from high over the towers south of 42nd ---------- */
   const FOCUS = { REG: null, ts: { t: [0, 24, 120], yaw: Math.PI, pitch: 0.07, dist: 330 }, 1: { t: [0, 60, 40], yaw: Math.PI, pitch: 0.42, dist: 380 }, 2: { t: [0, 50, 30], yaw: -0.25, pitch: 0.74, dist: 420 }, 3: { t: [5, 50, 110], yaw: -0.25, pitch: 0.82, dist: 380 } };
   FOCUS.REG = FOCUS[1]; FOCUS.AUD = FOCUS[2]; FOCUS.TCP = FOCUS[3]; /* REG stands on Part 1's blocks, AUD on Part 2's, TCP on Part 3's */
+  FOCUS.FAR = { t: [-62, 95, -60], yaw: 2.6, pitch: 0.55, dist: 470 }; /* FAR shares Part 1's block with REG, on its west side: seen from the northeast */
   const rig = { t: [0, 105, -80], yaw: Math.PI + 0.5, pitch: 0.5, dist: 400, off: 0, zoom: 1, anim: null };
   let aspect = 1;
   function placeCamera() {
@@ -1145,7 +1147,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
     fs.innerHTML = `<div class="labels"></div>
       <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
-        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["TCP", "TCP"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["FAR", "FAR"], ["AUD", "AUD"], ["TCP", "TCP"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
       <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
       <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
       <div class="fs-card" hidden></div>`;
