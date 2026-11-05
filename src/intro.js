@@ -10,12 +10,12 @@
 
   /* ---------- load tracker ---------- */
   /* weights in KB (the town build counts as 160 KB of work); the bank's come from tools/build.py */
-  const W = Object.assign({ three: 670, post: 60, models: 280, town: 160 }, __BANKKB__);
+  const W = Object.assign({ three: 670, post: 60, models: 280, town: 160, paint: 80, env: 446 }, __BANKKB__);
   const F = {}; for (const k in W) F[k] = 0;
   const subs = [];
   const set = (k, f) => { if (!(k in F) || !(f > F[k])) return; F[k] = Math.min(1, f); subs.forEach(fn => fn()); };
   /* what each station waits for; the CPA-only questions count toward the progress line but light no station */
-  const STAGES = [["three", "bank1"], ["post", "models", "bank2"], ["town", "bank3"]];
+  const STAGES = [["three", "bank1", "paint"], ["post", "models", "bank2", "env"], ["town", "bank3"]];
   const progress = () => { let a = 0, b = 0; for (const k in W) { a += W[k] * F[k]; b += W[k]; } return a / b; };
   /* fetch a file and report its bytes; expected covers servers that send a compressed Content-Length */
   async function fetchBuf(url, onFrac, expected = 0) {
