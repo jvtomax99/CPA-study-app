@@ -35,12 +35,21 @@
   const model = (i, url) => fetchBuf(url, f => { mf[i] = f; set("models", mf.reduce((a, b) => a + b, 0) / 4); }).catch(() => { mf[i] = 1; set("models", mf.reduce((a, b) => a + b, 0) / 4); return null; });
   setTimeout(() => { for (const k in F) set(k, 1); }, 30000); /* never hold the train longer than 30 seconds */
   window.__introCounts = __COUNTS__; /* questions per part, for the station signs */
+  /* your progress as of the last visit (app.js saves it), so the ride shows it before the bank has arrived */
+  try { window.__introProg = JSON.parse(localStorage.getItem("eaTaxTown.introProg") || "null"); } catch (e) {}
   window.Boot = { set, done: k => set(k, 1), lit: i => STAGES[i].every(k => F[k] >= 1), progress, loaded: () => progress() >= 0.9999, threeWarm, model, on: fn => subs.push(fn) };
 
   if (mode === "off" || !el) { window.Intro = { on: false }; return; }
 
   /* ---------- overlay ---------- */
   const $i = s => el.querySelector(s);
+  /* the Next stop line over Tap to Start: the area with the biggest gap, as on the Today card */
+  function nextStop(p) {
+    const n = $i("#innext"); if (!n || !p || !p.next) return;
+    n.querySelector("b").textContent = p.first ? "First stop" : "Next stop";
+    n.querySelector("span").textContent = `${p.next.name} · ${Math.round(p.next.m * 100)}% ready`; n.hidden = false;
+  }
+  nextStop(window.__introProg);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
   $i("#inbuild").textContent = "__BUILD__";
@@ -118,6 +127,11 @@
     on: true, mode, reduce, el,
     /* app.js hands over the name, the notices and how to open each place */
     begin(opts) { go = opts.go; notices = opts.notices || notices; paint(); },
+    /* app.js: readiness per part (0..1), the tower's share of all 13 areas, and the next stop */
+    progress(p) {
+      window.__introProg = p; try { localStorage.setItem("eaTaxTown.introProg", JSON.stringify(p)); } catch (e) {}
+      scene && scene.progress && scene.progress(p); nextStop(p);
+    },
     /* intro3d.js */
     attach(s) { if (exiting || !el.isConnected) return false; scene = s; has3d = true; el.classList.add("has3d"); el.insertBefore(s.canvas, el.firstChild); if (mode === "full") toast(); paint(); return true; },
     no3d() { failed3d = true; if (phase !== "hero") setPhase("hero"); },

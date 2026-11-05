@@ -626,6 +626,11 @@ footer p { margin: 0; max-width: 70ch; }
 .in-build { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(3px + env(safe-area-inset-bottom, 0px)); font: 400 10px/1.2 var(--f-ui); letter-spacing: 0.02em; color: rgba(255,255,255,0.38); font-variant-numeric: tabular-nums; }
 .in-tap { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); height: 56px; border: 0; padding: 0; margin: 0; cursor: pointer; color: #fff; font: 700 17px/1 var(--f-ui); letter-spacing: 0.04em; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
 .intro.hero .in-tap { opacity: 1; pointer-events: auto; }
+.in-next { position: absolute; left: 0; right: 0; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 8px; font: 600 13px/1.2 var(--f-ui); color: rgba(255,255,255,0.86); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
+.in-next b { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
+.intro.hero .in-next { opacity: 1; }
+.intro.flare .in-next { opacity: 0; transition: opacity 160ms ease; }
+.in-fps { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(56px + env(safe-area-inset-top, 0px)); padding: 4px 8px; border-radius: 999px; background: rgba(18,16,46,0.6); font: 600 12px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; color: #fff; pointer-events: none; }
 .in-tap span { display: inline-block; animation: inpulse 2400ms ease-in-out infinite; }
 @keyframes inpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .in-side { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); display: grid; gap: 6px; opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
@@ -657,6 +662,7 @@ html.introing, html.introing body { overflow: hidden; }
   <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt">Welcome!</span></div>
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
+  <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
   <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
   <div class="in-build" id="inbuild" aria-hidden="true"></div>
