@@ -1,6 +1,6 @@
 {
-  "name": "EA Ledger Drill",
-  "short_name": "EA Drill",
+  "name": "Above the Line",
+  "short_name": "Above Line",
   "description": "Study the IRS Enrolled Agent exam (tax year 2025) in a 3D night Midtown.",
   "start_url": "./",
   "scope": "./",

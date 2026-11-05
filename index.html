@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="EA Ledger Drill: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
+<meta name="description" content="Above the Line: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
 <meta name="author" content="Chris Hidalgo">
 <meta name="copyright" content="© 2026 Chris Hidalgo. All rights reserved.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -12,11 +12,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="EA Drill">
+<meta name="apple-mobile-web-app-title" content="Above Line">
 <meta name="theme-color" content="#0b0a1a">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
 <style>html, body { margin: 0; } :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } img { max-width: 100%; }</style>
-<title>EA Ledger Drill</title>
+<title>Above the Line</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -670,7 +670,7 @@ html.introing, html.introing body { overflow: hidden; }
 </style>
 
 <div class="nightsky" aria-hidden="true"></div>
-<div class="intro" id="intro" role="dialog" aria-label="EA Ledger Drill" aria-describedby="instatus">
+<div class="intro" id="intro" role="dialog" aria-label="Above the Line" aria-describedby="instatus">
   <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt">Welcome!</span></div>
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
@@ -692,14 +692,14 @@ html.introing, html.introing body { overflow: hidden; }
 <div class="wrap">
   <header class="appbar">
     <div>
-      <h1>EA Ledger Drill</h1>
+      <h1>Above the Line</h1>
       <p class="lines"><span class="bul" data-part="1" aria-hidden="true">1</span><span class="bul" data-part="2" aria-hidden="true">2</span><span class="bul" data-part="3" aria-hidden="true">3</span><span class="t"><span class="ea">Enrolled Agent · </span>Tax Year 2025</span></p>
     </div>
     <button class="menubtn" id="morebtn" aria-label="More"><i></i><span id="flagdot"></span></button>
   </header>
   <main id="app"></main>
   <nav class="tabbar" aria-label="Home sections">
-    <div class="tb-brand">EA Ledger Drill<div class="tb-sw"></div></div>
+    <div class="tb-brand">Above the Line<div class="tb-sw"></div></div>
     <button type="button" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Today</span></button>
     <button type="button" data-tab="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l4-2v14M9 21V4l6 3v14M15 21v-9l4 2v7"/></svg><span>City</span></button>
     <button type="button" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5h4a6 6 0 0 1 6 5"/></svg><span>Map</span></button>
@@ -1337,7 +1337,7 @@ html.introing, html.introing body { overflow: hidden; }
   const $i = s => el.querySelector(s);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.05 · e8d80e3 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.05 · 6ee5c6b · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -2557,7 +2557,7 @@ function setPart(p) { state.part = String(p); if (isCpa()) indexById(); }
 /* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
 function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
 function drawSignage() {
-  const title = isCpa() ? "CPA Ledger Drill" : "EA Ledger Drill", lines = document.querySelector(".appbar .lines");
+  const title = "Above the Line", lines = document.querySelector(".appbar .lines");
   if (!lines) return;
   document.body.classList.toggle("cpa", isCpa());
   document.querySelector(".appbar h1").textContent = title;
@@ -2667,7 +2667,7 @@ async function saveBackupFile() {
   let done = false;
   try {
     const file = new File([data], name, { type: "application/json" });
-    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "EA Ledger Drill backup" }); done = true; }
+    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Above the Line backup" }); done = true; }
   } catch (e) { if (e && e.name === "AbortError") return false; }
   if (!done) {
     try { const url = URL.createObjectURL(new Blob([data], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); done = true; } catch (e) {}
@@ -3408,7 +3408,7 @@ function renderMore() {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = () => {
-      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an EA Ledger Drill backup."); return; }
+      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an Above the Line backup."); return; }
       const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
       const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
       $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;

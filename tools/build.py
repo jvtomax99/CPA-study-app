@@ -10,7 +10,7 @@ head = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="EA Ledger Drill: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
+<meta name="description" content="Above the Line: a 3D Midtown Manhattan study town for the IRS Enrolled Agent exam (tax year 2025), with 600 checked questions, spaced repetition and a PSI-style exam sim.">
 <meta name="author" content="Chris Hidalgo">
 <meta name="copyright" content="© 2026 Chris Hidalgo. All rights reserved.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -19,7 +19,7 @@ head = """<!doctype html>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="EA Drill">
+<meta name="apple-mobile-web-app-title" content="Above Line">
 <meta name="theme-color" content="#0b0a1a">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
 <style>html, body { margin: 0; } :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } img { max-width: 100%; }</style>

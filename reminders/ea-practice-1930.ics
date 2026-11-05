@@ -1,6 +1,6 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//EA Ledger Drill//Daily practice reminder//EN
+PRODID:-//Above the Line//Daily practice reminder//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
@@ -10,8 +10,8 @@ DTSTART:20261101T193000
 DTEND:20261101T194500
 RRULE:FREQ=DAILY
 SUMMARY:EA practice
-DESCRIPTION:Time for today's questions in EA Ledger Drill: https://jvtomax9
- 9.github.io/CPA-study-app/
+DESCRIPTION:Time for today's questions in Above the Line: https://jvtomax99
+ .github.io/CPA-study-app/
 URL:https://jvtomax99.github.io/CPA-study-app/
 BEGIN:VALARM
 ACTION:DISPLAY
