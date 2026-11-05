@@ -106,7 +106,7 @@ function setPart(p) { state.part = String(p); if (isCpa()) indexById(); }
 /* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
 function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
 function drawSignage() {
-  const title = isCpa() ? "CPA Ledger Drill" : "EA Ledger Drill", lines = document.querySelector(".appbar .lines");
+  const title = "Above the Line", lines = document.querySelector(".appbar .lines");
   if (!lines) return;
   document.body.classList.toggle("cpa", isCpa());
   document.querySelector(".appbar h1").textContent = title;
@@ -216,7 +216,7 @@ async function saveBackupFile() {
   let done = false;
   try {
     const file = new File([data], name, { type: "application/json" });
-    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "EA Ledger Drill backup" }); done = true; }
+    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Above the Line backup" }); done = true; }
   } catch (e) { if (e && e.name === "AbortError") return false; }
   if (!done) {
     try { const url = URL.createObjectURL(new Blob([data], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); done = true; } catch (e) {}
@@ -957,7 +957,7 @@ function renderMore() {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = () => {
-      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an EA Ledger Drill backup."); return; }
+      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an Above the Line backup."); return; }
       const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
       const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
       $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;

@@ -1,4 +1,4 @@
-# EA Ledger Drill — Style Reference
+# Above the Line: Style Reference
 > A night in Midtown seen from a subway platform. Dark dusk scenes with lit windows sit over a calm cream page; anything you navigate by is a station sign or a subway map.
 
 **Themes:** light and dark page. Night scenes are always dark; the subway map is always light.
@@ -141,7 +141,7 @@ Picks the exam: EA or CPA. A two-segment pill on the black sign: 1.5px white bor
 CPA sections are rounded rectangles instead of round bullets, so they read as signs, not lines: 22px tall, 4px radius, Helvetica 12px/700 with 0.02em tracking, padded 5px each side, each in an existing route color: REG `#0039a6` (A C E), FAR `#6cbe45` (G), AUD `#ff6319` (B D F M), TCP `#fccc0a` (N Q R W) with Sign Black text. The current section gets the bullets' double ring. Sections with no questions yet (FAR) sit at 25% and can't be picked. In the City's switcher they grow to 32px tall with a 6px radius and 16px text.
 
 ### Station sign app bar
-Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and a row under it: three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%), then the exam switch, then "Tax Year 2025". In CPA mode the title reads "CPA Ledger Drill", section signs replace the bullets and the tax year drops out. A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
+Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and a row under it: three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%), then the exam switch, then "Tax Year 2025". The title reads "Above the Line" in both modes. In CPA mode section signs replace the bullets and the tax year drops out. A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
 
 ### Night scene: greeting, El train, Today card
 One continuous dark piece with 28px outer corners on Today: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic; the quote is hidden under 560px wide so Play stays above the tab bar), then the elevated subway line with a two-car train parked at the part's readiness, then the Today card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.

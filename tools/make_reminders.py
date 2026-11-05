@@ -31,7 +31,7 @@ for h in range(5, 24):
         lines = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
-            "PRODID:-//EA Ledger Drill//Daily practice reminder//EN",
+            "PRODID:-//Above the Line//Daily practice reminder//EN",
             "CALSCALE:GREGORIAN",
             "METHOD:PUBLISH",
             "BEGIN:VEVENT",
@@ -42,7 +42,7 @@ for h in range(5, 24):
             f"DTEND:20261101T{end_h:02d}{end_m:02d}00",
             "RRULE:FREQ=DAILY",
             "SUMMARY:EA practice",
-            f"DESCRIPTION:Time for today's questions in EA Ledger Drill: {APP_URL}",
+            f"DESCRIPTION:Time for today's questions in Above the Line: {APP_URL}",
             f"URL:{APP_URL}",
             "BEGIN:VALARM",
             "ACTION:DISPLAY",
