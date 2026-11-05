@@ -437,7 +437,7 @@
   const view = { p: new V3(), l: new V3(), fovK: 0 };
 
   /* ---------- size, adaptive pixel ratio ---------- */
-  let vw = 1, vh = 1;
+  let vw = 1, vh = 1, needResize = false;
   function resize() {
     vw = Math.max(1, I.el.clientWidth); vh = Math.max(1, I.el.clientHeight);
     renderer.setPixelRatio(dpr); renderer.setSize(vw, vh, false); composer.setPixelRatio(dpr); composer.setSize(vw, vh);
@@ -445,15 +445,19 @@
     camera.aspect = vw / vh;
   }
   const baseFov = () => { const a = vw / vh, h = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(64) / 2) / a); return Math.min(84, Math.max(42, THREE.MathUtils.radToDeg(h))); };
-  window.addEventListener("resize", resize); resize();
+  /* a resize clears the canvas, so it waits for the start of the next frame, which then draws at once (no blank frame) */
+  const onResize = () => { needResize = true; };
+  window.addEventListener("resize", onResize); resize();
 
   /* ---------- the loop ---------- */
   let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
+  const dpr0 = dpr;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
     if (dead) return;
     raf = reduce ? 0 : requestAnimationFrame(tick);
-    const dt = Math.min(0.05, (now - last) / 1000), rt = (now - t0) / 1000; last = now;
+    const raw = (now - last) / 1000, dt = Math.min(0.05, raw), rt = (now - t0) / 1000; last = now;
+    if (needResize) { needResize = false; resize(); }
     for (let k = 0; k < 3; k++) if (Boot.lit(k)) lightStation(k, now);
     /* the story clock: the train brakes into a dark station and waits there until its part has loaded */
     if (!title) {
@@ -501,8 +505,9 @@
     glow.halo.lookAt(camera.position); glow.halo2.lookAt(camera.position); glow.beacon.lookAt(camera.position);
     grain.uniforms.uT.value = reduce ? 0 : rt;
     composer.render(dt);
-    /* hold 60fps on a phone: step the pixel ratio down if frames run long */
-    if (!reduce) { ft.push(dt); if (ft.length >= 60) { const avg = ft.reduce((a, b) => a + b, 0) / ft.length; ft = []; if (avg > 0.021 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); resize(); } } }
+    /* hold 60fps on a phone: if steady frames run long, step the pixel ratio down, at most twice. One-off stalls (the town
+       building, the bank arriving) and the first two seconds don't count */
+    if (!reduce && rt > 2 && raw < 0.1) { ft.push(raw); if (ft.length >= 60) { const avg = ft.reduce((a, b) => a + b, 0) / ft.length; ft = []; if (avg > 0.021 && dpr > Math.max(1, dpr0 - 0.5)) { dpr = Math.max(1, dpr - 0.25); needResize = true; } } }
   }
   const frameOnce = () => { if (!dead) requestAnimationFrame(tick); };
   if (reduce) { Boot.on(frameOnce); window.addEventListener("resize", frameOnce); }
@@ -512,7 +517,7 @@
     canvas: renderer.domElement,
     flare() { flareAt = performance.now(); },
     dispose() {
-      dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", resize);
+      dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize);
       scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { for (const k in m) if (m[k] && m[k].isTexture) m[k].dispose(); m.dispose(); }); });
       scene.environment && scene.environment.dispose(); composer.dispose && composer.dispose(); renderer.dispose(); renderer.forceContextLoss();
     },

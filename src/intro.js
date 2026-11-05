@@ -1,7 +1,7 @@
 /* Launch screen: a night El train rides past three stations (one per SEE part) into the tax town, then Tap to Start.
    This file is the overlay and the load tracker; src/intro3d.js draws the ride. Shell markup decides the mode before paint:
-   "full" (first open of the day), "off" (later opens that day, ?intro=0, or an exam sim running: straight to Home),
-   "title" (?intro=title only: straight to Tap to Start).
+   "full" (every launch), "off" (?intro=0, or an exam sim running: straight to Home), "title" (?intro=title: straight
+   to Tap to Start). iOS resumes a Home Screen app without reloading it, so the ride plays only when the app really starts.
    window.Boot counts what really loads: three.js (bytes), the bloom passes, the tower models (bytes), the town build and the
    question bank, which streams in with the page after this overlay is up, one run of blocks per part (tools/build.py). A station's platform lights switch on when its stages are done; the train waits at a dark one. */
 (() => {
@@ -47,10 +47,8 @@
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
-    if (p === "hero") markSeen();
     paint();
   };
-  const markSeen = () => { try { localStorage.setItem("eaTaxTown.intro", window.__introDay); } catch (e) {} };
   function paint() {
     const pr = progress(), done = pr >= 0.9999;
     $i("#inbar").style.width = (pr * 100).toFixed(2) + "%";
@@ -67,7 +65,7 @@
   function exit(where) {
     if (exiting) return;
     if (!Boot.loaded()) { queued = where; paint(); return; } /* a tap during loading starts the app the moment loading finishes */
-    exiting = true; markSeen();
+    exiting = true;
     const finish = () => {
       go && go(where);
       document.documentElement.classList.remove("introing");

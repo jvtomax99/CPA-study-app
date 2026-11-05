@@ -903,7 +903,7 @@ function renderMore() {
       <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
       <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Launch screen</h3>
-      <p class="muted small" style="margin:0">The El ride into the tax town plays on the first open of each day. Watch it again now; the app reloads to play it.</p>
+      <p class="muted small" style="margin:0">The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.</p>
       <div class="row"><button class="btn" id="introreplay">Replay the intro</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
       <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
@@ -941,8 +941,8 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
-  /* forget that today's ride has played, then load the page fresh so the launch screen runs from the start */
-  $("#introreplay").onclick = () => { try { localStorage.removeItem("eaTaxTown.intro"); } catch (e) {} location.reload(); };
+  /* load the page fresh, without any ?intro= setting, so the launch screen runs from the start */
+  $("#introreplay").onclick = () => { location.href = location.pathname; };
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });

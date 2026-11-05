@@ -663,12 +663,12 @@ html.introing, html.introing body { overflow: hidden; }
   <div class="in-flash" aria-hidden="true"></div>
 </div>
 <script>
-/* decide before first paint whether the launch screen shows (see src/intro.js): once a day, never while an exam sim is running */
+/* decide before first paint whether the launch screen shows (see src/intro.js): on every launch, never while an exam sim is running */
 (function () {
-  var q = new URLSearchParams(location.search).get("intro"), run = false, seen = null, d = new Date(), today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  try { run = !!(JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").examRun); seen = localStorage.getItem("eaTaxTown.intro"); } catch (e) {}
-  var mode = q === "0" || run ? "off" : q === "1" ? "full" : q === "title" ? "title" : seen === today ? "off" : "full";
-  window.__introMode = mode; window.__introDay = today;
+  var q = new URLSearchParams(location.search).get("intro"), run = false;
+  try { run = !!(JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").examRun); localStorage.removeItem("eaTaxTown.intro"); } catch (e) {}
+  var mode = q === "0" || run ? "off" : q === "title" ? "title" : "full";
+  window.__introMode = mode;
   if (mode === "off") document.getElementById("intro").remove(); else document.documentElement.classList.add("introing");
 })();
 </script>

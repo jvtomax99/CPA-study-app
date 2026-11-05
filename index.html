@@ -680,12 +680,12 @@ html.introing, html.introing body { overflow: hidden; }
   <div class="in-flash" aria-hidden="true"></div>
 </div>
 <script>
-/* decide before first paint whether the launch screen shows (see src/intro.js): once a day, never while an exam sim is running */
+/* decide before first paint whether the launch screen shows (see src/intro.js): on every launch, never while an exam sim is running */
 (function () {
-  var q = new URLSearchParams(location.search).get("intro"), run = false, seen = null, d = new Date(), today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  try { run = !!(JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").examRun); seen = localStorage.getItem("eaTaxTown.intro"); } catch (e) {}
-  var mode = q === "0" || run ? "off" : q === "1" ? "full" : q === "title" ? "title" : seen === today ? "off" : "full";
-  window.__introMode = mode; window.__introDay = today;
+  var q = new URLSearchParams(location.search).get("intro"), run = false;
+  try { run = !!(JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").examRun); localStorage.removeItem("eaTaxTown.intro"); } catch (e) {}
+  var mode = q === "0" || run ? "off" : q === "title" ? "title" : "full";
+  window.__introMode = mode;
   if (mode === "off") document.getElementById("intro").remove(); else document.documentElement.classList.add("introing");
 })();
 </script>
@@ -1294,8 +1294,8 @@ html.introing, html.introing body { overflow: hidden; }
 <script>
 /* Launch screen: a night El train rides past three stations (one per SEE part) into the tax town, then Tap to Start.
    This file is the overlay and the load tracker; src/intro3d.js draws the ride. Shell markup decides the mode before paint:
-   "full" (first open of the day), "off" (later opens that day, ?intro=0, or an exam sim running: straight to Home),
-   "title" (?intro=title only: straight to Tap to Start).
+   "full" (every launch), "off" (?intro=0, or an exam sim running: straight to Home), "title" (?intro=title: straight
+   to Tap to Start). iOS resumes a Home Screen app without reloading it, so the ride plays only when the app really starts.
    window.Boot counts what really loads: three.js (bytes), the bloom passes, the tower models (bytes), the town build and the
    question bank, which streams in with the page after this overlay is up, one run of blocks per part (tools/build.py). A station's platform lights switch on when its stages are done; the train waits at a dark one. */
 (() => {
@@ -1337,14 +1337,12 @@ html.introing, html.introing body { overflow: hidden; }
   const $i = s => el.querySelector(s);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.05 · 9525795 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.05 · 9c4b84d · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
-    if (p === "hero") markSeen();
     paint();
   };
-  const markSeen = () => { try { localStorage.setItem("eaTaxTown.intro", window.__introDay); } catch (e) {} };
   function paint() {
     const pr = progress(), done = pr >= 0.9999;
     $i("#inbar").style.width = (pr * 100).toFixed(2) + "%";
@@ -1361,7 +1359,7 @@ html.introing, html.introing body { overflow: hidden; }
   function exit(where) {
     if (exiting) return;
     if (!Boot.loaded()) { queued = where; paint(); return; } /* a tap during loading starts the app the moment loading finishes */
-    exiting = true; markSeen();
+    exiting = true;
     const finish = () => {
       go && go(where);
       document.documentElement.classList.remove("introing");
@@ -1864,7 +1862,7 @@ html.introing, html.introing body { overflow: hidden; }
   const view = { p: new V3(), l: new V3(), fovK: 0 };
 
   /* ---------- size, adaptive pixel ratio ---------- */
-  let vw = 1, vh = 1;
+  let vw = 1, vh = 1, needResize = false;
   function resize() {
     vw = Math.max(1, I.el.clientWidth); vh = Math.max(1, I.el.clientHeight);
     renderer.setPixelRatio(dpr); renderer.setSize(vw, vh, false); composer.setPixelRatio(dpr); composer.setSize(vw, vh);
@@ -1872,15 +1870,19 @@ html.introing, html.introing body { overflow: hidden; }
     camera.aspect = vw / vh;
   }
   const baseFov = () => { const a = vw / vh, h = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(64) / 2) / a); return Math.min(84, Math.max(42, THREE.MathUtils.radToDeg(h))); };
-  window.addEventListener("resize", resize); resize();
+  /* a resize clears the canvas, so it waits for the start of the next frame, which then draws at once (no blank frame) */
+  const onResize = () => { needResize = true; };
+  window.addEventListener("resize", onResize); resize();
 
   /* ---------- the loop ---------- */
   let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
+  const dpr0 = dpr;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
     if (dead) return;
     raf = reduce ? 0 : requestAnimationFrame(tick);
-    const dt = Math.min(0.05, (now - last) / 1000), rt = (now - t0) / 1000; last = now;
+    const raw = (now - last) / 1000, dt = Math.min(0.05, raw), rt = (now - t0) / 1000; last = now;
+    if (needResize) { needResize = false; resize(); }
     for (let k = 0; k < 3; k++) if (Boot.lit(k)) lightStation(k, now);
     /* the story clock: the train brakes into a dark station and waits there until its part has loaded */
     if (!title) {
@@ -1928,8 +1930,9 @@ html.introing, html.introing body { overflow: hidden; }
     glow.halo.lookAt(camera.position); glow.halo2.lookAt(camera.position); glow.beacon.lookAt(camera.position);
     grain.uniforms.uT.value = reduce ? 0 : rt;
     composer.render(dt);
-    /* hold 60fps on a phone: step the pixel ratio down if frames run long */
-    if (!reduce) { ft.push(dt); if (ft.length >= 60) { const avg = ft.reduce((a, b) => a + b, 0) / ft.length; ft = []; if (avg > 0.021 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); resize(); } } }
+    /* hold 60fps on a phone: if steady frames run long, step the pixel ratio down, at most twice. One-off stalls (the town
+       building, the bank arriving) and the first two seconds don't count */
+    if (!reduce && rt > 2 && raw < 0.1) { ft.push(raw); if (ft.length >= 60) { const avg = ft.reduce((a, b) => a + b, 0) / ft.length; ft = []; if (avg > 0.021 && dpr > Math.max(1, dpr0 - 0.5)) { dpr = Math.max(1, dpr - 0.25); needResize = true; } } }
   }
   const frameOnce = () => { if (!dead) requestAnimationFrame(tick); };
   if (reduce) { Boot.on(frameOnce); window.addEventListener("resize", frameOnce); }
@@ -1939,7 +1942,7 @@ html.introing, html.introing body { overflow: hidden; }
     canvas: renderer.domElement,
     flare() { flareAt = performance.now(); },
     dispose() {
-      dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", resize);
+      dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize);
       scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { for (const k in m) if (m[k] && m[k].isTexture) m[k].dispose(); m.dispose(); }); });
       scene.environment && scene.environment.dispose(); composer.dispose && composer.dispose(); renderer.dispose(); renderer.forceContextLoss();
     },
@@ -2868,7 +2871,7 @@ function renderMore() {
       <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
       <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Launch screen</h3>
-      <p class="muted small" style="margin:0">The El ride into the tax town plays on the first open of each day. Watch it again now; the app reloads to play it.</p>
+      <p class="muted small" style="margin:0">The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.</p>
       <div class="row"><button class="btn" id="introreplay">Replay the intro</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
       <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
@@ -2906,8 +2909,8 @@ function renderMore() {
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
-  /* forget that today's ride has played, then load the page fresh so the launch screen runs from the start */
-  $("#introreplay").onclick = () => { try { localStorage.removeItem("eaTaxTown.intro"); } catch (e) {} location.reload(); };
+  /* load the page fresh, without any ?intro= setting, so the launch screen runs from the start */
+  $("#introreplay").onclick = () => { location.href = location.pathname; };
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
