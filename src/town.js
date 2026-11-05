@@ -2,8 +2,10 @@
   /* ---------- load three.js and the bloom passes (resolved through the importmap in the page head) ---------- */
   let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass;
   /* hand-modeled study towers, one per facade style (made in Blender by tools/blender/towers.py), fetched while three.js loads */
-  const MODEL_FILES = ["glass", "deco", "brick", "dark"].map(n => fetch(`art/tower-${n}.glb`).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null));
+  const MODEL_FILES = ["glass", "deco", "brick", "dark"].map((n, i) => window.Boot ? window.Boot.model(i, `art/tower-${n}.glb`) : fetch(`art/tower-${n}.glb`).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null));
+  const boot = k => window.Boot && window.Boot.done(k); /* the launch screen's load tracker (src/intro.js) */
   try {
+    if (window.Boot) await window.Boot.threeWarm; /* the launch screen reads three.js once with progress; import it from cache after */
     const mods = await Promise.race([
       Promise.all([import("three"), import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"), import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js"), import("three/addons/postprocessing/ShaderPass.js")]),
       new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 20000))
@@ -11,7 +13,8 @@
     [THREE, { EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }, { ShaderPass }] = mods;
     const probe = document.createElement("canvas");
     if (!probe.getContext("webgl2")) throw new Error("no webgl2");
-  } catch (e) { window.__townFail && window.__townFail(); return; }
+  } catch (e) { boot("three"); boot("post"); boot("town"); window.__townFail && window.__townFail(); return; }
+  boot("three"); boot("post");
 
   /* a style whose model didn't load (opened from a local file, or offline) keeps its boxes */
   const MODELS = {};
@@ -1323,4 +1326,5 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   if (low) applyLow();
   if (window.__townData) window.Town.update(window.__townData);
   window.__townReady && window.__townReady();
+  boot("town");
 })();

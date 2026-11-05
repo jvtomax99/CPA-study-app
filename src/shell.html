@@ -608,9 +608,70 @@ footer p { margin: 0; max-width: 70ch; }
   .qtext { font-size: 17.5px; }
 }
 @media (prefers-reduced-motion: reduce) { .cta, .tag { transition: none; } }
+/* Launch screen (src/intro.js, src/intro3d.js): a night El ride into the tax town, then Tap to Start. Always dark. */
+.intro { position: fixed; inset: 0; z-index: 70; overflow: hidden; color: #fff; background: radial-gradient(120% 70% at 50% 100%, #6b4fa8 0%, #33285c 38%, #1a1840 62%, #0b0a24 100%); -webkit-user-select: none; user-select: none; touch-action: manipulation; cursor: pointer; }
+.intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 600ms ease; }
+.intro.has3d canvas { opacity: 1; }
+.in-toast { position: absolute; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
+.in-toast.show { transform: translate(-50%, 0); opacity: 1; }
+.in-ico { width: 22px; height: 22px; border-radius: 50%; background: #161c2b; display: grid; place-items: center; }
+.in-ico::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ffd27a; }
+.in-status { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(26px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 8px; font: 600 13px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.86); opacity: 0; transition: opacity 260ms ease; }
+.intro.loading .in-status { opacity: 1; }
+.in-spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.85); border-right-color: transparent; animation: inspin 900ms linear infinite; }
+@keyframes inspin { to { transform: rotate(360deg); } }
+.in-bar { position: absolute; left: 0; right: 0; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); height: 2px; background: rgba(255,255,255,0.12); opacity: 0; transition: opacity 260ms ease; }
+.intro.loading .in-bar { opacity: 1; }
+.in-bar i { display: block; height: 100%; width: 0; background: #ffd27a; transition: width 160ms linear; }
+.in-build { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(3px + env(safe-area-inset-bottom, 0px)); font: 400 10px/1.2 var(--f-ui); letter-spacing: 0.02em; color: rgba(255,255,255,0.38); font-variant-numeric: tabular-nums; }
+.in-tap { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); height: 56px; border: 0; padding: 0; margin: 0; cursor: pointer; color: #fff; font: 700 17px/1 var(--f-ui); letter-spacing: 0.04em; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
+.intro.hero .in-tap { opacity: 1; pointer-events: auto; }
+.in-tap span { display: inline-block; animation: inpulse 2400ms ease-in-out infinite; }
+@keyframes inpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.in-side { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); display: grid; gap: 6px; opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
+.intro.hero .in-side { opacity: 1; pointer-events: auto; }
+.in-side button { display: grid; justify-items: center; gap: 4px; width: 64px; min-height: 52px; padding: 2px 0; border: 0; background: none; color: #fff; cursor: pointer; font: 700 10px/1.15 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; }
+.in-side .ic { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(18,16,46,0.6); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.in-side svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.in-notes { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(340px, calc(100% - 32px)); padding: 16px; border-radius: 22px; background: rgba(18,16,46,0.88); border: 1px solid rgba(255,255,255,0.22); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); display: grid; gap: 10px; cursor: default; font-size: 14px; }
+.in-notes h3 { margin: 0; font: 700 13px/1.2 var(--f-ui); letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
+.in-notes ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.in-notes button { justify-self: end; min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(255,255,255,0.1); color: #fff; font: 600 14px/1 var(--f-ui); cursor: pointer; }
+.in-flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.intro.flare .in-side, .intro.flare .in-tap, .intro.flare .in-status, .intro.flare .in-bar, .intro.flare .in-toast { opacity: 0; transition: opacity 160ms ease; }
+.intro.flare .in-flash { opacity: 1; transition: opacity 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+.intro.dark .in-flash { background: #0b0a24; transition: background-color 360ms ease; }
+.intro.out { opacity: 0; transition: opacity 420ms ease; pointer-events: none; }
+html.introing, html.introing body { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .in-toast, .in-status, .in-bar, .in-tap, .in-side, .intro canvas { transition: none; }
+  .in-toast { transform: translate(-50%, 0); }
+  .in-spin { animation: none; border-right-color: rgba(255,255,255,0.85); width: 8px; height: 8px; }
+  .in-tap span { animation: none; }
+  .intro.out { transition-duration: 260ms; }
+}
 </style>
 
 <div class="nightsky" aria-hidden="true"></div>
+<div class="intro" id="intro" role="dialog" aria-label="EA Ledger Drill" aria-describedby="instatus">
+  <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt">Welcome!</span></div>
+  <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
+  <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
+  <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
+  <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
+  <div class="in-build" id="inbuild" aria-hidden="true"></div>
+  <div class="in-flash" aria-hidden="true"></div>
+</div>
+<script>
+/* decide before first paint whether the launch screen shows (see src/intro.js): once a day, never while an exam sim is running */
+(function () {
+  var q = new URLSearchParams(location.search).get("intro"), run = false, seen = null, d = new Date(), today = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  try { run = !!(JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").examRun); seen = localStorage.getItem("eaTaxTown.intro"); } catch (e) {}
+  var mode = q === "0" || run ? "off" : q === "1" ? "full" : q === "title" ? "title" : seen === today ? "off" : "full";
+  window.__introMode = mode; window.__introDay = today;
+  if (mode === "off") document.getElementById("intro").remove(); else document.documentElement.classList.add("introing");
+})();
+</script>
 <div class="wrap">
   <header class="appbar">
     <div>
