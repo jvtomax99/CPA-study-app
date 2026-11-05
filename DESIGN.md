@@ -159,7 +159,7 @@ The ride is eight shots, cut on a story clock. A station shot holds while the tr
 5. **Representation (7 to 9.6s):** the cab view from the lead car.
    A station's canopy lamps, platform edge and sign switch on when its part has really loaded: Part 1's questions plus three.js and the train's paint, Part 2's questions plus the bloom passes, tower models and the night sky reflections, Part 3's questions plus the town build. The train brakes into a dark station and waits there. Bottom left: a 14px spinner and "Arriving at Businesses... 43.64%"; a 2px Lit Window line across the bottom fills with the real load (bytes for three.js and the models, one step per 100 KB of the bank, which streams in with the page). Under it, the build string.
 6. **The dive (9.6 to 12.6s):** beside the lead car on a wide lens; the train accelerates, gold sparks and a gold to violet trail stream off the third rail, a zoom blur and a chromatic edge come in at top speed, two searchlights sweep from the tower's crown and the portal's glow builds.
-7. **Portal burst (12.6 to 14s):** the train dives into the portal: a burst of light with rays, and a gold shockwave ring off the portal face.
+7. **Portal burst (12.6 to 14s):** from high over the track behind the train, it runs between the approach walls into the tunnel: a burst of light with rays, and a gold shockwave ring off the portal face.
 8. **Tap to Start (14s on):** a slow push-in on the portal, which pulses slowly (1.7s cycle), with gold motes drifting. Tap to Start sits centered near the bottom on a dark band (`rgba(11,10,36,0.62)`, fading out at both ends) and pulses its opacity (2.4s). Down the right edge, five glass controls (38px circles in the darker 3D glass, 20px line icons) with labels under them: Notices, Progress, Settings, Report a Question, Reset. Notices opens a glass panel (22px radius) listing exam dates, the testing window, the backup age and flagged questions; Progress opens Map; Settings opens More; Report a Question opens More at Flagged questions; Reset opens More with the Erase confirm showing, and never erases on its own.
 9. **On tap:** the portal flares and the screen goes white over 0.6s, holds 0.2s, turns dark over 0.36s, then fades out over 0.42s onto Home. A tap while loading waits and starts the moment loading finishes; the status reads "Starting when loaded".
 
@@ -175,6 +175,8 @@ The ride is eight shots, cut on a story clock. A station shot holds while the tr
 | Line, block | `#111111` outline, `#2a1452` and `#1a1240` 3D block, `#ffffff` inner line and shines |
 
 These colors live only inside the train's textures; never use them in the interface.
+
+**The tunnel** is a brick portal (`IntroArt.portal`): two wildstyle productions (UPTOWN, BRONX) flank the arch, tags fill the brick, a stone ring frames the opening in sodium trim (`#ff9a3a`), and a neon LAST STOP sign hangs above it. Behind the face, an arched tunnel runs 70 m deep, with sodium rings every 5 m, light haze along it and the glow at the far end. The train stays visible as it runs in. Brick approach walls line the last 50 m, with their productions and tags in the top 2.6 m, the part that shows above the deck. A six-story brick building sits on top of the portal (the train dives under it), with a cornice and a water tank, and the tax tower stands 160 m further back, behind it.
 
 **The city** is instanced boxes drawn per pixel by one facade shader (`src/intro3d.js`):
 - **Building types:** brick (with courses), limestone, glass curtain wall and dark steel. Windows get frames, center bars and sills.

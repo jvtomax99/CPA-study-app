@@ -75,7 +75,7 @@
     };
     for (let k = 10; k > 0; k--) L.forEach(l => { x.save(); x.translate(k * h * 0.011, k * h * 0.013); draw(x, l, t + ol * 2, k > 8 ? "#111" : sc.block); x.restore(); });
     const g = x.createLinearGradient(cx - natural * sx / 2, 0, cx + natural * sx / 2, 0); sc.fill.forEach((c, i) => g.addColorStop(i / (sc.fill.length - 1), c));
-    if (!F || F.width !== x.canvas.width) { F = document.createElement("canvas"); F.width = x.canvas.width; F.height = x.canvas.height; }
+    if (!F || F.width !== x.canvas.width || F.height !== x.canvas.height) { F = document.createElement("canvas"); F.width = x.canvas.width; F.height = x.canvas.height; }
     const q = F.getContext("2d"), k0 = x.canvas.width / W;
     L.forEach(l => {
       draw(x, l, t + ol * 2, "#111");
@@ -172,5 +172,31 @@
     x.strokeStyle = "#ffffff"; x.lineWidth = 3.5; path(); x.stroke();
     return c;
   }
-  window.IntroArt = { side, end, neon };
+  /* the tunnel portal's face, 32 m by 14 m on a 2048 by 896 grid (64 px a meter), arch centered: x -16..16, y -1..13 */
+  const PX = 64, px = X => (X + 16) * PX, py = Y => (13 - Y) * PX;
+  function archPath(x, r, cy = 5.6) { x.beginPath(); x.moveTo(px(-r), py(-1)); x.lineTo(px(-r), py(cy)); x.arc(px(0), py(cy), r * PX, Math.PI, 0, false); x.lineTo(px(r), py(-1)); }
+  /* the brick portal: two productions flanking the arch, tags, a stone ring round the opening */
+  function portal() {
+    const c = document.createElement("canvas"); c.width = 2048; c.height = 896; const x = c.getContext("2d"), r = rng(99 * 7);
+    x.fillStyle = "#4a2224"; x.fillRect(0, 0, c.width, c.height);
+    for (let y = 0; y < c.height; y += 18) { x.fillStyle = "rgba(0,0,0,0.3)"; x.fillRect(0, y, c.width, 3); for (let X = (y / 18 % 2) * 22; X < c.width; X += 44) x.fillRect(X, y, 3, 18); }
+    const sc = [{ dots: "#ff3fa4", fill: ["#ff4fa8", "#ff9e3a", "#ffe86a"], block: "#2a1452" }, { dots: "#ffd23a", fill: ["#2fd36b", "#1e9bff", "#ffe03a"], block: "#2a1452" }];
+    x.save(); x.scale(1, 896 / 600 * 0.62); x.translate(0, 120);
+    wild(x, r, "UPTOWN", 470, 380, 150, 560, sc[0]); wild(x, r, "BRONX", 1580, 380, 150, 520, sc[1]); x.restore();
+    for (let i = 0; i < 14; i++) tag(x, r, TAGS[i % TAGS.length], 40 + r() * 1900, 40 + r() * 760, 30 + r() * 16, ["#fff", "#111", "#ff3fa4", "#2fd3ff"][i % 4]);
+    x.lineWidth = 0.6 * PX; x.strokeStyle = "#7a7280"; archPath(x, 4.75); x.stroke();
+    return c;
+  }
+  /* the approach walls: only their top 2.6 m shows above the deck, so the art is a band, 2048 by 256 for 50 m */
+  function wall(flip) {
+    const c = document.createElement("canvas"); c.width = 2048; c.height = 256; const x = c.getContext("2d"), r = rng(flip ? 31 : 17);
+    x.fillStyle = "#4a2224"; x.fillRect(0, 0, 2048, 256);
+    for (let y = 0; y < 256; y += 14) { x.fillStyle = "rgba(0,0,0,0.3)"; x.fillRect(0, y, 2048, 3); for (let X = (y / 14 % 2) * 18; X < 2048; X += 36) x.fillRect(X, y, 3, 14); }
+    x.fillStyle = "#6e6676"; x.fillRect(0, 0, 2048, 14);   /* the coping stones on top */
+    const words = flip ? ["QUEENS", "HARLEM"] : ["BKLYN", "NYC"], sc = [{ dots: "#7ae03a", fill: ["#ffe03a", "#7ae03a", "#2fd3c4"], block: "#1a1240" }, { dots: "#ff3fa4", fill: ["#ff6a1a", "#ff3fa4", "#b34bff"], block: "#2a1452" }];
+    words.forEach((w, i) => wild(x, r, w, 520 + i * 1000, 150, 120, 700, sc[i]));
+    for (let i = 0; i < 12; i++) tag(x, r, TAGS[i % TAGS.length], r() * 1950, 30 + r() * 170, 22 + r() * 8, ["#fff", "#111", "#ff3fa4"][i % 3]);
+    return c;
+  }
+  window.IntroArt = { side, end, neon, portal, wall };
 })();
