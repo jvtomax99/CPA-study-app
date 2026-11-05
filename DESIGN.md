@@ -264,6 +264,7 @@ Deliberately plain, like the PSI test screen: a sticky top bar on the Page color
 
 ### Bottom sheet
 Slides up over a `rgba(10,12,30,0.45)` scrim: Paper, 24px top corners, a 40×5px grab bar, a title, three stat tiles (Page fill, 12px radius, 11px uppercase label over a 20px/800 number) and a button row.
+A sheet that can fill the screen (the how-to video) keeps its title row and Close button pinned at the top on Paper, padded for the status bar, so Close never hides under it or scrolls away.
 
 ### Toast
 Ink pill fixed at the bottom center, Paper text, above the home indicator.
