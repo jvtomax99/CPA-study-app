@@ -174,7 +174,19 @@ The ride is eight shots, cut on a story clock. A station shot holds while the tr
 | Dots and clouds | `#ffd23a` `#ff3fa4` `#7ae03a` `#ffffff` `#2fd3c4` |
 | Line, block | `#111111` outline, `#2a1452` and `#1a1240` 3D block, `#ffffff` inner line and shines |
 
-These colors live only inside the train's textures; never use them in the interface. The pixel ratio is capped at 2 and steps down by 0.25 when frames run past 21ms. With reduced motion it opens on the still portal shot, nothing loops, and the tap is a 260ms fade.
+These colors live only inside the train's textures; never use them in the interface.
+
+**The city** is instanced boxes drawn per pixel by one facade shader (`src/intro3d.js`):
+- **Building types:** brick (with courses), limestone, glass curtain wall and dark steel. Windows get frames, center bars and sills.
+- **Rooms behind the glass:** each window ray-casts a small room (back wall with a desk or shelves, side walls, floor, a lit ceiling), lit cyan, gold or warm white, some behind blinds.
+- **Street level:** lit storefronts with red and green awnings on the ground floor.
+- **Massing:** towers over 48 m step back twice, New York style, with a cornice on every step. Low brick walk-ups carry fire escapes.
+- **Roofs:** bulkheads, wooden water tanks, and masts with red lights.
+- **Far away:** windows fade to an average so the facades don't shimmer.
+- **Streets:** car headlights (warm white) and taillights (red) slide along the avenues.
+- **The El:** wooden ties every 0.65 m and a walkway grate.
+
+**Neon** signs hang on the buildings along the line, with sign boards on a few roofs. They use generic shop words (DELI, HOTEL, BAR, DINER, CAFE, OPEN, PIZZA, LAUNDRY, TAXES, BAKERY, HARDWARE, LIQUOR) and roof words (PASS, NYC, EA, SEE, TAX), with no brands. They're drawn as glass tubes from the graffiti's letter skeletons: a soft glow in the tube color, then a white core, on a near-black board (`#0c0b16`). Tube colors: `#ff3fa4`, `#2fd3ff`, `#ffd23a`, `#7ae03a`, `#ff6a3a`, `#b34bff`. Like the graffiti palette, they live only in the 3D scene. The pixel ratio is capped at 2 and steps down by 0.25 when frames run past 21ms. With reduced motion it opens on the still portal shot, nothing loops, and the tap is a 260ms fade.
 
 ### Status bar band
 A Sign Black `#111` band fills the iPhone status bar area (`env(safe-area-inset-top)`), and the home-screen app asks for a translucent black status bar, so the station sign reads as running to the top of the screen.

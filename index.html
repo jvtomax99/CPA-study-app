@@ -1337,7 +1337,7 @@ html.introing, html.introing body { overflow: hidden; }
   const $i = s => el.querySelector(s);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.05 · d0c6ec2 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.05 · 272c340 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1448,6 +1448,9 @@ html.introing, html.introing body { overflow: hidden; }
     C: [[[1, 0.12], [0.86, 0], [0.16, 0], [0, 0.2], [0, 0.8], [0.16, 1], [0.86, 1], [1, 0.88]]],
     D: [[[0, 0], [0, 1], [0.68, 1], [1, 0.72], [1, 0.28], [0.68, 0], [0, 0]]],
     E: [[[1, 0], [0, 0], [0, 1], [1, 1]], [[0, 0.5], [0.72, 0.5]]],
+    F: [[[1, 0], [0, 0], [0, 1]], [[0, 0.5], [0.7, 0.5]]],
+    Z: [[[0, 0], [1, 0], [0, 1], [1, 1]]],
+    V: [[[0, 0], [0.5, 1], [1, 0]]],
     G: [[[1, 0.12], [0.86, 0], [0.16, 0], [0, 0.2], [0, 0.8], [0.16, 1], [0.86, 1], [1, 0.86], [1, 0.56], [0.55, 0.56]]],
     H: [[[0, 0], [0, 1]], [[1, 0], [1, 1]], [[0, 0.5], [1, 0.5]]],
     I: [[[0.5, 0], [0.5, 1]]],
@@ -1582,7 +1585,19 @@ html.introing, html.introing body { overflow: hidden; }
     else if (kind === "rear") { e.fillStyle = "#ff3b3b"; for (const hx of [120, 440]) { e.beginPath(); e.arc(hx, 470, 22, 0, 7); e.fill(); } }
     return { map: c, em };
   }
-  window.IntroArt = { side, end };
+  /* a neon sign: the same skeletons as glass tubes (a soft glow, then the bright core), on a dark backing board */
+  function neon(word, color, board = true) {
+    const h = 64, pad = 26, chars = [...word];
+    const ws = chars.map(c => c === " " ? h * 0.45 : (WIDE[c] || 0.7) * h * 0.75), w = Math.ceil(ws.reduce((a, b) => a + b, 0) + h * 0.22 * (chars.length - 1) + pad * 2);
+    const c = document.createElement("canvas"); c.width = w; c.height = h + pad * 2; const x = c.getContext("2d");
+    if (board) { x.fillStyle = "#0c0b16"; x.fillRect(0, 0, c.width, c.height); x.strokeStyle = "#2a2840"; x.lineWidth = 4; x.strokeRect(2, 2, c.width - 4, c.height - 4); }
+    const path = () => { x.beginPath(); let cx = pad; chars.forEach((ch, i) => { const st = G[ch]; if (st) for (const s2 of st) s2.forEach((p, k) => { const qx = cx + p[0] * ws[i], qy = pad + p[1] * h; k ? x.lineTo(qx, qy) : x.moveTo(qx, qy); }); cx += ws[i] + h * 0.22; }); };
+    x.lineCap = "round"; x.lineJoin = "round";
+    x.save(); x.shadowColor = color; x.shadowBlur = 22; x.strokeStyle = color; x.lineWidth = 9; path(); x.stroke(); x.restore();
+    x.strokeStyle = "#ffffff"; x.lineWidth = 3.5; path(); x.stroke();
+    return c;
+  }
+  window.IntroArt = { side, end, neon };
 })();
 
 </script>
@@ -1689,7 +1704,7 @@ html.introing, html.introing body { overflow: hidden; }
   const box = new THREE.BoxGeometry(1, 1, 1);
   {
     const seg = 2, n = Math.ceil(L / seg);
-    const deck = new THREE.InstancedMesh(box, steel, n), gird = new THREE.InstancedMesh(box, steel, n * 2), rails = new THREE.InstancedMesh(box, railM, n * 2);
+    const deck = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ color: 0x15141f, roughness: 0.92 }), n), gird = new THREE.InstancedMesh(box, steel, n * 2), rails = new THREE.InstancedMesh(box, railM, n * 2);
     const third = new THREE.InstancedMesh(box, new THREE.MeshBasicMaterial({ color: hdr(C.gold, 0.1) }), n);
     for (let i = 0; i < n; i++) {
       const d = i * seg + seg / 2;
@@ -1699,6 +1714,12 @@ html.introing, html.introing body { overflow: hidden; }
       place(third, i, d, 1.5, 0.1, seg + 0.05, 0.12, 0.2);
     }
     scene.add(deck, gird, rails, third);
+    /* wooden ties every 0.65 m and a walkway grate down the far side */
+    const nt = Math.floor(L / 0.65), ties = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ color: 0x120c0b, roughness: 0.95 }), nt);
+    for (let i = 0; i < nt; i++) place(ties, i, i * 0.65 + 0.3, 0, -0.08, 0.24, 0.16, 2.5);
+    const walk = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ color: 0x23223a, roughness: 0.7, metalness: 0.4 }), n);
+    for (let i = 0; i < n; i++) place(walk, i, i * seg + seg / 2, -1.75, -0.12, seg + 0.05, 0.06, 0.8);
+    scene.add(ties, walk);
     /* steel bents every 14 m, down to the street */
     const cols = [], beams = [];
     for (let d = 7; d < dPortal - 30; d += 14) { frame(d, fr); if (fr.P.y > 4) { cols.push(d); beams.push(d); } }
@@ -1711,39 +1732,97 @@ html.introing, html.introing body { overflow: hidden; }
     scene.add(cm, bm);
   }
 
-  /* ---------- buildings: one instanced box per tower, windows drawn per pixel (cyan, some gold), fogged ---------- */
+  /* ---------- buildings: instanced boxes in tiers (setbacks), each face drawn per pixel: brick, limestone, glass or dark
+     steel, window frames and mullions, lit storefronts on the ground floor, fire escapes on the low brick walk-ups, and
+     rooms you can see into: every window ray-casts a little room behind the glass (back wall, side walls, floor, ceiling
+     light, a desk or shelves), lit cyan, gold or warm, some behind blinds. Far away it all fades to an average. ---------- */
   const facade = (extra = 0) => new THREE.ShaderMaterial({ fog: true,
-    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uWall: { value: col(0x161437) }, uRoof: { value: col(0x0e0c26) }, uCyan: { value: hdr(C.cyan, 1.0) }, uGold: { value: hdr(C.gold, 1.1) }, uHaze: { value: C.haze }, uBoost: { value: extra } }]),
-    vertexShader: `attribute vec3 aSeed; varying vec3 vP; varying vec3 vN; varying vec3 vS;
+    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uCyan: { value: hdr(C.cyan, 1.0) }, uGold: { value: hdr(C.gold, 1.1) }, uHaze: { value: C.haze }, uBoost: { value: extra }, uMoon: { value: new V3(-0.4, 0.5, 0.75).normalize() } }]),
+    vertexShader: `attribute vec3 aSeed; attribute vec4 aInfo; varying vec3 vP; varying vec3 vN; varying vec3 vS; varying vec4 vI;
       #include <fog_pars_vertex>
       void main(){ mat4 m = modelMatrix;
         #ifdef USE_INSTANCING
         m = m * instanceMatrix;
         #endif
-        vec4 wp = m * vec4(position, 1.0); vP = wp.xyz; vN = normalize(mat3(m) * normal); vS = aSeed;
+        vec4 wp = m * vec4(position, 1.0); vP = wp.xyz; vN = normalize(mat3(m) * normal); vS = aSeed; vI = aInfo;
         vec4 mvPosition = viewMatrix * wp; gl_Position = projectionMatrix * mvPosition;
         #include <fog_vertex>
       }`,
-    fragmentShader: `uniform vec3 uWall, uRoof, uCyan, uGold, uHaze; uniform float uBoost; varying vec3 vP; varying vec3 vN; varying vec3 vS;
+    fragmentShader: `uniform vec3 uCyan, uGold, uHaze, uMoon; uniform float uBoost; varying vec3 vP; varying vec3 vN; varying vec3 vS; varying vec4 vI;
       #include <fog_pars_fragment>
       float h21(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+      float box2(vec2 p, vec2 a, vec2 b){ return step(a.x, p.x) * step(p.x, b.x) * step(a.y, p.y) * step(p.y, b.y); }
       void main(){
         vec3 N = normalize(vN); vec3 c;
-        if (N.y > 0.5) c = uRoof;
+        float style = vI.x, flH = vI.y, top = vI.z, base = vI.w;
+        vec3 wallC = style < 0.5 ? vec3(0.085, 0.035, 0.04) : style < 1.5 ? vec3(0.07, 0.065, 0.085) : style < 2.5 ? vec3(0.02, 0.03, 0.055) : vec3(0.028, 0.026, 0.045);
+        float amb = 0.55 + 0.45 * max(dot(N, uMoon), 0.0);
+        if (N.y > 0.5) { c = wallC * 0.5 + vec3(0.012, 0.01, 0.025); }
         else {
-          float u = abs(N.x) > 0.5 ? vP.z : vP.x; vec2 cell = vec2(u / 3.2, vP.y / 3.7); vec2 id = floor(cell), f = fract(cell);
-          float win = step(0.2, f.x) * step(f.x, 0.8) * step(0.24, f.y) * step(f.y, 0.76);
-          float lit = step(h21(id + vS.x * 17.0 + N.x * 3.1 + N.z * 7.7), vS.y + uBoost) * step(4.0, vP.y);
-          vec3 wc = mix(uCyan, uGold, step(h21(id.yx + vS.x * 3.0), vS.z)) * (0.45 + 0.8 * h21(id * 1.7 + vS.x)) * (1.0 + uBoost * 1.5);
-          vec3 wall = uWall * (0.75 + 0.25 * step(0.5, f.y)) + uHaze * 0.12 * exp(-vP.y / 25.0);
-          vec3 near = mix(wall, wc, win * lit);
+          vec3 T = normalize(cross(vec3(0.0, 1.0, 0.0), N));
+          float u = dot(vP, T), cw = style > 1.5 && style < 2.5 ? 2.2 : 3.0;
+          vec2 cell = vec2(u / cw, (vP.y - base) / flH); vec2 id = floor(cell), f = fract(cell);
+          float floors = floor((top - base) / flH), fl = id.y;
+          float seed = vS.x * 17.0 + N.x * 3.1 + N.z * 7.7;
+          /* wall: brick courses, stone joints, glass spandrels; lit by the moon and the city glow from below */
+          vec3 wall = wallC * amb + uHaze * 0.07 * exp(-(vP.y) / 30.0);
+          if (style < 0.5) { float mortar = step(0.9, fract(vP.y / 0.3)) + step(0.94, fract((u + step(0.5, fract(vP.y / 0.6)) * 0.12) / 0.24)) * 0.5; wall *= 1.0 - 0.25 * clamp(mortar, 0.0, 1.0); }
+          else if (style < 1.5) wall *= 1.0 - 0.18 * step(0.95, fract(vP.y / 1.2));
+          vec2 a = vec2(0.22, 0.22), b = vec2(0.78, 0.8);
+          if (style > 0.5 && style < 1.5) { a = vec2(0.16, 0.26); b = vec2(0.84, 0.82); }
+          else if (style > 1.5 && style < 2.5) { a = vec2(0.04, 0.08); b = vec2(0.96, 0.92); }
+          else if (style > 2.5) { a = vec2(0.1, 0.16); b = vec2(0.9, 0.86); }
+          float store = step(fl, 0.5), parapet = step(floors - 0.5, fl);
+          if (store > 0.5) { a = vec2(0.05, 0.05); b = vec2(0.95, 0.66); }
+          float win = box2(f, a, b) * (1.0 - parapet);
+          float frame = win * (1.0 - box2(f, a + 0.035, b - 0.035));
+          float mull = win * (style < 1.5 && store < 0.5 ? step(abs(f.x - 0.5), 0.018) : 0.0);
+          vec3 col = wall;
+          col += wallC * 0.6 * (step(abs(f.y - a.y + 0.04), 0.025) * box2(vec2(f.x, 0.5), vec2(a.x - 0.04, 0.0), vec2(b.x + 0.04, 1.0))) * (1.0 - parapet); /* sills */
+          if (parapet > 0.5) col = wall * 1.25 + wallC * step(0.8, f.y) * 0.8;   /* cornice band */
+          if (win > 0.5) {
+            float r = h21(id + seed), lit = step(r, vS.y + uBoost) * step(0.5, fl + store * 0.6);
+            if (store > 0.5) lit = step(0.25, h21(id * 1.3 + seed));
+            vec3 lc = mix(uCyan, uGold, step(h21(id.yx + vS.x * 3.0), vS.z + store * 0.6));
+            lc = mix(lc, vec3(1.0, 0.78, 0.55), step(0.82, h21(id * 2.1 + seed))) * (0.45 + 0.8 * h21(id * 1.7 + vS.x)) * (1.0 + uBoost * 1.5);
+            /* the room behind the window */
+            vec2 wf = (f - a) / (b - a);
+            vec3 V = normalize(vP - cameraPosition);
+            vec3 rd = vec3(dot(V, T), dot(V, vec3(0.0, 1.0, 0.0)), -dot(V, N)); rd.z = max(rd.z, 0.05);
+            vec3 ro = vec3(wf, 0.0); float D = store > 0.5 ? 0.8 : 1.1;
+            float tx = rd.x > 0.0 ? (1.0 - ro.x) / rd.x : -ro.x / min(rd.x, -1e-4);
+            float ty = rd.y > 0.0 ? (1.0 - ro.y) / rd.y : -ro.y / min(rd.y, -1e-4);
+            float tz = D / rd.z, t = min(min(tx, ty), tz); vec3 hp = ro + rd * t;
+            vec3 room; float lamp;
+            if (t == tz) { room = vec3(0.55); float desk = box2(hp.xy, vec2(0.15 + r * 0.3, 0.0), vec2(0.55 + r * 0.3, 0.32)) + box2(hp.xy, vec2(0.7, 0.0), vec2(0.86, 0.7)) * step(0.5, r);
+              room *= 1.0 - 0.75 * clamp(desk, 0.0, 1.0); lamp = 0.8; }
+            else if (t == tx) { room = vec3(0.4) * (1.0 - hp.z / D * 0.4); lamp = 0.6; }
+            else { room = hp.y > 0.5 ? vec3(0.75) : vec3(0.22); lamp = hp.y > 0.5 ? 1.0 - length(hp.xz - vec2(0.5, D * 0.5)) * 0.9 : 0.5; }
+            float depth = exp(-hp.z * 0.7);
+            vec3 litRoom = lc * room * (0.35 + 0.9 * max(lamp, 0.0)) * (0.6 + 0.4 * depth);
+            vec3 darkRoom = vec3(0.006, 0.009, 0.02) + uHaze * 0.03 * room;
+            vec3 glass = mix(darkRoom, litRoom, lit);
+            float blinds = step(0.72, h21(id * 3.7 + seed)) * lit; glass = mix(glass, lc * 0.5 * (0.6 + 0.4 * step(0.5, fract(wf.y * 14.0))), blinds * step(1.0 - 0.6 * h21(id + 9.0), wf.y));
+            glass += uHaze * 0.05 * (1.0 - lit) + vec3(0.02, 0.025, 0.04) * pow(1.0 - rd.z, 3.0);
+            col = glass;
+            if (store > 0.5) col += lc * 0.15 * lit;
+          }
+          col = mix(col, wallC * 1.6 * amb + vec3(0.02), clamp(frame + mull, 0.0, 1.0) * 0.85);
+          /* awnings over the storefronts */
+          if (store > 0.5) col = mix(col, (h21(id + 4.0) < 0.5 ? vec3(0.32, 0.05, 0.07) : vec3(0.04, 0.16, 0.12)) * amb, box2(f, vec2(0.03, 0.7), vec2(0.97, 0.8)));
+          /* fire escapes on the low brick walk-ups: landings, rails and stairs over every fourth column pair */
+          if (style < 0.5 && top < 32.0 && fl > 0.5 && parapet < 0.5) { float k = mod(id.x, 4.0);
+            if (k > 0.5 && k < 2.5) { vec2 g = vec2(fract(cell.x * 0.5 - 0.5), f.y);
+              float iron = step(f.y, 0.05) + step(abs(f.y - 0.38), 0.012) + step(abs(g.x - g.y * 0.9 - 0.05), 0.022) * step(0.05, f.y) + step(abs(fract(cell.x * 4.0) - 0.5), 0.04) * step(f.y, 0.38) * 0.6;
+              col = mix(col, vec3(0.01, 0.01, 0.016), clamp(iron, 0.0, 1.0) * 0.92); } }
           float aa = fwidth(cell.x) + fwidth(cell.y);
-          vec3 far = wall + wc * (vS.y + uBoost) * 0.36;
-          c = mix(near, far, smoothstep(0.35, 0.9, aa));
+          vec3 far = wall + mix(uCyan, uGold, vS.z) * (vS.y + uBoost) * 0.3 * (1.0 - parapet);
+          c = mix(col, far, smoothstep(0.35, 0.9, aa));
         }
         gl_FragColor = vec4(c, 1.0);
         #include <fog_fragment>
       }` });
+  const darkRoofM = new THREE.MeshStandardMaterial({ color: 0x1a1828, roughness: 0.9 });
   const portalF = frame(dPortal, {}), P0 = portalF.P.clone(), T0 = portalF.T.clone(), S0 = portalF.S.clone();
   const towerAt = P0.clone().addScaledVector(T0, 78); towerAt.y = 0;
   const near = (x, z) => { let best = 1e9, bi = 0; for (let i = 0; i <= SAMPLES; i += 2) { const p = pts[i], d = (p.x - x) ** 2 + (p.z - z) ** 2; if (d < best) { best = d; bi = i; } } return [Math.sqrt(best), bi]; };
@@ -1754,19 +1833,61 @@ html.introing, html.introing body { overflow: hidden; }
       const [dist, bi] = near(x, z); if (dist < 13) continue;
       const tw = Math.hypot(x - towerAt.x, z - towerAt.z); if (tw < 56) continue;
       const fi = frame(bi / SAMPLES * L, {}), side = (x - fi.P.x) * fi.S.x + (z - fi.P.z) * fi.S.z;
-      /* the camera rides on the +side: keep that side low so the train stays in view */
-      if (side > 0 && side < 58 && bi / SAMPLES * L < dPortal + 10) continue;
+      /* the crane rides up the +side: rowhouses only there, low enough to clear it */
+      const clearLow = side > 0 && side < 58 && bi / SAMPLES * L < dPortal + 10;
       if (side > 58 && side < 165 && bi / SAMPLES * L < D0 + 110) continue; /* the opening shot's camera rides over this block */
       if (Math.hypot(x - P0.x, z - P0.z) < 40) continue;
       let h = side > 0 && dist < 170 ? 6 + rnd() * 12 : 16 + rnd() * rnd() * 70;
       h += 90 * Math.exp(-tw / 140) * rnd();
+      if (clearLow) h = 4.5 + rnd() * 3.5;
       const low = side > 0 && dist < 170;
       list.push([x, z, w, dd, h, rnd(), low ? 0.05 + rnd() * 0.1 : 0.1 + rnd() * 0.22, rnd() < 0.5 ? 0.12 : 0.26]);
     }
-    const bm = new THREE.InstancedMesh(box, facade(), list.length), seed = new Float32Array(list.length * 3);
-    list.forEach(([x, z, w, d, h, s1, s2, s3], i) => { bm.setMatrixAt(i, m4.compose(tmp.set(x, h / 2, z), q4.identity(), sc.set(w, h, d))); seed.set([s1, s2, s3], i * 3); });
-    bm.geometry = box.clone(); bm.geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seed, 3));
+    /* tiers: tall towers step back twice (New York setbacks); each tier carries its own cornice */
+    const tiers = [];
+    list.forEach(([x, z, w, d, h, s1, s2, s3]) => {
+      const style = h < 30 ? (rnd() < 0.75 ? 0 : 1) : h < 70 ? [0, 1, 1, 2, 3][Math.floor(rnd() * 5)] : [1, 2, 2, 3][Math.floor(rnd() * 4)];
+      const flH = style === 2 ? 3.6 : 3.3 + rnd() * 0.7;
+      if (h > 48 && style !== 2) { const h1 = h * 0.62, h2 = h * (h > 85 ? 0.22 : 0.38);
+        tiers.push([x, z, w, d, 0, h1, s1, s2, s3, style, flH]); tiers.push([x, z, w * 0.74, d * 0.74, h1, h1 + h2, s1, s2, s3, style, flH]);
+        if (h > 85) tiers.push([x, z, w * 0.5, d * 0.5, h1 + h2, h, s1, s2, s3, style, flH]); }
+      else tiers.push([x, z, w, d, 0, h, s1, s2, s3, style, flH]);
+    });
+    const bm = new THREE.InstancedMesh(box, facade(), tiers.length), seed = new Float32Array(tiers.length * 3), info = new Float32Array(tiers.length * 4);
+    tiers.forEach(([x, z, w, d, y0, y1, s1, s2, s3, style, flH], i) => { bm.setMatrixAt(i, m4.compose(tmp.set(x, (y0 + y1) / 2, z), q4.identity(), sc.set(w, y1 - y0, d))); seed.set([s1, s2, s3], i * 3); info.set([style, flH, y1, y0], i * 4); });
+    bm.geometry = box.clone(); bm.geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seed, 3)); bm.geometry.setAttribute("aInfo", new THREE.InstancedBufferAttribute(info, 4));
     scene.add(bm);
+    const stoneM = new THREE.MeshStandardMaterial({ color: 0x3a3650, roughness: 0.8 });
+    const corn = new THREE.InstancedMesh(box, stoneM, tiers.length);
+    tiers.forEach(([x, z, w, d, , y1, , , , style], i) => corn.setMatrixAt(i, m4.compose(tmp.set(x, y1 + 0.25, z), q4.identity(), sc.set(style === 2 ? w + 0.1 : w + 0.7, style === 2 ? 0.25 : 0.55, style === 2 ? d + 0.1 : d + 0.7))));
+    scene.add(corn);
+    /* neon: shop signs on the buildings along the line and sign boards on a few roofs (generic words, no brands) */
+    {
+      const WORDS = ["DELI", "HOTEL", "BAR", "DINER", "CAFE", "OPEN", "PIZZA", "LAUNDRY", "TAXES", "BAKERY", "HARDWARE", "LIQUOR"], COLS = ["#ff3fa4", "#2fd3ff", "#ffd23a", "#7ae03a", "#ff6a3a", "#b34bff"];
+      const nearT = tiers.filter(t => t[4] === 0).map(t => { const [d2, bi] = near(t[0], t[1]); return [t, d2, bi]; }).filter(([t, d2, bi]) => d2 < 110 && d2 > 12 && t[5] > 12 && bi / SAMPLES * L > D0 - 20 && bi / SAMPLES * L < dPortal).filter(() => rnd() < 0.7).slice(0, 70);
+      nearT.forEach(([t, d2, bi], i) => {
+        const [x, z, w, d] = t, fp = pts[bi], dx = fp.x - x, dz = fp.z - z, alongX = Math.abs(dx) > Math.abs(dz), nx = alongX ? Math.sign(dx) : 0, nz = alongX ? 0 : Math.sign(dz);
+        const cv = IntroArt.neon(WORDS[i % WORDS.length], COLS[(i * 5) % COLS.length]), tx2 = new THREE.CanvasTexture(cv); tx2.colorSpace = THREE.SRGBColorSpace;
+        const sw = Math.min((alongX ? d : w) * 0.85, cv.width / cv.height * 2.4), sh = sw * cv.height / cv.width;
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(sw, sh), new THREE.MeshBasicMaterial({ map: tx2, color: new THREE.Color(2.2, 2.2, 2.2), fog: true }));
+        m.position.set(x + nx * (w / 2 + 0.08), Math.min(t[5] - 2, 11 + rnd() * 6), z + nz * (d / 2 + 0.08)); m.lookAt(m.position.x + nx, m.position.y, m.position.z + nz); scene.add(m);
+      });
+      const bb = tiers.filter(t => { if (t[4] !== 0 || t[5] > 40) return false; const [d2, bi] = near(t[0], t[1]); return d2 < 140 && bi / SAMPLES * L > D0 - 20 && bi / SAMPLES * L < dPortal; }).filter(() => rnd() < 0.35).slice(0, 24);
+      bb.forEach(([x, z, w, d, , y1], i) => { const cv = IntroArt.neon(["PASS", "NYC", "EA", "SEE", "TAX"][i % 5], COLS[i % COLS.length]), tx2 = new THREE.CanvasTexture(cv); tx2.colorSpace = THREE.SRGBColorSpace;
+        /* two faces back to back, so the words read the right way round from either side */
+        const sw = Math.min(w, 12), sh = sw * cv.height / cv.width, m = new THREE.Group(), nm = new THREE.MeshBasicMaterial({ map: tx2, color: new THREE.Color(2.6, 2.6, 2.6), fog: true });
+        for (const ry of [0, Math.PI]) { const f = new THREE.Mesh(new THREE.PlaneGeometry(sw, sh), nm); f.rotation.y = ry; f.position.z = ry ? -0.06 : 0.06; m.add(f); }
+        m.position.set(x, y1 + sh / 2 + 2.2, z); m.rotation.y = rnd() * Math.PI; scene.add(m);
+        const legs = new THREE.Mesh(new THREE.BoxGeometry(sw * 0.9, 2.2, 0.2), steel); legs.position.set(x, y1 + 1.1, z); legs.rotation.y = m.rotation.y; scene.add(legs); });
+    }
+    /* rooftop bulkheads and units, and a red-lit mast on the tall ones */
+    const roofs = tiers.filter(t => t[5] === Math.max(...tiers.filter(u => u[0] === t[0] && u[1] === t[1]).map(u => u[5])));
+    const bulk = new THREE.InstancedMesh(box, darkRoofM, roofs.length * 2); let bi2 = 0;
+    roofs.forEach(([x, z, w, d, , y1]) => { for (let k = 0; k < 2; k++) bulk.setMatrixAt(bi2++, m4.compose(tmp.set(x + (rnd() - 0.5) * w * 0.5, y1 + 1.2 + k * 0.2, z + (rnd() - 0.5) * d * 0.5), q4.identity(), sc.set(2 + rnd() * 2.5, 2 + k * 0.6, 2 + rnd() * 2.5))); });
+    scene.add(bulk);
+    { const tall = roofs.filter(t => t[5] > 80), p = new Float32Array(tall.length * 3); tall.forEach(([x, z, , , , y1], i) => p.set([x, y1 + 9, z], i * 3));
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(p, 3)); scene.add(new THREE.Points(g, new THREE.PointsMaterial({ size: 3, sizeAttenuation: false, color: hdr(col(0xff3b3b), 3), fog: true })));
+      const masts = new THREE.InstancedMesh(box, steel, tall.length); tall.forEach(([x, z, , , , y1], i) => masts.setMatrixAt(i, m4.compose(tmp.set(x, y1 + 4.5, z), q4.identity(), sc.set(0.25, 9, 0.25)))); scene.add(masts); }
     /* wooden water tanks on some of the mid-rise roofs, the New York skyline's tell */
     const tops = list.filter(([, , w, d, h]) => h > 14 && h < 70 && w > 10 && d > 10).filter(() => rnd() < 0.16);
     const woodM = new THREE.MeshStandardMaterial({ color: 0x2c2434, roughness: 0.85 });
@@ -1779,6 +1900,29 @@ html.introing, html.introing body { overflow: hidden; }
     });
     scene.add(tank, lid, legs);
   }
+  /* traffic: headlights one way, taillights the other, sliding down the avenues and streets */
+  const traffic = (() => {
+    const n = 2400, a = new Float32Array(n * 4), b = new Float32Array(n * 2);
+    for (let i = 0; i < n; i++) { const alongX = rnd() < 0.5, line = (Math.floor(rnd() * 60) - 32) * 20 + 10, dir = rnd() < 0.5 ? 1 : -1, lane = dir * (1.6 + rnd() * 1.4);
+      a.set(alongX ? [0, line + lane, 0, dir] : [line + lane, 0, 1, dir], i * 4); b.set([rnd() * 1200, 9 + rnd() * 9], i * 2); }
+    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(n * 3), 3)); g.setAttribute("aLane", new THREE.BufferAttribute(a, 4)); g.setAttribute("aRun", new THREE.BufferAttribute(b, 2));
+    const m = new THREE.ShaderMaterial({ fog: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uT: { value: 0 }, uPx: { value: 2.6 } }]),
+      vertexShader: `attribute vec4 aLane; attribute vec2 aRun; uniform float uT, uPx; varying vec3 vC;
+        #include <fog_pars_vertex>
+        void main(){ float d = mod(aRun.x + uT * aRun.y * aLane.w, 1200.0) - 650.0;
+          vec3 p = aLane.z > 0.5 ? vec3(aLane.x, 0.6, d) : vec3(d, 0.6, aLane.y);
+          vC = aLane.w > 0.0 ? vec3(1.6, 1.4, 1.1) : vec3(1.6, 0.12, 0.08);
+          vec4 mvPosition = viewMatrix * vec4(p, 1.0); gl_Position = projectionMatrix * mvPosition; gl_PointSize = uPx;
+          #include <fog_vertex>
+        }`,
+      fragmentShader: `varying vec3 vC;
+        #include <fog_pars_fragment>
+        void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.1, length(q)); gl_FragColor = vec4(vC * a, 1.0);
+          #include <fog_fragment>
+        }` });
+    const pts = new THREE.Points(g, m); pts.frustumCulled = false; scene.add(pts); return m;
+  })();
   /* street lights: gold points on the avenue grid */
   {
     const p = [], c = [];
@@ -1796,7 +1940,9 @@ html.introing, html.introing body { overflow: hidden; }
     const tiers = [[46, 70, 46], [34, 58, 34], [24, 44, 24]], seed = new Float32Array(9), tm = new THREE.InstancedMesh(box, facade(0), 3); let y = 0;
     tm.material.uniforms.uBoost.value = 0.25; tm.userData.f = tm.material;
     tiers.forEach(([w, h, d], i) => { tm.setMatrixAt(i, m4.compose(tmp.set(towerAt.x, y + h / 2, towerAt.z), q4.identity(), sc.set(w, h, d))); seed.set([0.3 + i * 0.2, 0.55, 0.7], i * 3); y += h; });
-    tm.geometry = box.clone(); tm.geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seed, 3)); scene.add(tm);
+    tm.geometry = box.clone(); tm.geometry.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seed, 3));
+    { const inf = new Float32Array(12); let yy = 0; tiers.forEach(([, h], i) => { inf.set([1, 3.7, yy + h, yy], i * 4); yy += h; }); tm.geometry.setAttribute("aInfo", new THREE.InstancedBufferAttribute(inf, 4)); }
+    scene.add(tm);
     glow.tower = tm.material;
     const crownM = new THREE.LineBasicMaterial({ color: hdr(C.gold, 2.2), fog: false });
     y = 0; for (const [w, h, d] of tiers) { y += h; const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w + 0.4, 1.2, d + 0.4)), crownM); e.position.set(towerAt.x, y - 0.6, towerAt.z); scene.add(e); }
@@ -1898,7 +2044,7 @@ html.introing, html.introing body { overflow: hidden; }
 
   /* ---------- the train: four older-style stainless cars (rounded roof, fluted sides, door pairs) carrying graffiti ---------- */
   const CAR = 10.2, GAP = 0.7, NCAR = 4;
-  const steelM = new THREE.MeshStandardMaterial({ color: 0xb8bcc8, metalness: 0.75, roughness: 0.45 });
+  const steelM = new THREE.MeshStandardMaterial({ color: 0x9da2b0, metalness: 0.7, roughness: 0.55 });
   const darkM = new THREE.MeshStandardMaterial({ color: 0x14141e, roughness: 0.9 });
   const wheelM = new THREE.MeshStandardMaterial({ color: 0x2a2a33, metalness: 0.7, roughness: 0.4 });
   const trainMats = [steelM, wheelM];
@@ -1911,7 +2057,7 @@ html.introing, html.introing body { overflow: hidden; }
     const g = new THREE.Group();
     for (const sd of [1, -1]) {
       /* plain steel until the graffiti is painted (paintTrain, below) */
-      const m = new THREE.MeshStandardMaterial({ color: 0xc8ccd6, metalness: 0.7, roughness: 0.35, emissive: new THREE.Color(2.2, 2.2, 2.2), emissiveMap: null });
+      const m = new THREE.MeshStandardMaterial({ color: 0xc8ccd6, metalness: 0.7, roughness: 0.35, emissive: new THREE.Color(1.6, 1.6, 1.6), emissiveMap: null });
       const side = new THREE.Mesh(new THREE.PlaneGeometry(CAR, 3.0), m); side.position.set(0, 2.2, sd * 1.4); if (sd < 0) side.rotation.y = Math.PI; g.add(side);
       sideMats.push({ m, car: k, flip: sd < 0 }); trainMats.push(m);
     }
@@ -2031,7 +2177,7 @@ html.introing, html.introing body { overflow: hidden; }
   let trainEnv = null;
   import("three/addons/loaders/RGBELoader.js").then(({ RGBELoader }) => new RGBELoader().loadAsync("art/intro-env.hdr")).then(t => {
     if (dead) return; const pm = new THREE.PMREMGenerator(renderer); trainEnv = pm.fromEquirectangular(t).texture; pm.dispose(); t.dispose();
-    for (const m of trainMats) { m.envMap = trainEnv; m.envMapIntensity = m === steelM ? 0.22 : 0.45; m.needsUpdate = true; }
+    for (const m of trainMats) { m.envMap = trainEnv; m.envMapIntensity = m === steelM ? 0.1 : 0.45; m.needsUpdate = true; }
   }).catch(() => {}).finally(() => Boot.done("env"));
 
   /* ---------- post: bloom, then grain and vignette ---------- */
@@ -2181,7 +2327,7 @@ html.introing, html.introing body { overflow: hidden; }
     camera.fov = baseFov() + view.fovK * 10; camera.updateProjectionMatrix();
     glow.halo.lookAt(camera.position); glow.halo2.lookAt(camera.position); glow.beacon.lookAt(camera.position);
     if (headCone) headCone.visible = shotAt(s) !== 0; /* the cold open's camera stands inside the beam */
-    if (headSpot) headSpot.intensity = shotAt(s) === 0 ? 260 : 900;
+    if (headSpot) headSpot.intensity = shotAt(s) === 0 ? 260 : 520;
     bloom.strength *= view.bloomK;
     /* headlight streak: on the lead car's nose, facing the camera, bright only when the train faces us */
     if (cars[0].visible) { tmp.set(CAR / 2 + 0.3, 1.6, 0); cars[0].localToWorld(tmp); streak.position.copy(tmp); streak.quaternion.copy(camera.quaternion);
@@ -2196,7 +2342,7 @@ html.introing, html.introing body { overflow: hidden; }
     let ry = view.rays;
     if (ry > 0 && view.focus) { tmp.copy(view.focus).project(camera); if (tmp.z > 1 || Math.abs(tmp.x) > 1.3 || Math.abs(tmp.y) > 1.3) ry = 0; else rays.uniforms.uC.value.set(tmp.x * 0.5 + 0.5, tmp.y * 0.5 + 0.5); }
     rays.uniforms.uRays.value = reduce ? Math.min(ry, 0.5) : ry; rays.uniforms.uZoom.value = reduce ? 0 : view.zoom; grain.uniforms.uCA.value = reduce ? 0 : view.ca;
-    grain.uniforms.uT.value = reduce ? 0 : rt;
+    grain.uniforms.uT.value = reduce ? 0 : rt; traffic.uniforms.uT.value = reduce ? 0 : rt; traffic.uniforms.uPx.value = 2.6 * dpr;
     composer.render(dt);
     /* hold 60fps on a phone: if steady frames run long, step the pixel ratio down, at most twice. One-off stalls (the town
        building, the bank arriving) and the first two seconds don't count */

@@ -23,6 +23,9 @@
     C: [[[1, 0.12], [0.86, 0], [0.16, 0], [0, 0.2], [0, 0.8], [0.16, 1], [0.86, 1], [1, 0.88]]],
     D: [[[0, 0], [0, 1], [0.68, 1], [1, 0.72], [1, 0.28], [0.68, 0], [0, 0]]],
     E: [[[1, 0], [0, 0], [0, 1], [1, 1]], [[0, 0.5], [0.72, 0.5]]],
+    F: [[[1, 0], [0, 0], [0, 1]], [[0, 0.5], [0.7, 0.5]]],
+    Z: [[[0, 0], [1, 0], [0, 1], [1, 1]]],
+    V: [[[0, 0], [0.5, 1], [1, 0]]],
     G: [[[1, 0.12], [0.86, 0], [0.16, 0], [0, 0.2], [0, 0.8], [0.16, 1], [0.86, 1], [1, 0.86], [1, 0.56], [0.55, 0.56]]],
     H: [[[0, 0], [0, 1]], [[1, 0], [1, 1]], [[0, 0.5], [1, 0.5]]],
     I: [[[0.5, 0], [0.5, 1]]],
@@ -157,5 +160,17 @@
     else if (kind === "rear") { e.fillStyle = "#ff3b3b"; for (const hx of [120, 440]) { e.beginPath(); e.arc(hx, 470, 22, 0, 7); e.fill(); } }
     return { map: c, em };
   }
-  window.IntroArt = { side, end };
+  /* a neon sign: the same skeletons as glass tubes (a soft glow, then the bright core), on a dark backing board */
+  function neon(word, color, board = true) {
+    const h = 64, pad = 26, chars = [...word];
+    const ws = chars.map(c => c === " " ? h * 0.45 : (WIDE[c] || 0.7) * h * 0.75), w = Math.ceil(ws.reduce((a, b) => a + b, 0) + h * 0.22 * (chars.length - 1) + pad * 2);
+    const c = document.createElement("canvas"); c.width = w; c.height = h + pad * 2; const x = c.getContext("2d");
+    if (board) { x.fillStyle = "#0c0b16"; x.fillRect(0, 0, c.width, c.height); x.strokeStyle = "#2a2840"; x.lineWidth = 4; x.strokeRect(2, 2, c.width - 4, c.height - 4); }
+    const path = () => { x.beginPath(); let cx = pad; chars.forEach((ch, i) => { const st = G[ch]; if (st) for (const s2 of st) s2.forEach((p, k) => { const qx = cx + p[0] * ws[i], qy = pad + p[1] * h; k ? x.lineTo(qx, qy) : x.moveTo(qx, qy); }); cx += ws[i] + h * 0.22; }); };
+    x.lineCap = "round"; x.lineJoin = "round";
+    x.save(); x.shadowColor = color; x.shadowBlur = 22; x.strokeStyle = color; x.lineWidth = 9; path(); x.stroke(); x.restore();
+    x.strokeStyle = "#ffffff"; x.lineWidth = 3.5; path(); x.stroke();
+    return c;
+  }
+  window.IntroArt = { side, end, neon };
 })();
