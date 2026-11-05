@@ -16502,5 +16502,1645 @@
 "cpa": [
 "AUD-I"
 ]
+},
+{
+"id": "far1-001",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "Hollis Corp., a calendar-year business entity, had each of the following items for the year ended December 31, 2025. All of the following are reported in other comprehensive income EXCEPT:",
+"choices": [
+"An unrealized holding gain on available-for-sale debt securities",
+"A foreign currency translation adjustment",
+"An unrealized holding gain on an investment in equity securities with a readily determinable fair value",
+"A gain on a derivative instrument designated as, and qualifying as, a cash flow hedge"
+],
+"answer": 2,
+"explain": "Investments in equity securities are measured at fair value with unrealized holding gains and losses included in earnings, so that gain goes to net income, not other comprehensive income. Unrealized holding gains and losses on available-for-sale debt securities, foreign currency translation adjustments and gains on derivatives designated as, and qualifying as, cash flow hedges are all listed items of other comprehensive income. The available-for-sale category now applies only to debt securities.",
+"source": "ASC 220-10-45-10A and ASC 321-10-35-1, as stated in ASU 2016-01",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-002",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "For the year ended December 31, 2025, Marlow Inc. reported net income of $500,000. Also for 2025, net of tax, Marlow had a foreign currency translation gain of $20,000, unrealized holding gains on available-for-sale debt securities arising during the year of $45,000, and a reclassification adjustment of $5,000 for gains on available-for-sale debt securities that were realized and included in net income. Net income already includes a $12,000 unrealized gain on equity securities. Marlow declared $60,000 of dividends in 2025. What is Marlow's comprehensive income for 2025?",
+"choices": [
+"$560,000",
+"$572,000",
+"$565,000",
+"$500,000"
+],
+"answer": 0,
+"explain": "Comprehensive income is net income plus other comprehensive income: $500,000 + $20,000 + $45,000 - $5,000 = $560,000. The reclassification adjustment removes the realized gain from other comprehensive income so it is not counted twice, and the equity securities gain is already in net income. Dividends are distributions to owners, which are excluded from comprehensive income, so subtracting them to get $500,000 is wrong.",
+"source": "ASC 220-10-45-10A and 220-10-55-7, and ASC 321-10-35-1, as stated in ASU 2016-01; Concepts Statement 8, Chapter 4, paras. E72 and E75",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-004",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "Brook Corp.'s total stockholders' equity was $900,000 at January 1, 2025. During the year ended December 31, 2025, net income was $150,000 and other comprehensive income was $10,000. Brook issued new common shares for $80,000 cash, and one of Brook's shareholders sold shares she held to an outside investor for $40,000. On December 20, 2025, Brook declared a $30,000 cash dividend payable January 15, 2026. What is Brook's total stockholders' equity at December 31, 2025?",
+"choices": [
+"$1,150,000",
+"$1,110,000",
+"$1,140,000",
+"$1,100,000"
+],
+"answer": 1,
+"explain": "$900,000 + $150,000 + $10,000 + $80,000 - $30,000 = $1,110,000. The dividend reduces equity when it is declared, because declaring it creates a liability to owners, and a sale of shares between two investors does not change Brook's net assets because Brook receives nothing. Adding the $40,000 gives $1,150,000, and waiting until payment to record the dividend gives $1,140,000.",
+"source": "Concepts Statement 8, Chapter 4, paras. E71 through E75",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-005",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "Corbin Corp. reported net income of $240,000 for the year ended December 31, 2025. Depreciation expense was $50,000, and Corbin recognized a $12,000 gain on the sale of equipment. During 2025, accounts receivable increased $18,000, inventory decreased $9,000, accounts payable increased $7,000 and accrued wages payable decreased $4,000. Corbin paid dividends of $25,000. Using the indirect method, what is Corbin's net cash provided by operating activities for 2025?",
+"choices": [
+"$296,000",
+"$247,000",
+"$272,000",
+"$290,000"
+],
+"answer": 2,
+"explain": "$240,000 + $50,000 depreciation - $12,000 gain - $18,000 receivables increase + $9,000 inventory decrease + $7,000 payables increase - $4,000 wages decrease = $272,000. The gain is removed because the sale proceeds belong in investing activities, and dividends paid are a financing outflow, not an operating adjustment. Adding the gain instead of removing it gives $296,000.",
+"source": "ASC 230-10-45-15 and 230-10-45-28, as stated in ASU 2016-14; OpenStax Principles of Accounting, Volume 1, section 16.3 (procedure)",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-006",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "During the year ended December 31, 2025, Pell Co., a lessee, paid $120,000 on a finance lease, of which $25,000 was interest on the lease liability and $95,000 reduced the principal of the lease liability. Pell also paid $50,000 on an operating lease. None of the payments relate to bringing another asset to the condition and location necessary for its intended use. How does Pell classify these payments in its 2025 statement of cash flows?",
+"choices": [
+"Operating outflows of $75,000 and financing outflows of $95,000",
+"Operating outflows of $50,000 and financing outflows of $120,000",
+"Operating outflows of $170,000 and no financing outflows",
+"Operating outflows of $25,000 and financing outflows of $145,000"
+],
+"answer": 0,
+"explain": "A lessee classifies repayments of the principal portion of a finance lease liability as financing activities, the interest portion like other interest paid (an operating outflow), and operating lease payments as operating activities. Operating outflows are $25,000 + $50,000 = $75,000 and financing outflows are $95,000. Putting the whole finance lease payment in financing ignores the rule for interest.",
+"source": "ASC 842-20-45-5, as stated in ASU 2016-02; ASC 230-10-45-17(d), as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-007",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "A",
+"q": "At December 31, 2025, Arden Inc., a lessee, includes its finance lease right-of-use assets in the line item \"Property and equipment, net\" and its operating lease right-of-use assets in \"Other noncurrent assets.\" Its finance lease liabilities are included in \"Long-term debt\" and its operating lease liabilities in \"Other liabilities.\" None of these lease amounts is shown as a separate line item. Which statement about Arden's presentation is correct?",
+"choices": [
+"It is not acceptable, because every lessee must present right-of-use assets and lease liabilities as separate line items on the face of the balance sheet",
+"It is acceptable only if Arden combines its finance and operating lease right-of-use assets into a single line item",
+"It is acceptable, provided the notes disclose the finance and operating lease amounts separately and state which line items include the right-of-use assets and lease liabilities",
+"It is acceptable, and no further disclosure about the lease amounts or line items is needed"
+],
+"answer": 2,
+"explain": "A lessee may either present finance and operating lease right-of-use assets and lease liabilities separately on the balance sheet or disclose them separately in the notes, and if it does not present them separately it must disclose which line items include them. Arden keeps finance and operating amounts in different line items, which it must do, because presenting finance and operating lease right-of-use assets (or liabilities) in the same line item is prohibited.",
+"source": "ASC 842-20-45-1 through 45-3, as stated in ASU 2016-02",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-008",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "At January 1, 2025, Riverbend Literacy Center, a nongovernmental not-for-profit entity, had net assets with donor restrictions of $140,000: $90,000 of cash a donor restricted to the adult reading program, and a $50,000 unconditional promise to give, with no purpose restriction, that is due in 2026. During the year ended December 31, 2025, Riverbend incurred $70,000 of adult reading program expenses, which it paid from its general operating cash. What amount should Riverbend report as net assets released from restrictions for 2025?",
+"choices": [
+"$0",
+"$120,000",
+"$90,000",
+"$70,000"
+],
+"answer": 3,
+"explain": "When an expense is incurred for a purpose for which both restricted and unrestricted net assets are available, the donor restriction is fulfilled to the extent of the expense, whichever cash account paid it, so $70,000 is released. The $50,000 promise carries an implied time restriction that does not expire until it is due in 2026. Reporting $0 because general cash paid the bills is the most common error.",
+"source": "ASC 958-205-45-9 and 958-205-45-11, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-009",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "In 2024, Hillcrest Clinic, a nongovernmental not-for-profit entity, received $500,000 in cash from a donor restricted to constructing a new wing. The donor did not stipulate how long the wing must be used. The wing was completed and placed in service on October 1, 2025, and Hillcrest spent the entire $500,000 on it. The wing has a 40-year useful life and no salvage value. What amount should Hillcrest reclassify from net assets with donor restrictions to net assets without donor restrictions for the year ended December 31, 2025?",
+"choices": [
+"$500,000",
+"$3,125",
+"$12,500",
+"$0"
+],
+"answer": 0,
+"explain": "Unless the donor limits the use of the assets for a period of time or a particular purpose, a restriction on cash to acquire or construct long-lived assets expires when the assets are placed in service, so the full $500,000 is released on October 1, 2025. Releasing an amount equal to depreciation ($500,000 / 40 x 3/12 = $3,125) treats the gift as carrying an implied time restriction, which the donor did not impose. Accounting Standards Update (ASU) 2016-14 removed the option to adopt a policy of implying a time restriction on such gifts.",
+"source": "ASC 958-205-45-12, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-010",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "For the year ended December 31, 2025, Lakeside Arts Council, a nongovernmental not-for-profit entity that is not a voluntary health and welfare entity, reported program service expenses of $500,000, management and general expenses of $120,000 and fundraising expenses of $80,000. It also had $15,000 of external investment advisory fees, which it netted against investment return, and a $10,000 loss on the sale of equipment. What total should Lakeside report in its analysis of expenses by nature and function, and where may it present that analysis?",
+"choices": [
+"$725,000, only in a separate statement of functional expenses",
+"$700,000, on the face of the statement of activities, as a schedule in the notes, or in a separate financial statement",
+"$715,000, on the face of the statement of activities, as a schedule in the notes, or in a separate financial statement",
+"No analysis is required, because only voluntary health and welfare entities must analyze expenses by nature and function"
+],
+"answer": 1,
+"explain": "All not-for-profit entities must report an analysis of all expenses by nature and function in one location: the face of the statement of activities, a schedule in the notes or a separate financial statement. Investment expenses netted against investment return, and losses, are excluded from the analysis, so the total is $500,000 + $120,000 + $80,000 = $700,000. Limiting the requirement to voluntary health and welfare entities reflects the rule before the 2016 amendments.",
+"source": "ASC 958-205-45-6 and 958-720-45-15, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-011",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "Harbor Youth Services, a nongovernmental not-for-profit entity, had the following investment results for the year ended December 31, 2025: interest and dividends, $60,000; net realized and unrealized gains, $40,000; fees paid to an external investment advisor, $8,000; salaries of internal staff who develop and carry out investment strategy, $5,000; and costs of unitizing its endowment pool, $2,000. What net investment return should Harbor report in its statement of activities?",
+"choices": [
+"$100,000",
+"$92,000",
+"$85,000",
+"$87,000"
+],
+"answer": 3,
+"explain": "Investment return is reported net of external and direct internal investment expenses: $60,000 + $40,000 - $8,000 - $5,000 = $87,000. Direct internal investment expenses include the costs of staff who develop and carry out investment strategy, but not unitization costs, which are not associated with generating investment return, so deducting the $2,000 to get $85,000 is wrong.",
+"source": "ASC 958-225-45-14 through 45-14B, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-012",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "At December 31, 2025, Pine Valley College, a nongovernmental not-for-profit entity, has general operating net assets with no restrictions of $400,000; a board-designated endowment created from unrestricted funds of $250,000; a donor-restricted perpetual endowment with an original gift of $1,000,000 and a current fair value of $970,000 because of accumulated investment losses; and contributions restricted by donors for scholarships of $100,000. What amount should Pine Valley report as net assets with donor restrictions?",
+"choices": [
+"$1,100,000",
+"$1,070,000",
+"$1,320,000",
+"$1,350,000"
+],
+"answer": 1,
+"explain": "Net assets with donor restrictions are $970,000 + $100,000 = $1,070,000. The accumulated losses of an underwater donor-restricted endowment fund are included with that fund in net assets with donor restrictions, so the fund is reported at $970,000, not $1,000,000. A board-designated endowment results from an internal designation, not a donor restriction, so it is reported in net assets without donor restrictions.",
+"source": "ASC 958-205-45-13, 958-205-45-13A and 958-205-45-13H, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-013",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "During the year ended December 31, 2025, Meadow Food Bank, a nongovernmental not-for-profit entity, received the following cash: unrestricted contributions, $300,000; contributions a donor restricted to buying a new warehouse, $150,000; a gift a donor required to be held as a perpetual endowment, $200,000; and proceeds of a bank loan, $100,000. What amount should Meadow report as cash inflows from financing activities in its 2025 statement of cash flows?",
+"choices": [
+"$100,000",
+"$350,000",
+"$450,000",
+"$750,000"
+],
+"answer": 2,
+"explain": "Financing inflows include borrowing proceeds and receipts of contributions that donors restrict to acquiring long-lived assets or to establishing or increasing a donor-restricted endowment fund: $150,000 + $200,000 + $100,000 = $450,000. The unrestricted contributions are operating inflows. Counting only the loan, $100,000, misses the donor-restricted gifts.",
+"source": "ASC 230-10-45-14, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-014",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "B",
+"q": "Sunrise Shelter, a nongovernmental not-for-profit entity, has elected and discloses a policy of reporting donor-restricted contributions whose restrictions are met in the same reporting period as support within net assets without donor restrictions, reports consistently, and has a similar policy for investment gains and income. During the year ended December 31, 2025, it received unrestricted contributions of $100,000, $60,000 restricted to a summer camp that it held and paid for in July 2025, and $40,000 restricted to a program it will run in 2026. What amount of contribution revenue should Sunrise report in net assets without donor restrictions for 2025?",
+"choices": [
+"$160,000",
+"$140,000",
+"$100,000",
+"$200,000"
+],
+"answer": 0,
+"explain": "Under the simultaneous release policy, the $60,000 whose restriction was met in 2025 is reported directly in net assets without donor restrictions, so the total is $100,000 + $60,000 = $160,000. The $40,000 restriction is not met until 2026, so it is reported in net assets with donor restrictions. Without the policy, the $60,000 would be reported as restricted revenue and then released, leaving $100,000 of unrestricted contribution revenue.",
+"source": "ASC 958-605-45-4A, as stated in ASU 2018-08; ASC 958-225-45-6, as stated in ASU 2016-14",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-015",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "C",
+"q": "On January 2, 2025, a city used general fund cash to buy a fire truck for $450,000. The truck has a 10-year useful life and no salvage value, and the city uses straight-line depreciation. For the year ended December 31, 2025, what does the city report for the truck in its general fund and in its government-wide financial statements?",
+"choices": [
+"General fund: a capital asset, with depreciation expense of $45,000. Government-wide: expenses of $450,000",
+"General fund: a capital asset, with depreciation expense of $45,000. Government-wide: the same",
+"General fund: expenditures of $450,000. Government-wide: expenses of $450,000",
+"General fund: expenditures of $450,000. Government-wide: a capital asset, with depreciation expense of $45,000"
+],
+"answer": 3,
+"explain": "Governmental funds use the current financial resources measurement focus and the modified accrual basis, so the general fund reports the $450,000 capital outlay as an expenditure and does not report the truck as an asset. The government-wide statements use the economic resources measurement focus and the accrual basis, so the truck is a capital asset of governmental activities and is depreciated: $450,000 / 10 = $45,000.",
+"source": "GASB Statement 34, paras. 16, 21, 22, 79, 80 and 90",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-016",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "C",
+"q": "A city levies a special tax whose proceeds state law restricts to maintaining and repairing city streets. The tax is expected to provide a substantial portion of the inflows of the fund that accounts for it, and none of the proceeds will be used for capital outlays or debt service. Which fund type should the city use to account for the tax?",
+"choices": [
+"Capital projects fund",
+"Special revenue fund",
+"Debt service fund",
+"Enterprise fund"
+],
+"answer": 1,
+"explain": "Special revenue funds account for the proceeds of specific revenue sources that are restricted or committed to expenditure for specified purposes other than debt service or capital projects, and those revenues should make up a substantial portion of the fund's inflows. Street maintenance is not a capital outlay, so a capital projects fund does not fit, and the tax is not a fee charged to external users, so an enterprise fund does not fit.",
+"source": "GASB Statement 54, paras. 30, 31, 33 and 34; GASB Statement 34, para. 67",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-017",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "C",
+"q": "A city operates a water utility that charges residents and businesses for water. The utility's capital improvements are financed with revenue bonds secured solely by a pledge of the net revenues from the utility's water charges. Which fund should the city use to report the utility?",
+"choices": [
+"General fund",
+"Internal service fund",
+"Enterprise fund",
+"Special revenue fund"
+],
+"answer": 2,
+"explain": "An activity must be reported in an enterprise fund if it is financed with debt secured solely by a pledge of the net revenues from its fees and charges, and enterprise funds report activities that charge fees to external users. An internal service fund is for goods or services provided to other funds, departments or agencies of the government, or to other governments, on a cost-reimbursement basis, not to the public. Like other proprietary funds, an enterprise fund uses the economic resources measurement focus and the accrual basis.",
+"source": "GASB Statement 34, paras. 67, 68 and 92",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-018",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "C",
+"q": "A city receives a $1,000,000 donation under an agreement that the principal must be kept intact permanently and only the investment earnings may be spent, to maintain the city's public cemetery. Which fund should the city use to report the donation?",
+"choices": [
+"Private-purpose trust fund",
+"Special revenue fund",
+"Capital projects fund",
+"Permanent fund"
+],
+"answer": 3,
+"explain": "Permanent funds report resources restricted so that only earnings, not principal, may be used for purposes that support the government's own programs, that is, for the benefit of the government or its citizenry; a cemetery perpetual-care fund is the standard example. A private-purpose trust fund is used instead when the principal or earnings must benefit individuals, private organizations or other governments, which is not the case here.",
+"source": "GASB Statement 54, para. 35; GASB Statement 34, para. 65 and footnote 32",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-019",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "For the year ended December 31, 2025, Tarn Corp. reported net income of $1,200,000 and had 400,000 weighted-average common shares outstanding. Throughout 2025, Tarn had outstanding $2,000,000 of 6% convertible bonds, issued at face value in 2022 and convertible into 80,000 common shares; the principal is not required to be settled in cash. Tarn's income tax rate is 25%, and it has no preferred stock. What is Tarn's diluted earnings per share (EPS) for 2025?",
+"choices": [
+"$3.00",
+"$2.75",
+"$2.50",
+"$2.69"
+],
+"answer": 3,
+"explain": "Under the if-converted method, the bonds are assumed converted at the beginning of the year, so after-tax interest is added back to the numerator and the 80,000 shares are added to the denominator: ($1,200,000 + $2,000,000 x 6% x (1 - 25%)) / (400,000 + 80,000) = $1,290,000 / 480,000 = $2.69. Adding back the full $120,000 of pretax interest gives $2.75. Diluted EPS of $2.69 is below basic EPS of $3.00, so the bonds are dilutive.",
+"source": "ASC 260-10-45-16 and 260-10-45-40, as stated in ASU 2020-06",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-020",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "For the year ended December 31, 2025, Keel Inc. reported net income of $900,000 and had 200,000 weighted-average common shares outstanding. Keel's convertible preferred stock, outstanding all year, is convertible into 40,000 common shares, and Keel declared and paid $100,000 of preferred dividends in 2025. Keel has no other potential common shares. What are Keel's basic and diluted earnings per share for 2025?",
+"choices": [
+"Basic $4.00; diluted $3.75",
+"Basic $4.00; diluted $3.33",
+"Basic $4.50; diluted $3.75",
+"Basic $4.00; diluted $4.00"
+],
+"answer": 0,
+"explain": "Basic earnings per share deducts the preferred dividends: ($900,000 - $100,000) / 200,000 = $4.00. Under the if-converted method, the preferred dividends are added back to the numerator and the conversion shares are added to the denominator: $900,000 / (200,000 + 40,000) = $3.75. Using $800,000 in the diluted numerator ($3.33) forgets that preferred stock assumed converted would receive no preferred dividends.",
+"source": "ASC 260-10-45-16 and 260-10-45-40(a), as stated in ASU 2020-06",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-021",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "Throughout 2025, Wren Co. had 30,000 stock options outstanding, each allowing the holder to buy one common share for $20. The average market price of Wren's common stock for the year ended December 31, 2025, was $25, and the market price at December 31, 2025, was $30, and Wren reported net income for 2025. How many incremental shares should Wren include in the denominator of its 2025 diluted earnings per share?",
+"choices": [
+"10,000",
+"6,000",
+"24,000",
+"30,000"
+],
+"answer": 1,
+"explain": "Under the treasury stock method, the options are assumed exercised at the beginning of the year and the $600,000 of proceeds (30,000 x $20) are assumed to buy back shares at the average market price: $600,000 / $25 = 24,000 shares. The incremental shares are 30,000 - 24,000 = 6,000. Using the year-end price of $30 gives 10,000, which is wrong because the method uses the average market price for the period.",
+"source": "ASC 260-10-45-22 and 260-10-45-23, as stated in ASU 2020-06",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-022",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "Which statement correctly describes the reports a U.S. registrant files with the Securities and Exchange Commission (SEC) under the Securities Exchange Act of 1934?",
+"choices": [
+"Form 10-Q is filed for each of the four fiscal quarters, and Form 10-K contains only the fourth quarter's results",
+"Form 8-K is the annual report of a smaller registrant, and Form 10-K is filed only by large accelerated filers",
+"Form 10-K is the annual report, Form 10-Q is the quarterly report for each of the first three fiscal quarters, and Form 8-K is the current report used to disclose specified material events between periodic reports",
+"Form 8-K is filed each quarter to present unaudited interim financial statements, and Form 10-Q is filed when a material event occurs"
+],
+"answer": 2,
+"explain": "Section 13(a) of the Exchange Act requires annual and quarterly reports, and section 13(l) requires disclosure on a rapid and current basis of material changes in financial condition or operations. Regulation S-K identifies Form 10-K as the annual report, Form 10-Q as the quarterly report and Form 8-K as the current report, and the annual report covers the fourth fiscal quarter, so no Form 10-Q is filed for it.",
+"source": "15 U.S.C. 78m(a)(2) and 78m(l); 17 CFR 229.101(e)(4)(i), 229.308(c) and 210.10-01(d)",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-023",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "Halden Corp., a calendar-year registrant that is not a smaller reporting company, is preparing its Form 10-Q for the quarter ended June 30, 2025. Which set of interim financial statements must the Form 10-Q include?",
+"choices": [
+"Balance sheets at June 30, 2025, and June 30, 2024; statements of comprehensive income for the three and six months ended June 30, 2025 and 2024; and statements of cash flows for the three months ended June 30, 2025 and 2024",
+"Balance sheets at June 30, 2025, and December 31, 2024; statements of comprehensive income for the three months ended June 30, 2025 and 2024 only; and statements of cash flows for the three and six months ended June 30, 2025 and 2024",
+"Balance sheets at June 30, 2025, and December 31, 2024; and statements of comprehensive income and cash flows for the six months ended June 30, 2025 only",
+"Balance sheets at June 30, 2025, and December 31, 2024; statements of comprehensive income for the three and six months ended June 30, 2025 and 2024; and statements of cash flows for the six months ended June 30, 2025 and 2024"
+],
+"answer": 3,
+"explain": "Regulation S-X requires a balance sheet at the end of the most recent quarter and at the end of the preceding fiscal year, statements of comprehensive income for the most recent quarter and the year to date, and year-to-date statements of cash flows, each income and cash flow statement with the corresponding period of the preceding year. A balance sheet at June 30, 2024, is needed only to explain seasonal fluctuations. The interim statements must be reviewed, not audited, by an independent public accountant before filing.",
+"source": "17 CFR 210.10-01(c) and (d)",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-024",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "D",
+"q": "Larkin Inc., a large accelerated filer that is not a smaller reporting company, is preparing its Form 10-K for the year ended December 31, 2025. Which disclosure belongs in Part II, Item 7A, Quantitative and Qualitative Disclosures About Market Risk (Regulation S-K Item 305), rather than in management's discussion and analysis (Regulation S-K Item 303)?",
+"choices": [
+"Critical accounting estimates that involve a significant level of estimation uncertainty",
+"Known trends or uncertainties reasonably likely to cause liquidity to increase or decrease in a material way",
+"Material cash requirements from known contractual and other obligations",
+"A sensitivity analysis showing the potential loss in fair values of market risk sensitive instruments from a hypothetical change in interest rates"
+],
+"answer": 3,
+"explain": "Item 305 requires quantitative information about market risk, such as interest rate, foreign currency exchange rate, commodity price and equity price risk, presented as tabular information, a sensitivity analysis or value at risk. Critical accounting estimates, known trends affecting liquidity and material cash requirements are all required parts of management's discussion and analysis under Item 303. Smaller reporting companies are not required to provide the Item 305 information.",
+"source": "17 CFR 229.303(b)(1), (b)(1)(i) and (b)(3); 17 CFR 229.305(a) and (e)",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-025",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "E",
+"q": "Dunmore Partners prepares its financial statements for the year ended December 31, 2025, on the cash basis of accounting, a special purpose framework. Which title is most appropriate for the statement that reports its revenues and expenses?",
+"choices": [
+"Income statement",
+"Statement of revenue collected and expenses paid",
+"Statement of operations",
+"Statement of comprehensive income"
+],
+"answer": 1,
+"explain": "Unmodified titles such as income statement, statement of operations, balance sheet and statement of cash flows are generally understood to apply only to statements intended to follow generally accepted accounting principles, so special purpose statements must be suitably titled. Cash basis statements might be titled a statement of revenue collected and expenses paid and a statement of assets and liabilities arising from cash transactions.",
+"source": "AU-C 800.07, 800.16 and 800.A23",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-026",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "E",
+"q": "Ostrander Dental Group keeps its records on the cash basis. For the year ended December 31, 2025, it collected $410,000 from patients. Patient accounts receivable were $35,000 at January 1, 2025, and $52,000 at December 31, 2025. Advance payments from patients for services not yet performed were $10,000 at January 1, 2025, and $6,000 at December 31, 2025. No patient accounts were written off. What is Ostrander's 2025 service revenue on the accrual basis?",
+"choices": [
+"$397,000",
+"$423,000",
+"$431,000",
+"$427,000"
+],
+"answer": 2,
+"explain": "Accrual revenue = cash collected + increase in receivables + decrease in advance payments = $410,000 + ($52,000 - $35,000) + ($10,000 - $6,000) = $431,000. Services performed in 2025 but not yet collected are 2025 revenue, and the $4,000 drop in advance payments means services paid for in an earlier year were performed in 2025. Subtracting the receivables increase, which gives $397,000, converts in the wrong direction.",
+"source": "ASC 606-10-25-23, as stated in ASU 2014-09 (revenue when services are performed); Concepts Statement 8, Chapter 1, para. OB17; AU-C 800.07 (cash basis)",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-027",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "E",
+"q": "Fenwick Partners prepares its financial statements for the year ended December 31, 2025, on the income tax basis of accounting, the basis it uses to file its tax return. On its 2025 tax return, Fenwick deducted $64,000 of depreciation on its equipment; straight-line depreciation under generally accepted accounting principles (GAAP) would have been $40,000. No other differences from GAAP are material. Which is correct for Fenwick's 2025 financial statements?",
+"choices": [
+"Depreciation expense is $40,000, and the notes describe the income tax basis",
+"Depreciation expense is $64,000, and the notes must include a reconciliation quantifying the $24,000 difference from GAAP",
+"Depreciation expense is $40,000, and no description of the basis of accounting is needed",
+"Depreciation expense is $64,000, and the notes describe the income tax basis and how it differs from GAAP for depreciation, without quantifying the difference"
+],
+"answer": 3,
+"explain": "The tax basis is the basis the entity uses to file its tax return, so the statements report the $64,000 deducted on the return. The statements must include a summary of significant accounting policies and adequately describe how the framework differs from GAAP, but only material differences need be described and their effects need not be quantified, so a reconciliation of the $24,000 difference is not required.",
+"source": "AU-C 800.07, 800.16 and 800.A24",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-028",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "F",
+"q": "At December 31, 2025, Garnet Co. reported cash of $40,000, short-term investments of $25,000, accounts receivable of $55,000, inventory of $90,000 and prepaid expenses of $10,000. Current liabilities were $100,000. What is Garnet's quick ratio?",
+"choices": [
+"1.30",
+"2.10",
+"2.20",
+"1.20"
+],
+"answer": 3,
+"explain": "Quick ratio = (cash + short-term investments + accounts receivable) / current liabilities = ($40,000 + $25,000 + $55,000) / $100,000 = 1.20. Inventory and prepaid expenses are left out of the numerator; including all current assets gives the current ratio of 2.20.",
+"source": "OpenStax Principles of Accounting, Volume 1, Appendix A, Financial Statement Analysis",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-029",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "F",
+"q": "For the year ended December 31, 2025, Basil Corp. reported net sales of $900,000 and cost of goods sold of $600,000. Inventory was $140,000 at January 1, 2025, and $100,000 at December 31, 2025. What is Basil's inventory turnover for 2025?",
+"choices": [
+"4.3 times",
+"5.0 times",
+"6.0 times",
+"7.5 times"
+],
+"answer": 1,
+"explain": "Inventory turnover = cost of goods sold / average inventory = $600,000 / [($140,000 + $100,000) / 2] = $600,000 / $120,000 = 5.0 times. Using net sales in the numerator gives 7.5 times, and using ending inventory alone gives 6.0 times.",
+"source": "OpenStax Principles of Accounting, Volume 1, Appendix A, Financial Statement Analysis",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far1-030",
+"part": "FAR",
+"domain": "FAR-I",
+"exam": "cpa",
+"group": "F",
+"q": "Corwin Manufacturing's static budget for October 2025 was based on producing 10,000 units, with variable manufacturing costs of $6 per unit and fixed manufacturing costs of $50,000. Corwin actually produced 12,000 units, and actual manufacturing costs totaled $125,000. What is Corwin's flexible budget variance for total manufacturing costs for October 2025?",
+"choices": [
+"$3,000 favorable",
+"$15,000 unfavorable",
+"$3,000 unfavorable",
+"$12,000 unfavorable"
+],
+"answer": 2,
+"explain": "The flexible budget at the actual 12,000 units is 12,000 x $6 + $50,000 = $122,000, so actual costs of $125,000 exceed it by $3,000, an unfavorable variance because costs were higher than budgeted. Comparing actual costs with the static budget of 10,000 x $6 + $50,000 = $110,000 gives $15,000 unfavorable, which wrongly treats the cost of making 2,000 extra units as overspending.",
+"source": "OpenStax Principles of Accounting, Volume 2, sections 7.4 and 7.5",
+"cpa": [
+"FAR-I"
+]
+},
+{
+"id": "far2-001",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "A",
+"q": "Hollis Corp. is preparing its bank reconciliation at December 31, 2026. The cash balance per books is $24,300. The bank statement shows that the bank collected a $5,000 note receivable plus $150 of interest for Hollis, returned a customer's check for $820 marked nonsufficient funds, and charged a $45 service fee; none of these is recorded in Hollis's books. Hollis also recorded check #1012, written for $1,560 to pay for supplies, as $1,650. Deposits in transit total $3,200 and outstanding checks total $4,100. What is Hollis's adjusted (correct) cash balance at December 31, 2026?",
+"choices": [
+"$28,675",
+"$27,775",
+"$29,495",
+"$28,495"
+],
+"answer": 0,
+"explain": "The book side is adjusted only for items the bank knows about but the company has not recorded, plus book errors: $24,300 + $5,150 collection - $820 returned check - $45 fee + $90 overstated check ($1,650 - $1,560) = $28,675. Deposits in transit and outstanding checks adjust the bank balance, not the book balance, so including them ($27,775) is wrong, and subtracting the $90 error instead of adding it gives $28,495.",
+"source": "OpenStax, Principles of Financial Accounting, section 8.6 (bank reconciliation procedure)",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-002",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "A",
+"q": "Bramble Co.'s bank statement shows a balance of $41,250 at December 31, 2026. Deposits in transit total $6,400 and outstanding checks total $9,180. The bank mistakenly deducted from Bramble's account a $350 check written by another company. The statement also shows a $30 service charge that Bramble has not recorded. What is the adjusted bank balance on Bramble's December 31, 2026 bank reconciliation?",
+"choices": [
+"$38,120",
+"$38,790",
+"$44,380",
+"$38,820"
+],
+"answer": 3,
+"explain": "Adjusted bank balance = $41,250 + $6,400 deposits in transit - $9,180 outstanding checks + $350 bank error = $38,820. The $30 service charge is already reflected in the bank's balance and is a book-side adjustment, so subtracting it again on the bank side ($38,790) double counts it, and the bank's error must be added back, not subtracted ($38,120).",
+"source": "OpenStax, Principles of Financial Accounting, section 8.6 (bank reconciliation procedure)",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-003",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "A",
+"q": "All of the following reconciling items on a company's December 31, 2026 bank reconciliation require an adjusting journal entry in the company's books EXCEPT:",
+"choices": [
+"A customer's check returned by the bank for nonsufficient funds",
+"Interest earned that the bank credited to the account",
+"A deposit in transit",
+"A monthly bank service charge"
+],
+"answer": 2,
+"explain": "Only items the bank has recorded but the company has not (returned checks, service charges, interest and collections) and company errors are journalized in the books. A deposit in transit is already recorded in the company's books and simply has not reached the bank yet, so it adjusts the bank balance and needs no entry.",
+"source": "OpenStax, Principles of Financial Accounting, section 8.6 (bank reconciliation procedure)",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-004",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "Tamsin Corp. estimates its allowance for credit losses on trade receivables with an aging schedule. Its loss rates are historical rates adjusted for current conditions and reasonable and supportable forecasts. At December 31, 2026: current, $400,000 (0.5%); 1 to 30 days past due, $80,000 (4%); 31 to 60 days past due, $30,000 (15%); 61 to 90 days past due, $10,000 (40%); more than 90 days past due, $5,000 (70%). The allowance had a credit balance of $14,000 on January 1, 2026, and $11,000 of receivables were written off during 2026, with no recoveries. What credit loss expense should Tamsin report for 2026?",
+"choices": [
+"$3,200",
+"$14,200",
+"$17,200",
+"$28,200"
+],
+"answer": 1,
+"explain": "The required ending allowance is $2,000 + $3,200 + $4,500 + $4,000 + $3,500 = $17,200. Writeoffs are deducted from the allowance, leaving a $3,000 credit balance ($14,000 - $11,000), so the expense needed to adjust it is $17,200 - $3,000 = $14,200. Reporting $17,200 ignores the balance already in the allowance, and $3,200 ignores the writeoffs.",
+"source": "ASC 326-20-30-1, 326-20-30-3 and 326-20-35-8, and Example 5 (326-20-55-37 through 55-40), as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-005",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "Corbin Inc. had trade receivables of $250,000 and an allowance for credit losses of $12,000 on January 1, 2026. During 2026, credit sales were $1,400,000, cash collected on customer accounts was $1,320,000, and $9,000 of accounts were written off. Corbin also collected $2,000 on an account written off in 2025; its policy is to reinstate the receivable, record the collection and credit the recovery to the allowance. Corbin's estimate of expected credit losses at December 31, 2026 is $15,000. What net trade receivables should Corbin report at December 31, 2026?",
+"choices": [
+"$306,000",
+"$304,000",
+"$315,000",
+"$321,000"
+],
+"answer": 0,
+"explain": "Gross receivables are $250,000 + $1,400,000 - $1,320,000 - $9,000 writeoffs = $321,000; the recovery is reinstated and then collected, so it nets to zero in receivables. The allowance is adjusted to the $15,000 estimate and presented as a deduction, so net receivables are $321,000 - $15,000 = $306,000. Leaving the writeoffs in gross receivables gives $315,000.",
+"source": "ASC 326-20-30-1, 326-20-35-8, 326-20-45-1 and Example 9 (326-20-55-51 through 55-53), as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-006",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "Kestrel Corp. holds a note receivable from a customer for equipment Kestrel sold in its ordinary business. At December 31, 2026, the note's amortized cost is $100,000 and its effective interest rate is 8%; the note calls for a single payment of $108,000 on December 31, 2027. Because the customer is in financial difficulty, the note no longer shares risk characteristics with Kestrel's other receivables, and Kestrel measures expected credit losses on it individually using a discounted cash flow method. Kestrel now expects to collect only $97,200 on December 31, 2027. The current market rate for similar notes is 12%. What allowance for credit losses should Kestrel record on the note at December 31, 2026?",
+"choices": [
+"$13,214",
+"$10,800",
+"$2,800",
+"$10,000"
+],
+"answer": 3,
+"explain": "Under a discounted cash flow method, the allowance is the amortized cost basis minus the present value of expected cash flows discounted at the asset's effective interest rate: $97,200 / 1.08 = $90,000, so the allowance is $100,000 - $90,000 = $10,000. Discounting at the 12% market rate ($13,214) uses the wrong rate, and $10,800 compares undiscounted contractual and expected cash flows.",
+"source": "ASC 326-20-30-2 and 326-20-30-4, as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-008",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "In December 2026, Larch Apparel sold 400 jackets for $200 each; each jacket cost $120. Customers may return a jacket for a refund or exchange it for another size at the same price. At December 31, 2026, Larch expects 10 jackets to be returned for a refund and 6 more to be exchanged for a different size. It expects to spend $5 per jacket to recover returned jackets and expects each returned jacket to lose $15 of value. At what amount should Larch measure its asset for the right to recover products at December 31, 2026?",
+"choices": [
+"$1,200",
+"$1,000",
+"$1,600",
+"$1,920"
+],
+"answer": 1,
+"explain": "Exchanges for the same type, quality, condition and price are not returns, so only the 10 refunds count. The asset is measured at the former carrying amount less expected costs to recover, including decreases in value: 10 x ($120 - $5 - $15) = $1,000. Ignoring the recovery costs and the decrease in value gives $1,200, and including the 6 exchanges gives $1,600 or $1,920.",
+"source": "ASC 606-10-55-27 and 606-10-55-28, as stated in ASU 2014-09",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-009",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "Pell Corp. prepares monthly financial statements. On November 30, 2026, it recorded $300,000 of sales with a 60-day right of return and recognized a refund liability of $12,000 for the 4% of sales it expected to be returned. During December, customers returned products sold for $5,000 and received cash refunds. At December 31, 2026, Pell expects only $3,000 more of the November sales to be returned. How does updating the refund liability affect Pell's December 2026 revenue?",
+"choices": [
+"Revenue increases by $4,000",
+"Revenue decreases by $4,000",
+"Revenue increases by $9,000",
+"No effect on revenue; cost of sales decreases by $4,000"
+],
+"answer": 0,
+"explain": "After the $5,000 of refunds paid, the liability is $12,000 - $5,000 = $7,000, but only $3,000 is still expected to be refunded, so the liability is reduced by $4,000. Changes in the expected refunds are recognized as adjustments to revenue, so revenue increases $4,000. The $9,000 answer forgets that $5,000 of the liability was already settled in cash.",
+"source": "ASC 606-10-32-10, 606-10-55-25 and 606-10-55-26, as stated in ASU 2014-09",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-010",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "B",
+"q": "The current expected credit loss (CECL) guidance for financial assets measured at amortized cost (Subtopic 326-20) applies to all of the following EXCEPT:",
+"choices": [
+"Off-balance-sheet credit exposures, such as financial guarantees not accounted for as insurance",
+"Trade receivables that result from revenue transactions with customers",
+"Held-to-maturity debt securities",
+"Promises to give (pledges receivable) of a not-for-profit entity"
+],
+"answer": 3,
+"explain": "Subtopic 326-20 lists pledges receivable of a not-for-profit entity among its scope exceptions. Trade receivables from revenue transactions, held-to-maturity debt securities and off-balance-sheet credit exposures not accounted for as insurance are all expressly within its scope.",
+"source": "ASC 326-20-15-2 and 326-20-15-3, as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-011",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "C",
+"q": "A manufacturer is classifying items on its December 31, 2026 balance sheet. Which of the following should NOT be classified as inventory?",
+"choices": [
+"Supplies to be consumed in the production process",
+"Raw materials purchased for use in production",
+"A delivery truck retired from regular use and now held for sale",
+"Partly completed units on the production line"
+],
+"answer": 2,
+"explain": "Inventory includes goods awaiting sale, work in process, and raw materials and supplies to be consumed in production. The definition excludes long-term assets subject to depreciation, and a depreciable asset that is retired from regular use and held for sale does not become inventory.",
+"source": "ASC Master Glossary, Inventory (unchanged definition restated in ASU 2024-03)",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-012",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "On March 1, 2026, Galloway Inc. bought 2,000 shares (a 2% interest) of a public company's common stock for $40 per share. Galloway does not have significant influence, and the shares have a readily determinable fair value. Galloway received dividends of $1.50 per share in 2026, and the shares' fair value was $46 per share at December 31, 2026. What total amount related to this investment should Galloway include in net income for 2026?",
+"choices": [
+"$12,000",
+"$15,000",
+"$3,000, with the $12,000 unrealized gain not recognized until the shares are sold",
+"$3,000, with the $12,000 unrealized gain reported in other comprehensive income"
+],
+"answer": 1,
+"explain": "Equity securities are measured at fair value with unrealized holding gains and losses included in earnings, and dividend income is also included in earnings: 2,000 x ($46 - $40) = $12,000 plus 2,000 x $1.50 = $3,000, for $15,000. There is no available-for-sale category for equity securities, so reporting the gain in other comprehensive income is wrong.",
+"source": "ASC 321-10-35-1 and 321-10-35-6, as stated in ASU 2016-01",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-013",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "On January 2, 2025, Ardent Co. paid $600,000 for 60,000 shares of common stock of a privately held company. The shares do not have a readily determinable fair value and do not qualify for the net asset value practical expedient, and Ardent elected to measure them at cost minus impairment, adjusted for observable price changes. On October 15, 2026, the investee sold identical common shares to another investor in an orderly transaction at $11.50 per share. No impairment indicators exist. What is the carrying amount of Ardent's investment at December 31, 2026?",
+"choices": [
+"$690,000",
+"$600,000",
+"$600,000, with a $90,000 unrealized gain in other comprehensive income",
+"$645,000"
+],
+"answer": 0,
+"explain": "Under the measurement alternative, the investment is carried at cost minus impairment plus or minus changes from observable price changes in orderly transactions for an identical or similar investment of the same issuer: 60,000 x $11.50 = $690,000. The $90,000 upward adjustment is an unrealized gain included in earnings, not other comprehensive income, and keeping the investment at its $600,000 cost ignores the observable transaction.",
+"source": "ASC 321-10-35-1 and 321-10-35-2, as stated in ASU 2016-01",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-014",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "Brisk Corp. carries an equity security without a readily determinable fair value at $250,000 under the measurement alternative (cost minus impairment, adjusted for observable price changes). At December 31, 2026, Brisk's qualitative assessment finds a significant deterioration in the investee's earnings and business prospects, and Brisk estimates the investment's fair value at $180,000. No observable price changes occurred in 2026. What should Brisk report for 2026?",
+"choices": [
+"No loss unless the decline is judged to be other than temporary",
+"No loss, because no observable price change occurred",
+"An unrealized loss of $70,000 in other comprehensive income",
+"An impairment loss of $70,000 in net income"
+],
+"answer": 3,
+"explain": "When a qualitative assessment indicates impairment and fair value is below carrying amount, the security is written down to fair value and the loss is included in net income: $250,000 - $180,000 = $70,000. An impairment does not require an observable transaction, and there is no other-than-temporary test for these securities.",
+"source": "ASC 321-10-35-3 and 321-10-35-4, as stated in ASU 2016-01",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-015",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "At December 31, 2026, Dunmore Inc. holds an available-for-sale debt security with an amortized cost basis of $500,000 and a fair value of $440,000. The present value of the cash flows Dunmore expects to collect, discounted at the security's effective interest rate, is $470,000. Dunmore does not intend to sell the security and is not more likely than not required to sell it before recovery. Ignoring income taxes, how should Dunmore report the $60,000 decline?",
+"choices": [
+"A $60,000 unrealized loss in other comprehensive income only",
+"Credit loss expense of $30,000 in net income and a $60,000 unrealized loss in other comprehensive income",
+"Credit loss expense of $30,000 in net income and a $30,000 unrealized loss in other comprehensive income",
+"A $60,000 loss in net income"
+],
+"answer": 2,
+"explain": "The credit loss is the amortized cost basis minus the present value of expected cash flows, $500,000 - $470,000 = $30,000, recorded through an allowance as credit loss expense. The remaining $30,000 of the decline ($470,000 - $440,000) is not credit related and goes to other comprehensive income. Writing the security down by the full $60,000 in earnings applies only when the entity intends to sell or more likely than not will be required to sell.",
+"source": "ASC 326-30-35-2, 326-30-35-3 and 326-30-35-6, as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-016",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "At December 31, 2026, Fenwick Co. holds an available-for-sale debt security with an amortized cost basis of $400,000 and a fair value of $385,000. The present value of cash flows expected to be collected, discounted at the effective interest rate, is $360,000. Fenwick does not intend to sell the security and is not more likely than not required to sell it before recovery. What allowance for credit losses should Fenwick record?",
+"choices": [
+"$40,000",
+"$15,000",
+"$25,000",
+"$0"
+],
+"answer": 1,
+"explain": "The credit loss is $400,000 - $360,000 = $40,000, but the allowance for an available-for-sale debt security is limited to the amount by which fair value is below amortized cost, $400,000 - $385,000 = $15,000. Recording the full $40,000 would carry the security below its $385,000 fair value.",
+"source": "ASC 326-30-35-2 and 326-30-35-3, as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-017",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "At December 31, 2025, Garnet Corp. held an available-for-sale debt security with an amortized cost basis of $300,000, an allowance for credit losses of $10,000 and a fair value of $285,000. On December 31, 2026, when the security's fair value was $270,000, Garnet decided to sell the security. Garnet's estimate of credit losses had not changed during 2026 before that decision. Ignoring income taxes, what impairment should Garnet report in earnings for 2026?",
+"choices": [
+"$20,000",
+"$30,000",
+"$15,000",
+"$0"
+],
+"answer": 0,
+"explain": "Once an entity intends to sell, it writes off the allowance and writes the amortized cost basis down to fair value, reporting any incremental impairment in earnings. The total write-down is $300,000 - $270,000 = $30,000, of which $10,000 was already recognized as credit loss expense through the allowance in 2025, so 2026 earnings bear the incremental $20,000 and the new amortized cost basis is $270,000. Reporting $30,000 counts the 2025 credit loss twice.",
+"source": "ASC 326-30-35-10 and 326-30-35-14, as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-018",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "At December 31, 2025, Haldane Inc. had recorded a $15,000 allowance for credit losses on an available-for-sale debt security with an amortized cost basis of $400,000. During 2026, the issuer's financial condition recovered, and at December 31, 2026, Haldane expects to collect all contractual cash flows. The security's fair value at December 31, 2026 is $408,000. How much should Haldane recognize in 2026 net income as a reversal of credit loss expense?",
+"choices": [
+"$23,000",
+"$8,000",
+"$0",
+"$15,000"
+],
+"answer": 3,
+"explain": "Changes in the allowance are recognized as credit loss expense or a reversal of it, but the allowance cannot be reversed below zero, so the full $15,000 allowance is reversed into net income. The $8,000 by which fair value exceeds amortized cost is an unrealized holding gain reported in other comprehensive income, so including it ($23,000) is wrong.",
+"source": "ASC 326-30-35-3 and 326-30-35-12, and ASC 320-10-35-1(b), as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-019",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "E",
+"q": "Ingram Co. bought three debt securities in 2026 and holds them at December 31, 2026: a trading security (cost $100,000; fair value $108,000); an available-for-sale security (amortized cost $200,000; fair value $190,000), whose decline is due only to interest rates and which Ingram does not intend to sell and is not more likely than not required to sell before recovery; and a U.S. Treasury note classified as held to maturity (amortized cost $300,000; fair value $310,000), for which Ingram expects nonpayment to be zero. Ignoring interest income, what net unrealized holding gain or loss should Ingram include in 2026 net income?",
+"choices": [
+"$2,000 loss",
+"$0",
+"$8,000 gain",
+"$18,000 gain"
+],
+"answer": 2,
+"explain": "Only the trading security's unrealized gain goes to earnings: $108,000 - $100,000 = $8,000. The available-for-sale security's $10,000 non-credit decline goes to other comprehensive income, and the held-to-maturity note is carried at amortized cost, so its $10,000 fair value increase is not recognized; with an expectation of zero nonpayment, no credit loss is required. Netting in the available-for-sale loss gives the $2,000 distractor.",
+"source": "ASC 320-10-35-1, 326-20-30-10 and 326-30-35-2, and Example 8 (326-20-55-48 through 55-50), as stated in ASU 2016-13",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-021",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "G",
+"q": "Morrow Corp. recognized an asset retirement obligation when it placed an offshore platform in service. How should Morrow classify, in its 2026 income statement, the increase in the carrying amount of that liability due to the passage of time?",
+"choices": [
+"As accretion expense, an operating item",
+"As a component of other comprehensive income",
+"As an addition to the carrying amount of the platform",
+"As interest expense, a nonoperating item"
+],
+"answer": 0,
+"explain": "The increase in the carrying amount of an asset retirement obligation liability is accretion expense, which the Codification defines as an expense classified as an operating item in the income statement. It is not interest expense and is not capitalized into the asset.",
+"source": "ASC Master Glossary, Accretion Expense (unchanged definition restated in ASU 2024-03)",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-022",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "On January 1, 2026, Lowell Inc. issued $2,000,000 face amount of 5-year convertible bonds for $1,940,000. The conversion feature is not required to be accounted for separately as an embedded derivative, the bonds were not issued at a substantial premium, and Lowell did not elect the fair value option. Nonconvertible bonds with the same terms would have sold for $1,800,000. How should Lowell record the issuance?",
+"choices": [
+"Bonds payable at $2,000,000 and a $60,000 reduction of additional paid-in capital",
+"Bonds payable at a net carrying amount of $1,800,000 and $140,000 in additional paid-in capital",
+"Bonds payable at $2,000,000 and a $60,000 loss on issuance",
+"Bonds payable at a net carrying amount of $1,940,000 and nothing in additional paid-in capital"
+],
+"answer": 3,
+"explain": "A convertible debt instrument is accounted for in its entirety as a liability, with no proceeds allocated to the conversion feature, unless the feature must be bifurcated as a derivative or the bonds were issued at a substantial premium. Lowell records $2,000,000 face with a $60,000 discount, a net carrying amount of $1,940,000. Splitting off $140,000 to equity applies a separation model that no longer exists for this instrument.",
+"source": "ASC 470-20-25-12, as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-023",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "On July 1, 2026, holders converted $1,000,000 face amount of Marden Corp.'s convertible bonds, which were accounted for entirely as a liability, under their original terms. Interest had been paid through June 30, and the unamortized discount on the bonds was $40,000. Each $1,000 bond converted into 25 shares of $10 par common stock, which had a fair value of $45 per share on July 1. How much should Marden credit to additional paid-in capital?",
+"choices": [
+"$875,000",
+"$750,000",
+"$710,000",
+"$960,000"
+],
+"answer": 2,
+"explain": "On a conversion under the original terms, the carrying amount of the debt, including any unamortized discount, is credited to equity and no gain or loss is recognized: ($1,000,000 - $40,000) - (25,000 shares x $10 par) = $710,000. Using the shares' fair value ($1,125,000 - $250,000 = $875,000) is the market value approach, which would create a loss that the guidance does not allow.",
+"source": "ASC 470-20-40-4, as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-024",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "Nolan Co. has $500,000 face amount of 6% convertible bonds, carried at face, that pay interest each December 31. On April 1, 2026, holders converted all the bonds into 10,000 shares of $1 par common stock. Under the bond terms, accrued but unpaid interest is forfeited on conversion. Ignoring income taxes, how much should Nolan credit to additional paid-in capital?",
+"choices": [
+"$482,500",
+"$497,500",
+"$507,500",
+"$490,000"
+],
+"answer": 1,
+"explain": "Forfeited interest from the last payment date to conversion, $500,000 x 6% x 3/12 = $7,500, is charged to interest expense and credited to capital along with the debt's carrying amount. The total credit to equity is $507,500, of which $10,000 is common stock at par and $497,500 is additional paid-in capital. Ignoring the forfeited interest gives $490,000.",
+"source": "ASC 470-20-35-11 and 470-20-40-11, as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-026",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "On March 1, 2026, Pryor Inc. issued $1,000,000 face amount of convertible bonds at 130, receiving $1,300,000; the 30% premium is substantial. The conversion feature is not required to be accounted for as an embedded derivative, and Pryor did not elect the fair value option. How much of the proceeds should Pryor record in additional paid-in capital?",
+"choices": [
+"$0; the $300,000 premium is amortized as a reduction of interest expense",
+"$1,300,000",
+"$0, because convertible debt is accounted for in its entirety as a liability",
+"$300,000"
+],
+"answer": 3,
+"explain": "Convertible debt is generally one liability, but when it is issued at a substantial premium there is a presumption that the premium represents paid-in capital. The $300,000 premium is credited to additional paid-in capital and the bonds are recorded at their $1,000,000 face amount.",
+"source": "ASC 470-20-25-12 and 470-20-25-13, as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-027",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "On July 1, 2026, Ridgeway Corp. issued 1,000 of its $1,000 face, 10-year bonds at par, each with one detachable warrant, for total proceeds of $1,000,000. Immediately after issuance, the bonds without warrants traded at $960 each and the warrants at $240 each. The warrants are classified in equity, and Ridgeway did not elect the fair value option. What discount on bonds payable should Ridgeway record at issuance?",
+"choices": [
+"$40,000",
+"$240,000",
+"$200,000",
+"$0"
+],
+"answer": 2,
+"explain": "Proceeds from debt issued with detachable warrants are allocated on the relative fair values of the two instruments: $1,000,000 x $240,000 / ($960,000 + $240,000) = $200,000 to the warrants, leaving $800,000 for bonds with a $1,000,000 face, a $200,000 discount. Allocating only the excess over the bonds' fair value ($40,000) ignores the required relative fair value allocation.",
+"source": "ASC 470-20-30-1 (the allocation required by 470-20-25-2), as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-028",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "Quarry Co. issued a $500,000 note payable at par on January 1, 2026 and elected the fair value option for it at issuance. At December 31, 2026, the note's fair value is $470,000. Quarry determines that $12,000 of the decrease resulted from a rise in the benchmark interest rate and $18,000 resulted from a change in Quarry's instrument-specific credit risk. Ignoring interest and income taxes, what gain from the change in fair value should Quarry recognize in 2026 net income?",
+"choices": [
+"$18,000",
+"$12,000",
+"$30,000",
+"$0"
+],
+"answer": 1,
+"explain": "A financial liability under the fair value option is remeasured at fair value, but the portion of the change caused by instrument-specific credit risk is presented separately in other comprehensive income. Net income includes only the $12,000 from the benchmark rate change, and the $18,000 credit-risk gain goes to other comprehensive income until the liability is derecognized.",
+"source": "ASC 825-10-45-5 and 825-10-45-6, as stated in ASU 2016-01",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-029",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "H",
+"q": "Oakmont Corp.'s loan agreement requires that the ratio of earnings before interest and income taxes to interest expense be at least 4.0 for the year ended December 31, 2026, with earnings measured under generally accepted accounting principles in the United States and no adjustments. A draft shows earnings before interest and income taxes of $500,000 and interest expense of $120,000. The draft reports a $60,000 decline in the fair value of equity securities with readily determinable fair values, still held at year-end, in other comprehensive income. No other errors exist. What is Oakmont's corrected ratio, and is it in compliance?",
+"choices": [
+"3.67; not in compliance",
+"4.67; in compliance",
+"3.67; in compliance",
+"4.17; in compliance"
+],
+"answer": 0,
+"explain": "Unrealized holding losses on equity securities belong in earnings, so corrected earnings before interest and income taxes are $500,000 - $60,000 = $440,000, and $440,000 / $120,000 = 3.67, below the required 4.0. The draft's 4.17 ($500,000 / $120,000) leaves the loss in other comprehensive income, and 4.67 adds the loss instead of subtracting it.",
+"source": "ASC 321-10-35-1, as stated in ASU 2016-01",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far2-030",
+"part": "FAR",
+"domain": "FAR-II",
+"exam": "cpa",
+"group": "I",
+"q": "Sutter Inc.'s convertible preferred stock, carried in equity at $400,000, must be redeemed by Sutter once its conversion feature expires. The conversion feature expired unexercised on September 30, 2026, when the fair value of the now mandatorily redeemable shares was $430,000. How should Sutter account for the expiration?",
+"choices": [
+"Reclassify the shares as a liability at their $400,000 carrying amount, with no other entry",
+"Leave the shares in equity until they are redeemed",
+"Reclassify the shares as a liability at $430,000 and recognize a $30,000 loss in net income",
+"Reclassify the shares as a liability at $430,000, reducing equity by $430,000 (including a $30,000 reduction of paid-in capital), with no gain or loss"
+],
+"answer": 3,
+"explain": "When the conversion feature expires and the shares must be redeemed, the instrument becomes a liability, measured initially at fair value with a corresponding reduction of equity and no gain or loss. The $30,000 difference between the $430,000 fair value and the $400,000 carrying amount is an adjustment to paid-in capital, not a loss in net income.",
+"source": "ASC 505-10-35-1, as stated in ASU 2020-06",
+"cpa": [
+"FAR-II"
+]
+},
+{
+"id": "far3-001",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "Kestrel Co. signs a contract in 2025 to provide energy-efficiency consulting. Its fee depends on the savings the customer achieves, with these possible outcomes: $200,000 (60% likely), $150,000 (30% likely) and $100,000 (10% likely). Kestrel has a large number of contracts with similar characteristics and concludes that the expected value method better predicts the consideration to which it will be entitled. It also concludes that it is probable that including the estimate will not result in a significant reversal of cumulative revenue. What transaction price should Kestrel use?",
+"choices": [
+"$200,000",
+"$150,000",
+"$175,000",
+"$100,000"
+],
+"answer": 2,
+"explain": "The expected value is the sum of probability-weighted amounts: ($200,000 x 60%) + ($150,000 x 30%) + ($100,000 x 10%) = $120,000 + $45,000 + $10,000 = $175,000. Because the estimate is not constrained, all of it is included in the transaction price. $200,000 is the most likely amount, which is the other permitted method, but Kestrel concluded that the expected value method better predicts the consideration.",
+"source": "ASC 606-10-32-5, 606-10-32-8 and 606-10-32-11, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-002",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "Thane Builders signs a contract in 2025 to renovate a stadium for a fixed fee of $500,000, plus a $60,000 bonus if the work is finished by a stated date. There are only two possible outcomes, so Thane uses the most likely amount method; it estimates a 70% chance of earning the bonus. Finishing on time depends heavily on the weather, and Thane has no experience with similar projects. Thane cannot conclude that it is probable that a significant reversal in cumulative revenue recognized will not occur if the bonus is included. What is the transaction price at contract inception?",
+"choices": [
+"$560,000",
+"$500,000",
+"$542,000",
+"$530,000"
+],
+"answer": 1,
+"explain": "Variable consideration is included in the transaction price only to the extent it is probable that a significant reversal of cumulative revenue will not occur when the uncertainty is resolved. Because Thane cannot reach that conclusion (the outcome depends on the weather and its experience is limited), the $60,000 bonus is excluded and the transaction price is the $500,000 fixed fee. $560,000 is the most likely amount before applying the constraint, and $542,000 ($500,000 + 70% x $60,000) uses the expected value method instead of the method Thane chose.",
+"source": "ASC 606-10-32-8, 606-10-32-11 and 606-10-32-12, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-003",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On July 1, 2025, Ridge Co. sells a customer equipment, installation and two years of support for a total of $80,000. The contract lists prices of $62,000 for the equipment, $8,000 for installation and $10,000 for support. Ridge's standalone selling prices are $60,000 for the equipment, $15,000 for installation and $25,000 for support. Each item is a distinct performance obligation, and Ridge has no observable evidence that the discount relates to only some of them. The equipment is delivered and installed on July 1, 2025, and support is provided evenly from July 1, 2025, through June 30, 2027. How much revenue should Ridge recognize for the year ended December 31, 2025?",
+"choices": [
+"$72,500",
+"$65,000",
+"$61,250",
+"$80,000"
+],
+"answer": 1,
+"explain": "The $20,000 discount ($100,000 of standalone selling prices less the $80,000 price) is allocated proportionally, so each item gets 80% of its standalone selling price: equipment $48,000, installation $12,000 and support $20,000. Revenue for 2025 is $48,000 + $12,000 + ($20,000 x 6/24) = $65,000. The $72,500 answer uses the contract's listed prices, but a contractually stated price is not presumed to be the standalone selling price.",
+"source": "ASC 606-10-32-29, 606-10-32-31, 606-10-32-32 and 606-10-32-36, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-004",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "In 2025, Bryce Fabrication contracts to build custom equipment for a customer for $2,000,000. The contract prevents Bryce from directing the equipment to another customer, and if the customer cancels, Bryce is entitled to payment for work completed to date plus a reasonable margin. Bryce estimates total costs of $1,500,000 and incurs $600,000 of costs in 2025. Bryce measures progress using costs incurred to date relative to total estimated costs, which depicts its performance. How much revenue should Bryce recognize for the year ended December 31, 2025?",
+"choices": [
+"$0",
+"$600,000",
+"$800,000",
+"$200,000"
+],
+"answer": 2,
+"explain": "The equipment has no alternative use to Bryce and Bryce has an enforceable right to payment for performance completed to date, so the performance obligation is satisfied over time. Progress is $600,000 / $1,500,000 = 40%, and revenue is 40% x $2,000,000 = $800,000. Recognizing nothing until delivery would apply point-in-time recognition, which is used only when none of the over-time criteria is met.",
+"source": "ASC 606-10-25-27 through 25-30, 606-10-25-31 and 606-10-25-33, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-005",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "A",
+"q": "Lark Construction has a $3,000,000 contract satisfied over time, and it measures progress with costs incurred relative to total estimated costs. At December 31, 2025, costs incurred were $800,000 and estimated total costs were $2,000,000, so Lark recognized $1,200,000 of revenue for 2025. During 2026, unexpected site conditions raised estimated total costs to $2,500,000; cumulative costs incurred at December 31, 2026, were $1,875,000. How should Lark account for the contract in its financial statements for the year ended December 31, 2026?",
+"choices": [
+"Recognize $2,250,000 of revenue in 2026, accounting for the revised estimate as a change in accounting estimate",
+"Recognize $1,290,000 of revenue in 2026 and restate 2025 revenue to $960,000 as the correction of an error",
+"Recognize $1,050,000 of revenue in 2026, accounting for the revised estimate as a change in accounting estimate",
+"Recognize $1,290,000 of revenue in 2026, measuring progress on 2026 costs alone, as a change in accounting estimate"
+],
+"answer": 2,
+"explain": "Lark remeasures its progress at the end of each reporting period and updates it for changes in the expected outcome, and the standard says such a change is a change in accounting estimate, not an error. Cumulative progress is $1,875,000 / $2,500,000 = 75%, so cumulative revenue is $2,250,000 and 2026 revenue is $2,250,000 - $1,200,000 = $1,050,000. Restating 2025 is wrong because the cost increase is a change in circumstances during 2026, not a mistake in the 2025 statements.",
+"source": "ASC 606-10-25-32 and 606-10-25-35, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-007",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "In December 2025, Halden Co. sells 500 units for $200 each in cash. Each unit cost $120. Customers may return units within 30 days for a full refund. Based on experience, Halden expects 20 units to be returned and concludes that this estimate satisfies the constraint on variable consideration. Returned units can be resold at a profit, and recovery costs are negligible. Which set of amounts should Halden report for these sales at December 31, 2025?",
+"choices": [
+"Revenue $100,000; refund liability $4,000; asset for the right to recover products $2,400",
+"Revenue $96,000; refund liability $4,000; asset for the right to recover products $2,400",
+"Revenue $96,000; refund liability, net of the right to recover products, $1,600",
+"Revenue $100,000; no refund liability until units are returned"
+],
+"answer": 1,
+"explain": "Revenue is recognized only for the consideration Halden expects to keep: 480 units x $200 = $96,000. The $4,000 expected to be refunded (20 x $200) is a refund liability, and the right to recover the returned units is an asset measured at their former carrying amount, 20 x $120 = $2,400, with cost of sales of 480 x $120 = $57,600. Netting the asset against the liability is wrong because the asset must be presented separately from the refund liability.",
+"source": "ASC 606-10-55-23, 606-10-55-25 and 606-10-55-27, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-008",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On October 1, 2025, Pell Co. sells a machine together with an extended warranty for a total price of $9,600. The machine comes with a one-year standard warranty that only assures it meets agreed specifications; customers cannot buy that warranty separately, and Pell estimates its cost at $300. The extended warranty is priced separately and covers years two through four after the sale. Standalone selling prices are $9,000 for the machine and $1,000 for the extended warranty. How much revenue should Pell recognize from this sale for the year ended December 31, 2025?",
+"choices": [
+"$9,600",
+"$9,000",
+"$8,640",
+"$8,340"
+],
+"answer": 2,
+"explain": "The extended warranty can be bought separately, so it is a distinct service and a separate performance obligation. Allocating the $9,600 price on relative standalone selling prices gives the machine $9,600 x 9,000/10,000 = $8,640, recognized on delivery, and the warranty $960, deferred until its coverage begins in 2026. The standard warranty is an assurance-type warranty accounted for under the product warranty guidance in the guarantees Topic rather than as a performance obligation, so no part of the price is allocated to it and its $300 estimated cost does not reduce revenue, which is why $8,340 is wrong.",
+"source": "ASC 606-10-55-30 through 55-32, 606-10-32-31 and 606-10-32-32, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-009",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "Corwin Co. contracts to sell 1,000 identical units to a customer for $50 each, transferring control of each unit on delivery. After 400 units have been delivered in 2025, the parties modify the contract to add 300 more units at $35 each. At the modification date, the standalone selling price of the units is $50, and the discount does not reflect any selling costs avoided. The additional units are distinct. What revenue should Corwin recognize for each unit delivered after the modification?",
+"choices": [
+"$50.00 for each remaining original unit and $35.00 for each added unit",
+"$46.54 for each unit, with a cumulative catch-up reduction for the 400 units already delivered",
+"$45.00 for each unit",
+"$35.00 for each unit"
+],
+"answer": 2,
+"explain": "The modification is not a separate contract because the $35 price does not reflect the $50 standalone selling price. Because the remaining units are distinct from those already delivered, Corwin treats the modification as a termination of the old contract and the creation of a new one: (600 x $50 + 300 x $35) / 900 units = ($30,000 + $10,500) / 900 = $45.00 per unit. The cumulative catch-up approach applies only when the remaining goods or services are not distinct and form part of a single, partially satisfied performance obligation.",
+"source": "ASC 606-10-25-12 and 606-10-25-13, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-010",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On January 1, 2025, Brandt Co. delivers equipment to a customer, which agrees to pay $121,000 on December 31, 2026. The cash selling price of the equipment is $100,000, and 10% is the rate that would apply in a separate financing transaction between Brandt and the customer. The financing component is significant to the contract. What amounts should Brandt report for the year ended December 31, 2025?",
+"choices": [
+"Revenue of $100,000 and interest income of $10,000",
+"Revenue of $121,000 and no interest income",
+"Revenue of $100,000 and interest income of $10,500",
+"Revenue of $100,000 and no interest income"
+],
+"answer": 0,
+"explain": "Because payment is due two years after delivery, the contract has a significant financing component, so revenue is measured at the $100,000 cash selling price and the difference is interest. Under the interest method, 2025 interest income is $100,000 x 10% = $10,000, presented separately from revenue. $10,500 spreads the $21,000 difference evenly over two years instead of using the interest method.",
+"source": "ASC 606-10-32-15, 606-10-32-16 and 606-10-32-18 through 32-20, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-011",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On January 1, 2025, Siskin Co. signs a three-year contract to provide services evenly to a customer, with no renewals expected. To win the contract, Siskin paid a $30,000 sales commission that it owed only because the contract was signed, $12,000 of external legal fees for due diligence and $8,000 of travel costs to present its proposal. The legal and travel costs would have been incurred even if the contract had not been obtained. Siskin expects to recover all of these costs. What contract cost asset should Siskin report at December 31, 2025?",
+"choices": [
+"$33,333",
+"$20,000",
+"$30,000",
+"$0"
+],
+"answer": 1,
+"explain": "Only incremental costs of obtaining a contract, those that would not have been incurred without it, are capitalized, so the asset is the $30,000 commission and the legal and travel costs are expensed when incurred. The asset is amortized consistent with the transfer of services over three years, leaving $30,000 - $10,000 = $20,000. The practical expedient to expense these costs applies only when the amortization period is one year or less, so $0 is wrong.",
+"source": "ASC 340-40-25-1 through 25-4 and 340-40-35-1, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-012",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On September 1, 2025, a nongovernmental, not-for-profit homeless shelter receives a $90,000 grant from a foundation. The agreement states that the shelter is entitled to the grant only if it serves at least 6,000 meals by June 30, 2026, and must return the entire grant otherwise. By December 31, 2025, the shelter's year-end, it has served 3,500 meals, and management believes it is highly likely to reach 6,000. How should the shelter report the grant in its December 31, 2025, financial statements?",
+"choices": [
+"A refundable advance of $90,000 and no contribution revenue",
+"Contribution revenue of $52,500 and a refundable advance of $37,500",
+"Contribution revenue with donor restrictions of $90,000",
+"Contribution revenue without donor restrictions of $90,000"
+],
+"answer": 0,
+"explain": "The agreement has a measurable performance-related barrier (6,000 meals) and a right of return, so it is a conditional contribution, and cash received before the condition is substantially met is a refundable advance. Because the shelter is entitled to nothing unless it reaches 6,000 meals, no revenue is recognized at 3,500 meals. Management's view that the target is highly likely does not matter, because a probability assessment is not a factor in deciding whether a barrier exists.",
+"source": "ASC 958-605-25-5A, 958-605-25-5C, 958-605-25-5D, 958-605-25-5F and 958-605-55-70Q through 55-70R (Example 20), as stated in ASU 2018-08",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-013",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On October 1, 2025, a foundation promises a nongovernmental, not-for-profit museum that it will give $1 for each $1 of new contributions the museum raises from other donors by March 31, 2026, up to $200,000. The foundation is released from its promise for any amount not matched. By December 31, 2025, the museum's year-end, it has received $130,000 of new contributions from other donors. How much contribution revenue from the foundation's promise should the museum recognize for 2025?",
+"choices": [
+"$0",
+"$200,000",
+"$65,000",
+"$130,000"
+],
+"answer": 3,
+"explain": "A matching grant is a conditional promise to give: the match is a barrier, and the foundation has a right of release. As the museum raises matching gifts, that portion of the promise becomes unconditional, so $130,000 is recognized as contribution revenue in 2025. Recognizing $200,000 ignores the unmet part of the condition, and $0 wrongly waits for the entire match to be raised.",
+"source": "ASC 958-605-25-11, 958-605-55-17, 958-605-55-17D(c) and 958-605-55-21, as stated in ASU 2018-08",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-014",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "On November 1, 2025, a nongovernmental, not-for-profit research organization receives $100,000 from a foundation to study one specific allergy over the next year, a purpose narrower than the organization's overall mission. The agreement includes the foundation's standard right-of-return wording and requires a final report on how the money was spent, but it does not make the organization's entitlement depend on achieving any outcome or level of service. Which entry should the organization record on November 1, 2025?",
+"choices": [
+"Debit Cash $100,000; credit Refundable advance $100,000",
+"Debit Cash $100,000; credit Contribution revenue with donor restrictions $100,000",
+"Debit Cash $100,000; credit Contribution revenue without donor restrictions $100,000",
+"Debit Cash $100,000; credit Deferred revenue $100,000, recognized as research costs are incurred"
+],
+"answer": 1,
+"explain": "A donor-imposed condition requires both a barrier and a right of return or release. Here the right of return is standard wording and the reporting requirement is an administrative stipulation, which is not a barrier, so the contribution is unconditional and recognized on receipt. Because the money must be used for research on one allergy, which is narrower than the organization's mission, it increases net assets with donor restrictions; a refundable advance would require a barrier the agreement does not contain.",
+"source": "ASC 958-605-25-5A, 958-605-55-17B, 958-605-55-17F and 958-605-55-70G through 55-70H (Example 15), as stated in ASU 2018-08; 958-605-45-3, as stated in ASU 2016-14",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-015",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "C",
+"q": "In December 2025, a donor gives $25,000 in cash to a nongovernmental, not-for-profit community foundation with instructions to transfer it to a named, unrelated food bank. The foundation has no power to redirect the gift and is not financially interrelated with the food bank. Which entry should the foundation record on receipt?",
+"choices": [
+"Debit Cash $25,000; credit Contribution revenue with donor restrictions $25,000",
+"No entry; disclose the receipt in the notes",
+"Debit Cash $25,000; credit Contribution revenue without donor restrictions $25,000, then record grant expense when the cash is transferred",
+"Debit Cash $25,000; credit Liability to the food bank $25,000"
+],
+"answer": 3,
+"explain": "A recipient that accepts assets from a donor and agrees to transfer them to a specified beneficiary is an agent, not a donee, unless an exception such as variance power applies. It recognizes a liability to the beneficiary at the same time it recognizes the cash received, so no contribution revenue is reported. Recording revenue and later grant expense would treat the foundation as the donee, which it is not.",
+"source": "ASC 958-605-15-6(b), as stated in ASU 2018-08; 958-605-25-24, as stated in ASU 2016-14",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-016",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "B",
+"q": "On July 1, 2025, Hollis Co. issues a two-year guarantee of an unrelated contractor's performance under a construction contract, in a standalone arm's-length transaction, and receives a premium of $24,000. The maximum potential payment is $500,000. At inception, it is not probable that Hollis will have to pay. The guarantee is subject to the recognition guidance in the guarantees Topic and is not within the scope of the credit losses guidance for financial instruments measured at amortized cost. What liability should Hollis recognize at inception?",
+"choices": [
+"$0",
+"$24,000",
+"$500,000",
+"$524,000"
+],
+"answer": 1,
+"explain": "Issuing a guarantee creates a noncontingent obligation to stand ready to perform, so a liability is recognized even when payment is not probable. For a guarantee issued in a standalone arm's-length transaction with an unrelated party, the premium received is used as a practical expedient for fair value, so the liability is $24,000. Recognizing $0 applies only the loss contingency test for the contingent aspect and ignores the stand-ready obligation.",
+"source": "ASC 460-10-25-2, 460-10-25-3 and 460-10-30-2(a), as amended by and stated in ASU 2016-13",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-017",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "B",
+"q": "On March 1, 2025, Pruitt Co. issues a guarantee to an unrelated party in a standalone arm's-length transaction for a premium of $40,000, which is its fair value. The guarantee is not within the scope of the credit losses guidance for financial instruments measured at amortized cost. At inception, it is already probable that Pruitt will have to pay under the guarantee, and under the loss contingency guidance Pruitt would accrue $70,000, its best estimate of the payment. What liability should Pruitt recognize at inception?",
+"choices": [
+"$70,000",
+"$40,000",
+"$110,000",
+"$30,000"
+],
+"answer": 0,
+"explain": "When a guarantor must also recognize a contingent loss at inception, the initial liability is the greater of the amount that meets the fair value objective ($40,000) and the contingent liability required by the loss contingency guidance ($70,000), so Pruitt recognizes $70,000. Adding the two amounts ($110,000) is the approach for guarantees within the scope of the credit losses guidance, which this guarantee is not.",
+"source": "ASC 460-10-30-2, 460-10-30-3, 460-10-30-4 and 460-10-30-5, as amended by and stated in ASU 2016-13",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-018",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "A",
+"q": "Arden Co. capitalized a $48,000 sales commission on January 1, 2025, and amortizes it straight-line over the four years in which it expects to transfer services under the related contract and a specific anticipated renewal. In January 2026, Arden learns that the customer will not renew, which significantly shortens the expected period of transfer. How should Arden account for this in 2026?",
+"choices": [
+"Account for the revision as a change in accounting principle with retrospective application",
+"Continue the original four-year amortization, because the period is fixed when the asset is first recognized",
+"Restate 2025 amortization as the correction of an error",
+"Update the amortization for the shorter period and account for the revision as a change in accounting estimate"
+],
+"answer": 3,
+"explain": "An entity updates the amortization of a contract cost asset to reflect a significant change in the expected timing of transfer of the related goods or services, and the standard says to account for that change as a change in accounting estimate. The 2025 amortization reflected the expectation at that time, so it is not an error, and no accounting principle has changed. Continuing the old schedule is wrong because amortization must be consistent with the transfer of the related services.",
+"source": "ASC 340-40-35-1 and 340-40-35-2, as stated in ASU 2014-09 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-022",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "A lessee is evaluating four leases that each begin on January 1, 2026. None of the underlying assets is specialized, none of the leases transfers ownership, and the lessee assesses the economic life and fair value criteria using thresholds of 75% of remaining economic life and 90% of fair value. Which lease should the lessee classify as a finance lease?",
+"choices": [
+"A 2-year machine lease; remaining economic life of 10 years; present value of lease payments equal to 30% of fair value; a purchase option the lessee is reasonably certain to exercise",
+"A 6-year equipment lease; remaining economic life of 10 years; present value of lease payments equal to 80% of fair value",
+"A 3-year truck lease; remaining economic life of 8 years; present value of lease payments equal to 45% of fair value",
+"A 5-year office lease; remaining economic life of the building of 40 years; present value of lease payments equal to 20% of fair value; a 5-year renewal option the lessee is not reasonably certain to exercise"
+],
+"answer": 0,
+"explain": "A lease is a finance lease if it meets any one of the criteria, and an option to purchase the underlying asset that the lessee is reasonably certain to exercise is one of them, so the machine lease is a finance lease. The equipment lease covers 60% of the remaining economic life (6 / 10) and its payments are 80% of fair value, both below the 75% and 90% thresholds, so it is an operating lease. The other two leases meet no criterion; the office renewal period is excluded from the lease term because exercise is not reasonably certain.",
+"source": "ASC 842-10-25-2, 842-10-30-1 and 842-10-55-2, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-023",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "On January 1, 2026, Ashby Corp., a public business entity, signs a 5-year equipment lease classified as an operating lease. Payments are $20,000 at the end of each year. The rate implicit in the lease is not readily determinable, and Ashby's incremental borrowing rate is 6% (present value of an ordinary annuity of 5 periods at 6%: 4.2124). Ashby paid a $3,000 commission to a broker that was owed only because the lease was signed, received a $2,000 lease incentive from the lessor at commencement, and allocated $1,500 of in-house legal salaries to negotiating the lease. What is the initial right-of-use asset?",
+"choices": [
+"$85,248",
+"$84,248",
+"$86,748",
+"$89,248"
+],
+"answer": 0,
+"explain": "The lease liability is $20,000 x 4.2124 = $84,248. The right-of-use asset is the liability plus initial direct costs, minus lease incentives received: $84,248 + $3,000 - $2,000 = $85,248. The in-house salaries are not initial direct costs because they would have been incurred whether or not the lease was obtained, which is why $86,748 is wrong.",
+"source": "ASC 842-20-30-1, 842-20-30-3, 842-20-30-5, 842-10-30-9, 842-10-30-10 and the glossary term initial direct costs, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-024",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "On January 1, 2026, Fenwick Co. begins a 4-year operating lease with payments at the end of each year of $10,000, $11,000, $12,000 and $13,000. There are no initial direct costs or lease incentives. The lease liability at commencement, discounted at 6%, is $39,597, and the right-of-use asset equals the liability. What lease cost should Fenwick recognize for the year ended December 31, 2026?",
+"choices": [
+"$10,000",
+"$9,899",
+"$12,275",
+"$11,500"
+],
+"answer": 3,
+"explain": "An operating lease produces a single lease cost allocated on a straight-line basis over the lease term: total payments of $46,000 / 4 years = $11,500. The $12,275 answer adds interest of $2,376 ($39,597 x 6%) to straight-line amortization of $9,899 ($39,597 / 4), which is the front-loaded finance lease pattern. The $10,000 cash payment is not the cost because the payments escalate.",
+"source": "ASC 842-20-25-6 and 842-20-25-8, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-025",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "On January 1, 2026, Granby Co. begins a 4-year lease that it classifies as a finance lease. The lease liability and right-of-use asset at commencement are each $100,000, measured at an 8% discount rate. Payments of $30,192 are due at the end of each year. The underlying asset has a useful life of 6 years; the lease does not transfer ownership, and there is no purchase option. What total expense should Granby recognize for the lease for the year ended December 31, 2026?",
+"choices": [
+"$30,192",
+"$38,192",
+"$24,667",
+"$33,000"
+],
+"answer": 3,
+"explain": "A finance lease lessee recognizes interest on the lease liability and amortization of the right-of-use asset. Interest is $100,000 x 8% = $8,000, and the asset is amortized straight-line to the end of the 4-year lease term, which ends before its useful life, because ownership does not transfer and there is no purchase option: $100,000 / 4 = $25,000, for a total of $33,000. Amortizing over the 6-year useful life ($8,000 + $16,667 = $24,667) would apply only if ownership transferred or a purchase option were reasonably certain to be exercised.",
+"source": "ASC 842-20-25-5, 842-20-35-1, 842-20-35-7 and 842-20-35-8, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-026",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "On October 1, 2025, Hale Co. leases construction equipment for 12 months, with no renewal or purchase option. Rent is free for October 2025 and $3,000 per month from November 2025 through September 2026, payable monthly. Hale has elected the short-term lease policy for this class of underlying asset. Which choice correctly describes Hale's accounting for the year ended December 31, 2025?",
+"choices": [
+"Lease expense of $6,000, the rent paid; no right-of-use asset or lease liability",
+"Lease expense of $9,000; no right-of-use asset or lease liability",
+"Lease expense of $8,250, plus a right-of-use asset and lease liability for the remaining payments",
+"Lease expense of $8,250; no right-of-use asset or lease liability"
+],
+"answer": 3,
+"explain": "The lease term is 12 months with no purchase option, so it is a short-term lease, and under the election Hale recognizes no right-of-use asset or lease liability. The lease payments are recognized on a straight-line basis over the lease term: total payments of $33,000 (11 x $3,000) / 12 months x 3 months = $8,250. Expensing only the $6,000 paid ignores the straight-line requirement for the free month.",
+"source": "ASC 842-20-25-2 and the glossary term short-term lease, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-027",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "F",
+"q": "On January 1, 2026, Ivers Corp., a public business entity, leases a machine for 3 years. It pays $40,000 at the end of each year plus 1% of its annual sales; it expects these sales-based payments to be about $20,000 a year. At the end of the lease it may buy the machine for $15,000, and it is reasonably certain to do so. The rate implicit in the lease is not readily determinable, and the incremental borrowing rate is 5%. Present value factors at 5% for 3 periods: ordinary annuity 2.7232; single sum 0.8638. What is the initial lease liability?",
+"choices": [
+"$121,885",
+"$108,928",
+"$176,349",
+"$135,000"
+],
+"answer": 0,
+"explain": "Lease payments include fixed payments and the exercise price of a purchase option the lessee is reasonably certain to exercise, but not variable payments that depend on sales. The liability is ($40,000 x 2.7232) + ($15,000 x 0.8638) = $108,928 + $12,957 = $121,885. Including the expected sales-based payments ($176,349) is wrong because those payments do not depend on an index or a rate; they are recognized in the period the obligation for them is incurred.",
+"source": "ASC 842-10-30-5, 842-10-30-6, 842-20-25-5(b), 842-20-30-1 and 842-20-30-3, as stated in ASU 2016-02 (Section A)",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-028",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "G",
+"q": "Bellamy Co.'s financial statements for the year ended December 31, 2025, are issued on March 15, 2026. The following occurred in early 2026: (1) on January 20, a lawsuit over an accident in August 2025 was settled for $500,000, and Bellamy had recorded a $350,000 liability at year-end; (2) on February 3, a customer owing $80,000 at year-end filed for bankruptcy because of a financial decline that had developed over 2025, the full balance is uncollectible, and no allowance had been provided for it; (3) on February 10, a fire destroyed inventory that cost $200,000; (4) on February 20, Bellamy issued $1,000,000 of bonds. By how much should Bellamy reduce its 2025 pretax income for these events?",
+"choices": [
+"$150,000",
+"$230,000",
+"$280,000",
+"$430,000"
+],
+"answer": 1,
+"explain": "The lawsuit and the bankruptcy arise from conditions that existed at the balance sheet date, so they are recognized: $500,000 - $350,000 = $150,000 of added loss plus the $80,000 credit loss, for $230,000. The fire and the bond issuance are nonrecognized subsequent events because they arose after the balance sheet date. Including the fire loss ($430,000) treats a nonrecognized event as recognized.",
+"source": "ASC 855-10-55-1 and 855-10-55-2, as amended by and stated in ASU 2016-13",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-029",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "G",
+"q": "Quill Co.'s financial statements for the year ended December 31, 2025, are issued on March 1, 2026. At year-end, a major customer owed $120,000, and because of the customer's sound financial condition Quill expected no credit losses. On January 15, 2026, a flood destroyed the customer's only plant, and Quill now expects to collect nothing. How should Quill reflect this in its 2025 financial statements?",
+"choices": [
+"Increase the allowance for credit losses at December 31, 2025, by $120,000",
+"Write off the $120,000 receivable at December 31, 2025, and reduce 2025 revenue",
+"Make no adjustment to the 2025 amounts, because the loss results from a condition that arose after the balance sheet date",
+"Restate the 2025 financial statements as the correction of an error"
+],
+"answer": 2,
+"explain": "Changes in estimated credit losses on receivables resulting from conditions that arise after the balance sheet date, such as a customer's major casualty, are nonrecognized subsequent events, so the 2025 allowance is not adjusted. This differs from a customer bankruptcy caused by a decline that already existed at year-end, which is recognized. Increasing the allowance would treat a nonrecognized event as recognized.",
+"source": "ASC 855-10-55-1(b) and 855-10-55-2(e), as amended by and stated in ASU 2016-13",
+"cpa": [
+"FAR-III"
+]
+},
+{
+"id": "far3-030",
+"part": "FAR",
+"domain": "FAR-III",
+"exam": "cpa",
+"group": "E",
+"q": "Fair value is the price that would be received to sell an asset or paid to transfer a liability in an orderly transaction between market participants at the measurement date. All of the following are characteristics of market participants EXCEPT:",
+"choices": [
+"They are independent of each other, that is, they are not related parties",
+"They are knowledgeable, with a reasonable understanding of the asset or liability and the transaction",
+"They are able and willing to enter into a transaction for the asset or liability",
+"They are under pressure to complete a transaction quickly, as in a forced liquidation"
+],
+"answer": 3,
+"explain": "Market participants are willing to transact, which means motivated but not forced or otherwise compelled to do so, so a party under pressure to sell in a forced liquidation lacks a required characteristic. The other choices restate the definition: market participants are independent, knowledgeable, able and willing. Independence does not bar all related-party data, since a related-party price may be used as an input if there is evidence it was at market terms.",
+"source": "FASB Master Glossary terms fair value, market participants and orderly transaction, as quoted in ASU 2016-01 (321-10-20)",
+"cpa": [
+"FAR-III"
+]
 }
 ]

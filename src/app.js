@@ -11,7 +11,9 @@ const TCP_BANK = BANK_ALL.filter(q => (q.cpa || []).some(t => t.startsWith("TCP"
   .map(q => Object.assign({}, q, { part: "TCP", domain: q.cpa.find(t => t.startsWith("TCP")) }));
 /* AUD: the CPA-only questions written for it (exam "cpa", part "AUD"); no EA question carries an AUD tag */
 const AUD_BANK = BANK_ALL.filter(q => q.exam === "cpa" && q.part === "AUD");
-const CPA_BANK = REG_BANK.concat(AUD_BANK, TCP_BANK);
+/* FAR: the CPA-only questions written for it (exam "cpa", part "FAR") */
+const FAR_BANK = BANK_ALL.filter(q => q.exam === "cpa" && q.part === "FAR");
+const CPA_BANK = REG_BANK.concat(FAR_BANK, AUD_BANK, TCP_BANK);
 let BANK = EA_BANK;
 const EA_DOMAINS = {
   "P1-1": { part: 1, name: "Preliminary Work and Taxpayer Data", short: "Prelim work", n: 14, bld: "the tax prep shop" },
