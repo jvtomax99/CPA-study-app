@@ -51,6 +51,9 @@ The app is a phone-width column. Home is split into four sections, each one scre
 | Night | — | `#0b0a24` / `#090820` | Greeting sky and El track band |
 | Lit Window | — | `#ffd27a` | Lit windows on towers, streak and gold highlights in night scenes |
 | Chip | `--chip` | `rgba(18,16,46,0.78)` | Labels floating over the 3D town |
+| Violet Haze | — | `#6b4fa8` | Launch screen: the glow above the skyline, and the CSS sky shown before the 3D arrives |
+| Launch Fog | — | `#2a2158` | Launch screen: the exponential fog the skyline fades into |
+| Cyan Window | — | `#7fe3ff` | Launch screen only: most lit windows and the train's window strips (gold Lit Window takes the rest) |
 
 ### Transit signage and the strip map (fixed, both themes)
 
@@ -80,6 +83,9 @@ Only for exam content: the question (19px, 17.5px under 420px wide), answer choi
 
 ### Helvetica Neue — signage (`--f-sign`, falls back to Inter)
 The app bar title (27px/700), the part line under it, and the whole strip map: station names 18px/700, Next stop name 20px, neighborhood labels 11px/700 uppercase with 0.06em tracking. iPhones render real Helvetica Neue; other devices fall back to Inter.
+
+### Launch screen text
+Tap to Start in Inter 17px/700 with 0.04em tracking; the status line 13px/600 with tabular numbers; the side button labels 10px/700 uppercase with 0.06em tracking; the build string 10px/400 in white at 38%, decorative only. Station signs in the 3D use Helvetica 700.
 
 ### Lora italic and Parisienne — the greeting only
 Lora italic 500 for the buddy's quote, Parisienne for your name. Never anywhere else.
@@ -142,6 +148,16 @@ One continuous dark piece with 28px outer corners on Today: the greeting (drawn 
 
 ### Night page (phone)
 Under 1024px wide, Today and City drop their card frames: the page itself becomes the night sky from the station sign down to the tab bar. A fixed layer behind the page (`.nightsky`) paints `#0b0a24` at the top through Dusk Top to Dusk Mid, with the sunset glow (Dusk Edge into Dusk Low) rising from the bottom edge as the horizon. It fades in and out over 260ms as you move between sections; Map, Exam, drill and every other screen stay on the cream page. The greeting, the Today card and the town card run edge to edge with no corners and no shadow, the town's stage fills down to the tab bar, and the greeting's sky is anchored at 35% so the moon stays in view at full width. At 1024px and wider the framed cards stay, beside the map.
+
+### Launch screen
+The first thing the app shows: a night El ride into the tax town, then Tap to Start. Always dark, whatever the theme. Built in `src/intro.js` (overlay and load tracker) and `src/intro3d.js` (the 3D ride, three.js with UnrealBloomPass, exponential fog, film grain and vignette). About 15 seconds on the first open of the day; later opens that day go straight to Home. `?intro=0` skips it, `?intro=1` forces the ride, `?intro=title` shows Tap to Start without the ride. It never shows while an exam sim is running.
+1. **0 to 2s:** wide shot of the skyline and the El, the moon over it. A white pill toast slides down at top center: a 22px round Ink icon with a Lit Window dot, then "Welcome, Name!" in Inter 14px/600 on white, with the night scene shadow.
+2. **2 to 10s:** the train passes three stations, Individuals, Businesses and Representation. A station's canopy lamps, platform edge and sign switch on when its part has really loaded: Part 1's questions (plus three.js), Part 2's questions plus the bloom passes and tower models, Part 3's questions plus the town build. The train brakes into a dark station and waits there. Bottom left: a 14px spinner and "Arriving at Businesses... 43.64%"; a 2px Lit Window line across the bottom fills with the real load (bytes for three.js and the models, one step per 100 KB of the bank, which streams in with the page). Under it, the build string.
+3. **10 to 13s:** the camera swings beside the lead car, the train accelerates, gold sparks and a gold to violet trail stream off the third rail, and the track curves down toward the tower and its portal, whose glow builds.
+4. **13s on:** the train dives into the portal, which flares, then pulses slowly (1.7s cycle). Tap to Start sits centered near the bottom on a dark band (`rgba(11,10,36,0.62)`, fading out at both ends) and pulses its opacity (2.4s). Down the right edge, five glass controls (38px circles in the darker 3D glass, 20px line icons) with labels under them: Notices, Progress, Settings, Report a Question, Reset. Notices opens a glass panel (22px radius) listing exam dates, the testing window, the backup age and flagged questions; Progress opens Map; Settings opens More; Report a Question opens More at Flagged questions; Reset opens More with the Erase confirm showing, and never erases on its own.
+5. **On tap:** the portal flares and the screen goes white over 0.6s, holds 0.2s, turns dark over 0.36s, then fades out over 0.42s onto Home. A tap while loading waits and starts the moment loading finishes; the status reads "Starting when loaded".
+
+Generic stainless cars, no real logos, route bullets or line names on the train or the stations. The pixel ratio is capped at 2 and steps down by 0.25 when frames run past 21ms. With reduced motion it opens on the still portal shot, nothing loops, and the tap is a 260ms fade.
 
 ### Status bar band
 A Sign Black `#111` band fills the iPhone status bar area (`env(safe-area-inset-top)`), and the home-screen app asks for a translucent black status bar, so the station sign reads as running to the top of the screen.
@@ -231,6 +247,7 @@ No photos. The 3D town (three.js, `src/town.js`) is a Midtown night or autumn da
 ## Motion
 
 - **Interface transitions** (taps, hover, things appearing) run at 120ms to 260ms today. For new work: 120ms for a press, 160ms for hover and color, 260ms for something that moves or appears.
+- **Launch screen:** a 15-second ride once a day, the 0.6s white-out on tap (see Launch screen). It is the only full-screen animation.
 - **Scene animation** lives only in night scenes and can be slow: the train pulling in (1.8s), the cars bobbing (0.6s), the buddy breathing (3.8s), the number ring turning (24s), windows lighting on an answer.
 - Animate with `transform` and `opacity`.
 - Respect `prefers-reduced-motion`: no idle or looping animation, no scrolling backgrounds, and state changes appear instantly.

@@ -12,7 +12,24 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
   const ctx = await browser.newContext({ viewport: { width: 1100, height: 900 }, acceptDownloads: true });
   if (process.env.THREE_DIR) await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.160\.0\/(.*)/, r => r.fulfill({ path: path.join(process.env.THREE_DIR, r.request().url().split("three@0.160.0/")[1]), contentType: "text/javascript" }));
   const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(e.message));
-  await p.goto("file://" + path.resolve("index.html") + "?gfx=high");
+  /* the launch screen: full ride on the first open of the day, then Tap to Start; ?intro=0 skips it for the rest of the test */
+  {
+    const ip = await ctx.newPage(); ip.on("pageerror", e => errors.push(e.message));
+    await ip.goto("file://" + path.resolve("index.html") + "?intro=1&introseek");
+    check(!!(await ip.waitForSelector("#intro canvas", { timeout: 30000 }).catch(() => null)), "launch: the ride draws in 3D");
+    await ip.waitForFunction(() => window.__introSeek, null, { timeout: 30000 }).catch(() => {});
+    await ip.evaluate(() => window.__introSeek && window.__introSeek(14));
+    check(!!(await ip.waitForSelector("#intro.hero", { timeout: 15000 }).catch(() => null)), "launch: the ride ends on Tap to Start");
+    await ip.waitForFunction(() => window.Boot && window.Boot.loaded(), null, { timeout: 60000 }).catch(() => {});
+    check(await ip.evaluate(() => [0, 1, 2].every(k => Boot.lit(k)) && Boot.progress() === 1), "launch: all three stations light once everything has loaded");
+    await ip.click("#intap");
+    await ip.waitForFunction(() => !document.getElementById("intro"), null, { timeout: 60000 }).catch(() => {});
+    check(await ip.evaluate(() => !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: Tap to Start opens Home");
+    await ip.goto("file://" + path.resolve("index.html"));
+    check(await ip.evaluate(() => window.__introMode === "off" && !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: later opens the same day go straight to Home");
+    await ip.close();
+  }
+  await p.goto("file://" + path.resolve("index.html") + "?gfx=high&intro=0");
 
   /* greeting + study buddy: the numbers spiral plays, he lands with Play on his calculator, a thought cloud types,
      the name prompt comes once and the greeting uses the name, a tap brings a new cloud */

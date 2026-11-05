@@ -1,7 +1,8 @@
 /* Two exams share one bank. EA mode drills the EA questions. CPA mode (state.exam "cpa") drills REG: every question
    tagged REG, filed under its first REG area, plus the CPA-only questions (exam "cpa", such as business law).
    Progress is keyed by question id, so an answer counts in both modes. useExam() swaps BANK, DOMAINS, PARTS and byId. */
-const BANK_ALL = __BANK__;
+/* the bank arrives in pieces ahead of this script (see tools/build.py), each question with its index in questions.json */
+const BANK_ALL = (() => { const a = []; for (const piece of window.__bank || []) for (const [i, q] of piece) a[i] = q; return a.filter(Boolean); })();
 const EA_BANK = BANK_ALL.filter(q => q.exam !== "cpa");
 const REG_BANK = BANK_ALL.filter(q => q.exam === "cpa" ? q.part === "REG" : (q.cpa || []).some(t => t.startsWith("REG")))
   .map(q => q.exam === "cpa" ? q : Object.assign({}, q, { part: "REG", domain: q.cpa.find(t => t.startsWith("REG")) }));
@@ -994,4 +995,23 @@ document.addEventListener("keydown", e => {
   }
 });
 updateFlagDot();
-if (state.examRun) renderExam(); else renderHome();
+/* the launch screen (src/intro.js): it opens the app itself on Tap to Start or one of its side buttons */
+function introNotices() {
+  const out = [], w = daysTo(WINDOW_END), flags = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size;
+  for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? `${PL(p)} is today. Good luck.` : `${PL(p)} is in ${d} day${d === 1 ? "" : "s"}, on ${fmtDay(iso, { month: "long", day: "numeric" })}.`); }
+  if (!isCpa() && w >= 0) out.push(`The testing window closes February 28, 2027, in ${w} day${w === 1 ? "" : "s"}.`);
+  out.push(backupLine());
+  out.push(flags ? `${flags} flagged question${flags === 1 ? " is" : "s are"} waiting in More to be reported.` : "No flagged questions.");
+  return out;
+}
+function introGo(where) {
+  const toCard = title => { const h = [...document.querySelectorAll("#app h3")].find(e => e.textContent === title); if (h) h.closest("section").scrollIntoView({ block: "start" }); };
+  if (where === "progress") { homeTab = "map"; renderHome(); }
+  else if (where === "settings") renderMore();
+  else if (where === "report") { renderMore(); toCard("Flagged questions"); }
+  else if (where === "reset") { renderMore(); $("#reset").click(); toCard("Start over"); } /* opens the confirm; nothing is erased from the launch screen */
+  else renderHome();
+}
+if (state.examRun) renderExam();
+else if (window.Intro && window.Intro.on) window.Intro.begin({ name: state.name, notices: introNotices, go: introGo });
+else renderHome();
