@@ -26,7 +26,8 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
     await ip.waitForFunction(() => !document.getElementById("intro"), null, { timeout: 60000 }).catch(() => {});
     check(await ip.evaluate(() => !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: Tap to Start opens Home");
     await ip.goto("file://" + path.resolve("index.html"));
-    check(await ip.evaluate(() => window.__introMode === "off" && !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: later opens the same day go straight to Home");
+    check(await ip.evaluate(() => window.__introMode === "full" && !!document.getElementById("intro")), "launch: the ride plays again on the next launch");
+    await ip.goto("file://" + path.resolve("index.html") + "?intro=0");
     await ip.click("#morebtn"); await Promise.all([ip.waitForNavigation(), ip.click("#introreplay")]);
     check(await ip.evaluate(() => window.__introMode === "full" && !!document.getElementById("intro")), "launch: Replay the intro in More plays the ride again");
     await ip.close();
