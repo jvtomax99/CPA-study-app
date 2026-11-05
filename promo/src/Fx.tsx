@@ -97,7 +97,7 @@ export const Headline: React.FC<{a: string; b: string; step: number; steps: numb
 export const WordSubs: React.FC<{text: string; start: number; dur: number}> = ({text, start, dur}) => {
   const frame = useCurrentFrame();
   if (frame < start - 3) return null;
-  const words = text.replace(/E A/g, 'EA').replace(/I R S/g, 'IRS').split(' ');
+  const words = text.replace(/C P A/g, 'CPA').replace(/E A/g, 'EA').replace(/I R S/g, 'IRS').split(' ');
   const total = words.reduce((a, w) => a + w.length + 1, 0);
   let acc = 0;
   const o = interpolate(frame, [start - 3, start + 3], [0, 1], clamp);

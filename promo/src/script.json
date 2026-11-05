@@ -3,7 +3,7 @@
     "id": "intro",
     "label": "",
     "lines": [
-      "Here's how to use E A Ledger Drill, in about two minutes."
+      "Here's how to use Above the Line, for the E A and C P A exams."
     ]
   },
   {
@@ -36,25 +36,40 @@
     "id": "icon",
     "label": "Always open it from the icon",
     "lines": [
-      "From then on, always open it from the E A Drill icon.",
+      "From then on, always open it from the Above Line icon.",
       "Safari and the Home Screen app keep separate progress.",
       "Already studied in Safari? Save a backup file there, then load it in the app."
     ]
   },
   {
-    "id": "home",
-    "label": "Your tax city",
+    "id": "launch",
+    "label": "The launch screen",
     "lines": [
-      "Up top, your study buddy says hello. Tap Play on his calculator to jump straight into a drill.",
-      "This is your tax city. The big number is how ready you are for this part.",
-      "Below it are your streak, reviews due, and today's goal. Switch parts here."
+      "Each time it starts, you ride the El into town. Then tap Start."
     ]
   },
   {
-    "id": "towers",
-    "label": "Towers are exam areas",
+    "id": "exams",
+    "label": "E A or C P A",
     "lines": [
-      "Each tower is one exam area. Floors fill in as you master it, and cabs on the avenue are reviews waiting for you.",
+      "Pick your exam at the top. E A has the three enrolled agent parts. C P A has REG, FAR, AUD and TCP.",
+      "Switching swaps the towers, questions and sims to match."
+    ]
+  },
+  {
+    "id": "today",
+    "label": "Today",
+    "lines": [
+      "Today is home base. Your study buddy says hello. Tap Play on his calculator to jump straight into a drill.",
+      "The big number is how ready you are for this part, with your streak, reviews due, and today's goal.",
+      "The bar at the bottom moves between Today, City, Map and Exam."
+    ]
+  },
+  {
+    "id": "city",
+    "label": "City: towers are exam areas",
+    "lines": [
+      "City is your tax city. Each tower is one exam area. Floors fill in as you master it, and cabs on the avenue are reviews waiting for you.",
       "Tap a tower to see its numbers, and drill just that area."
     ]
   },
@@ -66,10 +81,17 @@
     ]
   },
   {
+    "id": "map",
+    "label": "Map: your route",
+    "lines": [
+      "Map lays your areas out like a subway line, with each one's share of the exam and what's due. Next Stop is where to study now."
+    ]
+  },
+  {
     "id": "drill",
     "label": "Play: the drill",
     "lines": [
-      "Tap Play to drill. Pick an answer, and you'll see right away if you got it, with an explanation and the I R S source."
+      "Tap Play to drill. Pick an answer, and you'll see right away if you got it, with an explanation and its source."
     ]
   },
   {
@@ -88,10 +110,11 @@
   },
   {
     "id": "exam",
-    "label": "Exam sim",
+    "label": "Exam: date and sims",
     "lines": [
-      "Exam sim has the real test's shape: a hundred questions, three and a half hours, in three sections.",
-      "Once you leave a section, you can't go back. The break between sections stops the clock."
+      "On the Exam tab, set your test date, and the app counts down the days.",
+      "An E A sim has the real test's shape: a hundred questions, three and a half hours, in three sections you can't go back to.",
+      "A C P A sim is the multiple-choice half of a section, in two locked testlets."
     ]
   },
   {

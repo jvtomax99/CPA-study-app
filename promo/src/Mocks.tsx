@@ -40,7 +40,7 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
   const toggleLit = frame >= t.form + 12;
   return (
     <div style={{position: 'absolute', inset: 0, fontFamily: FONT}}>
-      <Shot src="home" />
+      <Shot src="greet" />
       {/* Safari's bottom bar (iOS 26 compact layout) */}
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 150, background: 'rgba(246,246,250,0.96)', display: 'flex', alignItems: 'flex-start', paddingTop: 22, gap: 18, justifyContent: 'center'}}>
         <div style={{width: 70, height: 70, borderRadius: 35, background: '#fff', boxShadow: '0 2px 10px rgba(0,0,0,0.12)', display: 'grid', placeItems: 'center', fontSize: 40, color: C.ink}}>‹</div>
@@ -60,7 +60,7 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
         <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: SH * 0.62, background: '#f2f2f7', borderRadius: '40px 40px 0 0', boxShadow: '0 -20px 50px rgba(0,0,0,0.3)', transform: `translateY(${(1 - sheetY) * SH * 0.62}px)`}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 20, padding: 28}}>
             <Img src={staticFile('icons/icon-512.png')} style={{width: 84, height: 84, borderRadius: 20}} />
-            <div style={{fontSize: 30, fontWeight: 700, color: C.ink}}>EA Ledger Drill<div style={{fontSize: 24, fontWeight: 400, color: '#666'}}>jvtomax99.github.io</div></div>
+            <div style={{fontSize: 30, fontWeight: 700, color: C.ink}}>Above the Line<div style={{fontSize: 24, fontWeight: 400, color: '#666'}}>jvtomax99.github.io</div></div>
           </div>
           <div style={{margin: '0 24px', borderRadius: 24, background: '#fff', overflow: 'hidden'}}>
             {['Copy', 'Add to Reading List', 'Add Bookmark'].map((x) => <div key={x} style={row}>{x}</div>)}
@@ -76,7 +76,7 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
           </div>
           <div style={{margin: '0 24px', borderRadius: 24, background: '#fff', padding: 28, display: 'flex', gap: 24, alignItems: 'center'}}>
             <Img src={staticFile('icons/icon-512.png')} style={{width: 110, height: 110, borderRadius: 26}} />
-            <div style={{fontSize: 32, color: C.ink}}>EA Drill<div style={{fontSize: 24, color: '#888', marginTop: 8}}>jvtomax99.github.io/CPA-study-app</div></div>
+            <div style={{fontSize: 32, color: C.ink}}>Above Line<div style={{fontSize: 24, color: '#888', marginTop: 8}}>jvtomax99.github.io/CPA-study-app</div></div>
           </div>
           <div style={{margin: '24px 24px 0', borderRadius: 24, background: '#fff', ...row, height: 96, borderBottom: 'none', boxShadow: toggleLit ? `0 0 0 5px ${C.amber}` : undefined}}>
             <span style={{fontWeight: 600}}>Open as Web App</span>
@@ -105,7 +105,7 @@ export const ChromeSteps: React.FC<{dots: number; pick: number; dialog: number; 
         <div style={{flex: 1, height: 70, borderRadius: 35, background: '#eef0f4', display: 'flex', alignItems: 'center', paddingLeft: 28, fontSize: 26, color: '#444'}}>jvtomax99.github.io/CPA-…</div>
         <div style={{width: 60, height: 70, display: 'grid', placeItems: 'center'}}><Dots vertical /></div>
       </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 120, bottom: 0}}><Shot src="home" /></div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 120, bottom: 0}}><Shot src="greet" /></div>
       {menu > 0 && (
         <div style={{position: 'absolute', right: 14, top: 110, width: 380, borderRadius: 18, background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', opacity: menu, transform: `scale(${0.9 + 0.1 * menu})`, transformOrigin: 'top right', zIndex: 3, overflow: 'hidden'}}>
           {['New tab', 'History', 'Bookmarks', 'Downloads'].map((x) => <div key={x} style={row}>{x}</div>)}
@@ -117,7 +117,7 @@ export const ChromeSteps: React.FC<{dots: number; pick: number; dialog: number; 
         <div style={{position: 'absolute', inset: 0, background: `rgba(0,0,0,${0.45 * dlg})`, display: 'grid', placeItems: 'center', zIndex: 4}}>
           <div style={{width: 500, borderRadius: 30, background: '#fff', padding: 36, opacity: dlg, display: 'grid', gap: 24}}>
             <b style={{fontSize: 34, color: C.ink}}>Install app</b>
-            <div style={{display: 'flex', gap: 20, alignItems: 'center'}}><Img src={staticFile('icons/icon-512.png')} style={{width: 90, height: 90, borderRadius: 45}} /><div style={{fontSize: 30, color: C.ink}}>EA Drill</div></div>
+            <div style={{display: 'flex', gap: 20, alignItems: 'center'}}><Img src={staticFile('icons/icon-512.png')} style={{width: 90, height: 90, borderRadius: 45}} /><div style={{fontSize: 30, color: C.ink}}>Above the Line</div></div>
             <div style={{display: 'flex', justifyContent: 'flex-end', gap: 40, fontSize: 30, fontWeight: 700, color: '#1a73e8'}}><span>Cancel</span><span>Install</span></div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export const HomeScreen: React.FC<{tap: number; glowFrom: number}> = ({tap, glow
         ) : (
           <div style={{width: 112, height: 112, borderRadius: 26, background: 'rgba(255,255,255,0.16)'}} />
         )}
-        <div style={{fontSize: 22, color: '#fff', fontWeight: isApp ? 700 : 400, opacity: isApp ? 1 : 0.5}}>{isApp ? 'EA Drill' : ' '}</div>
+        <div style={{fontSize: 22, color: '#fff', fontWeight: isApp ? 700 : 400, opacity: isApp ? 1 : 0.5}}>{isApp ? 'Above Line' : ' '}</div>
       </div>
     );
   };
