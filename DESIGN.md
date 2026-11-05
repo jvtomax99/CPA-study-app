@@ -143,6 +143,9 @@ CPA sections are rounded rectangles instead of round bullets, so they read as si
 ### Station sign app bar
 Full-bleed black `#111` band with a 2px white rule 7px from the top, the title in Helvetica Neue 27px/700, and a row under it: three part bullets (22px circles in the part line colors, the current part at full opacity with a black and white double ring, the others at 40%), then the exam switch, then "Tax Year 2025". The title reads "Above the Line" in both modes. In CPA mode section signs replace the bullets and the tax year drops out. A 42px round menu button with a white 2px border sits at the right; an amber dot on it counts flagged questions.
 
+### App icon
+The station sign as a square, drawn by `tools/make_icons.js`: a Sign Black field with the Sign Rule along the top (22 of 1024 units, 118 from the top), "Above" in Inter 800 at 276/1024 with -9 tracking, centered, an Amber bar under it (840 by 48, fully rounded), and "the Line" in Inter 700 at 150/1024 under that, all in white. The maskable icon shrinks the words and bar to 78% around the center so round masks never clip them; the field and rule stay full-bleed. The home-screen label is "Above Line" (`short_name`). iOS keeps the icon and name it saw when the app was added, so a change only shows after removing and re-adding the app.
+
 ### Night scene: greeting, El train, Today card
 One continuous dark piece with 28px outer corners on Today: the greeting (drawn night Midtown, the study buddy on a gold coin, name in Parisienne, quote in Lora italic; the quote is hidden under 560px wide so Play stays above the tab bar), then the elevated subway line with a two-car train parked at the part's readiness, then the Today card on the dusk gradient. Shadow `0 24px 48px -24px rgba(26,24,64,0.55)`. Always dark, whatever the page theme.
 
