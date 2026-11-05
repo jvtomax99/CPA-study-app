@@ -27,6 +27,8 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
     check(await ip.evaluate(() => !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: Tap to Start opens Home");
     await ip.goto("file://" + path.resolve("index.html"));
     check(await ip.evaluate(() => window.__introMode === "off" && !document.getElementById("intro") && !!document.querySelector(".panes")), "launch: later opens the same day go straight to Home");
+    await ip.click("#morebtn"); await Promise.all([ip.waitForNavigation(), ip.click("#introreplay")]);
+    check(await ip.evaluate(() => window.__introMode === "full" && !!document.getElementById("intro")), "launch: Replay the intro in More plays the ride again");
     await ip.close();
   }
   await p.goto("file://" + path.resolve("index.html") + "?gfx=high&intro=0");
