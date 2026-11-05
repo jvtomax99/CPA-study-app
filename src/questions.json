@@ -12824,6 +12824,106 @@
 ]
 },
 {
+"id": "reg2-107",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Unless their agreement provides otherwise, a principal who hires an agent for pay owes the agent all of the following duties EXCEPT:",
+"choices": [
+"A duty to pay the agent the agreed compensation for the agent's services",
+"A duty to reimburse the agent for expenses, and indemnify the agent for losses, that the agent reasonably incurs while acting within the agent's authority",
+"A duty to deal with the agent fairly and in good faith",
+"A fiduciary duty of loyalty that requires the principal to put the agent's interests ahead of the principal's own"
+],
+"answer": 3,
+"explain": "A principal owes an agent three duties: to act as their contract provides, including paying the agreed compensation; to indemnify the agent for payments and losses the agent incurs within its authority (and for some that benefit the principal); and to deal with the agent fairly and in good faith. These duties are not fiduciary. The fiduciary duty of loyalty runs the other way, from the agent to the principal, so a principal never has to put the agent's interests ahead of its own. Indemnity does not cover losses from unauthorized acts that did not benefit the principal, or losses caused solely by the agent's own wrongdoing.",
+"source": "Restatement (Third) of Agency 8.13 to 8.15 and 1.01 comment (\"The obligations that a principal owes an agent, specified in §§ 8.13-8.15, are not fiduciary\"), quoted in Minnesota Life Ins. Co. v. Financial Institution Consulting Corp. (W.D. Tenn. 2017), courtlistener.com/opinion/7327666/; 8.14 comment d, quoted in General American Life Ins. Co. v. McCraw (Miss. 2007), courtlistener.com/opinion/1731991/; Restatement (Second) of Agency 441 (compensation), quoted in Transcontinental Underwriters Agency v. American Agency Underwriters (3d Cir. 1982), courtlistener.com/opinion/405067/",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-108",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Lena, acting within her actual authority, contracts to buy a warehouse from Seller. She tells Seller that she is buying for a client who wishes to remain anonymous and signs the contract \"Lena, as agent.\" Seller and Lena never agree that Lena will not be a party to the contract. The client later refuses to close. Whom may Seller hold liable on the contract?",
+"choices": [
+"Only the client, because Seller knew that Lena was acting for a principal",
+"Only Lena, because a principal whose identity is not disclosed cannot be bound",
+"Both the client and Lena",
+"Neither, because Seller agreed to contract with an unnamed party"
+],
+"answer": 2,
+"explain": "The client is a partially disclosed principal (an \"unidentified principal\" in the Restatement (Third) of Agency): Seller knew that Lena acted for a principal but did not know who it was. The principal is bound by a contract its agent makes within actual authority, and because Seller could not look to an unknown principal, the agent is also a party to the contract unless the agent and the third party agree otherwise. The choice naming only the client states the rule for a fully disclosed principal, where the third party knows both that there is a principal and who it is.",
+"source": "Restatement (Third) of Agency 6.02(2) and 1.04(2)(c), quoted in Big Sky Civil & Envtl., Inc. v. Dunlavy (Mont. 2018), courtlistener.com/opinion/6657496/",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-109",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "A",
+"q": "Mark is the purchasing agent of Ridge Co. He signs two contracts \"Ridge Co., by Mark, purchasing agent.\" The first, with Supplier A, is within his actual authority. The second, with Supplier B, is outside any actual or apparent authority he has, and Supplier B does not know that. Mark gave no disclaimer of his authority, and Ridge Co. refuses to ratify the second contract. Which statement is correct?",
+"choices": [
+"Mark is liable on both contracts, because he signed both of them",
+"Mark is not liable on either contract, because he disclosed his principal on both",
+"Mark is not a party to the contract with Supplier A, but he is liable to Supplier B for breach of the implied warranty of authority",
+"Mark is liable to Supplier A as a co-party, but he is not liable to Supplier B, because the contract with Supplier B does not bind anyone"
+],
+"answer": 2,
+"explain": "An agent who makes an authorized contract for a disclosed principal is not a party to it, so only Ridge Co. is bound to Supplier A. An agent who purports to act for a principal impliedly warrants that he has authority, so when Mark acted without authority and Ridge Co. did not ratify, Mark is liable to Supplier B for breach of that warranty. Disclosing the principal protects the agent only when he has power to bind the principal, through actual or apparent authority.",
+"source": "Restatement (Third) of Agency 6.01 and 6.10, quoted in Big Sky Civil & Envtl., Inc. v. Dunlavy (Mont. 2018), courtlistener.com/opinion/6657496/; 6.10 exceptions (ratification, notice of no warranty, third party's knowledge), quoted in Flaherty v. Muther (Me. 2011), courtlistener.com/opinion/2554806/",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-110",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Before Lark Corp. was incorporated, its promoter, Dana, signed a contract with Vendor to buy equipment for the corporation. The contract says nothing about Dana's personal liability. After Lark was incorporated, its board formally adopted the contract. Vendor never agreed to release Dana. Lark later fails to pay. Whom may Vendor hold liable?",
+"choices": [
+"Only Lark, because the adoption substituted Lark for Dana",
+"Only Dana, because a corporation cannot be bound by a contract made before it existed",
+"Both Lark and Dana, because adoption binds the corporation but does not release the promoter",
+"Neither, because the contract was made for a corporation that did not exist when it was signed"
+],
+"answer": 2,
+"explain": "A promoter who signs a contract for a corporation not yet formed is personally liable on it, and the corporation becomes bound only if it adopts the contract after it is formed. Under the majority rule, adoption adds the corporation as a party but does not release the promoter. Only a novation, in which the other party agrees to substitute the corporation and release the promoter, ends the promoter's liability, and Vendor never agreed to one.",
+"source": "Illinois Controls, Inc. v. Langham (Ohio 1994), courtlistener.com/opinion/6877684/ (\"mere adoption of the contract by the corporation will not relieve promoters from liability in the absence of a subsequent novation\")",
+"cpa": [
+"REG-II"
+]
+},
+{
+"id": "reg2-111",
+"part": "REG",
+"domain": "REG-II",
+"exam": "cpa",
+"group": "E",
+"q": "Ava has owned 2% of the voting shares of Birch Corp. for three years. Birch is incorporated in a state that has adopted the Model Business Corporation Act (MBCA) records-inspection provisions. She suspects that the officers are mismanaging inventory and wants to inspect Birch's accounting records for inventory. Which statement about her right to inspect is correct?",
+"choices": [
+"She may inspect them only after obtaining a court order, because accounting records are confidential",
+"She may inspect them if she gives advance written demand made in good faith and for a proper purpose, describes the purpose and the records with reasonable particularity, and the records are directly connected with that purpose",
+"She may not inspect them, because a shareholder must own at least 5% of the shares to inspect accounting records",
+"She may inspect any of Birch's records at any time during business hours without giving notice or stating a purpose"
+],
+"answer": 1,
+"explain": "Accounting records are open to a shareholder who gives advance written demand made in good faith and for a proper purpose, describes the purpose and the records with reasonable particularity, and asks only for records directly connected with that purpose; checking for suspected mismanagement is a proper purpose. Her 2% stake does not bar her: even an adopting state that adds a holding test, such as Virginia, also admits anyone who has held shares for six months. No court order is needed; a court steps in only if the corporation refuses a proper demand.",
+"source": "Va. Code 13.1-770 E, 13.1-771 A, C and D, and 13.1-773 B (Virginia's adoption of the MBCA records-inspection sections), law.lis.virginia.gov/vacode/title13.1/chapter9/section13.1-771/",
+"cpa": [
+"REG-II"
+]
+},
+{
 "id": "tcp3-001",
 "part": "TCP",
 "domain": "TCP-III",
