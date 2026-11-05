@@ -1352,7 +1352,7 @@ html.introing, html.introing body { overflow: hidden; }
   nextStop(window.__introProg);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.05 · f7935b9 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.05 · d436934 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -3049,11 +3049,13 @@ function openArea(d) {
 }
 /* the how-to video (media/how-to-use.mp4, made in promo/) */
 function openGuide() {
-  /* Close sits at the top, and the video is sized to the visible screen (dvh), so neither hides under Safari's toolbar */
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app" style="max-height:100vh;max-height:100dvh;overflow-y:auto">
-    <div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">How to use</h3>
+  /* Close sits in a title row that stays pinned at the top of the sheet and pads for the status bar (the Home Screen app
+     draws under a translucent one), and the video is sized to the visible screen (dvh) less the safe areas, so Close never
+     hides under the status bar or scrolls away */
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app" style="max-height:100vh;max-height:100dvh;overflow-y:auto;padding-top:0">
+    <div class="row" style="position:sticky;top:0;z-index:1;background:var(--paper);padding:calc(12px + env(safe-area-inset-top, 0px)) 0 6px;justify-content:space-between;align-items:center"><h3 style="margin:0">How to use</h3>
       <button class="btn" id="guideclose" aria-label="Close" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
-    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px);max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
+    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
     <span class="hint">Step one: add this app to your Home Screen.</span>
     <p class="muted small" style="margin:0"><b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
   </div></div>`;
