@@ -1001,6 +1001,16 @@ document.addEventListener("keydown", e => {
 });
 updateFlagDot();
 /* the launch screen (src/intro.js): it opens the app itself on Tap to Start or one of its side buttons */
+/* the launch screen's progress: EA readiness per part (the three stations), every EA area for the tower, and the next stop
+   in the exam you're studying (the same area the Today card names) */
+function introProgress() {
+  const now = EA_BANK.filter(q => !st(q.id).flag), m = d => { const qs = now.filter(q => q.domain === d); return qs.length ? qs.reduce((a, q) => a + Math.min(st(q.id).box, 4), 0) / (4 * qs.length) : 0; };
+  const keys = Object.keys(EA_DOMAINS), w = d => EA_DOMAINS[d].n;
+  const parts = [1, 2, 3].map(p => { const ds = keys.filter(d => String(EA_DOMAINS[d].part) === String(p)); return ds.reduce((a, d) => a + w(d) * m(d), 0) / ds.reduce((a, d) => a + w(d), 0); });
+  const tower = keys.reduce((a, d) => a + w(d) * m(d), 0) / keys.reduce((a, d) => a + w(d), 0);
+  const g = gap(state.part), first = !BANK.some(q => st(q.id).seen);
+  return { parts, tower, first, next: g ? { name: DOMAINS[g.d].short, m: g.m } : null };
+}
 function introNotices() {
   const out = [], w = daysTo(WINDOW_END), flags = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size;
   for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? `${PL(p)} is today. Good luck.` : `${PL(p)} is in ${d} day${d === 1 ? "" : "s"}, on ${fmtDay(iso, { month: "long", day: "numeric" })}.`); }
@@ -1018,5 +1028,5 @@ function introGo(where) {
   else renderHome();
 }
 if (state.examRun) renderExam();
-else if (window.Intro && window.Intro.on) window.Intro.begin({ name: state.name, notices: introNotices, go: introGo });
+else if (window.Intro && window.Intro.on) { window.Intro.begin({ name: state.name, notices: introNotices, go: introGo }); window.Intro.progress && window.Intro.progress(introProgress()); }
 else renderHome();

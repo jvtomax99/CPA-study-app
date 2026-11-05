@@ -5,14 +5,14 @@
      10-13 the camera swings beside the lead car as it accelerates and dives toward the tower, 13+ hero shot of the portal. */
   const I = window.Intro, Boot = window.Boot;
   if (!I || !I.on) return;
-  let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass;
+  let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass, FXAAShader;
   try {
     await Boot.threeWarm;
     THREE = await import("three"); Boot.done("three");
     if (!document.createElement("canvas").getContext("webgl2")) throw new Error("no webgl2");
-    [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }, { ShaderPass }] = await Promise.all([
+    [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }, { ShaderPass }, { FXAAShader }] = await Promise.all([
       import("three/addons/postprocessing/EffectComposer.js"), import("three/addons/postprocessing/RenderPass.js"),
-      import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js"), import("three/addons/postprocessing/ShaderPass.js")]);
+      import("three/addons/postprocessing/UnrealBloomPass.js"), import("three/addons/postprocessing/OutputPass.js"), import("three/addons/postprocessing/ShaderPass.js"), import("three/addons/shaders/FXAAShader.js")]);
     Boot.done("post");
   } catch (e) { for (const k of ["three", "post", "paint", "env"]) Boot.done(k); I.no3d(); return; }
   if (!I.el.isConnected || !window.IntroArt) { Boot.done("paint"); Boot.done("env"); return; }
@@ -133,7 +133,7 @@
      rooms you can see into: every window ray-casts a little room behind the glass (back wall, side walls, floor, ceiling
      light, a desk or shelves), lit cyan, gold or warm, some behind blinds. Far away it all fades to an average. ---------- */
   const facade = (extra = 0) => new THREE.ShaderMaterial({ fog: true,
-    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uCyan: { value: hdr(C.cyan, 1.0) }, uGold: { value: hdr(C.gold, 1.1) }, uHaze: { value: C.haze }, uBoost: { value: extra }, uMoon: { value: new V3(-0.4, 0.5, 0.75).normalize() } }]),
+    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uCyan: { value: hdr(C.cyan, 1.0) }, uGold: { value: hdr(C.gold, 1.1) }, uHaze: { value: C.haze }, uBoost: { value: extra }, uLitTo: { value: 1e5 }, uMoon: { value: new V3(-0.4, 0.5, 0.75).normalize() } }]),
     vertexShader: `attribute vec3 aSeed; attribute vec4 aInfo; varying vec3 vP; varying vec3 vN; varying vec3 vS; varying vec4 vI;
       #include <fog_pars_vertex>
       void main(){ mat4 m = modelMatrix;
@@ -144,7 +144,7 @@
         vec4 mvPosition = viewMatrix * wp; gl_Position = projectionMatrix * mvPosition;
         #include <fog_vertex>
       }`,
-    fragmentShader: `uniform vec3 uCyan, uGold, uHaze, uMoon; uniform float uBoost; varying vec3 vP; varying vec3 vN; varying vec3 vS; varying vec4 vI;
+    fragmentShader: `uniform vec3 uCyan, uGold, uHaze, uMoon; uniform float uBoost, uLitTo; varying vec3 vP; varying vec3 vN; varying vec3 vS; varying vec4 vI;
       #include <fog_pars_fragment>
       float h21(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
       float box2(vec2 p, vec2 a, vec2 b){ return step(a.x, p.x) * step(p.x, b.x) * step(a.y, p.y) * step(p.y, b.y); }
@@ -177,7 +177,7 @@
           col += wallC * 0.6 * (step(abs(f.y - a.y + 0.04), 0.025) * box2(vec2(f.x, 0.5), vec2(a.x - 0.04, 0.0), vec2(b.x + 0.04, 1.0))) * (1.0 - parapet); /* sills */
           if (parapet > 0.5) col = wall * 1.25 + wallC * step(0.8, f.y) * 0.8;   /* cornice band */
           if (win > 0.5) {
-            float r = h21(id + seed), lit = step(r, vS.y + uBoost) * step(0.5, fl + store * 0.6);
+            float r = h21(id + seed), lit = step(r, vS.y + uBoost) * step(0.5, fl + store * 0.6) * step(vP.y, uLitTo);
             if (store > 0.5) lit = step(0.25, h21(id * 1.3 + seed));
             vec3 lc = mix(uCyan, uGold, step(h21(id.yx + vS.x * 3.0), vS.z + store * 0.6));
             lc = mix(lc, vec3(1.0, 0.78, 0.55), step(0.82, h21(id * 2.1 + seed))) * (0.45 + 0.8 * h21(id * 1.7 + vS.x)) * (1.0 + uBoost * 1.5);
@@ -212,7 +212,7 @@
               float iron = step(f.y, 0.05) + step(abs(f.y - 0.38), 0.012) + step(abs(g.x - g.y * 0.9 - 0.05), 0.022) * step(0.05, f.y) + step(abs(fract(cell.x * 4.0) - 0.5), 0.04) * step(f.y, 0.38) * 0.6;
               col = mix(col, vec3(0.01, 0.01, 0.016), clamp(iron, 0.0, 1.0) * 0.92); } }
           float aa = fwidth(cell.x) + fwidth(cell.y);
-          vec3 far = wall + mix(uCyan, uGold, vS.z) * (vS.y + uBoost) * 0.3 * (1.0 - parapet);
+          vec3 far = wall + mix(uCyan, uGold, vS.z) * (vS.y + uBoost) * 0.3 * (1.0 - parapet) * step(vP.y, uLitTo);
           c = mix(col, far, smoothstep(0.35, 0.9, aa));
         }
         gl_FragColor = vec4(c, 1.0);
@@ -341,6 +341,13 @@
     { const inf = new Float32Array(12); let yy = 0; tiers.forEach(([, h], i) => { inf.set([1, 3.7, yy + h, yy], i * 4); yy += h; }); tm.geometry.setAttribute("aInfo", new THREE.InstancedBufferAttribute(inf, 4)); }
     scene.add(tm);
     glow.tower = tm.material;
+    /* your progress: the tower's floors light from the ground up with your mastery of the 13 areas (window.__introProg) */
+    const towerH = tiers.reduce((a, t) => a + t[1], 0);
+    const mark = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 0.01, 1)), new THREE.LineBasicMaterial({ color: hdr(C.gold, 3), fog: false })); scene.add(mark);
+    glow.setTower = f => { const h = towerH * Math.max(0.06, Math.min(1, f)); tm.material.uniforms.uLitTo.value = h;
+      let y0 = 0, w = tiers[0][0]; for (const [tw2, th2] of tiers) { if (h <= y0 + th2) { w = tw2; break; } y0 += th2; w = tw2; }
+      mark.position.set(towerAt.x, h, towerAt.z); mark.scale.set(w + 0.6, 1, w + 0.6); mark.visible = f < 0.995; };
+    glow.setTower((window.__introProg || {}).tower || 0);
     const crownM = new THREE.LineBasicMaterial({ color: hdr(C.gold, 2.2), fog: false });
     y = 0; for (const [w, h, d] of tiers) { y += h; const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w + 0.4, 1.2, d + 0.4)), crownM); e.position.set(towerAt.x, y - 0.6, towerAt.z); scene.add(e); }
     const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 1.6, 34, 8), steel); spire.position.set(towerAt.x, y + 17, towerAt.z); scene.add(spire);
@@ -442,6 +449,8 @@
     const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
   };
   const NAMES = ["Individuals", "Businesses", "Representation"], counts = (window.__introCounts || [0, 0, 0]);
+  /* a station's sign shows that part's readiness once your progress is known, else its question count */
+  const signSub = k => { const pr = window.__introProg; return pr && pr.parts ? `Part ${k + 1} · ${Math.round(pr.parts[k] * 100)}% ready` : `Part ${k + 1}${counts[k] ? " · " + counts[k] + " questions" : ""}`; };
   const stations = stopD.map((sd, k) => {
     const dc = sd - 20, g = { lamps: null, sign: null, pl: null, on: false, at: 0 };
     const deck = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ color: 0x3a3656, roughness: 0.8 }), 3);
@@ -451,12 +460,12 @@
     const n = 12, lamps = new THREE.InstancedMesh(box, new THREE.MeshBasicMaterial({ color: 0xffffff }), n);
     for (let i = 0; i < n; i++) { place(lamps, i, dc + (i - (n - 1) / 2) * 3.85, -2.05, 5.22, 3.3, 0.34, 0.16); lamps.setColorAt(i, col(0x2a2840)); }
     const edge = new THREE.Mesh(box, new THREE.MeshBasicMaterial({ color: col(0x2a2840) })); place({ setMatrixAt: (_, m) => edge.matrix.copy(m) }, 0, dc, -2.72, 0.07, 46, 0.06, 0.36); edge.matrixAutoUpdate = false;
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(13, 2.44), new THREE.MeshBasicMaterial({ map: signTex(NAMES[k], `Part ${k + 1}${counts[k] ? " · " + counts[k] + " questions" : ""}`), color: col(0x555555), side: THREE.DoubleSide }));
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(13, 2.44), new THREE.MeshBasicMaterial({ map: signTex(NAMES[k], signSub(k)), color: col(0x555555), side: THREE.DoubleSide }));
     frame(dc, fr); sign.position.copy(fr.P).addScaledVector(fr.S, -4.2).addScaledVector(UP, 6.85);
     basis.makeBasis(fr.T, UP, fr.S); sign.quaternion.setFromRotationMatrix(basis);
     const pl = new THREE.PointLight(C.gold, 0, 40, 2); pl.position.copy(fr.P).addScaledVector(fr.S, -3.4).addScaledVector(UP, 4.6);
     scene.add(deck, posts, lamps, edge, sign, pl);
-    Object.assign(g, { lamps, sign, pl, edge, n, dc });
+    Object.assign(g, { lamps, sign, pl, edge, n, dc, k });
     return g;
   });
   const LAMP_OFF = col(0x2a2840), LAMP_ON = hdr(C.gold, 1.7);
@@ -481,7 +490,7 @@
 
   /* ---------- the train: four older-style stainless cars (rounded roof, fluted sides, door pairs) carrying graffiti ---------- */
   const CAR = 10.2, GAP = 0.7, NCAR = 4;
-  const steelM = new THREE.MeshStandardMaterial({ color: 0x9da2b0, metalness: 0.7, roughness: 0.55 });
+  const steelM = new THREE.MeshStandardMaterial({ color: 0x8a8f9c, metalness: 0.7, roughness: 0.6 });
   const darkM = new THREE.MeshStandardMaterial({ color: 0x14141e, roughness: 0.9 });
   const wheelM = new THREE.MeshStandardMaterial({ color: 0x2a2a33, metalness: 0.7, roughness: 0.4 });
   const trainMats = [steelM, wheelM];
@@ -636,12 +645,29 @@
         gl_FragColor = c; }` });
   composer.addPass(rays); composer.addPass(bloom);
   composer.addPass(new OutputPass());
-  const grain = new ShaderPass({ uniforms: { tDiffuse: { value: null }, uT: { value: 0 }, uRes: { value: new THREE.Vector2(1, 1) }, uCA: { value: 0 } },
+  /* smoothing: FXAA on the finished image (the renderer runs without antialiasing) */
+  const fxaa = new ShaderPass(FXAAShader); composer.addPass(fxaa);
+  /* lens dirt: soft smudges and a few streaks that only show where the picture is bright */
+  const dirtTex = (() => { const cv = document.createElement("canvas"); cv.width = cv.height = 512; const x = cv.getContext("2d"); x.fillStyle = "#000"; x.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 70; i++) { const px = rnd() * 512, py = rnd() * 512, r = 6 + rnd() * 46, g = x.createRadialGradient(px, py, 0, px, py, r); const a = 0.05 + rnd() * 0.18; g.addColorStop(0, `rgba(255,255,255,${a})`); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.fillRect(px - r, py - r, r * 2, r * 2); }
+    x.strokeStyle = "rgba(255,255,255,0.06)"; x.lineCap = "round"; for (let i = 0; i < 14; i++) { x.lineWidth = 2 + rnd() * 6; x.beginPath(); const px = rnd() * 512, py = rnd() * 512; x.moveTo(px, py); x.quadraticCurveTo(px + (rnd() - 0.5) * 160, py + (rnd() - 0.5) * 160, px + (rnd() - 0.5) * 260, py + (rnd() - 0.5) * 260); x.stroke(); }
+    const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; })();
+  const grain = new ShaderPass({ uniforms: { tDiffuse: { value: null }, tDirt: { value: dirtTex }, uT: { value: 0 }, uRes: { value: new THREE.Vector2(1, 1) }, uCA: { value: 0 }, uGrade: { value: 1 } },
     vertexShader: "varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-    fragmentShader: `uniform sampler2D tDiffuse; uniform float uT, uCA; uniform vec2 uRes; varying vec2 vU;
+    fragmentShader: `uniform sampler2D tDiffuse, tDirt; uniform float uT, uCA, uGrade; uniform vec2 uRes; varying vec2 vU;
       float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+      /* the grade: a gentle S-curve, indigo lifted into the shadows, warm highlights, a touch more color */
+      vec3 grade(vec3 c){ float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+        vec3 g = mix(c, c * c * (3.0 - 2.0 * c), 0.3);
+        g += vec3(0.018, 0.004, 0.05) * (1.0 - smoothstep(0.0, 0.35, l));
+        g *= mix(vec3(0.94, 0.97, 1.06), vec3(1.07, 1.0, 0.88), smoothstep(0.35, 0.95, l));
+        g = mix(vec3(dot(g, vec3(0.2126, 0.7152, 0.0722))), g, 1.14);
+        return mix(c, clamp(g, 0.0, 1.0), uGrade); }
       void main(){ vec4 c = texture2D(tDiffuse, vU); vec2 q = vU - 0.5;
         if (uCA > 0.0001) { c.r = texture2D(tDiffuse, vU + q * uCA).r; c.b = texture2D(tDiffuse, vU - q * uCA).b; }
+        vec3 glowAround = vec3(0.0); for (int i = 0; i < 4; i++) { float a = float(i) * 1.5708 + 0.6; glowAround += max(texture2D(tDiffuse, vU + vec2(cos(a), sin(a)) * 0.07).rgb - 0.7, 0.0); }
+        c.rgb += texture2D(tDirt, vU * vec2(1.0, uRes.y / uRes.x)).r * (glowAround * 0.25 + max(c.rgb - 0.8, 0.0)) * vec3(1.0, 0.92, 0.8) * 1.6 * uGrade;
+        c.rgb = grade(c.rgb);
         q.x *= uRes.x / uRes.y;
         float v = smoothstep(1.05, 0.25, length(q * vec2(0.8, 1.0))); c.rgb *= mix(0.42, 1.0, v);
         c.rgb += (h(vU * uRes + fract(uT) * 100.0) - 0.5) * 0.045; gl_FragColor = c; }` });
@@ -665,7 +691,7 @@
     out.fovK = 0; out.rays = 0; out.zoom = 0; out.ca = 0; out.focus = null; out.bloomK = 1;
     if (n === 0) {          /* 1 cold open: rail level, the headlight swells and the train blasts past the lens */
       frame(dPass, A); out.p.copy(A.P).addScaledVector(A.S, 1.95).addScaledVector(UP, 0.65);
-      frame(Math.min(dl, dPass - 3), B); out.l.copy(B.P).addScaledVector(UP, 1.8); out.bloomK = 0.7;
+      frame(Math.min(dl, dPass - 3), B); out.l.copy(B.P).addScaledVector(UP, 1.8); out.bloomK = 0.5;
     } else if (n === 1) {   /* 2 crane reveal: rise up and back over the train toward the skyline and the moon */
       const k = sm(SHOTS[0], SHOTS[1], s); frame(Math.max(0, dl - 55), A); frame(dl + 40, B);
       out.p.copy(A.P).addScaledVector(A.S, 30 + k * 30).addScaledVector(UP, 10 + k * 42); out.l.copy(B.P).addScaledVector(UP, 8 + k * 6);
@@ -681,7 +707,7 @@
     } else if (n === 5) {   /* 6 the dive: beside the lead car, wide lens, the tower looms */
       const k = sm(SHOTS[4], SHOTS[5], s); frame(Math.min(dl - 14, dPortal - 40), A); frame(Math.min(dl + 50, L), B);
       out.p.copy(A.P).addScaledVector(A.S, -4.2).addScaledVector(UP, 4.6); out.l.copy(B.P).setY(B.P.y + 3).lerp(tmp.copy(towerAt).setY(90), 0.35 + k * 0.4);
-      out.fovK = 1; out.zoom = 0.35 * k; out.ca = 0.012 * k;
+      out.fovK = 1; out.zoom = 0.35 * k; out.ca = 0.012 * k; out.bloomK = 0.75;
     } else if (n === 6) {   /* 7 portal burst: high over the track behind the train as it runs into the lit tunnel */
       out.p.copy(P0).addScaledVector(T0, -62).addScaledVector(S0, 1.2).setY(P0.y + 13.5); out.l.copy(P0).addScaledVector(T0, 8).setY(P0.y + 4.2); /* above the track, watching it run into the tunnel */
       out.rays = 0.2 + glow.burst * 1.2; out.focus = glowAt; out.ca = 0.01 * glow.burst;
@@ -700,7 +726,7 @@
   function resize() {
     vw = Math.max(1, I.el.clientWidth); vh = Math.max(1, I.el.clientHeight);
     renderer.setPixelRatio(dpr); renderer.setSize(vw, vh, false); composer.setPixelRatio(dpr); composer.setSize(vw, vh);
-    bloom.resolution.set(vw / 2, vh / 2); grain.uniforms.uRes.value.set(vw * dpr, vh * dpr);
+    bloom.resolution.set(vw / 2, vh / 2); grain.uniforms.uRes.value.set(vw * dpr, vh * dpr); fxaa.material.uniforms.resolution.value.set(1 / (vw * dpr), 1 / (vh * dpr));
     camera.aspect = vw / vh;
   }
   const baseFov = () => { const a = vw / vh, h = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(64) / 2) / a); return Math.min(84, Math.max(42, THREE.MathUtils.radToDeg(h))); };
@@ -765,7 +791,7 @@
     camera.fov = baseFov() + view.fovK * 10; camera.updateProjectionMatrix();
     glow.halo.lookAt(camera.position); glow.halo2.lookAt(camera.position); glow.beacon.lookAt(camera.position);
     if (headCone) headCone.visible = shotAt(s) !== 0; /* the cold open's camera stands inside the beam */
-    if (headSpot) headSpot.intensity = shotAt(s) === 0 ? 260 : 520;
+    if (headSpot) { const n2 = shotAt(s); headSpot.intensity = n2 === 0 ? 140 : n2 === 4 ? 170 : 520; } /* the cold open and the cab view stood in the beam's glare */
     bloom.strength *= view.bloomK;
     /* headlight streak: on the lead car's nose, facing the camera, bright only when the train faces us */
     if (cars[0].visible) { tmp.set(CAR / 2 + 0.3, 1.6, 0); cars[0].localToWorld(tmp); streak.position.copy(tmp); streak.quaternion.copy(camera.quaternion);
@@ -782,6 +808,7 @@
     rays.uniforms.uRays.value = reduce ? Math.min(ry, 0.5) : ry; rays.uniforms.uZoom.value = reduce ? 0 : view.zoom; grain.uniforms.uCA.value = reduce ? 0 : view.ca;
     grain.uniforms.uT.value = reduce ? 0 : rt; traffic.uniforms.uT.value = reduce ? 0 : rt; traffic.uniforms.uPx.value = 2.6 * dpr;
     composer.render(dt);
+    if (fpsEl) { fpsN++; if (now - fpsAt > 500) { fpsEl.textContent = `${Math.round(fpsN * 1000 / (now - fpsAt))} fps · ${dpr.toFixed(2)}x · shot ${shotAt(s) + 1}`; fpsN = 0; fpsAt = now; } }
     /* hold 60fps on a phone: if steady frames run long, step the pixel ratio down, at most twice. One-off stalls (the town
        building, the bank arriving) and the first two seconds don't count */
     if (!reduce && rt > 2 && raw < 0.1) { ft.push(raw); if (ft.length >= 60) { const avg = ft.reduce((a, b) => a + b, 0) / ft.length; ft = []; if (avg > 0.021 && dpr > Math.max(1, dpr0 - 0.5)) { dpr = Math.max(1, dpr - 0.25); needResize = true; } } }
@@ -790,8 +817,11 @@
   if (reduce) { Boot.on(frameOnce); window.addEventListener("resize", frameOnce); }
   document.addEventListener("visibilitychange", () => { if (dead || reduce) return; if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } });
 
+  const fpsEl = /[?&]fps=1/.test(location.search) ? Object.assign(document.createElement("div"), { className: "in-fps" }) : null;
+  let fpsN = 0, fpsAt = 0;
   if (!I.attach({
     canvas: renderer.domElement,
+    progress(p) { glow.setTower(p.tower || 0); for (const g of stations) { const old = g.sign.material.map; g.sign.material.map = signTex(NAMES[g.k], signSub(g.k)); old.dispose(); } },
     flare() { flareAt = performance.now(); },
     dispose() {
       dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize);
@@ -801,6 +831,7 @@
   })) { renderer.dispose(); return; } /* too late: the overlay already gave up on 3D */
   if (I.current === "hero" && !title) { title = true; s = 15; } /* the overlay already moved on to Tap to Start */
   paintTrain();
+  if (fpsEl) I.el.appendChild(fpsEl);
   if (/[?&]introseek/.test(location.search)) window.__introSeek = x => { s = x; rate = 1; }; /* for screenshots and tests */
   raf = requestAnimationFrame(tick);
 })();
