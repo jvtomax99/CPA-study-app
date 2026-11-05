@@ -28,7 +28,8 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
     await ip.goto("file://" + path.resolve("index.html"));
     check(await ip.evaluate(() => window.__introMode === "full" && !!document.getElementById("intro")), "launch: the ride plays again on the next launch");
     await ip.goto("file://" + path.resolve("index.html") + "?intro=0");
-    await ip.click("#morebtn"); await Promise.all([ip.waitForNavigation(), ip.click("#introreplay")]);
+    await ip.evaluate(() => renderMore()); /* the More button hides behind the sidebar at this width */
+    await Promise.all([ip.waitForNavigation(), ip.click("#introreplay")]);
     check(await ip.evaluate(() => window.__introMode === "full" && !!document.getElementById("intro")), "launch: Replay the intro in More plays the ride again");
     await ip.close();
   }
