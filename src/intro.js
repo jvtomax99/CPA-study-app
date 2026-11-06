@@ -50,6 +50,7 @@
     n.querySelector("span").textContent = `${p.next.name} · ${Math.round(p.next.m * 100)}% ready`; n.hidden = false;
   }
   nextStop(window.__introProg);
+  setTimeout(() => paintSound(), 0);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
   $i("#inbuild").textContent = "__BUILD__";
@@ -71,10 +72,38 @@
   }
   Boot.on(paint);
 
+  /* sound (src/introaudio.js): iPhones allow web audio only after a touch, so the ride starts silent and the first touch
+     on the launch screen starts it. The speaker button turns it on or off; the choice is saved. */
+  let soundOn = true, audio = null, unlockedAt = 0;
+  try { soundOn = localStorage.getItem("eaTaxTown.sound") !== "off"; } catch (e) {}
+  function unlock() {
+    if (!soundOn || audio || !window.IntroAudio || exiting) return;
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+    try { if (navigator.audioSession) navigator.audioSession.type = "ambient"; /* respect the silent switch, mix with the user's music */
+      const ctx = new AC(); ctx.resume && ctx.resume(); audio = IntroAudio.build(ctx); unlockedAt = performance.now(); } catch (e) { audio = null; }
+    paintSound();
+  }
+  function paintSound() {
+    const b = $i("#insnd"); if (!b) return;
+    b.setAttribute("aria-pressed", String(soundOn && !!audio));
+    b.querySelector("span").textContent = !soundOn ? "Sound off" : audio ? "Sound on" : "Tap for sound";
+    b.classList.toggle("off", !soundOn);
+  }
+  function toggleSound() {
+    if (performance.now() - unlockedAt < 800) { paintSound(); return; } /* this same touch just started the sound: keep it on */
+    if (soundOn && audio) { soundOn = false; audio.master.gain.setTargetAtTime(0, audio.ctx.currentTime, 0.05); }
+    else { soundOn = true; if (audio) audio.master.gain.setTargetAtTime(1.6, audio.ctx.currentTime, 0.05); else unlock(); }
+    try { localStorage.setItem("eaTaxTown.sound", soundOn ? "on" : "off"); } catch (e) {}
+    paintSound();
+  }
+  const endSound = (tap) => { if (!audio) return; const a = audio; if (tap && soundOn) a.tap(); else a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08);
+    setTimeout(() => { try { a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
+  el.addEventListener("pointerdown", unlock, true);
   function exit(where) {
     if (exiting) return;
     if (!Boot.loaded()) { queued = where; paint(); return; } /* a tap during loading starts the app the moment loading finishes */
     exiting = true;
+    endSound(where === "menu");
     const finish = () => {
       go && go(where);
       document.documentElement.classList.remove("introing");
@@ -97,7 +126,7 @@
   el.addEventListener("click", e => {
     if (exiting) return;
     const b = e.target.closest("[data-go]");
-    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else exit(b.dataset.go); return; }
+    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else if (b.dataset.go === "sound") toggleSound(); else exit(b.dataset.go); return; }
     if (el.querySelector(".in-notes")) return;
     exit("menu");
   });
@@ -128,6 +157,7 @@
     /* app.js hands over the name, the notices and how to open each place */
     begin(opts) { go = opts.go; notices = opts.notices || notices; paint(); },
     /* app.js: readiness per part (0..1), the tower's share of all 13 areas, and the next stop */
+    get audio() { return soundOn ? audio : null; },
     progress(p) {
       window.__introProg = p; try { localStorage.setItem("eaTaxTown.introProg", JSON.stringify(p)); } catch (e) {}
       scene && scene.progress && scene.progress(p); nextStop(p);
