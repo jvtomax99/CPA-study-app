@@ -651,6 +651,9 @@ footer p { margin: 0; max-width: 70ch; }
 .in-snd svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .in-snd .x { display: none; } .in-snd.off .w { display: none; } .in-snd.off .x { display: inline; } .in-snd.off { color: rgba(255,255,255,0.7); }
 .intro.flare .in-snd { opacity: 0; transition: opacity 160ms ease; }
+.in-skip { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 4px; min-height: 42px; padding: 0 12px 0 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font: 700 13px/1 var(--f-ui); cursor: pointer; transition: opacity 260ms ease; }
+.in-skip svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.intro.hero .in-skip, .intro.flare .in-skip { opacity: 0; pointer-events: none; }
 .in-fps { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(64px + env(safe-area-inset-top, 0px)); padding: 4px 8px; border-radius: 999px; background: rgba(18,16,46,0.6); font: 600 12px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; color: #fff; pointer-events: none; }
 .in-tap span { display: inline-block; animation: inpulse 2400ms ease-in-out infinite; }
 @keyframes inpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -685,6 +688,7 @@ html.introing, html.introing body { overflow: hidden; }
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
   <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
+  <button class="in-skip" id="inskip" type="button" data-go="skip">Skip<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
   <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
   <div class="in-build" id="inbuild" aria-hidden="true"></div>
@@ -1358,7 +1362,7 @@ html.introing, html.introing body { overflow: hidden; }
   setTimeout(() => paintSound(), 0);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.05 · 57c0df3 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.06 · 3eb6d51 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1431,8 +1435,10 @@ html.introing, html.introing body { overflow: hidden; }
   el.addEventListener("click", e => {
     if (exiting) return;
     const b = e.target.closest("[data-go]");
-    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else if (b.dataset.go === "sound") toggleSound(); else exit(b.dataset.go); return; }
+    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else if (b.dataset.go === "sound") toggleSound(); else if (b.dataset.go === "skip") exit("menu"); else exit(b.dataset.go); return; }
     if (el.querySelector(".in-notes")) return;
+    /* during the ride a touch only starts the sound (the pointerdown above); Skip and Tap to Start leave the ride */
+    if (phase !== "hero") return;
     exit("menu");
   });
   document.addEventListener("keydown", e => {
@@ -1492,7 +1498,8 @@ html.introing, html.introing body { overflow: hidden; }
     const noise = (sec, brown) => { const b = ctx.createBuffer(1, sr * sec, sr), d = b.getChannelData(0); let last = 0;
       for (let i = 0; i < d.length; i++) { const w = rnd() * 2 - 1; if (brown) { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w; } return b; };
     const WHITE = noise(2, false), BROWN = noise(4, true);
-    const loop = (buf, at = 0) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(at); return s; };
+    const loop = (buf, at = 0) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(Math.max(0, at)); return s; };
+    const T = t => Math.max(0, t);   /* an event can reach back before the sound started: never schedule below zero */
     const gain = (v, to) => { const g = ctx.createGain(); g.gain.value = v; if (to) g.connect(to); return g; };
     const filt = (type, f, q = 0.7, to) => { const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f; b.Q.value = q; if (to) b.connect(to); return b; };
     /* master: a gentle compressor so the burst and the tap can't clip, then the level */
@@ -1546,12 +1553,12 @@ html.introing, html.introing body { overflow: hidden; }
     }
     /* the cold open: the train blasts past the lens, left to right, with the motors' pitch dropping as it goes */
     function pass(t) {
-      pan.pan.setValueAtTime(-0.8, t - 0.6); pan.pan.linearRampToValueAtTime(0.85, t + 0.5);
-      train.gain.setValueAtTime(train.gain.value, t - 0.6); train.gain.linearRampToValueAtTime(1.15, t); train.gain.linearRampToValueAtTime(0.45, t + 0.8);
-      motor.detune.setValueAtTime(180, t - 0.3); motor.detune.linearRampToValueAtTime(-220, t + 0.35); motor.detune.linearRampToValueAtTime(0, t + 1.4);
-      motor2.detune.setValueAtTime(180, t - 0.3); motor2.detune.linearRampToValueAtTime(-220, t + 0.35); motor2.detune.linearRampToValueAtTime(0, t + 1.4);
-      const g = gain(0, bus), f = filt("bandpass", 900, 0.6, g); loop(WHITE, t - 0.5).connect(f);   /* the air the train pushes */
-      g.gain.setValueAtTime(0, t - 0.5); g.gain.linearRampToValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+      pan.pan.setValueAtTime(-0.8, T(t - 0.6)); pan.pan.linearRampToValueAtTime(0.85, t + 0.5);
+      train.gain.setValueAtTime(train.gain.value, T(t - 0.6)); train.gain.linearRampToValueAtTime(1.15, t); train.gain.linearRampToValueAtTime(0.45, t + 0.8);
+      motor.detune.setValueAtTime(180, T(t - 0.3)); motor.detune.linearRampToValueAtTime(-220, t + 0.35); motor.detune.linearRampToValueAtTime(0, t + 1.4);
+      motor2.detune.setValueAtTime(180, T(t - 0.3)); motor2.detune.linearRampToValueAtTime(-220, t + 0.35); motor2.detune.linearRampToValueAtTime(0, t + 1.4);
+      const g = gain(0, bus), f = filt("bandpass", 900, 0.6, g); loop(WHITE, T(t - 0.5)).connect(f);   /* the air the train pushes */
+      g.gain.setValueAtTime(0, T(t - 0.5)); g.gain.linearRampToValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
       pan.pan.setValueAtTime(0.85, t + 1.2); pan.pan.linearRampToValueAtTime(0, t + 2.2);
     }
     /* a station note: a bell (inharmonic partials), with a soft attack of the room */
@@ -1577,9 +1584,9 @@ html.introing, html.introing body { overflow: hidden; }
       g.gain.setValueAtTime(0.06 + rnd() * 0.08, at); g.gain.exponentialRampToValueAtTime(0.001, at + 0.012); } }
     /* into the tunnel: the roar swells and then closes in; the room opens up inside */
     function tunnel(t) {
-      const g = gain(0, bus), f = filt("bandpass", 300, 0.5, g); loop(WHITE, t - 1.2).connect(f);
-      f.frequency.setValueAtTime(300, t - 1.2); f.frequency.exponentialRampToValueAtTime(2200, t); f.frequency.exponentialRampToValueAtTime(260, t + 0.6);
-      g.gain.setValueAtTime(0, t - 1.2); g.gain.linearRampToValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 2.4);
+      const g = gain(0, bus), f = filt("bandpass", 300, 0.5, g); loop(WHITE, T(t - 1.2)).connect(f);
+      f.frequency.setValueAtTime(300, T(t - 1.2)); f.frequency.exponentialRampToValueAtTime(2200, t); f.frequency.exponentialRampToValueAtTime(260, t + 0.6);
+      g.gain.setValueAtTime(0, T(t - 1.2)); g.gain.linearRampToValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 2.4);
       rumbleF.frequency.setTargetAtTime(160, t, 0.2); send.gain.setValueAtTime(0, t); send.gain.linearRampToValueAtTime(0.5, t + 0.3);
       train.gain.setTargetAtTime(0.0, t + 0.4, 0.6);
     }
@@ -2640,7 +2647,7 @@ html.introing, html.introing body { overflow: hidden; }
     const dl = dAt(s), speed = speedAt(s) * rate;
     /* sound: speed and closeness every frame, and the events as the story clock reaches them */
     const A = I.audio;
-    if (A) { const at = A.ctx.currentTime, n = shotAt(s), dk = stations.findIndex((g, i) => !g.on && stopD[i] > dAt(s) - 1);
+    if (A) try { const at = A.ctx.currentTime, n = shotAt(s), dk = stations.findIndex((g, i) => !g.on && stopD[i] > dAt(s) - 1);
       const near = n === 0 ? 0.25 + 0.75 * Math.exp(-Math.pow((s - dPassS) / 0.5, 2)) : [0, 0.3, 0.8, 0.4, 1, 1, 0.6, 0.2][n];
       A.setSpeed(s < sPortal && !title ? speed : 0, at, near);
       if (!title) {
@@ -2657,7 +2664,7 @@ html.introing, html.introing body { overflow: hidden; }
       if (I.musicOn) { if (!aud.music) { aud.music = true; A.music(at); }
         const look = title ? "open" : n === 0 ? "muffled" : s >= sPortal && s < sPortal + 0.9 ? "tunnel" : "open";
         if (look !== aud.look) { aud.look = look; A.musicLook(look, at); } }
-    }
+    } catch (e) { /* a sound error must never stop the frame from drawing */ }
     if (s < sPortal + 1.2) {
       placeTrain(dl);
       if (!reduce) {

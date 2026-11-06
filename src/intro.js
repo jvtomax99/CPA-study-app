@@ -126,8 +126,10 @@
   el.addEventListener("click", e => {
     if (exiting) return;
     const b = e.target.closest("[data-go]");
-    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else if (b.dataset.go === "sound") toggleSound(); else exit(b.dataset.go); return; }
+    if (b) { e.stopPropagation(); if (b.dataset.go === "notices") showNotices(); else if (b.dataset.go === "sound") toggleSound(); else if (b.dataset.go === "skip") exit("menu"); else exit(b.dataset.go); return; }
     if (el.querySelector(".in-notes")) return;
+    /* during the ride a touch only starts the sound (the pointerdown above); Skip and Tap to Start leave the ride */
+    if (phase !== "hero") return;
     exit("menu");
   });
   document.addEventListener("keydown", e => {
