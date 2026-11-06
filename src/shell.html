@@ -53,7 +53,7 @@
 /* the page's base color is the station-sign black: iPhones paint the status bar (and overscroll) with it, so it runs into the
    black app bar and tab bar. The cream (or dark) page is the body, which fills the screen */
 html { background: #111; }
-body { background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh; transition: background-color 260ms; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: #111; }
 .wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; }
 button { font-family: inherit; }
@@ -359,6 +359,7 @@ body::before { content: ""; position: fixed; z-index: 35; left: 0; right: 0; top
   background: radial-gradient(130% 42% at 50% 100%, var(--dusk-edge) 0%, var(--dusk-low) 32%, transparent 68%), linear-gradient(180deg, #0b0a24 0%, var(--dusk-top) 38%, var(--dusk-mid) 100%); }
 @media (max-width: 1023px) {
   html.nightpage .nightsky { opacity: 1; }
+  html.nightpage body { background-color: transparent; } /* the base (html) has its own color since the status bar fix, so the body would paint over the sky */
   html.nightpage .appbar { margin-bottom: 0; }
   html.nightpage .pane-today, html.nightpage .pane-city { margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
   html.nightpage .pane-today .greet, html.nightpage .today-card, html.nightpage .pane-city .hero { border-radius: 0; box-shadow: none; background-color: transparent; }
@@ -370,7 +371,7 @@ body::before { content: ""; position: fixed; z-index: 35; left: 0; right: 0; top
   html.nightpage .pane-city .stage-fade { background: linear-gradient(180deg, #0b0a24, transparent); }
   html.nightpage .pane-city .stage { height: max(340px, calc(100vh - 226px)); height: max(340px, calc(100svh - 226px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))); }
 }
-@media (prefers-reduced-motion: reduce) { .nightsky { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .nightsky, body { transition: none; } }
 
 /* Shared blocks */
 .stack { display: grid; gap: 14px; margin-top: 18px; }
