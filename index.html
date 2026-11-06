@@ -67,7 +67,10 @@
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; }
+/* the page's base color is the station-sign black: iPhones paint the status bar (and overscroll) with it, so it runs into the
+   black app bar and tab bar. The cream (or dark) page is the body, which fills the screen */
+html { background: #111; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f-ui); -webkit-font-smoothing: antialiased; min-height: 100vh; min-height: 100dvh; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: #111; }
 .wrap { max-width: 640px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 56px; }
 button { font-family: inherit; }
@@ -672,6 +675,7 @@ footer p { margin: 0; max-width: 70ch; }
 .intro.dark .in-flash { background: #0b0a24; transition: background-color 360ms ease; }
 .intro.out { opacity: 0; transition: opacity 420ms ease; pointer-events: none; }
 html.introing, html.introing body { overflow: hidden; }
+html.introing { background: #0b0a24; }   /* during the launch screen the status bar is the night sky */
 @media (prefers-reduced-motion: reduce) {
   .in-toast, .in-status, .in-bar, .in-tap, .in-side, .intro canvas { transition: none; }
   .in-toast { transform: translate(-50%, 0); }
@@ -1362,7 +1366,7 @@ html.introing, html.introing body { overflow: hidden; }
   setTimeout(() => paintSound(), 0);
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.06 · 3eb6d51 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.06 · 6f30eec · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");

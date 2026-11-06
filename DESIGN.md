@@ -207,7 +207,7 @@ These colors live only inside the train's textures; never use them in the interf
 **Neon** signs hang on the buildings along the line, with sign boards on a few roofs. They use generic shop words (DELI, HOTEL, BAR, DINER, CAFE, OPEN, PIZZA, LAUNDRY, TAXES, BAKERY, HARDWARE, LIQUOR) and roof words (PASS, NYC, EA, SEE, TAX), with no brands. They're drawn as glass tubes from the graffiti's letter skeletons: a soft glow in the tube color, then a white core, on a near-black board (`#0c0b16`). Tube colors: `#ff3fa4`, `#2fd3ff`, `#ffd23a`, `#7ae03a`, `#ff6a3a`, `#b34bff`. Like the graffiti palette, they live only in the 3D scene. The pixel ratio is capped at 2 and steps down by 0.25 when frames run past 21ms. With reduced motion it opens on the still portal shot, nothing loops, and the tap is a 260ms fade.
 
 ### Status bar band
-A Sign Black `#111` band fills the iPhone status bar area (`env(safe-area-inset-top)`), and the home-screen app asks for a translucent black status bar, so the station sign reads as running to the top of the screen.
+The page's base color (`html`) is Sign Black `#111`, and the home-screen app asks for a translucent black status bar. Where iOS draws the status bar itself (iOS 26 Home Screen web apps), it fills it with that color, so the station sign and the tab bar run to the edges of the screen. Where the page draws under the status bar, a `#111` band fills `env(safe-area-inset-top)`. During the launch screen the base color is Night `#0b0a24`, so the status bar is the night sky. The body (cream or dark page) is at least the screen's height, so short pages never show the black base.
 
 ### Today card
 It says one thing, then offers one action. Top to bottom:
