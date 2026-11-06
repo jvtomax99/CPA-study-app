@@ -631,6 +631,18 @@ footer p { margin: 0; max-width: 70ch; }
 /* Launch screen (src/intro.js, src/intro3d.js): a night El ride into the tax town, then Tap to Start. Always dark. */
 .intro { position: fixed; inset: 0; z-index: 70; overflow: hidden; color: #fff; background: radial-gradient(120% 70% at 50% 100%, #6b4fa8 0%, #33285c 38%, #1a1840 62%, #0b0a24 100%); -webkit-user-select: none; user-select: none; touch-action: manipulation; cursor: pointer; }
 .intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 600ms ease; }
+/* the rendered Tap to Start (src/intro.js): a still from Blender, with the tower lit to your mastery and the neon flickering */
+.in-plate { position: absolute; inset: 0; overflow: hidden; opacity: 0; pointer-events: none; transition: opacity 700ms ease; }
+.intro.plate .in-plate { opacity: 1; }
+.in-plate-frame { position: absolute; }
+.in-plate img { position: absolute; display: block; max-width: none; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+.in-plate-frame > img:first-child { inset: 0; width: 100%; height: 100%; }
+/* the layers fade at their edges, so a cut-out never shows a seam */
+.in-plate .tw, .in-plate .nf { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(transparent, #000 8%, #000 92%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
+/* the neon buzzes, stutters twice and drops out once in every 4.6 s: the neon-off layer fades in over the lit sign */
+.in-plate .nf { opacity: 0.04; animation: inneon 4.6s linear infinite; }
+@keyframes inneon { 0% { opacity: 0.04; } 12% { opacity: 0.09; } 22% { opacity: 0.03; } 30% { opacity: 0.05; } 30.6% { opacity: 0.8; } 31.6% { opacity: 0.1; } 33% { opacity: 0.72; } 34.2% { opacity: 0.05; } 48% { opacity: 0.08; } 60% { opacity: 0.03; } 70% { opacity: 0.06; } 70.8% { opacity: 0.86; } 74.5% { opacity: 0.84; } 75.4% { opacity: 0.06; } 88% { opacity: 0.09; } 100% { opacity: 0.04; } }
+.intro.flare .in-plate img { filter: brightness(1.8); }
 .intro.has3d canvas { opacity: 1; }
 .in-toast { position: absolute; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
 .in-toast.show { transform: translate(-50%, 0); opacity: 1; }
@@ -678,6 +690,7 @@ html.introing, html.introing body { overflow: hidden; }
 html.introing { background: #0b0a24; }   /* during the launch screen the status bar is the night sky */
 @media (prefers-reduced-motion: reduce) {
   .in-toast, .in-status, .in-bar, .in-tap, .in-side, .intro canvas { transition: none; }
+  .in-plate { transition: none; } .in-plate .nf { animation: none; opacity: 0; }
   .in-toast { transform: translate(-50%, 0); }
   .in-spin { animation: none; border-right-color: rgba(255,255,255,0.85); width: 8px; height: 8px; }
   .in-tap span { animation: none; }
@@ -687,6 +700,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
 
 <div class="nightsky" aria-hidden="true"></div>
 <div class="intro" id="intro" role="dialog" aria-label="Above the Line" aria-describedby="instatus">
+  <div class="in-plate" aria-hidden="true"></div>
   <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt">Welcome!</span></div>
   <button class="in-snd" id="insnd" type="button" data-go="sound" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="x" d="M16 9l6 6M22 9l-6 6"/></svg><span>Tap for sound</span></button>
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
@@ -1364,12 +1378,49 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   }
   nextStop(window.__introProg);
   setTimeout(() => paintSound(), 0);
+
+  /* ---------- the rendered Tap to Start ----------
+     The hold is a still rendered in Blender (Cycles; tools/blender/intro_plate.py), files in art/intro-plate/: the cutting
+     at track level, the LAST STOP portal and the tax tower. Two layers sit on it, cut from the same render: the tower lit to
+     your mastery in tenths (tower-0 to tower-10), and the sign with its neon off, which CSS fades in and out for the flicker.
+     Portrait screens get the phone files (780 by 1690), landscape the desktop ones (1920 by 1200). They load during the
+     ride; if they haven't arrived by Tap to Start, the 3D portal stays. Rects are in the plate's pixels. */
+  const PLATE = {phone: {w: 780, h: 1690, neon: {x: 0, y: 695, w: 780, h: 410}, tower: {x: 182, y: 0, w: 372, h: 749}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
+  const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
+  const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
+  const load = src => new Promise(r => { const i = new Image(); i.decoding = "async"; i.onload = () => (i.decode ? i.decode().catch(() => {}) : Promise.resolve()).then(() => r(i)); i.onerror = () => r(null); i.src = src; });
+  const plate = { box: el.querySelector(".in-plate"), on: false, step: step(window.__introProg) };
+  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
+  const place = (img, r) => Object.assign(img.style, { left: r.x / P.w * 100 + "%", top: r.y / P.h * 100 + "%", width: r.w / P.w * 100 + "%", height: r.h / P.h * 100 + "%" });
+  function fitPlate() {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
+    const f = plate.box && plate.box.firstChild; if (!f) return;
+    const k = Math.max(el.clientWidth / P.w, el.clientHeight / P.h), w = P.w * k, h = P.h * k;
+    Object.assign(f.style, { width: w + "px", height: h + "px", left: (el.clientWidth - w) / 2 + "px", top: (el.clientHeight - h) * 0.42 + "px" });
+  }
+  function showPlate() {
+    if (plate.on || exiting || phase !== "hero") return;
+    plate.ready.then(imgs => {
+      if (!imgs || plate.on || exiting) return;
+      plate.on = true;
+      const f = document.createElement("div"); f.className = "in-plate-frame";
+      const [base, tower, neon] = imgs; tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon);
+      f.append(base, tower, neon); plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
+      if (!tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
+      requestAnimationFrame(() => el.classList.add("plate"));
+      setTimeout(() => scene && scene.cover && scene.cover(true), reduce ? 0 : 800);   /* once it's faded in, stop drawing the 3D */
+    });
+  }
+  const swapTower = k => load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
+  function plateProgress(p) {   /* the bank arrived: the tower step for your real mastery */
+    const k = step(p); if (k === plate.step) return; plate.step = k; if (plate.on) swapTower(k);
+  }
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.06 · 6f30eec · 972 questions";
+  $i("#inbuild").textContent = "2026.11.06 · ee00488 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
+    if (p === "hero") showPlate();
     paint();
   };
   function paint() {
@@ -1476,10 +1527,10 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     get musicOn() { return musicOn; },
     progress(p) {
       window.__introProg = p; try { localStorage.setItem("eaTaxTown.introProg", JSON.stringify(p)); } catch (e) {}
-      scene && scene.progress && scene.progress(p); nextStop(p);
+      scene && scene.progress && scene.progress(p); nextStop(p); plateProgress(p);
     },
     /* intro3d.js */
-    attach(s) { if (exiting || !el.isConnected) return false; scene = s; has3d = true; el.classList.add("has3d"); el.insertBefore(s.canvas, el.firstChild); if (mode === "full") toast(); paint(); return true; },
+    attach(s) { if (exiting || !el.isConnected) return false; scene = s; has3d = true; if (plate.on && s.cover) s.cover(true); el.classList.add("has3d"); el.insertBefore(s.canvas, el.firstChild); if (mode === "full") toast(); paint(); return true; },
     no3d() { failed3d = true; if (phase !== "hero") setPhase("hero"); },
     phase: setPhase,
     station(i, w) { if (i !== stationI || w !== waiting) { stationI = i; waiting = w; paint(); } },
@@ -2626,7 +2677,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   window.addEventListener("resize", onResize); resize();
 
   /* ---------- the loop ---------- */
-  let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
+  let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, covered = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
   const dpr0 = dpr, aud = { pass: false, chime: [false, false, false], brake: [false, false, false], tunnel: false, music: false, look: "" }, dPassS = 1.45;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
@@ -2669,6 +2720,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
         const look = title ? "open" : n === 0 ? "muffled" : s >= sPortal && s < sPortal + 0.9 ? "tunnel" : "open";
         if (look !== aud.look) { aud.look = look; A.musicLook(look, at); } }
     } catch (e) { /* a sound error must never stop the frame from drawing */ }
+    if (covered) return; /* the rendered Tap to Start plate is over the canvas: keep the clock and the sound, skip the drawing */
     if (s < sPortal + 1.2) {
       placeTrain(dl);
       if (!reduce) {
@@ -2734,6 +2786,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     canvas: renderer.domElement,
     progress(p) { glow.setTower(p.tower || 0); for (const g of stations) { const old = g.sign.material.map; g.sign.material.map = signTex(NAMES[g.k], signSub(g.k)); old.dispose(); } },
     flare() { flareAt = performance.now(); },
+    cover(on) { covered = !!on; },
     dispose() {
       dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize);
       scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { for (const k in m) if (m[k] && m[k].isTexture) m[k].dispose(); m.dispose(); }); });
