@@ -736,7 +736,7 @@
 
   /* ---------- the loop ---------- */
   let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
-  const dpr0 = dpr, aud = { pass: false, chime: [false, false, false], brake: [false, false, false], tunnel: false }, dPassS = 1.45;
+  const dpr0 = dpr, aud = { pass: false, chime: [false, false, false], brake: [false, false, false], tunnel: false, music: false, look: "" }, dPassS = 1.45;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
     if (dead) return;
@@ -773,6 +773,10 @@
         if (!aud.tunnel && s >= sPortal) { aud.tunnel = true; A.tunnel(at); A.burst(at + 0.05); }
       }
       if (Math.random() < dt * 0.1) A.horn(at);
+      /* the beat: muffled in the cold open (from a car on the street), open from the crane on, closed in by the tunnel */
+      if (I.musicOn) { if (!aud.music) { aud.music = true; A.music(at); }
+        const look = title ? "open" : n === 0 ? "muffled" : s >= sPortal && s < sPortal + 0.9 ? "tunnel" : "open";
+        if (look !== aud.look) { aud.look = look; A.musicLook(look, at); } }
     }
     if (s < sPortal + 1.2) {
       placeTrain(dl);

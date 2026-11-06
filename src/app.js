@@ -906,8 +906,8 @@ function renderMore() {
       <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Launch screen</h3>
       <p class="muted small" style="margin:0">The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.</p>
-      <div class="row"><button class="btn" id="introreplay">Replay the intro</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">Sound: ${introSoundOn() ? "On" : "Off"}</button></div>
-      <p class="hint" style="margin:0">Sound starts at your first tap on the launch screen and follows your phone's silent switch.</p></section>
+      <div class="row"><button class="btn" id="introreplay">Replay the intro</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">Sound: ${introSoundOn() ? "On" : "Off"}</button><button class="btn" id="intromusic" aria-pressed="${introMusicOn()}">Music: ${introMusicOn() ? "On" : "Off"}</button></div>
+      <p class="hint" style="margin:0">Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.</p></section>
     <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
       <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
       <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
@@ -947,6 +947,7 @@ function renderMore() {
   /* load the page fresh, without any ?intro= setting, so the launch screen runs from the start */
   $("#introreplay").onclick = () => { location.href = location.pathname; };
   $("#introsound").onclick = () => { try { localStorage.setItem("eaTaxTown.sound", introSoundOn() ? "off" : "on"); } catch (e) {} renderMore(); };
+  $("#intromusic").onclick = () => { try { localStorage.setItem("eaTaxTown.music", introMusicOn() ? "off" : "on"); } catch (e) {} renderMore(); };
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
   $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
@@ -1015,6 +1016,7 @@ function introProgress() {
   const g = gap(state.part), first = !BANK.some(q => st(q.id).seen);
   return { parts, tower, first, next: g ? { name: DOMAINS[g.d].short, m: g.m } : null };
 }
+function introMusicOn() { try { return localStorage.getItem("eaTaxTown.music") !== "off"; } catch (e) { return true; } }
 function introSoundOn() { try { return localStorage.getItem("eaTaxTown.sound") !== "off"; } catch (e) { return true; } }
 function introNotices() {
   const out = [], w = daysTo(WINDOW_END), flags = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size;
