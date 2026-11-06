@@ -736,7 +736,7 @@
 
   /* ---------- the loop ---------- */
   let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
-  const dpr0 = dpr;
+  const dpr0 = dpr, aud = { pass: false, chime: [false, false, false], brake: [false, false, false], tunnel: false }, dPassS = 1.45;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
     if (dead) return;
@@ -758,6 +758,22 @@
       setPhase(s < SHOTS[0] ? "wide" : s < SHOTS[4] ? "stations" : s < SHOTS[6] ? "dive" : "hero");
     } else setPhase("hero");
     const dl = dAt(s), speed = speedAt(s) * rate;
+    /* sound: speed and closeness every frame, and the events as the story clock reaches them */
+    const A = I.audio;
+    if (A) { const at = A.ctx.currentTime, n = shotAt(s), dk = stations.findIndex((g, i) => !g.on && stopD[i] > dAt(s) - 1);
+      const near = n === 0 ? 0.25 + 0.75 * Math.exp(-Math.pow((s - dPassS) / 0.5, 2)) : [0, 0.3, 0.8, 0.4, 1, 1, 0.6, 0.2][n];
+      A.setSpeed(s < sPortal && !title ? speed : 0, at, near);
+      if (!title) {
+        if (!aud.pass && s >= dPassS - 0.6 && s < dPassS + 0.3) { aud.pass = true; A.pass(at + (dPassS - s)); }
+        for (let k = 0; k < 3; k++) {
+          if (!aud.chime[k] && stations[k].on && s >= sStations[k] - 0.05) { aud.chime[k] = true; A.chime(k, at); }   /* a lit station: its note */
+          if (!aud.brake[k] && dk === k && sStations[k] - s < 1.1 && sStations[k] - s > 0) { aud.brake[k] = true; A.brake(at, 1.1); }   /* braking into a dark one */
+        }
+        const dens = s > SHOTS[4] && s < sPortal ? 110 : s > 2 && s < SHOTS[4] ? 18 : 0; if (dens && dt > 0) A.crackle(at, dt, dens * Math.min(1, speed / 40));
+        if (!aud.tunnel && s >= sPortal) { aud.tunnel = true; A.tunnel(at); A.burst(at + 0.05); }
+      }
+      if (Math.random() < dt * 0.1) A.horn(at);
+    }
     if (s < sPortal + 1.2) {
       placeTrain(dl);
       if (!reduce) {
