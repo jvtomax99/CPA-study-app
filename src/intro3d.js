@@ -760,7 +760,7 @@
     const dl = dAt(s), speed = speedAt(s) * rate;
     /* sound: speed and closeness every frame, and the events as the story clock reaches them */
     const A = I.audio;
-    if (A) { const at = A.ctx.currentTime, n = shotAt(s), dk = stations.findIndex((g, i) => !g.on && stopD[i] > dAt(s) - 1);
+    if (A) try { const at = A.ctx.currentTime, n = shotAt(s), dk = stations.findIndex((g, i) => !g.on && stopD[i] > dAt(s) - 1);
       const near = n === 0 ? 0.25 + 0.75 * Math.exp(-Math.pow((s - dPassS) / 0.5, 2)) : [0, 0.3, 0.8, 0.4, 1, 1, 0.6, 0.2][n];
       A.setSpeed(s < sPortal && !title ? speed : 0, at, near);
       if (!title) {
@@ -777,7 +777,7 @@
       if (I.musicOn) { if (!aud.music) { aud.music = true; A.music(at); }
         const look = title ? "open" : n === 0 ? "muffled" : s >= sPortal && s < sPortal + 0.9 ? "tunnel" : "open";
         if (look !== aud.look) { aud.look = look; A.musicLook(look, at); } }
-    }
+    } catch (e) { /* a sound error must never stop the frame from drawing */ }
     if (s < sPortal + 1.2) {
       placeTrain(dl);
       if (!reduce) {

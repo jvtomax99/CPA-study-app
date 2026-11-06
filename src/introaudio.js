@@ -11,7 +11,8 @@
     const noise = (sec, brown) => { const b = ctx.createBuffer(1, sr * sec, sr), d = b.getChannelData(0); let last = 0;
       for (let i = 0; i < d.length; i++) { const w = rnd() * 2 - 1; if (brown) { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; } else d[i] = w; } return b; };
     const WHITE = noise(2, false), BROWN = noise(4, true);
-    const loop = (buf, at = 0) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(at); return s; };
+    const loop = (buf, at = 0) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(Math.max(0, at)); return s; };
+    const T = t => Math.max(0, t);   /* an event can reach back before the sound started: never schedule below zero */
     const gain = (v, to) => { const g = ctx.createGain(); g.gain.value = v; if (to) g.connect(to); return g; };
     const filt = (type, f, q = 0.7, to) => { const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f; b.Q.value = q; if (to) b.connect(to); return b; };
     /* master: a gentle compressor so the burst and the tap can't clip, then the level */
@@ -65,12 +66,12 @@
     }
     /* the cold open: the train blasts past the lens, left to right, with the motors' pitch dropping as it goes */
     function pass(t) {
-      pan.pan.setValueAtTime(-0.8, t - 0.6); pan.pan.linearRampToValueAtTime(0.85, t + 0.5);
-      train.gain.setValueAtTime(train.gain.value, t - 0.6); train.gain.linearRampToValueAtTime(1.15, t); train.gain.linearRampToValueAtTime(0.45, t + 0.8);
-      motor.detune.setValueAtTime(180, t - 0.3); motor.detune.linearRampToValueAtTime(-220, t + 0.35); motor.detune.linearRampToValueAtTime(0, t + 1.4);
-      motor2.detune.setValueAtTime(180, t - 0.3); motor2.detune.linearRampToValueAtTime(-220, t + 0.35); motor2.detune.linearRampToValueAtTime(0, t + 1.4);
-      const g = gain(0, bus), f = filt("bandpass", 900, 0.6, g); loop(WHITE, t - 0.5).connect(f);   /* the air the train pushes */
-      g.gain.setValueAtTime(0, t - 0.5); g.gain.linearRampToValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+      pan.pan.setValueAtTime(-0.8, T(t - 0.6)); pan.pan.linearRampToValueAtTime(0.85, t + 0.5);
+      train.gain.setValueAtTime(train.gain.value, T(t - 0.6)); train.gain.linearRampToValueAtTime(1.15, t); train.gain.linearRampToValueAtTime(0.45, t + 0.8);
+      motor.detune.setValueAtTime(180, T(t - 0.3)); motor.detune.linearRampToValueAtTime(-220, t + 0.35); motor.detune.linearRampToValueAtTime(0, t + 1.4);
+      motor2.detune.setValueAtTime(180, T(t - 0.3)); motor2.detune.linearRampToValueAtTime(-220, t + 0.35); motor2.detune.linearRampToValueAtTime(0, t + 1.4);
+      const g = gain(0, bus), f = filt("bandpass", 900, 0.6, g); loop(WHITE, T(t - 0.5)).connect(f);   /* the air the train pushes */
+      g.gain.setValueAtTime(0, T(t - 0.5)); g.gain.linearRampToValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
       pan.pan.setValueAtTime(0.85, t + 1.2); pan.pan.linearRampToValueAtTime(0, t + 2.2);
     }
     /* a station note: a bell (inharmonic partials), with a soft attack of the room */
@@ -96,9 +97,9 @@
       g.gain.setValueAtTime(0.06 + rnd() * 0.08, at); g.gain.exponentialRampToValueAtTime(0.001, at + 0.012); } }
     /* into the tunnel: the roar swells and then closes in; the room opens up inside */
     function tunnel(t) {
-      const g = gain(0, bus), f = filt("bandpass", 300, 0.5, g); loop(WHITE, t - 1.2).connect(f);
-      f.frequency.setValueAtTime(300, t - 1.2); f.frequency.exponentialRampToValueAtTime(2200, t); f.frequency.exponentialRampToValueAtTime(260, t + 0.6);
-      g.gain.setValueAtTime(0, t - 1.2); g.gain.linearRampToValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 2.4);
+      const g = gain(0, bus), f = filt("bandpass", 300, 0.5, g); loop(WHITE, T(t - 1.2)).connect(f);
+      f.frequency.setValueAtTime(300, T(t - 1.2)); f.frequency.exponentialRampToValueAtTime(2200, t); f.frequency.exponentialRampToValueAtTime(260, t + 0.6);
+      g.gain.setValueAtTime(0, T(t - 1.2)); g.gain.linearRampToValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 2.4);
       rumbleF.frequency.setTargetAtTime(160, t, 0.2); send.gain.setValueAtTime(0, t); send.gain.linearRampToValueAtTime(0.5, t + 0.3);
       train.gain.setTargetAtTime(0.0, t + 0.4, 0.6);
     }

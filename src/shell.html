@@ -634,6 +634,9 @@ footer p { margin: 0; max-width: 70ch; }
 .in-snd svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .in-snd .x { display: none; } .in-snd.off .w { display: none; } .in-snd.off .x { display: inline; } .in-snd.off { color: rgba(255,255,255,0.7); }
 .intro.flare .in-snd { opacity: 0; transition: opacity 160ms ease; }
+.in-skip { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 4px; min-height: 42px; padding: 0 12px 0 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font: 700 13px/1 var(--f-ui); cursor: pointer; transition: opacity 260ms ease; }
+.in-skip svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.intro.hero .in-skip, .intro.flare .in-skip { opacity: 0; pointer-events: none; }
 .in-fps { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(64px + env(safe-area-inset-top, 0px)); padding: 4px 8px; border-radius: 999px; background: rgba(18,16,46,0.6); font: 600 12px/1.2 var(--f-ui); font-variant-numeric: tabular-nums; color: #fff; pointer-events: none; }
 .in-tap span { display: inline-block; animation: inpulse 2400ms ease-in-out infinite; }
 @keyframes inpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
@@ -668,6 +671,7 @@ html.introing, html.introing body { overflow: hidden; }
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
   <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
+  <button class="in-skip" id="inskip" type="button" data-go="skip">Skip<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
   <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
   <div class="in-build" id="inbuild" aria-hidden="true"></div>
