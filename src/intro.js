@@ -74,8 +74,8 @@
 
   /* sound (src/introaudio.js): iPhones allow web audio only after a touch, so the ride starts silent and the first touch
      on the launch screen starts it. The speaker button turns it on or off; the choice is saved. */
-  let soundOn = true, audio = null, unlockedAt = 0;
-  try { soundOn = localStorage.getItem("eaTaxTown.sound") !== "off"; } catch (e) {}
+  let soundOn = true, musicOn = true, audio = null, unlockedAt = 0;
+  try { soundOn = localStorage.getItem("eaTaxTown.sound") !== "off"; musicOn = localStorage.getItem("eaTaxTown.music") !== "off"; } catch (e) {}
   function unlock() {
     if (!soundOn || audio || !window.IntroAudio || exiting) return;
     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
@@ -96,8 +96,8 @@
     try { localStorage.setItem("eaTaxTown.sound", soundOn ? "on" : "off"); } catch (e) {}
     paintSound();
   }
-  const endSound = (tap) => { if (!audio) return; const a = audio; if (tap && soundOn) a.tap(); else a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08);
-    setTimeout(() => { try { a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
+  const endSound = (tap) => { if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
+    setTimeout(() => { try { a.stopMusic(); a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
   el.addEventListener("pointerdown", unlock, true);
   function exit(where) {
     if (exiting) return;
@@ -158,6 +158,7 @@
     begin(opts) { go = opts.go; notices = opts.notices || notices; paint(); },
     /* app.js: readiness per part (0..1), the tower's share of all 13 areas, and the next stop */
     get audio() { return soundOn ? audio : null; },
+    get musicOn() { return musicOn; },
     progress(p) {
       window.__introProg = p; try { localStorage.setItem("eaTaxTown.introProg", JSON.stringify(p)); } catch (e) {}
       scene && scene.progress && scene.progress(p); nextStop(p);

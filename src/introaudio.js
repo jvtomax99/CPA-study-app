@@ -1,7 +1,8 @@
 /* Launch screen sound, all synthesized with Web Audio (no audio files). src/intro3d.js drives it from the story clock:
    setSpeed every frame, and events for the cold-open pass, the station notes, the brakes, the tunnel, the portal burst
    and the tap. Station notes build a chord (C, E, G), one note per station as the train arrives at a lit one.
-   Works the same in an OfflineAudioContext, which is how the previews were rendered. */
+   Under it all, an original boom-bap beat (music, below). Works the same in an OfflineAudioContext, which is how the
+   previews were rendered. */
 (() => {
   function build(ctx) {
     const sr = ctx.sampleRate, now = () => ctx.currentTime;
@@ -117,7 +118,74 @@
       og.gain.setValueAtTime(0.0, t + 0.6); og.gain.linearRampToValueAtTime(0.35, t + 0.64); og.gain.exponentialRampToValueAtTime(0.001, t + 1.9);
       master.gain.setValueAtTime(master.gain.value, t + 1.4); master.gain.linearRampToValueAtTime(0, t + 3.6);
     }
-    return { ctx, master, setSpeed, pass, chime, brake, crackle, tunnel, burst, tap, horn, NOTES };
+    /* ---------- music: an original boom-bap beat at 90 BPM in A minor (Am9, Dm9, Fmaj7, Em7), dusty and swung.
+       Kick, snare and hats are synthesized; the keys are a two-operator electric piano; the bass is a sub sine. Nothing is
+       sampled or copied from a real record. The station notes (C, E, G) sit inside the key. ---------- */
+    const BPM = 90, Q = 60 / BPM, S16 = Q / 4, SWING = 0.028, BAR = Q * 4;
+    const mus = gain(0, comp), musF = filt("lowpass", 420, 0.9, mus);   /* the beat's own level and its "from another room" filter */
+    const musIn = gain(1, musF), musSend = gain(0.0, verb); musIn.connect(musSend);
+    const sat = ctx.createWaveShaper(); { const n = 1024, c = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / (n - 1) * 2 - 1; c[i] = Math.tanh(x * 1.6); } sat.curve = c; } sat.connect(musIn);   /* a little tape warmth */
+    const drums = gain(0.8, sat), keysBus = gain(0.62, musIn), bassBus = gain(0.75, musIn);
+    function kick(t, v = 1) { const o = ctx.createOscillator(), g = gain(0, drums); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(48, t + 0.09); o.connect(g);
+      g.gain.setValueAtTime(0.95 * v, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.42); o.start(t); o.stop(t + 0.45);
+      const c = ctx.createBufferSource(); c.buffer = WHITE; const cg = gain(0, drums), cf = filt("lowpass", 2400, 0.7, cg); c.connect(cf); c.start(t, rnd(), 0.02); cg.gain.setValueAtTime(0.25 * v, t); cg.gain.exponentialRampToValueAtTime(0.001, t + 0.02); }
+    function snare(t, v = 1) { const n = ctx.createBufferSource(); n.buffer = WHITE; const g = gain(0, drums), f = filt("bandpass", 1900, 0.8, g), r = gain(0.35, verb); g.connect(r);
+      n.connect(f); n.start(t, rnd(), 0.3); g.gain.setValueAtTime(0.55 * v, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+      const o = ctx.createOscillator(), og = gain(0, drums); o.frequency.setValueAtTime(210, t); o.frequency.exponentialRampToValueAtTime(160, t + 0.08); o.connect(og); og.gain.setValueAtTime(0.35 * v, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.12); o.start(t); o.stop(t + 0.15); }
+    function hat(t, v = 1, open = false) { const n = ctx.createBufferSource(); n.buffer = WHITE; const g = gain(0, drums), f = filt("highpass", 7800, 0.8, g); n.connect(f); n.start(t, rnd(), 0.4);
+      g.gain.setValueAtTime(0.24 * v, t); g.gain.exponentialRampToValueAtTime(0.001, t + (open ? 0.28 : 0.045)); }
+    /* the electric piano: a sine carrier with a sine modulator whose depth fades, so each note starts bright and mellows */
+    function epiano(hz, t, dur, v) { const c = ctx.createOscillator(), m = ctx.createOscillator(), mg = gain(hz * 2.2 * v), g = gain(0, keysBus);
+      c.frequency.value = hz; m.frequency.value = hz; m.connect(mg); mg.connect(c.frequency); c.connect(g);
+      mg.gain.setValueAtTime(hz * 2.2 * v, t); mg.gain.exponentialRampToValueAtTime(hz * 0.15, t + 0.6);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.11 * v, t + 0.008); g.gain.exponentialRampToValueAtTime(0.03 * v, t + 0.5); g.gain.exponentialRampToValueAtTime(0.0005, t + dur);
+      c.start(t); m.start(t); c.stop(t + dur + 0.05); m.stop(t + dur + 0.05); }
+    function sub(hz, t, dur) { const o = ctx.createOscillator(), g = gain(0, bassBus); o.type = "triangle"; o.frequency.value = hz; o.connect(g);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.5, t + 0.01); g.gain.setValueAtTime(0.5, t + dur * 0.7); g.gain.linearRampToValueAtTime(0, t + dur); o.start(t); o.stop(t + dur + 0.02); }
+    const hzOf = n => 440 * Math.pow(2, (n - 69) / 12);
+    const CHORDS = [[57, 60, 64, 67, 71], [50, 57, 60, 64, 65], [53, 57, 60, 64, 69], [52, 55, 59, 62, 67]];   /* Am9, Dm9, Fmaj7(add9-ish), Em7 (midi) */
+    const ROOTS = [33, 38, 41, 40];   /* A1, D2, F2, E2 */
+    const KICK = [0, 7, 10], SNARE = [4, 12], GHOST = [15];
+    /* vinyl: a soft hiss and a few clicks a second, on the beat's bus so the filter shapes them too */
+    const vinyl = gain(0.012, musIn); loop(WHITE).connect(filt("bandpass", 5200, 0.4, vinyl));
+    let musAt = 0, step = 0, musOn = false, timer = 0;
+    function scheduleMusic(until) {
+      while (musAt < until) {
+        const bar = Math.floor(step / 16) % 4, i = step % 16, sw = i % 2 ? SWING : 0, t = musAt + sw;
+        if (KICK.includes(i)) kick(t, i === 0 ? 1 : 0.85);
+        if (SNARE.includes(i)) snare(t, 1);
+        if (GHOST.includes(i) && bar % 2) snare(t, 0.3);
+        if (i % 2 === 0) hat(t, i % 4 === 0 ? 1 : 0.7); else if (rnd() < 0.35) hat(t, 0.35);
+        if (i === 14 && bar === 3) hat(t, 0.6, true);
+        if (i === 0) { CHORDS[bar].forEach((n, k) => epiano(hzOf(n), t + k * 0.012, BAR * 0.9, 0.8)); sub(hzOf(ROOTS[bar]), t, Q * 1.7); }
+        if (i === 10) { CHORDS[bar].slice(1, 4).forEach((n, k) => epiano(hzOf(n + 12), t + k * 0.01, Q * 1.2, 0.45)); sub(hzOf(ROOTS[bar]), t, Q * 0.9); }
+        if (rnd() < 0.12) { const at = t + rnd() * S16, cl = ctx.createBufferSource(); cl.buffer = WHITE; const cg = gain(0, musIn); cl.connect(cg); cl.start(at, rnd(), 0.004); cg.gain.setValueAtTime(0.05, at); }
+        step++; musAt += S16;
+      }
+    }
+    /* start the beat at t; live it schedules a little ahead every 50 ms, offline the caller asks for a span with musicUntil */
+    function music(t = now(), live = true) {
+      if (musOn) return; musOn = true; musAt = t; step = 0;
+      mus.gain.setValueAtTime(0, t); mus.gain.linearRampToValueAtTime(0.3, t + 0.6);   /* under the ride's effects */
+      if (live) { scheduleMusic(now() + 0.25); timer = setInterval(() => scheduleMusic(now() + 0.25), 50); }
+    }
+    const musicUntil = t => scheduleMusic(t);
+    /* the beat follows the ride: muffled (from a car on the street), open, inside the tunnel, and cut by a scratch */
+    function musicLook(kind, t = now()) {
+      const f = musF.frequency, tc = kind === "open" ? 0.35 : 0.15;
+      if (kind === "muffled") { f.setTargetAtTime(420, t, tc); musSend.gain.setTargetAtTime(0, t, tc); }
+      if (kind === "open") { f.setTargetAtTime(5200, t, tc); musSend.gain.setTargetAtTime(0.05, t, tc); }
+      if (kind === "tunnel") { f.setTargetAtTime(900, t, tc); musSend.gain.setTargetAtTime(0.45, t, tc); }
+    }
+    function scratch(t = now()) {   /* a quick back-and-forth record scratch, then the beat stops */
+      const n = ctx.createBufferSource(); n.buffer = BROWN; const f = filt("bandpass", 900, 3, null), g = gain(0, comp); n.connect(f); f.connect(g);
+      [[0, 400], [0.07, 2600], [0.13, 500], [0.2, 3000], [0.3, 300]].forEach(([d, hz]) => f.frequency.linearRampToValueAtTime(hz, t + d));
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.9, t + 0.02); g.gain.setValueAtTime(0.9, t + 0.28); g.gain.linearRampToValueAtTime(0, t + 0.34); n.start(t, rnd() * 2, 0.4);
+      mus.gain.setValueAtTime(mus.gain.value, t); mus.gain.linearRampToValueAtTime(0, t + 0.08);
+      if (timer) clearInterval(timer); timer = 0;
+    }
+    const stopMusic = () => { if (timer) clearInterval(timer); timer = 0; };
+    return { ctx, master, setSpeed, pass, chime, brake, crackle, tunnel, burst, tap, horn, NOTES, music, musicUntil, musicLook, scratch, stopMusic };
   }
   window.IntroAudio = { build };
 })();
