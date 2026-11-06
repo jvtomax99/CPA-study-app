@@ -51,12 +51,49 @@
   }
   nextStop(window.__introProg);
   setTimeout(() => paintSound(), 0);
+
+  /* ---------- the rendered Tap to Start ----------
+     The hold is a still rendered in Blender (Cycles; tools/blender/intro_plate.py), files in art/intro-plate/: the cutting
+     at track level, the LAST STOP portal and the tax tower. Two layers sit on it, cut from the same render: the tower lit to
+     your mastery in tenths (tower-0 to tower-10), and the sign with its neon off, which CSS fades in and out for the flicker.
+     Portrait screens get the phone files (780 by 1690), landscape the desktop ones (1920 by 1200). They load during the
+     ride; if they haven't arrived by Tap to Start, the 3D portal stays. Rects are in the plate's pixels. */
+  const PLATE = {phone: {w: 780, h: 1690, neon: {x: 0, y: 695, w: 780, h: 410}, tower: {x: 182, y: 0, w: 372, h: 749}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
+  const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
+  const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
+  const load = src => new Promise(r => { const i = new Image(); i.decoding = "async"; i.onload = () => (i.decode ? i.decode().catch(() => {}) : Promise.resolve()).then(() => r(i)); i.onerror = () => r(null); i.src = src; });
+  const plate = { box: el.querySelector(".in-plate"), on: false, step: step(window.__introProg) };
+  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
+  const place = (img, r) => Object.assign(img.style, { left: r.x / P.w * 100 + "%", top: r.y / P.h * 100 + "%", width: r.w / P.w * 100 + "%", height: r.h / P.h * 100 + "%" });
+  function fitPlate() {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
+    const f = plate.box && plate.box.firstChild; if (!f) return;
+    const k = Math.max(el.clientWidth / P.w, el.clientHeight / P.h), w = P.w * k, h = P.h * k;
+    Object.assign(f.style, { width: w + "px", height: h + "px", left: (el.clientWidth - w) / 2 + "px", top: (el.clientHeight - h) * 0.42 + "px" });
+  }
+  function showPlate() {
+    if (plate.on || exiting || phase !== "hero") return;
+    plate.ready.then(imgs => {
+      if (!imgs || plate.on || exiting) return;
+      plate.on = true;
+      const f = document.createElement("div"); f.className = "in-plate-frame";
+      const [base, tower, neon] = imgs; tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon);
+      f.append(base, tower, neon); plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
+      if (!tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
+      requestAnimationFrame(() => el.classList.add("plate"));
+      setTimeout(() => scene && scene.cover && scene.cover(true), reduce ? 0 : 800);   /* once it's faded in, stop drawing the 3D */
+    });
+  }
+  const swapTower = k => load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
+  function plateProgress(p) {   /* the bank arrived: the tower step for your real mastery */
+    const k = step(p); if (k === plate.step) return; plate.step = k; if (plate.on) swapTower(k);
+  }
   const NAMES = ["Individuals", "Businesses", "Representation"];
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
   $i("#inbuild").textContent = "__BUILD__";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
+    if (p === "hero") showPlate();
     paint();
   };
   function paint() {
@@ -163,10 +200,10 @@
     get musicOn() { return musicOn; },
     progress(p) {
       window.__introProg = p; try { localStorage.setItem("eaTaxTown.introProg", JSON.stringify(p)); } catch (e) {}
-      scene && scene.progress && scene.progress(p); nextStop(p);
+      scene && scene.progress && scene.progress(p); nextStop(p); plateProgress(p);
     },
     /* intro3d.js */
-    attach(s) { if (exiting || !el.isConnected) return false; scene = s; has3d = true; el.classList.add("has3d"); el.insertBefore(s.canvas, el.firstChild); if (mode === "full") toast(); paint(); return true; },
+    attach(s) { if (exiting || !el.isConnected) return false; scene = s; has3d = true; if (plate.on && s.cover) s.cover(true); el.classList.add("has3d"); el.insertBefore(s.canvas, el.firstChild); if (mode === "full") toast(); paint(); return true; },
     no3d() { failed3d = true; if (phase !== "hero") setPhase("hero"); },
     phase: setPhase,
     station(i, w) { if (i !== stationI || w !== waiting) { stationI = i; waiting = w; paint(); } },

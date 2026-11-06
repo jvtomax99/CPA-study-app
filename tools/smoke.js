@@ -20,6 +20,7 @@ const fails = []; const check = (ok, what) => { console.log((ok ? "PASS " : "FAI
     await ip.waitForFunction(() => window.__introSeek, null, { timeout: 30000 }).catch(() => {});
     await ip.evaluate(() => window.__introSeek && window.__introSeek(14));
     check(!!(await ip.waitForSelector("#intro.hero", { timeout: 15000 }).catch(() => null)), "launch: the ride ends on Tap to Start");
+    check(!!(await ip.waitForSelector("#intro.plate .in-plate .tw", { timeout: 15000 }).catch(() => null)) && await ip.evaluate(() => [...document.querySelectorAll(".in-plate img")].length === 3 && [...document.querySelectorAll(".in-plate img")].every(i => i.naturalWidth > 0)), "launch: the rendered Tap to Start fades in with its tower and neon layers");
     await ip.waitForFunction(() => window.Boot && window.Boot.loaded(), null, { timeout: 60000 }).catch(() => {});
     check(await ip.evaluate(() => [0, 1, 2].every(k => Boot.lit(k)) && Boot.progress() === 1), "launch: all three stations light once everything has loaded");
     await ip.click("#intap");

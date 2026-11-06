@@ -735,7 +735,7 @@
   window.addEventListener("resize", onResize); resize();
 
   /* ---------- the loop ---------- */
-  let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
+  let s = title ? 15 : 0, rate = 1, last = performance.now(), t0 = last, raf = 0, dead = false, covered = false, phase = "", flareAt = 0, ft = [], lastStation = -1, lastWait = null;
   const dpr0 = dpr, aud = { pass: false, chime: [false, false, false], brake: [false, false, false], tunnel: false, music: false, look: "" }, dPassS = 1.45;
   const setPhase = p => { if (p !== phase) { phase = p; I.phase(p); } };
   function tick(now) {
@@ -778,6 +778,7 @@
         const look = title ? "open" : n === 0 ? "muffled" : s >= sPortal && s < sPortal + 0.9 ? "tunnel" : "open";
         if (look !== aud.look) { aud.look = look; A.musicLook(look, at); } }
     } catch (e) { /* a sound error must never stop the frame from drawing */ }
+    if (covered) return; /* the rendered Tap to Start plate is over the canvas: keep the clock and the sound, skip the drawing */
     if (s < sPortal + 1.2) {
       placeTrain(dl);
       if (!reduce) {
@@ -843,6 +844,7 @@
     canvas: renderer.domElement,
     progress(p) { glow.setTower(p.tower || 0); for (const g of stations) { const old = g.sign.material.map; g.sign.material.map = signTex(NAMES[g.k], signSub(g.k)); old.dispose(); } },
     flare() { flareAt = performance.now(); },
+    cover(on) { covered = !!on; },
     dispose() {
       dead = true; cancelAnimationFrame(raf); window.removeEventListener("resize", onResize);
       scene.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { for (const k in m) if (m[k] && m[k].isTexture) m[k].dispose(); m.dispose(); }); });
