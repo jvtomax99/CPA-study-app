@@ -1,2 +1,6 @@
 # tools/intro_plate.py downloads and renders here
 build/
+.env
+.env.*
+*.pem
+node_modules/
