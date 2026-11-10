@@ -24,20 +24,16 @@
 - **Plan and phases:** SPEC.md (drafted from the code on 2026-11-10, gaps marked TO FILL for Jose) holds the Phases list, including the Times Square plan from `docs/HANDOFF.md` (1 map, 2 cars, 3 people, 4 color).
 - **Handoffs:** new handoffs go in `HANDOFF.md` at the repo root. `docs/HANDOFF.md` is older notes (a long running log of what shipped, sources and network setup). Leave it as it is; read it for history.
 - **Extras Jose asked for here, kept:**
-  - End every reply with what Jose has to do, in a line starting "You need to:" (approve a diff, approve a push, reload the app, and so on). If there's nothing, write "You need to: nothing."
-  - When Jose needs to approve a diff or a push, give it as a clickable button, not only as text.
+  - End every reply with what Jose has to do, in a line starting "You need to:" (approve a push, answer a question, reload the app, and so on). If there's nothing, write "You need to: nothing."
+  - When Jose needs to approve a push, give it as a clickable button, not only as text.
   - UI or design options: mock up every option before he chooses, on a scratch copy of the app (never the repo), render them with Playwright and send the screenshots with the suggestions.
   - UI changes (`index.html`, `src/`, `art/`, `preview/`): send before and after screenshots rendered with Playwright.
   - Environment settings: exact values in a code block, one entry per line, plus where to paste them.
-  - Ask with a clickable button before installing anything that helps (program, package, plugin, connector, browser extension or allowed domain). Once approved, install it yourself if you can; if only Jose can, give him the exact steps.
+  - Ask with a clickable button before adding a tool that isn't a project package (program, plugin, connector, browser extension or allowed domain). Once approved, install it yourself if you can; if only Jose can, give him the exact steps.
 
-### Older rules kept until Jose decides
+### Old rules settled (Jose, 2026-11-10)
 
-- **Show the proposed diff before editing any file, and wait for approval.** Stricter than the general rules, which only ask for an OK before big features (plan mode) and risky actions.
-- **Never commit or push without explicit approval.** Conflicts with "Pushing a feature branch is fine without asking" and with committing in small steps.
-- **Once a push is approved, open the pull request and merge it into main yourself; don't ask a second time to merge.** Fits "Wait for my OK before merging" when the approval is the OK, but skips the phone notification and the separate wait for an OK between opening the pull request and merging.
-- **Ask with a button before installing anything, packages and allowed domains included.** Conflicts with "Project packages", which installs normal project packages without asking.
-- **Never commit or push without explicit approval** also conflicts with "Handoffs", which commits and pushes HANDOFF.md in a cloud session without asking.
+The general rules win: no diff before every edit, Claude commits and pushes its own branch without asking, and project packages install without asking. Kept from the old rules: on Jose's "push", open the pull request (if not open yet) and merge it yourself; don't ask a second time.
 
 - **Public repo, paid assets.** The repo is public (checked 2026-11-10) and GitHub Pages on a free plan needs it public, so paid raw files (fonts, models) can't be committed here (docs/assets.md, section 9). Before any purchase, ask Jose: keep to free assets, or GitHub Pro / a move to Vercel so the repo can go private.
 - **Taste skill.** docs/design-rules.md asks for Senlin's taste skill from a link Jose hasn't given yet (PASTE_LINK_HERE). Until he does, use the `taste` skill this environment already has, and ask him for the link.
