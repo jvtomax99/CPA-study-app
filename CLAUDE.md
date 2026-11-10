@@ -36,7 +36,7 @@
 The general rules win: no diff before every edit, Claude commits and pushes its own branch without asking, and project packages install without asking. Kept from the old rules: on Jose's "push", open the pull request (if not open yet) and merge it yourself; don't ask a second time.
 
 - **Public repo, paid assets.** The repo is public (checked 2026-11-10) and GitHub Pages on a free plan needs it public, so paid raw files (fonts, models) can't be committed here (docs/assets.md, section 9). Before any purchase, ask Jose: keep to free assets, or GitHub Pro / a move to Vercel so the repo can go private.
-- **Taste skill.** docs/design-rules.md asks for Senlin's taste skill from a link Jose hasn't given yet (PASTE_LINK_HERE). Until he does, use the `taste` skill this environment already has, and ask him for the link.
+- **Taste skill.** Saved in `.claude/skills/taste/` (Senlin's, MIT; `SOURCE.md` there says where from). It asks for the Playwright MCP server; in a cloud session use the Playwright already installed instead (run its `references/extract.js` with `page.evaluate`).
 - **Refactor prompt.** docs/refactor.md, run when Jose asks for "Refactor: CLEANUP.md items ...".
 
 # General rules (all of Jose's website projects)
