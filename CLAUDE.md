@@ -26,6 +26,8 @@
 - **Extras Jose asked for here, kept:**
   - End every reply with what Jose has to do, in a line starting "You need to:" (approve a push, answer a question, reload the app, and so on). If there's nothing, write "You need to: nothing."
   - When Jose needs to approve a push, give it as a clickable button, not only as text.
+  - Always clickable suggestions (Jose, 2026-11-11): every question or next step goes out as buttons, recommended first, never only as text.
+  - Links and domains to paste: all of them in one code block, one per line, never split into several blocks (Jose, 2026-11-11).
   - UI or design options: mock up every option before he chooses, on a scratch copy of the app (never the repo), render them with Playwright and send the screenshots with the suggestions.
   - UI changes (`index.html`, `src/`, `art/`, `preview/`): send before and after screenshots rendered with Playwright.
   - Environment settings: exact values in a code block, one entry per line, plus where to paste them.
