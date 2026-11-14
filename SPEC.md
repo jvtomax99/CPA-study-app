@@ -59,11 +59,17 @@ summary, exam setup, exam, break and results.
    `?fps=1`).
    - Done when: mastering questions in an area visibly adds floors to its tower, and
      the city stays smooth on a phone (not yet proven on a real phone).
-8. **Launch screen.** An El train ride past one station per part, each lighting up
-   as that part's questions load; sound and an original beat; a Blender-rendered Tap
-   to Start. `?intro=0`, `?intro=1`, `?intro=title`. More has Replay the intro.
-   - Done when: the ride plays on launch and Tap to Start opens the app once the bank
-     has loaded.
+8. **Launch screen.** On phones (portrait), a 16-second film of the El train ride:
+   over the avenue, a station lighting up, the graffiti car with the buddy, the dive
+   to LAST STOP, then Tap to Start on its last frame. Each part's name and readiness
+   shows over its shot. On landscape screens, or when the film can't start, the 3D
+   ride past one station per part, each lighting up as that part's questions load,
+   and a Blender-rendered Tap to Start. Sound and an original beat on both.
+   `?intro=0`, `?intro=1`, `?intro=title`, `?ride=3d`. More has Replay the intro.
+   - Done when: the film (or the ride) plays on launch and Tap to Start opens the app
+     once the bank has loaded.
+   - Not in this version: a film for landscape screens, new music, the film waiting
+     at a station that hasn't loaded.
 9. **Greeting and study buddy.** Night Midtown header with the user's name, a tax
    quote of the day and a buddy who blinks, smiles, winks, dozes and gives pep talks.
    - Done when: tapping the buddy changes his face and his line; tapping the
@@ -132,6 +138,8 @@ Built (dates and commits in `git log`):
 - [x] Launch screen: train ride, sound, beat, rendered Tap to Start (through pull
   request #57).
 - [x] How-to video refreshed for CPA mode (commit 95a0464).
+- [ ] Launch film for phones and the grown-up study buddy (made in Runway; waiting
+  on Jose's "push").
 
 In progress or next:
 

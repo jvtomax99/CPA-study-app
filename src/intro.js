@@ -58,36 +58,51 @@
      your mastery in tenths (tower-0 to tower-10), and the sign with its neon off, which CSS fades in and out for the flicker.
      Portrait screens get the phone files (780 by 1690), landscape the desktop ones (1920 by 1200). They load during the
      ride; if they haven't arrived by Tap to Start, the 3D portal stays. Rects are in the plate's pixels. */
-  const PLATE = {phone: {w: 780, h: 1690, neon: {x: 0, y: 695, w: 780, h: 410}, tower: {x: 182, y: 0, w: 372, h: 749}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
+  /* ---------- the film ----------
+     Portrait screens play a film in place of the 3D ride: media/intro-phone.mp4, four shots (over the avenue, a station
+     whose lamps come on, the graffiti car with the study buddy, the dive to LAST STOP), 1080 by 1920, made in Runway from
+     this app's own stills, with no sound track (src/introaudio.js still makes the sound). cuts are where shots 2, 3 and 4
+     start, pass is when the train passes the camera in shot 1, in seconds. Tap to Start holds on the film's last frame
+     (intro-phone-end.webp); the tower above the portal is dimmed from the top down to your mastery through a cut-out of
+     its shape (intro-phone-tower.webp). If the film can't start within 5 seconds (blocked autoplay, slow network, data
+     saver) the 3D ride plays as before; ?ride=3d asks for it. Landscape screens always get the 3D ride. */
+  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.4, 8.4, 11.6], pass: 1.8, end: 15.6 };
+  const PLATE = {phone: {w: 1080, h: 1920, film: true, tower: {x: 331, y: 70, w: 418, h: 721}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
   const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
   const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
   const load = src => new Promise(r => { const i = new Image(); i.decoding = "async"; i.onload = () => (i.decode ? i.decode().catch(() => {}) : Promise.resolve()).then(() => r(i)); i.onerror = () => r(null); i.src = src; });
   const plate = { box: el.querySelector(".in-plate"), on: false, step: step(window.__introProg) };
-  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
+  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : P.film ? load(FILM.last).then(i => i ? [i] : null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
   const place = (img, r) => Object.assign(img.style, { left: r.x / P.w * 100 + "%", top: r.y / P.h * 100 + "%", width: r.w / P.w * 100 + "%", height: r.h / P.h * 100 + "%" });
-  function fitPlate() {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
-    const f = plate.box && plate.box.firstChild; if (!f) return;
+  function fit(f) {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
+    if (!f) return;
     const k = Math.max(el.clientWidth / P.w, el.clientHeight / P.h), w = P.w * k, h = P.h * k;
     Object.assign(f.style, { width: w + "px", height: h + "px", left: (el.clientWidth - w) / 2 + "px", top: (el.clientHeight - h) * 0.42 + "px" });
   }
+  const fitPlate = () => fit(plate.box && plate.box.firstChild);
+  /* the film's tower: lit from the ground up to your mastery in tenths (at least the bottom 6%), dark above */
+  const shadeTo = (s, k) => { if (s) s.style.clipPath = `inset(0 0 ${Math.max(6, k * 10)}% 0)`; };
   function showPlate() {
     if (plate.on || exiting || phase !== "hero") return;
     plate.ready.then(imgs => {
       if (!imgs || plate.on || exiting) return;
       plate.on = true;
       const f = document.createElement("div"); f.className = "in-plate-frame";
-      const [base, tower, neon] = imgs; tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon);
-      f.append(base, tower, neon); plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
-      if (!tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
+      const [base, tower, neon] = imgs;
+      if (P.film) { const sh = document.createElement("i"); sh.className = "tw-shade"; sh.style.webkitMaskImage = sh.style.maskImage = `url(${FILM.mask})`; place(sh, P.tower); shadeTo(sh, plate.step); f.append(base, sh); }
+      else { tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon); f.append(base, tower, neon); }
+      plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
+      if (!P.film && !tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
       requestAnimationFrame(() => el.classList.add("plate"));
       setTimeout(() => scene && scene.cover && scene.cover(true), reduce ? 0 : 800);   /* once it's faded in, stop drawing the 3D */
     });
   }
-  const swapTower = k => load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
+  const swapTower = k => P.film ? shadeTo(plate.box && plate.box.querySelector(".tw-shade"), k) : load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
   function plateProgress(p) {   /* the bank arrived: the tower step for your real mastery */
     const k = step(p); if (k === plate.step) return; plate.step = k; if (plate.on) swapTower(k);
   }
   const NAMES = ["Individuals", "Businesses", "Representation"];
+  const film = { on: false, v: null, aud: {}, shot: -1 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
   $i("#inbuild").textContent = "__BUILD__";
   const setPhase = p => {
@@ -99,9 +114,9 @@
   function paint() {
     const pr = progress(), done = pr >= 0.9999;
     $i("#inbar").style.width = (pr * 100).toFixed(2) + "%";
-    const i = has3d ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
+    const i = has3d || film.on ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
     /* the station names only mean something while the train is riding past them */
-    const riding = has3d && phase !== "hero" && phase !== "wait";
+    const riding = (has3d || film.on) && phase !== "hero" && phase !== "wait";
     const where = queued ? "Starting when loaded" : riding ? (waiting ? "Waiting at " : "Arriving at ") + NAMES[i] : phase === "hero" ? "Loading" : "Leaving the yard";
     $i("#instatus").textContent = `${where}... ${(pr * 100).toFixed(2)}%`;
     el.classList.toggle("loading", !done && phase !== "wide");
@@ -186,13 +201,68 @@
     setTimeout(() => t.classList.remove("show"), 1900);
   }
   if (mode === "full") setTimeout(toast, 1200);
+
+  /* ---------- the film player ---------- */
+  /* the sound engine follows the film's clock the way it follows the 3D ride's: speed and closeness every frame, the
+     pass, a station note at each shot, the brakes into the last stop, and the beat */
+  function filmSound(t, n) {
+    const A = soundOn ? audio : null; if (!A) return;
+    try { const at = A.ctx.currentTime, fa = film.aud, braking = t >= FILM.end - 1.1;
+      A.setSpeed(n > 3 || braking ? 0 : n === 3 ? 44 : 34, at, [0.6, 0.8, 1, 0.9][n] || 0.2);
+      if (!fa.pass && t >= FILM.pass - 0.6 && t < FILM.pass + 0.3) { fa.pass = true; A.pass(at + Math.max(0, FILM.pass - t)); }
+      if (n < 3 && fa.chime !== n && t > 0.3) { fa.chime = n; A.chime(n, at); }
+      if (!fa.brake && braking && n === 3) { fa.brake = true; A.brake(at, 1.1); }
+      if (musicOn && !fa.music) { fa.music = true; A.music(at); A.musicLook("open", at); }
+    } catch (e) { /* a sound error must never stop the film */ }
+  }
+  /* the part's name and your readiness, over the shot that stands for it */
+  function filmPart(n) {
+    const p = $i("#inpart"); if (!p) return;
+    if (n > 2) { p.classList.remove("show"); return; }
+    const pr = window.__introProg, m = pr && pr.parts && pr.parts[n];
+    p.querySelector("b").textContent = "Part " + (n + 1);
+    p.querySelector("span").textContent = NAMES[n] + (m >= 0.005 ? ` · ${Math.round(m * 100)}% ready` : "");
+    p.hidden = false; requestAnimationFrame(() => p.classList.add("show"));
+  }
+  function filmTick() {
+    const v = film.v; if (exiting || !v || !film.on) return;
+    const t = v.currentTime, n = v.ended ? 4 : t < FILM.cuts[0] ? 0 : t < FILM.cuts[1] ? 1 : t < FILM.cuts[2] ? 2 : 3;
+    if (n !== film.shot) {
+      film.shot = n; if (n < 3) stationI = n; filmPart(n);
+      const ph = n === 0 ? "wide" : n < 3 ? "stations" : n === 3 ? "dive" : "hero";
+      if (ph !== phase) setPhase(ph); else paint();
+    }
+    filmSound(t, n);
+    if (n < 4) requestAnimationFrame(filmTick);
+  }
+  const noFilm = mode !== "full" || reduce || !P.film || new URLSearchParams(location.search).get("ride") === "3d" || !!(navigator.connection && navigator.connection.saveData);
+  film.ready = noFilm ? Promise.resolve(false) : new Promise(res => {
+    const v = document.createElement("video"), fr = document.createElement("div");
+    let settled = false;
+    const fail = () => { if (settled) return; settled = true; try { v.pause(); } catch (e) {} fr.remove(); film.v = null; res(false); };
+    const ok = () => {
+      if (settled) return; settled = true; film.on = true; el.classList.add("film");
+      /* no 3D to build: its load stages are done once three.js (the town needs it) has arrived */
+      for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
+      toast(); filmTick(); res(true);
+    };
+    fr.className = "in-film"; v.muted = v.defaultMuted = true; v.playsInline = true; v.preload = "auto"; v.poster = FILM.first; v.disablePictureInPicture = true;
+    v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
+    v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
+    v.addEventListener("ended", () => { if (film.on) filmTick(); });
+    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", () => fit(fr));
+    try { const pl = v.play(); if (pl && pl.catch) pl.catch(fail); } catch (e) { fail(); }
+    setTimeout(fail, 5000);
+  });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives
      later it fades in on the portal shot */
-  setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
+  setTimeout(() => { if (!has3d && !film.on && phase !== "hero") setPhase("hero"); }, 8000);
 
   window.Intro = {
     on: true, mode, reduce, el,
+    /* intro3d.js waits for this: true when the film is playing, so the 3D ride is not built */
+    film: film.ready,
     /* app.js hands over the name, the notices and how to open each place */
     begin(opts) { go = opts.go; notices = opts.notices || notices; paint(); },
     /* app.js: readiness per part (0..1), the tower's share of all 13 areas, and the next stop */
