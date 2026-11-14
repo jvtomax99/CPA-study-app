@@ -14,8 +14,8 @@ and a frame that moved or changed thickness can't be used. If it moved, ask agai
 
 Edit this image. Keep everything identical: the same character, head position, head size,
 angle, framing, hair, ears, nose, cheeks, stubble, skin tones, lighting, the round black
-glasses (same frames, same size, same position, same thickness), eyebrows, overcoat, suit,
-shirt, green tie, hands, pencil, calculator and the plain white background. Do not move, zoom,
+glasses (same frames, same size, same position, same thickness), eyebrows, the pencil behind
+his ear, overcoat, suit, shirt, green tie, hand, calculator and the plain white background. Do not move, zoom,
 crop, tilt or redraw the head or the glasses. Change ONLY the eyes (lids, irises, pupils) and
 the mouth, as described below. The eyes stay behind the same lenses. Same 3D animated style,
 same render quality. Output the same size and aspect ratio (3:4).
@@ -34,7 +34,7 @@ Both eyes gently closed, upper lids all the way down, lashes resting,
 relaxed, not squeezed. Mouth exactly as in the reference.
 
 ## 4. Wink
-His left eye (on the right of the picture) closed in a playful wink, the
+The eye on the LEFT side of the picture closed in a playful wink, the
 lid curved, the cheek under it lifted a little. The other eye open as in
 the reference. Mouth a slightly bigger closed smile, pulled a touch
 toward the winking side.
