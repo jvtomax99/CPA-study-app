@@ -142,8 +142,8 @@ Built (dates and commits in `git log`):
 - [x] Launch screen: train ride, sound, beat, rendered Tap to Start (through pull
   request #57).
 - [x] How-to video refreshed for CPA mode (commit 95a0464).
-- [ ] Launch film for phones and the grown-up study buddy (made in Runway; waiting
-  on Jose's "push").
+- [x] Launch film for phones with recorded sound, and the grown-up study buddy
+  (footage from Runway, sound from ElevenLabs; 2026-11-14).
 
 In progress or next:
 
