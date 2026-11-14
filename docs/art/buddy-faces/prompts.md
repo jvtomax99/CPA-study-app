@@ -1,31 +1,24 @@
 # Study buddy: prompts for his faces
 
-(The faces in this folder were made from the original full-figure render instead of
-`reference.png`; that worked better, since it is the picture the bust was cut from. Use it
-for new faces too.)
+For the grown-up buddy (2026-11-14). Each face is one request to an image tool that edits a
+picture you give it (these were made in Runway with Nano Banana Pro at 2K, 3:4), with
+`reference.webp` from this folder as the picture. Make one face per request so earlier results
+don't drift into it.
 
-Same method as Dr. Smiley's faces (Interp, `docs/art/dr-smiley-faces/`).
-Use an image tool that edits a picture you upload (ChatGPT image editing,
-Gemini, or similar). For every prompt, upload `reference.png` first (the
-buddy from `art/buddy-bust.webp` on white, 960 x 1200). Make one face per
-request, in a new chat each time, so earlier results don't drift into it.
-
-Keep a result only if, laid over the reference, his head, cap, hair and
-glasses sit in the same place at the same size. Check the glasses most:
-image tools like to redraw the round frames, and a frame that moved or
-changed thickness can't be used. If it moved, ask again.
+Keep a result only if, laid over the reference, his head, hair and glasses sit in the same
+place at the same size. Check the glasses most: image tools like to redraw the round frames,
+and a frame that moved or changed thickness can't be used. If it moved, ask again.
+`tools/buddy_face.py` stops with the face's name if one has moved.
 
 ## The opening (paste this before each face)
 
-Edit this image. Keep everything identical: the same character, head
-position, head size, angle, framing, green cap, hair, ears, nose, cheeks,
-skin tones, lighting, the round black glasses (same frames, same size,
-same position, same thickness), eyebrows, jacket, pencil, calculator and
-the plain white background. Do not move, zoom, crop, tilt or redraw the
-head or the glasses. Change ONLY the eyes (lids, irises, pupils) and the
-mouth, as described below. The eyes stay behind the same lenses. Same 3D
-cartoon style, same render quality. Output the same size and aspect ratio
-(4:5).
+Edit this image. Keep everything identical: the same character, head position, head size,
+angle, framing, hair, ears, nose, cheeks, stubble, skin tones, lighting, the round black
+glasses (same frames, same size, same position, same thickness), eyebrows, overcoat, suit,
+shirt, green tie, hands, pencil, calculator and the plain white background. Do not move, zoom,
+crop, tilt or redraw the head or the glasses. Change ONLY the eyes (lids, irises, pupils) and
+the mouth, as described below. The eyes stay behind the same lenses. Same 3D animated style,
+same render quality. Output the same size and aspect ratio (3:4).
 
 ## 1. Lids a third down (blink, first step)
 Upper eyelids lowered to cover the top third of the irises, as in the
@@ -86,7 +79,7 @@ code, so whatever the tool does to them is ignored.
 
 ## After
 
-Save each result as `NN-name.png` (`01-blink1.png` ... `11-sleep.png`) and
-drop them in this folder. Then the eyes and mouth get cut from each one
-inside the face window, matched in colour to the calm face, and packed
-into one frame strip, the way Dr. Smiley's faces were (see his README).
+Crop each result to x 448-1344, y 478-1150, save it in this folder as `NN-name.webp` and run
+`python3 tools/buddy_face.py` (see `README.md`). Prompt 6 (big smile) has not been made for
+this buddy. Prompts 4 and 10 came back with the other eye closed (the one on the picture's
+left); the frames use it as it came.

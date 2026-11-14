@@ -71,7 +71,8 @@ summary, exam setup, exam, break and results.
    - Not in this version: a film for landscape screens, new music, the film waiting
      at a station that hasn't loaded.
 9. **Greeting and study buddy.** Night Midtown header with the user's name, a tax
-   quote of the day and a buddy who blinks, smiles, winks, dozes and gives pep talks.
+   quote of the day and a buddy, a grown-up New York accountant, who blinks, smiles,
+   winks, dozes and gives pep talks.
    - Done when: tapping the buddy changes his face and his line; tapping the
      calculator starts a drill.
 10. **Backup.** Save and load a backup file, or copy and paste it as text. A reminder
@@ -110,7 +111,8 @@ From `docs/HANDOFF.md` ("Still open" and the "Not done" notes):
 - FAR questions held for missing sources: far2-020, far2-025, far3-006, far3-019,
   far3-020.
 - Buddy faces on the answer card and session summary (`encourage` and `doubt` frames
-  are ready); a big open smile; gaze frames.
+  are ready); a big open smile; gaze frames. The how-to video still shows the old
+  buddy.
 - Honest readiness extras: a guess button in the sim, a pass prediction, saved
   session history, a summary when leaving Drill through More, and the never-seen
   score on the Home exam chart.

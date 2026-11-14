@@ -298,7 +298,7 @@ Ink pill fixed at the bottom center, Paper text, above the home indicator.
 
 ## Imagery
 
-No photos. The 3D town (three.js, `src/town.js`) is a Midtown night or autumn day with a tower per exam area, whose floors fill as you master the area: 13 for EA, and in CPA mode REG on Part 1's block, AUD on Part 2's and TCP on Part 3's, all standing together. The study buddy is a painted character with drawn facial expressions (`src/mascot.js`). Everything else is drawn in SVG: towers with lit windows, the El train, map buildings, and the figures in `art/` (loss sorter, basis order). Painted art per area can replace a map building later through the `ART` set in app.js.
+No photos. The 3D town (three.js, `src/town.js`) is a Midtown night or autumn day with a tower per exam area, whose floors fill as you master the area: 13 for EA, and in CPA mode REG on Part 1's block, AUD on Part 2's and TCP on Part 3's, all standing together. The study buddy is a grown-up New York accountant in a painted 3D style, with drawn facial expressions (`src/mascot.js`): round black glasses, brown hair, stubble, a charcoal overcoat over a navy suit, a green tie, a yellow pencil in one hand and the green calculator in the other. On Today his head stands clear above the gold coin, and the calculator and pencil hand sit over its right and left rims. His picture and faces were made in Runway; sources and prompts are in `docs/art/buddy-faces/`. Everything else is drawn in SVG: towers with lit windows, the El train, map buildings, and the figures in `art/` (loss sorter, basis order). Painted art per area can replace a map building later through the `ART` set in app.js.
 
 ## Motion
 
