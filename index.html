@@ -211,14 +211,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 @keyframes buddyDrift { 0%, 100% { rotate: 0deg; } 30% { rotate: 0.8deg; } 65% { rotate: -0.6deg; } }
 @media (prefers-reduced-motion: no-preference) { .buddy-fig { animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
 .buddy-entering .buddy-fig { animation: none; }
-/* Play on his calculator: a tap area over the whole calculator, turned to match it (19.5deg), showing
+/* Play on his calculator: a tap area over the whole calculator, turned to match it (6deg), showing
    with PLAY lit up on its screen. */
-.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.78); top: calc(var(--s) * 1.0); width: calc(var(--s) * 0.5); height: calc(var(--s) * 0.56); transform: translate(-50%, -50%) rotate(19.5deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
+.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.805); top: calc(var(--s) * 0.82); width: calc(var(--s) * 0.36); height: calc(var(--s) * 0.44); transform: translate(-50%, -50%) rotate(6deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
 .buddy-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .buddy-play:active { scale: 0.94; }
 /* PLAY on the calculator's screen: an SVG over his whole figure, in the figure's own units (see LCD
-   in mascot.js). It pops in from the screen's centre (82.2%, 67.5% of the figure). */
-.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82.2% 67.5%; }
+   in mascot.js). It pops in from the screen's centre (82%, 53.4% of the figure). */
+.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82% 53.4%; }
 .buddy-wait .bp-lcd { opacity: 0; }
 .buddy-play:active ~ .bp-lcd { opacity: 0.85; }
 @keyframes bpGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
@@ -644,7 +644,15 @@ footer p { margin: 0; max-width: 70ch; }
 .in-plate .nf { opacity: 0.04; animation: inneon 4.6s linear infinite; }
 @keyframes inneon { 0% { opacity: 0.04; } 12% { opacity: 0.09; } 22% { opacity: 0.03; } 30% { opacity: 0.05; } 30.6% { opacity: 0.8; } 31.6% { opacity: 0.1; } 33% { opacity: 0.72; } 34.2% { opacity: 0.05; } 48% { opacity: 0.08; } 60% { opacity: 0.03; } 70% { opacity: 0.06; } 70.8% { opacity: 0.86; } 74.5% { opacity: 0.84; } 75.4% { opacity: 0.06; } 88% { opacity: 0.09; } 100% { opacity: 0.04; } }
 .intro.flare .in-plate img { filter: brightness(1.8); }
+/* the film on portrait screens (src/intro.js): the same frame fit as the plate, so its last frame and the plate line up */
+.in-film { position: absolute; }
+.in-film video { display: block; width: 100%; height: 100%; object-fit: cover; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+.intro.flare .in-film video { filter: brightness(1.8); }
+/* the film's tower above your mastery: Night at the Tap to Start scrim's strength, cut to the tower's shape */
+.in-plate .tw-shade { position: absolute; display: block; background: rgba(11,10,36,0.62); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; transition: clip-path 600ms ease; }
 .intro.has3d canvas { opacity: 1; }
+/* Tap to Start adds the class "hero", which is also the Today card's: keep that card's round corners and rim off this screen */
+.intro.hero { border-radius: 0; } .intro.hero::after { content: none; }
 .in-toast { position: absolute; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
 .in-toast.show { transform: translate(-50%, 0); opacity: 1; }
 .in-ico { width: 22px; height: 22px; border-radius: 50%; background: #161c2b; display: grid; place-items: center; }
@@ -663,6 +671,11 @@ footer p { margin: 0; max-width: 70ch; }
 .in-next b { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
 .intro.hero .in-next { opacity: 1; }
 .intro.flare .in-next { opacity: 0; transition: opacity 160ms ease; }
+/* the film's part line ("Part 1  Individuals · 74% ready"): the Next stop line's type, shown over that part's shot */
+.intro .in-part { opacity: 0; }
+.intro .in-part { padding: 12px 0; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); }   /* the Tap to Start scrim, so it reads over sparks and headlights */
+.intro.film .in-part.show { opacity: 1; }
+.intro.hero .in-part, .intro.flare .in-part { opacity: 0; }
 .in-snd { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(14px + env(safe-area-inset-top, 0px)); display: flex; align-items: center; gap: 6px; min-height: 42px; padding: 0 14px 0 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font: 700 13px/1 var(--f-ui); cursor: pointer; transition: opacity 260ms ease; }
 .in-snd svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .in-snd .x { display: none; } .in-snd.off .w { display: none; } .in-snd.off .x { display: inline; } .in-snd.off { color: rgba(255,255,255,0.7); }
@@ -707,6 +720,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
   <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
+  <p class="in-next in-part" id="inpart" hidden><b></b><span></span></p>
   <button class="in-skip" id="inskip" type="button" data-go="skip">Skip<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
   <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
@@ -772,23 +786,28 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   const art = new Image(); art.decoding = "async"; art.src = ART;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, cut from the
-     full figure; it is S wide and ART_H * S tall, reaching below the calculator so his body
-     fills the whole disc). The disc sits round his shoulders; his head pops out above its
-     centre line, and so does the calculator he holds, over the disc's lower right rim. */
-  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360;
-  // The calculator and his hand, measured on the picture, from where its left edge meets the
-  // disc round to the top-right corner (clockwise in reverse: bottom, right side, top).
-  const CALC = [[0.5475, 1.2], [0.8625, 1.269], [0.9625, 1.2125], [0.975, 1.0875], [1.006, 0.9125], [1.01, 0.8]];
-  // Clip for the picture: above the disc's centre line, the disc below it, plus the calculator.
+  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, made by
+     tools/buddy_bust.py; it is S wide and ART_H * S tall). The disc sits round his shoulders.
+     Above LINE (his collar) the whole picture shows, so his head stands clear of the disc;
+     below it only the disc shows, plus the calculator he holds up over its right rim and the
+     pencil hand over its left. */
+  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360, LINE = 0.625;
+  // The calculator and the hand holding it, measured on the picture: from LINE down the right
+  // side and along its bottom edge to where that meets the disc.
+  const CALC = [[1.0045, 0.625], [1.0045, 0.9849], [0.9487, 1.0156], [0.9208, 1.0536], [0.7321, 1.0282]];
+  // The pencil hand and its cuff: from LINE down its left side and in along the cuff to the disc.
+  const HAND = [[0.1395, 0.625], [0.1144, 0.7254], [0.1116, 0.9654], [0.1021, 0.9821], [0.1049, 1.0435], [0.1842, 1.0871], [0.2978, 1.0871]];
+  // Clip for the picture: everything above LINE; below it the disc, the calculator and the hand.
   const FACE_CLIP = (() => {
     const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
-    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, DISC.y)];
-    for (let i = CALC.length - 1; i >= 0; i--) pts.push(P(CALC[i][0], CALC[i][1]));
-    // round the disc from where the calculator's left edge meets it, to the left rim
-    const a0 = Math.acos((0.5375 - DISC.x) / DISC.r);
-    for (let k = 0; k <= 10; k++) { const a = a0 + (Math.PI - a0) * k / 10; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
-    pts.push(P(-0.4, DISC.y));
+    const ang = p => Math.atan2(p[1] - DISC.y, p[0] - DISC.x);
+    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, LINE)];
+    for (const c of CALC) pts.push(P(c[0], c[1]));
+    // round the bottom of the disc, from the calculator's edge to the cuff's
+    const a0 = ang(CALC[CALC.length - 1]), a1 = ang(HAND[HAND.length - 1]);
+    for (let k = 1; k < 12; k++) { const a = a0 + (a1 - a0) * k / 12; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
+    for (let i = HAND.length - 1; i >= 0; i--) pts.push(P(HAND[i][0], HAND[i][1]));
+    pts.push(P(-0.4, LINE));
     return `polygon(${pts.join(",")})`;
   })();
 
@@ -861,12 +880,11 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
 
   /* ---------- the greeting markup ---------- */
   /* PLAY on the calculator's screen, drawn as SVG in his figure's own units (S = 1000 across), so it
-     lands on the same pixels in every browser. The screen's corners, measured on the picture
-     (695,672 862,730 842,783 672,718 in the full figure), pulled 6% in toward their centre so the
-     glass sits inside the bezel. The words are centred on the screen and turned with it (19.5deg);
-     textLength fixes their width whatever font the device has. */
+     lands on the same pixels in every browser. The screen's corners are measured on the picture and
+     pulled 6% in toward their centre so the glass sits inside the bezel. The words are centred on
+     the screen and turned with it (7.3deg); textLength fixes their width whatever font the device has. */
   const LCD = (() => {
-    const C = [[695, 672], [862, 730], [842, 783], [672, 718]].map(([x, y]) => [(x - 110) / 0.8, (y - 30) / 0.8]);
+    const C = [[718.8, 645.1], [926.9, 671.9], [922.4, 732.7], [710.9, 704.8]];
     const cx = C.reduce((a, p) => a + p[0], 0) / 4, cy = C.reduce((a, p) => a + p[1], 0) / 4;
     const pts = C.map(([x, y]) => `${(cx + 0.94 * (x - cx)).toFixed(1)},${(cy + 0.94 * (y - cy)).toFixed(1)}`).join(" ");
     const r = n => n.toFixed(1);
@@ -874,7 +892,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
       <filter id="bpB" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
       <polygon class="bp-glow" points="${pts}" fill="#9be3b8" filter="url(#bpB)"/>
       <polygon points="${pts}" fill="url(#bpG)" stroke="#0b3a21" stroke-opacity=".35" stroke-width="2"/>
-      <g transform="rotate(19.5 ${r(cx)} ${r(cy)})" fill="#0b3a21">
+      <g transform="rotate(7.3 ${r(cx)} ${r(cy)})" fill="#0b3a21">
         <path d="M${r(cx - 80)} ${r(cy - 14)}V${r(cy + 14)}L${r(cx - 56)} ${r(cy)}Z"/>
         <text x="${r(cx - 42)}" y="${r(cy + 16.5)}" textLength="122" lengthAdjust="spacingAndGlyphs" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="46">PLAY</text>
       </g>`;
@@ -1198,7 +1216,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
      Made by tools/buddy_face.py from the faces in docs/art/buddy-faces/; FACE.x/y/w/h is the
      window it prints, in picture pixels (360 x 464). A frame change moves the strip outright,
      never a fade. "encourage" and "doubt" are in the strip for the answer card, unused here. */
-  const FACE = { src: "art/buddy-face.webp", x: 114, y: 131, w: 160, h: 138,
+  const FACE = { src: "art/buddy-face.webp", x: 125, y: 111, w: 111, h: 110,
     frames: ["rest", "blink1", "blink2", "shut", "wink1", "wink2", "wink", "smile", "laugh1", "laugh", "surprised", "encourage", "doubt", "sleep"] };
   /* Each expression: [frame, ms], a lead-in, a short peak and a slower way back; then rest.
      A 0 holds that frame until something else plays. */
@@ -1386,38 +1404,53 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
      your mastery in tenths (tower-0 to tower-10), and the sign with its neon off, which CSS fades in and out for the flicker.
      Portrait screens get the phone files (780 by 1690), landscape the desktop ones (1920 by 1200). They load during the
      ride; if they haven't arrived by Tap to Start, the 3D portal stays. Rects are in the plate's pixels. */
-  const PLATE = {phone: {w: 780, h: 1690, neon: {x: 0, y: 695, w: 780, h: 410}, tower: {x: 182, y: 0, w: 372, h: 749}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
+  /* ---------- the film ----------
+     Portrait screens play a film in place of the 3D ride: media/intro-phone.mp4, four shots (over the avenue, a station
+     whose lamps come on, the graffiti car with the study buddy, the dive to LAST STOP), 1080 by 1920, made in Runway from
+     this app's own stills, with no sound track (src/introaudio.js still makes the sound). cuts are where shots 2, 3 and 4
+     start, pass is when the train passes the camera in shot 1, in seconds. Tap to Start holds on the film's last frame
+     (intro-phone-end.webp); the tower above the portal is dimmed from the top down to your mastery through a cut-out of
+     its shape (intro-phone-tower.webp). If the film can't start within 5 seconds (blocked autoplay, slow network, data
+     saver) the 3D ride plays as before; ?ride=3d asks for it. Landscape screens always get the 3D ride. */
+  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.4, 8.4, 11.6], pass: 1.8, end: 15.6 };
+  const PLATE = {phone: {w: 1080, h: 1920, film: true, tower: {x: 331, y: 70, w: 418, h: 721}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
   const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
   const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
   const load = src => new Promise(r => { const i = new Image(); i.decoding = "async"; i.onload = () => (i.decode ? i.decode().catch(() => {}) : Promise.resolve()).then(() => r(i)); i.onerror = () => r(null); i.src = src; });
   const plate = { box: el.querySelector(".in-plate"), on: false, step: step(window.__introProg) };
-  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
+  plate.ready = mode === "off" || !plate.box ? Promise.resolve(null) : P.film ? load(FILM.last).then(i => i ? [i] : null) : Promise.all([load(dir + ".webp"), load(`${dir}-tower-${plate.step}.webp`), load(dir + "-neon.webp")]).then(a => a.every(Boolean) ? a : null);
   const place = (img, r) => Object.assign(img.style, { left: r.x / P.w * 100 + "%", top: r.y / P.h * 100 + "%", width: r.w / P.w * 100 + "%", height: r.h / P.h * 100 + "%" });
-  function fitPlate() {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
-    const f = plate.box && plate.box.firstChild; if (!f) return;
+  function fit(f) {   /* cover the screen, anchored a little above center so the tower's top and the track both show */
+    if (!f) return;
     const k = Math.max(el.clientWidth / P.w, el.clientHeight / P.h), w = P.w * k, h = P.h * k;
     Object.assign(f.style, { width: w + "px", height: h + "px", left: (el.clientWidth - w) / 2 + "px", top: (el.clientHeight - h) * 0.42 + "px" });
   }
+  const fitPlate = () => fit(plate.box && plate.box.firstChild);
+  /* the film's tower: lit from the ground up to your mastery in tenths (at least the bottom 6%), dark above */
+  const shadeTo = (s, k) => { if (s) s.style.clipPath = `inset(0 0 ${Math.max(6, k * 10)}% 0)`; };
   function showPlate() {
     if (plate.on || exiting || phase !== "hero") return;
     plate.ready.then(imgs => {
       if (!imgs || plate.on || exiting) return;
       plate.on = true;
       const f = document.createElement("div"); f.className = "in-plate-frame";
-      const [base, tower, neon] = imgs; tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon);
-      f.append(base, tower, neon); plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
-      if (!tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
+      const [base, tower, neon] = imgs;
+      if (P.film) { const sh = document.createElement("i"); sh.className = "tw-shade"; sh.style.webkitMaskImage = sh.style.maskImage = `url(${FILM.mask})`; place(sh, P.tower); shadeTo(sh, plate.step); f.append(base, sh); }
+      else { tower.className = "tw"; neon.className = "nf"; place(tower, P.tower); place(neon, P.neon); f.append(base, tower, neon); }
+      plate.box.appendChild(f); fitPlate(); window.addEventListener("resize", fitPlate);
+      if (!P.film && !tower.src.endsWith(`-tower-${plate.step}.webp`)) swapTower(plate.step);   /* progress came in while it loaded */
       requestAnimationFrame(() => el.classList.add("plate"));
       setTimeout(() => scene && scene.cover && scene.cover(true), reduce ? 0 : 800);   /* once it's faded in, stop drawing the 3D */
     });
   }
-  const swapTower = k => load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
+  const swapTower = k => P.film ? shadeTo(plate.box && plate.box.querySelector(".tw-shade"), k) : load(`${dir}-tower-${k}.webp`).then(i => { const t = plate.box && plate.box.querySelector(".tw"); if (i && t && plate.step === k) t.src = i.src; });
   function plateProgress(p) {   /* the bank arrived: the tower step for your real mastery */
     const k = step(p); if (k === plate.step) return; plate.step = k; if (plate.on) swapTower(k);
   }
   const NAMES = ["Individuals", "Businesses", "Representation"];
+  const film = { on: false, v: null, aud: {}, shot: -1 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.06 · a5d8f4f · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · 547a3e9 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1427,9 +1460,9 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   function paint() {
     const pr = progress(), done = pr >= 0.9999;
     $i("#inbar").style.width = (pr * 100).toFixed(2) + "%";
-    const i = has3d ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
+    const i = has3d || film.on ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
     /* the station names only mean something while the train is riding past them */
-    const riding = has3d && phase !== "hero" && phase !== "wait";
+    const riding = (has3d || film.on) && phase !== "hero" && phase !== "wait";
     const where = queued ? "Starting when loaded" : riding ? (waiting ? "Waiting at " : "Arriving at ") + NAMES[i] : phase === "hero" ? "Loading" : "Leaving the yard";
     $i("#instatus").textContent = `${where}... ${(pr * 100).toFixed(2)}%`;
     el.classList.toggle("loading", !done && phase !== "wide");
@@ -1514,13 +1547,68 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     setTimeout(() => t.classList.remove("show"), 1900);
   }
   if (mode === "full") setTimeout(toast, 1200);
+
+  /* ---------- the film player ---------- */
+  /* the sound engine follows the film's clock the way it follows the 3D ride's: speed and closeness every frame, the
+     pass, a station note at each shot, the brakes into the last stop, and the beat */
+  function filmSound(t, n) {
+    const A = soundOn ? audio : null; if (!A) return;
+    try { const at = A.ctx.currentTime, fa = film.aud, braking = t >= FILM.end - 1.1;
+      A.setSpeed(n > 3 || braking ? 0 : n === 3 ? 44 : 34, at, [0.6, 0.8, 1, 0.9][n] || 0.2);
+      if (!fa.pass && t >= FILM.pass - 0.6 && t < FILM.pass + 0.3) { fa.pass = true; A.pass(at + Math.max(0, FILM.pass - t)); }
+      if (n < 3 && fa.chime !== n && t > 0.3) { fa.chime = n; A.chime(n, at); }
+      if (!fa.brake && braking && n === 3) { fa.brake = true; A.brake(at, 1.1); }
+      if (musicOn && !fa.music) { fa.music = true; A.music(at); A.musicLook("open", at); }
+    } catch (e) { /* a sound error must never stop the film */ }
+  }
+  /* the part's name and your readiness, over the shot that stands for it */
+  function filmPart(n) {
+    const p = $i("#inpart"); if (!p) return;
+    if (n > 2) { p.classList.remove("show"); return; }
+    const pr = window.__introProg, m = pr && pr.parts && pr.parts[n];
+    p.querySelector("b").textContent = "Part " + (n + 1);
+    p.querySelector("span").textContent = NAMES[n] + (m >= 0.005 ? ` · ${Math.round(m * 100)}% ready` : "");
+    p.hidden = false; requestAnimationFrame(() => p.classList.add("show"));
+  }
+  function filmTick() {
+    const v = film.v; if (exiting || !v || !film.on) return;
+    const t = v.currentTime, n = v.ended ? 4 : t < FILM.cuts[0] ? 0 : t < FILM.cuts[1] ? 1 : t < FILM.cuts[2] ? 2 : 3;
+    if (n !== film.shot) {
+      film.shot = n; if (n < 3) stationI = n; filmPart(n);
+      const ph = n === 0 ? "wide" : n < 3 ? "stations" : n === 3 ? "dive" : "hero";
+      if (ph !== phase) setPhase(ph); else paint();
+    }
+    filmSound(t, n);
+    if (n < 4) requestAnimationFrame(filmTick);
+  }
+  const noFilm = mode !== "full" || reduce || !P.film || new URLSearchParams(location.search).get("ride") === "3d" || !!(navigator.connection && navigator.connection.saveData);
+  film.ready = noFilm ? Promise.resolve(false) : new Promise(res => {
+    const v = document.createElement("video"), fr = document.createElement("div");
+    let settled = false;
+    const fail = () => { if (settled) return; settled = true; try { v.pause(); } catch (e) {} fr.remove(); film.v = null; res(false); };
+    const ok = () => {
+      if (settled) return; settled = true; film.on = true; el.classList.add("film");
+      /* no 3D to build: its load stages are done once three.js (the town needs it) has arrived */
+      for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
+      toast(); filmTick(); res(true);
+    };
+    fr.className = "in-film"; v.muted = v.defaultMuted = true; v.playsInline = true; v.preload = "auto"; v.poster = FILM.first; v.disablePictureInPicture = true;
+    v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
+    v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
+    v.addEventListener("ended", () => { if (film.on) filmTick(); });
+    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", () => fit(fr));
+    try { const pl = v.play(); if (pl && pl.catch) pl.catch(fail); } catch (e) { fail(); }
+    setTimeout(fail, 5000);
+  });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives
      later it fades in on the portal shot */
-  setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
+  setTimeout(() => { if (!has3d && !film.on && phase !== "hero") setPhase("hero"); }, 8000);
 
   window.Intro = {
     on: true, mode, reduce, el,
+    /* intro3d.js waits for this: true when the film is playing, so the 3D ride is not built */
+    film: film.ready,
     /* app.js hands over the name, the notices and how to open each place */
     begin(opts) { go = opts.go; notices = opts.notices || notices; paint(); },
     /* app.js: readiness per part (0..1), the tower's share of all 13 areas, and the next stop */
@@ -1948,6 +2036,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
      10-13 the camera swings beside the lead car as it accelerates and dives toward the tower, 13+ hero shot of the portal. */
   const I = window.Intro, Boot = window.Boot;
   if (!I || !I.on) return;
+  if (await I.film) return;   /* a portrait screen is playing the film (src/intro.js): no 3D ride to build */
   let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass, FXAAShader;
   try {
     await Boot.threeWarm;
