@@ -290,8 +290,21 @@
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
     v.addEventListener("ended", () => { if (film.on) filmTick(); });
     v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", refit);
-    try { const pl = v.play(); if (pl && pl.catch) pl.catch(fail); } catch (e) { fail(); }
-    setTimeout(fail, 5000);
+    /* A phone that refuses to start a video by itself (an iPhone in Low Power Mode) still plays it on a touch: hold the
+       film's first frame with "Tap to play" in Tap to Start's place, and start on the first touch. No touch in 12 seconds
+       goes to Tap to Start on the last frame. */
+    const ask = () => {
+      if (settled || film.ask) return; film.ask = true;
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
+      const done = () => { el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
+      el.addEventListener("pointerup", go1, true);
+      for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
+      setTimeout(() => { if (settled || exiting) return; done(); settled = true; film.on = true; el.classList.add("film"); film.endedAt = performance.now(); filmTick(); res(true); }, 12000);
+    };
+    const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
+    try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); }
+    setTimeout(() => { if (!film.ask) fail(); }, 5000);
   });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives

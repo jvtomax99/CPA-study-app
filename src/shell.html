@@ -650,6 +650,7 @@ footer p { margin: 0; max-width: 70ch; }
 .in-build { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(3px + env(safe-area-inset-bottom, 0px)); font: 400 10px/1.2 var(--f-ui); letter-spacing: 0.02em; color: rgba(255,255,255,0.38); font-variant-numeric: tabular-nums; }
 .in-tap { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); height: 56px; border: 0; padding: 0; margin: 0; cursor: pointer; color: #fff; font: 700 17px/1 var(--f-ui); letter-spacing: 0.04em; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
 .intro.hero .in-tap { opacity: 1; pointer-events: auto; }
+.intro.filmask .in-tap { opacity: 1; }   /* "Tap to play", when the phone will not start the film by itself */
 .in-next { position: absolute; left: 0; right: 0; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 8px; font: 600 13px/1.2 var(--f-ui); color: rgba(255,255,255,0.86); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
 .in-next b { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
 .intro.hero .in-next { opacity: 1; }

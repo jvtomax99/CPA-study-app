@@ -667,6 +667,7 @@ footer p { margin: 0; max-width: 70ch; }
 .in-build { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(3px + env(safe-area-inset-bottom, 0px)); font: 400 10px/1.2 var(--f-ui); letter-spacing: 0.02em; color: rgba(255,255,255,0.38); font-variant-numeric: tabular-nums; }
 .in-tap { position: absolute; left: 0; right: 0; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); height: 56px; border: 0; padding: 0; margin: 0; cursor: pointer; color: #fff; font: 700 17px/1 var(--f-ui); letter-spacing: 0.04em; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); opacity: 0; pointer-events: none; transition: opacity 260ms ease; }
 .intro.hero .in-tap { opacity: 1; pointer-events: auto; }
+.intro.filmask .in-tap { opacity: 1; }   /* "Tap to play", when the phone will not start the film by itself */
 .in-next { position: absolute; left: 0; right: 0; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 8px; font: 600 13px/1.2 var(--f-ui); color: rgba(255,255,255,0.86); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
 .in-next b { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
 .intro.hero .in-next { opacity: 1; }
@@ -1447,7 +1448,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, shot: -1, endedAt: 0, tried: false, lastT: -1, lastMove: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.14 · 5c81b73 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · a5a2117 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1631,8 +1632,21 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
     v.addEventListener("ended", () => { if (film.on) filmTick(); });
     v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", refit);
-    try { const pl = v.play(); if (pl && pl.catch) pl.catch(fail); } catch (e) { fail(); }
-    setTimeout(fail, 5000);
+    /* A phone that refuses to start a video by itself (an iPhone in Low Power Mode) still plays it on a touch: hold the
+       film's first frame with "Tap to play" in Tap to Start's place, and start on the first touch. No touch in 12 seconds
+       goes to Tap to Start on the last frame. */
+    const ask = () => {
+      if (settled || film.ask) return; film.ask = true;
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
+      const done = () => { el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
+      el.addEventListener("pointerup", go1, true);
+      for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
+      setTimeout(() => { if (settled || exiting) return; done(); settled = true; film.on = true; el.classList.add("film"); film.endedAt = performance.now(); filmTick(); res(true); }, 12000);
+    };
+    const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
+    try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); }
+    setTimeout(() => { if (!film.ask) fail(); }, 5000);
   });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives

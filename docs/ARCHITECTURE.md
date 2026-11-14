@@ -34,9 +34,9 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 | `src/app.js` | 1,039 | Banks per mode, state, drill, summaries, exam sim, More, backup |
 | `src/town.js` | 1,330 | The 3D city (`window.Town`), a module script |
 | `src/tsq-map.json` | 1 (74 KB) | The real Times Square, made by `tools/tsq_map.py` |
-| `src/shell.html` | 747 | Page markup and styles, tab bar |
+| `src/shell.html` | 748 | Page markup and styles, tab bar |
 | `src/mascot.js` | 572 | Greeting and study buddy (`Mascot`) |
-| `src/intro.js` | 321 | Launch overlay, load tracker (`window.Boot`) and the film player for phones |
+| `src/intro.js` | 334 | Launch overlay, load tracker (`window.Boot`) and the film player for phones |
 | `src/intro3d.js` | 860 | The 3D train ride (landscape screens, and when the film can't start) |
 | `src/introart.js` | 202 | Graffiti on the cars, in canvas |
 | `src/introaudio.js` | 192 | Launch sound and beat, Web Audio |
