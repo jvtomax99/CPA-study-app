@@ -59,14 +59,16 @@
      Portrait screens get the phone files (780 by 1690), landscape the desktop ones (1920 by 1200). They load during the
      ride; if they haven't arrived by Tap to Start, the 3D portal stays. Rects are in the plate's pixels. */
   /* ---------- the film ----------
-     Portrait screens play a film in place of the 3D ride: media/intro-phone.mp4, four shots (over the avenue, a station
-     whose lamps come on, the graffiti car with the study buddy, the dive to LAST STOP), 1080 by 1920, made in Runway from
-     this app's own stills, with no sound track (src/introaudio.js still makes the sound). cuts are where shots 2, 3 and 4
-     start, pass is when the train passes the camera in shot 1, in seconds. Tap to Start holds on the film's last frame
-     (intro-phone-end.webp); the tower above the portal is dimmed from the top down to your mastery through a cut-out of
-     its shape (intro-phone-tower.webp). If the film can't start within 5 seconds (blocked autoplay, slow network, data
-     saver) the 3D ride plays as before; ?ride=3d asks for it. Landscape screens always get the 3D ride. */
-  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.4, 8.4, 11.6], pass: 1.8, end: 15.6 };
+     Portrait screens play a film in place of the 3D ride: media/intro-phone.mp4, 13.6 seconds, 1080 by 1920, cut from
+     footage made in Runway for this app (the writers running in the yard, the graffiti car with the study buddy, the El
+     curve, the chase along the track, the buddy's mural, the bridge, the dive to LAST STOP), with no sound track
+     (src/introaudio.js still makes the sound). cuts are where the status line moves on to the next part and where the dive
+     starts, pass is when the train passes the camera, title is when ABOVE THE LINE shows over the mural, all in seconds.
+     Tap to Start holds on the film's last frame (intro-phone-end.webp) with the title back on; the tower above the portal
+     is dimmed from the top down to your mastery through a cut-out of its shape (intro-phone-tower.webp). If the film
+     can't start within 5 seconds (blocked autoplay, slow network, data saver) the 3D ride plays as before; ?ride=3d asks
+     for it. Landscape screens always get the 3D ride. */
+  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.0, 8.0, 10.5], pass: 3.7, end: 13.6, title: [6.5, 8.0] };
   const PLATE = {phone: {w: 1080, h: 1920, film: true, tower: {x: 331, y: 70, w: 418, h: 721}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
   const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
   const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
@@ -212,26 +214,22 @@
       if (!fa.pass && t >= FILM.pass - 0.6 && t < FILM.pass + 0.3) { fa.pass = true; A.pass(at + Math.max(0, FILM.pass - t)); }
       if (n < 3 && fa.chime !== n && t > 0.3) { fa.chime = n; A.chime(n, at); }
       if (!fa.brake && braking && n === 3) { fa.brake = true; A.brake(at, 1.1); }
-      if (musicOn && !fa.music) { fa.music = true; A.music(at); A.musicLook("open", at); }
+      if (musicOn && !fa.music) { fa.music = true; A.music(at); }
+      const look = n === 3 && t >= FILM.end - 1.6 ? "muffled" : "open";   /* the beat drops back just before the arrival */
+      if (musicOn && look !== fa.look) { fa.look = look; A.musicLook(look, at); }
     } catch (e) { /* a sound error must never stop the film */ }
   }
-  /* the part's name and your readiness, over the shot that stands for it */
-  function filmPart(n) {
-    const p = $i("#inpart"); if (!p) return;
-    if (n > 2) { p.classList.remove("show"); return; }
-    const pr = window.__introProg, m = pr && pr.parts && pr.parts[n];
-    p.querySelector("b").textContent = "Part " + (n + 1);
-    p.querySelector("span").textContent = NAMES[n] + (m >= 0.005 ? ` · ${Math.round(m * 100)}% ready` : "");
-    p.hidden = false; requestAnimationFrame(() => p.classList.add("show"));
-  }
+  /* ABOVE THE LINE: over the buddy's mural, and again on the last frame */
+  const filmTitle = on => { const p = $i("#intitle"); if (p) p.classList.toggle("show", on); };
   function filmTick() {
     const v = film.v; if (exiting || !v || !film.on) return;
     const t = v.currentTime, n = v.ended ? 4 : t < FILM.cuts[0] ? 0 : t < FILM.cuts[1] ? 1 : t < FILM.cuts[2] ? 2 : 3;
     if (n !== film.shot) {
-      film.shot = n; if (n < 3) stationI = n; filmPart(n);
+      film.shot = n; if (n < 3) stationI = n;
       const ph = n === 0 ? "wide" : n < 3 ? "stations" : n === 3 ? "dive" : "hero";
       if (ph !== phase) setPhase(ph); else paint();
     }
+    filmTitle(n === 4 || (t >= FILM.title[0] && t < FILM.title[1]));
     filmSound(t, n);
     if (n < 4) requestAnimationFrame(filmTick);
   }
