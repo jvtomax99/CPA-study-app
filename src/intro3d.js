@@ -5,6 +5,7 @@
      10-13 the camera swings beside the lead car as it accelerates and dives toward the tower, 13+ hero shot of the portal. */
   const I = window.Intro, Boot = window.Boot;
   if (!I || !I.on) return;
+  if (await I.film) return;   /* a portrait screen is playing the film (src/intro.js): no 3D ride to build */
   let THREE, EffectComposer, RenderPass, UnrealBloomPass, OutputPass, ShaderPass, FXAAShader;
   try {
     await Boot.threeWarm;

@@ -194,14 +194,14 @@ button:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:f
 @keyframes buddyDrift { 0%, 100% { rotate: 0deg; } 30% { rotate: 0.8deg; } 65% { rotate: -0.6deg; } }
 @media (prefers-reduced-motion: no-preference) { .buddy-fig { animation: buddyBreathe 3.8s ease-in-out infinite, buddyDrift 11s ease-in-out infinite; } }
 .buddy-entering .buddy-fig { animation: none; }
-/* Play on his calculator: a tap area over the whole calculator, turned to match it (19.5deg), showing
+/* Play on his calculator: a tap area over the whole calculator, turned to match it (6deg), showing
    with PLAY lit up on its screen. */
-.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.78); top: calc(var(--s) * 1.0); width: calc(var(--s) * 0.5); height: calc(var(--s) * 0.56); transform: translate(-50%, -50%) rotate(19.5deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
+.buddy-play { position: absolute; z-index: 3; left: calc(var(--s) * 0.805); top: calc(var(--s) * 0.82); width: calc(var(--s) * 0.36); height: calc(var(--s) * 0.44); transform: translate(-50%, -50%) rotate(6deg); padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 12px; }
 .buddy-play:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 .buddy-play:active { scale: 0.94; }
 /* PLAY on the calculator's screen: an SVG over his whole figure, in the figure's own units (see LCD
-   in mascot.js). It pops in from the screen's centre (82.2%, 67.5% of the figure). */
-.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82.2% 67.5%; }
+   in mascot.js). It pops in from the screen's centre (82%, 53.4% of the figure). */
+.bp-lcd { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; pointer-events: none; transform-origin: 82% 53.4%; }
 .buddy-wait .bp-lcd { opacity: 0; }
 .buddy-play:active ~ .bp-lcd { opacity: 0.85; }
 @keyframes bpGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
@@ -627,7 +627,15 @@ footer p { margin: 0; max-width: 70ch; }
 .in-plate .nf { opacity: 0.04; animation: inneon 4.6s linear infinite; }
 @keyframes inneon { 0% { opacity: 0.04; } 12% { opacity: 0.09; } 22% { opacity: 0.03; } 30% { opacity: 0.05; } 30.6% { opacity: 0.8; } 31.6% { opacity: 0.1; } 33% { opacity: 0.72; } 34.2% { opacity: 0.05; } 48% { opacity: 0.08; } 60% { opacity: 0.03; } 70% { opacity: 0.06; } 70.8% { opacity: 0.86; } 74.5% { opacity: 0.84; } 75.4% { opacity: 0.06; } 88% { opacity: 0.09; } 100% { opacity: 0.04; } }
 .intro.flare .in-plate img { filter: brightness(1.8); }
+/* the film on portrait screens (src/intro.js): the same frame fit as the plate, so its last frame and the plate line up */
+.in-film { position: absolute; }
+.in-film video { display: block; width: 100%; height: 100%; object-fit: cover; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+.intro.flare .in-film video { filter: brightness(1.8); }
+/* the film's tower above your mastery: Night at the Tap to Start scrim's strength, cut to the tower's shape */
+.in-plate .tw-shade { position: absolute; display: block; background: rgba(11,10,36,0.62); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; transition: clip-path 600ms ease; }
 .intro.has3d canvas { opacity: 1; }
+/* Tap to Start adds the class "hero", which is also the Today card's: keep that card's round corners and rim off this screen */
+.intro.hero { border-radius: 0; } .intro.hero::after { content: none; }
 .in-toast { position: absolute; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
 .in-toast.show { transform: translate(-50%, 0); opacity: 1; }
 .in-ico { width: 22px; height: 22px; border-radius: 50%; background: #161c2b; display: grid; place-items: center; }
@@ -646,6 +654,10 @@ footer p { margin: 0; max-width: 70ch; }
 .in-next b { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffd27a; }
 .intro.hero .in-next { opacity: 1; }
 .intro.flare .in-next { opacity: 0; transition: opacity 160ms ease; }
+/* the film's title: the app bar title's type, in caps with Tap to Start's tracking, on the Tap to Start scrim */
+.in-title { position: absolute; left: 0; right: 0; bottom: calc(150px + env(safe-area-inset-bottom, 0px)); margin: 0; padding: 14px 0; text-align: center; font: 700 27px/1.1 var(--f-sign); letter-spacing: 0.04em; text-transform: uppercase; color: #fff; background: linear-gradient(90deg, rgba(11,10,36,0) 0%, rgba(11,10,36,0.62) 30%, rgba(11,10,36,0.62) 70%, rgba(11,10,36,0) 100%); opacity: 0; transition: opacity 260ms ease; pointer-events: none; }
+.intro .in-title.show { opacity: 1; }
+.intro.flare .in-title { opacity: 0; transition: opacity 160ms ease; }
 .in-snd { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); top: calc(14px + env(safe-area-inset-top, 0px)); display: flex; align-items: center; gap: 6px; min-height: 42px; padding: 0 14px 0 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.22); background: rgba(18,16,46,0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font: 700 13px/1 var(--f-ui); cursor: pointer; transition: opacity 260ms ease; }
 .in-snd svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .in-snd .x { display: none; } .in-snd.off .w { display: none; } .in-snd.off .x { display: inline; } .in-snd.off { color: rgba(255,255,255,0.7); }
@@ -690,6 +702,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
   <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
   <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
+  <p class="in-title" id="intitle" aria-hidden="true">Above the Line</p>
   <button class="in-skip" id="inskip" type="button" data-go="skip">Skip<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
   <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>

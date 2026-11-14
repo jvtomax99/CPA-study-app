@@ -15,7 +15,9 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 - `tools/`: the build, data and art scripts, and the smoke test.
 - `art/`: built figures, tower models (`tower-*.glb`), buddy art, the intro plate,
   the HDR sky.
-- `media/`: the how-to video and its still. `icons/` and `manifest.webmanifest`:
+- `media/`: the how-to video and its still, and the launch film for phones
+  (`intro-phone.mp4`, its first and last frames, the tower cut-out, and its
+  sound: `intro-sfx.mp3`, `intro-music.mp3`). `icons/` and `manifest.webmanifest`:
   the Home Screen app.
 - `reminders/`: 38 calendar files, one per half hour, 5:00 AM to 11:30 PM.
 - `preview/canyon.html` (674): standalone 3D look sandbox.
@@ -32,10 +34,10 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 | `src/app.js` | 1,039 | Banks per mode, state, drill, summaries, exam sim, More, backup |
 | `src/town.js` | 1,330 | The 3D city (`window.Town`), a module script |
 | `src/tsq-map.json` | 1 (74 KB) | The real Times Square, made by `tools/tsq_map.py` |
-| `src/shell.html` | 734 | Page markup and styles, tab bar |
+| `src/shell.html` | 747 | Page markup and styles, tab bar |
 | `src/mascot.js` | 572 | Greeting and study buddy (`Mascot`) |
-| `src/intro.js` | 212 | Launch overlay and load tracker (`window.Boot`) |
-| `src/intro3d.js` | 859 | The 3D train ride |
+| `src/intro.js` | 321 | Launch overlay, load tracker (`window.Boot`) and the film player for phones |
+| `src/intro3d.js` | 860 | The 3D train ride (landscape screens, and when the film can't start) |
 | `src/introart.js` | 202 | Graffiti on the cars, in canvas |
 | `src/introaudio.js` | 192 | Launch sound and beat, Web Audio |
 | `tools/build.py` | 58 | Builds `index.html` from `src/` |
@@ -45,10 +47,11 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 | `tools/blender/towers.py` | 237 | Tower models (`pip install bpy==5.2.3`) |
 | `tools/blender/intro_plate.py` | 536 | The Tap to Start render |
 | `tools/intro_plate.py` | 92 | Downloads and runs the plate render (into `build/`) |
-| `tools/buddy_face.py` | 120 | Builds `art/buddy-face.webp` |
+| `tools/buddy_face.py` | 126 | Builds `art/buddy-face.webp` |
+| `tools/buddy_bust.py` | 32 | Builds `art/buddy-bust.webp` from `docs/art/buddy-faces/reference.webp` |
 | `tools/make_reminders.py` | 57 | Writes `reminders/` |
 | `tools/make_icons.js` | 34 | Draws `icons/` |
-| `DESIGN.md` | 321 | The look: colors, type, radius, shadows, motion |
+| `DESIGN.md` | 332 | The look: colors, type, radius, shadows, motion |
 
 ## How data moves
 

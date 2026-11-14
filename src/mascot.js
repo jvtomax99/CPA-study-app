@@ -19,23 +19,24 @@
   const art = new Image(); art.decoding = "async"; art.src = ART;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, cut from the
-     full figure; it is S wide and ART_H * S tall, reaching below the calculator so his body
-     fills the whole disc). The disc sits round his shoulders; his head pops out above its
-     centre line, and so does the calculator he holds, over the disc's lower right rim. */
-  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360;
-  // The calculator and his hand, measured on the picture, from where its left edge meets the
-  // disc round to the top-right corner (clockwise in reverse: bottom, right side, top).
-  const CALC = [[0.5475, 1.2], [0.8625, 1.269], [0.9625, 1.2125], [0.975, 1.0875], [1.006, 0.9125], [1.01, 0.8]];
-  // Clip for the picture: above the disc's centre line, the disc below it, plus the calculator.
+  /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, made by
+     tools/buddy_bust.py; it is S wide and ART_H * S tall). The disc sits round his shoulders.
+     Above LINE (his collar) the whole picture shows, so his head and the pencil behind his ear
+     stand clear of the disc; below it only the disc shows, plus the calculator he holds up over
+     its right rim. His other hand is out of the picture. */
+  const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360, LINE = 0.625;
+  // The calculator and the hand holding it, measured on the picture: from LINE down the right
+  // side and along its bottom edge to where that meets the disc.
+  const CALC = [[1.0045, 0.625], [1.0045, 0.9849], [0.9487, 1.0156], [0.9208, 1.0536], [0.7321, 1.0282]];
+  // Clip for the picture: everything above LINE; below it the disc and the calculator.
   const FACE_CLIP = (() => {
     const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
-    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, DISC.y)];
-    for (let i = CALC.length - 1; i >= 0; i--) pts.push(P(CALC[i][0], CALC[i][1]));
-    // round the disc from where the calculator's left edge meets it, to the left rim
-    const a0 = Math.acos((0.5375 - DISC.x) / DISC.r);
-    for (let k = 0; k <= 10; k++) { const a = a0 + (Math.PI - a0) * k / 10; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
-    pts.push(P(-0.4, DISC.y));
+    const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, LINE)];
+    for (const c of CALC) pts.push(P(c[0], c[1]));
+    // round the bottom of the disc, from the calculator's edge to where the disc's left side meets LINE
+    const end = CALC[CALC.length - 1], a0 = Math.atan2(end[1] - DISC.y, end[0] - DISC.x), a1 = Math.PI + Math.asin((DISC.y - LINE) / DISC.r);
+    for (let k = 1; k <= 16; k++) { const a = a0 + (a1 - a0) * k / 16; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
+    pts.push(P(-0.4, LINE));
     return `polygon(${pts.join(",")})`;
   })();
 
@@ -108,12 +109,11 @@
 
   /* ---------- the greeting markup ---------- */
   /* PLAY on the calculator's screen, drawn as SVG in his figure's own units (S = 1000 across), so it
-     lands on the same pixels in every browser. The screen's corners, measured on the picture
-     (695,672 862,730 842,783 672,718 in the full figure), pulled 6% in toward their centre so the
-     glass sits inside the bezel. The words are centred on the screen and turned with it (19.5deg);
-     textLength fixes their width whatever font the device has. */
+     lands on the same pixels in every browser. The screen's corners are measured on the picture and
+     pulled 6% in toward their centre so the glass sits inside the bezel. The words are centred on
+     the screen and turned with it (7.3deg); textLength fixes their width whatever font the device has. */
   const LCD = (() => {
-    const C = [[695, 672], [862, 730], [842, 783], [672, 718]].map(([x, y]) => [(x - 110) / 0.8, (y - 30) / 0.8]);
+    const C = [[718.8, 645.1], [926.9, 671.9], [922.4, 732.7], [710.9, 704.8]];
     const cx = C.reduce((a, p) => a + p[0], 0) / 4, cy = C.reduce((a, p) => a + p[1], 0) / 4;
     const pts = C.map(([x, y]) => `${(cx + 0.94 * (x - cx)).toFixed(1)},${(cy + 0.94 * (y - cy)).toFixed(1)}`).join(" ");
     const r = n => n.toFixed(1);
@@ -121,7 +121,7 @@
       <filter id="bpB" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="9"/></filter></defs>
       <polygon class="bp-glow" points="${pts}" fill="#9be3b8" filter="url(#bpB)"/>
       <polygon points="${pts}" fill="url(#bpG)" stroke="#0b3a21" stroke-opacity=".35" stroke-width="2"/>
-      <g transform="rotate(19.5 ${r(cx)} ${r(cy)})" fill="#0b3a21">
+      <g transform="rotate(7.3 ${r(cx)} ${r(cy)})" fill="#0b3a21">
         <path d="M${r(cx - 80)} ${r(cy - 14)}V${r(cy + 14)}L${r(cx - 56)} ${r(cy)}Z"/>
         <text x="${r(cx - 42)}" y="${r(cy + 16.5)}" textLength="122" lengthAdjust="spacingAndGlyphs" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="46">PLAY</text>
       </g>`;
@@ -445,7 +445,7 @@
      Made by tools/buddy_face.py from the faces in docs/art/buddy-faces/; FACE.x/y/w/h is the
      window it prints, in picture pixels (360 x 464). A frame change moves the strip outright,
      never a fade. "encourage" and "doubt" are in the strip for the answer card, unused here. */
-  const FACE = { src: "art/buddy-face.webp", x: 114, y: 131, w: 160, h: 138,
+  const FACE = { src: "art/buddy-face.webp", x: 125, y: 111, w: 111, h: 110,
     frames: ["rest", "blink1", "blink2", "shut", "wink1", "wink2", "wink", "smile", "laugh1", "laugh", "surprised", "encourage", "doubt", "sleep"] };
   /* Each expression: [frame, ms], a lead-in, a short peak and a slower way back; then rest.
      A 0 holds that frame until something else plays. */
