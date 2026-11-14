@@ -62,8 +62,9 @@ summary, exam setup, exam, break and results.
 8. **Launch screen.** On phones (portrait), a 14-second film: writers running in the
    train yard, the graffiti car with the buddy, the chase along the El, the bridge,
    the dive to LAST STOP, with the title ABOVE THE LINE, then Tap to Start on its
-   last frame. A phone that won't start the film by itself (Low Power Mode) shows
-   "Tap to play" on its first frame. On landscape screens, or when the film can't
+   last frame. With Sound on, the film waits on its first frame with
+   "Tap to play" so the sound starts with the picture. Tap to Start rushes into the
+   tunnel. On landscape screens, or when the film can't
    load, the 3D ride past
    one station per part, each lighting up as that part's questions load; landscape
    screens end on a Blender-rendered Tap to Start, portrait ones on the film's last

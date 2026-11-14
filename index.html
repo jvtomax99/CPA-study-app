@@ -630,7 +630,7 @@ footer p { margin: 0; max-width: 70ch; }
 }
 @media (prefers-reduced-motion: reduce) { .cta, .tag { transition: none; } }
 /* Launch screen (src/intro.js, src/intro3d.js): a night El ride into the tax town, then Tap to Start. Always dark. */
-.intro { position: fixed; inset: 0; z-index: 70; overflow: hidden; color: #fff; background: radial-gradient(120% 70% at 50% 100%, #6b4fa8 0%, #33285c 38%, #1a1840 62%, #0b0a24 100%); -webkit-user-select: none; user-select: none; touch-action: manipulation; cursor: pointer; }
+.intro { position: fixed; inset: 0; z-index: 70; overflow: hidden; color: #fff; background: #0b0a24 radial-gradient(120% 70% at 50% 100%, #6b4fa8 0%, #33285c 38%, #1a1840 62%, #0b0a24 100%); -webkit-user-select: none; user-select: none; touch-action: manipulation; cursor: pointer; }
 .intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 600ms ease; }
 /* the rendered Tap to Start (src/intro.js): a still from Blender, with the tower lit to your mastery and the neon flickering */
 .in-plate { position: absolute; inset: 0; overflow: hidden; opacity: 0; pointer-events: none; transition: opacity 700ms ease; }
@@ -645,15 +645,23 @@ footer p { margin: 0; max-width: 70ch; }
 @keyframes inneon { 0% { opacity: 0.04; } 12% { opacity: 0.09; } 22% { opacity: 0.03; } 30% { opacity: 0.05; } 30.6% { opacity: 0.8; } 31.6% { opacity: 0.1; } 33% { opacity: 0.72; } 34.2% { opacity: 0.05; } 48% { opacity: 0.08; } 60% { opacity: 0.03; } 70% { opacity: 0.06; } 70.8% { opacity: 0.86; } 74.5% { opacity: 0.84; } 75.4% { opacity: 0.06; } 88% { opacity: 0.09; } 100% { opacity: 0.04; } }
 .intro.flare .in-plate img { filter: brightness(1.8); }
 /* the film on portrait screens (src/intro.js): the same frame fit as the plate, so its last frame and the plate line up */
-.in-film { position: absolute; }
-.in-film video { display: block; width: 100%; height: 100%; object-fit: cover; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+.in-film { position: absolute; inset: 0; overflow: hidden; }
+.in-film video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; transform-origin: 50% 56.25%; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
 .intro.flare .in-film video { filter: brightness(1.8); }
+/* On tap, the last frame rushes into the tunnel: the frame scales up about the tunnel mouth while a burst of light (white
+   into Lit Window gold) opens from it, under the white-out. Not with reduced motion. */
+.in-plate-frame { transform-origin: 50% 56.25%; }
+.in-plate-frame::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 56.25%, #fff 0%, #ffd27a 9%, rgba(255,210,122,0) 34%); }
+@media (prefers-reduced-motion: no-preference) {
+  .intro.flare .in-plate-frame, .intro.flare .in-film video { transform: scale(3.2); transition: transform 800ms cubic-bezier(0.55, 0, 0.9, 0.45), filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
+  .intro.flare .in-plate-frame::after { opacity: 1; transition: opacity 420ms ease-in; }
+}
 /* the film's tower above your mastery: Night at the Tap to Start scrim's strength, cut to the tower's shape */
 .in-plate .tw-shade { position: absolute; display: block; background: rgba(11,10,36,0.62); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; transition: clip-path 600ms ease; }
 .intro.has3d canvas { opacity: 1; }
 /* Tap to Start adds the class "hero", which is also the Today card's: keep that card's round corners and rim off this screen */
 .intro.hero { border-radius: 0; } .intro.hero::after { content: none; }
-.in-toast { position: absolute; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
+.in-toast { position: absolute; left: 50%; top: calc(64px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -140%); display: flex; align-items: center; gap: 10px; padding: 8px 18px 8px 8px; border-radius: 999px; background: #fff; color: #161c2b; font: 600 14px/1.2 var(--f-ui); white-space: nowrap; box-shadow: 0 24px 48px -24px rgba(26,24,64,0.55); opacity: 0; transition: transform 260ms ease, opacity 260ms ease; }
 .in-toast.show { transform: translate(-50%, 0); opacity: 1; }
 .in-ico { width: 22px; height: 22px; border-radius: 50%; background: #161c2b; display: grid; place-items: center; }
 .in-ico::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ffd27a; }
@@ -701,7 +709,7 @@ footer p { margin: 0; max-width: 70ch; }
 .intro.dark .in-flash { background: #0b0a24; transition: background-color 360ms ease; }
 .intro.out { opacity: 0; transition: opacity 420ms ease; pointer-events: none; }
 html.introing, html.introing body { overflow: hidden; }
-html.introing { background: #0b0a24; }   /* during the launch screen the status bar is the night sky */
+html.introing, html.introing body { background: #0b0a24; }   /* the body too: some iPhones color the status bar from it */   /* during the launch screen the status bar is the night sky */
 @media (prefers-reduced-motion: reduce) {
   .in-toast, .in-status, .in-bar, .in-tap, .in-side, .intro canvas { transition: none; }
   .in-plate { transition: none; } .in-plate .nf { animation: none; opacity: 0; }
@@ -1448,7 +1456,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, shot: -1, endedAt: 0, tried: false, lastT: -1, lastMove: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.14 · a5a2117 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · bad81d4 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1477,10 +1485,10 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
      each end, so it loops between the two times in FSND.loop without a gap for as long as Tap to Start waits. Both play
      through Web Audio from the film's time: the beat dips before the arrival (FSND.duck: down from, back up between) and
      comes straight back. Separate files, so the Sound and Music switches both keep working. */
-  const FSND = { sfx: "media/intro-sfx.mp3", music: "media/intro-music.mp3", loop: [0.1, 25.368], duck: [12.0, 13.0, 13.6] };
+  const FSND = { sfx: "media/intro-sfx.mp3", music: "media/intro-music.mp3", go: "media/intro-go.mp3", loop: [0.1, 25.368], duck: [12.0, 13.0, 13.6] };
   let fsnd = null; const fbytes = {};
   const filmAt = () => film.endedAt ? FILM.end + (performance.now() - film.endedAt) / 1000 : (film.v && film.v.currentTime) || 0;
-  const filmSoundFetch = () => { for (const k of musicOn ? ["sfx", "music"] : ["sfx"]) fbytes[k] = fetch(FSND[k]).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null); };
+  const filmSoundFetch = () => { for (const k of musicOn ? ["sfx", "go", "music"] : ["sfx", "go"]) fbytes[k] = fetch(FSND[k]).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null); };
   function filmSoundStop() { if (!fsnd) return; fsnd.src.forEach(n => { try { n.stop(); } catch (e) {} }); fsnd.src = []; }
   /* start both again from the film's time now: on the first touch, when sound is switched back on, when the film starts or stops */
   function filmSoundSync() {
@@ -1499,12 +1507,13 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     const sg = ctx.createGain(), mg = ctx.createGain(); sg.connect(ctx.destination); mg.connect(ctx.destination);
     const mine = fsnd = { ctx, sg, mg, bufs: {}, src: [], ready: false };
     const dec = k => (fbytes[k] || Promise.resolve(null)).then(buf => buf ? new Promise(r => ctx.decodeAudioData(buf.slice(0), r, () => r(null))) : null);
-    Promise.all([dec("sfx"), dec("music")]).then(([sfx, music]) => { if (fsnd !== mine) return; mine.bufs = { sfx, music }; mine.ready = true; filmSoundSync(); });
+    Promise.all([dec("sfx"), dec("music"), dec("go")]).then(([sfx, music, go]) => { if (fsnd !== mine) return; mine.bufs = { sfx, music, go }; mine.ready = true; filmSoundSync(); });
   }
-  /* leave: fade both out, then close */
-  function filmSoundEnd(ms) {
+  /* leave: fade both out, then close. On Tap to Start (go) the train rushes off into the tunnel over the fade */
+  function filmSoundEnd(ms, go) {
     const f = fsnd; if (!f) return; fsnd = null;
-    try { const now = f.ctx.currentTime; for (const g of [f.sg.gain, f.mg.gain]) { g.cancelScheduledValues(now); g.setValueAtTime(g.value, now); g.linearRampToValueAtTime(0, now + ms / 1000); } } catch (e) {}
+    if (go && soundOn && f.bufs.go) try { const n = f.ctx.createBufferSource(); n.buffer = f.bufs.go; n.connect(f.ctx.destination); n.start(); f.src.push(n); ms = Math.max(ms, f.bufs.go.duration * 1000); } catch (e) {}
+    try { const now = f.ctx.currentTime; for (const g of [f.sg.gain, f.mg.gain]) { g.cancelScheduledValues(now); g.setValueAtTime(g.value, now); g.linearRampToValueAtTime(0, now + 0.9); } } catch (e) {}
     setTimeout(() => { f.src.forEach(n => { try { n.stop(); } catch (e) {} }); try { f.ctx.close(); } catch (e) {} }, ms + 60);
   }
   function unlock(e) {
@@ -1535,7 +1544,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     try { localStorage.setItem("eaTaxTown.sound", soundOn ? "on" : "off"); } catch (e) {}
     paintSound();
   }
-  const endSound = (tap) => { filmSoundEnd(tap ? 900 : 120); if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
+  const endSound = (tap) => { filmSoundEnd(tap ? 900 : 120, tap); if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
     setTimeout(() => { try { a.stopMusic(); a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
   el.addEventListener("pointerdown", unlock, true);
   el.addEventListener("pointerup", unlock, true);
@@ -1613,11 +1622,10 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   film.ready = noFilm ? Promise.resolve(false) : new Promise(res => {
     const v = document.createElement("video"), fr = document.createElement("div");
     let settled = false;
-    const refit = () => fit(fr);
     const fail = () => {
       if (settled) return; settled = true;
       try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {}   /* and stop downloading it */
-      window.removeEventListener("resize", refit); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
+      film.askDone && film.askDone(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
       /* the 3D ride starts only now: give it the same 8 seconds before Tap to Start on the plain sky */
       setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
     };
@@ -1631,22 +1639,23 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
     v.addEventListener("ended", () => { if (film.on) filmTick(); });
-    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", refit);
-    /* A phone that refuses to start a video by itself (an iPhone in Low Power Mode) still plays it on a touch: hold the
-       film's first frame with "Tap to play" in Tap to Start's place, and start on the first touch. No touch in 12 seconds
-       goes to Tap to Start on the last frame. */
+    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v;
+    /* No browser lets a page make sound before a touch, so with Sound on the film waits for one: its first frame holds
+       with "Tap to play" in Tap to Start's place, and the first touch starts the film and its sound together, from the
+       first footstep. The same wait covers a phone that refuses to start a video by itself (an iPhone in Low Power Mode).
+       With Sound off the film starts by itself. No touch in 12 seconds goes to Tap to Start on the last frame. */
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
       const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
-      const done = () => { el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const done = film.askDone = () => { film.askDone = null; el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);
       for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
       setTimeout(() => { if (settled || exiting) return; done(); settled = true; film.on = true; el.classList.add("film"); film.endedAt = performance.now(); filmTick(); res(true); }, 12000);
     };
     const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
-    try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); }
-    setTimeout(() => { if (!film.ask) fail(); }, 5000);
+    if (soundOn) ask();
+    else { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); }
   });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives
