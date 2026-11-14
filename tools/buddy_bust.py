@@ -2,15 +2,14 @@
 (1792 x 2400 on white). Run from the repo root: python3 tools/buddy_bust.py  (needs numpy and Pillow)
 
 The near-white background is cut by filling in from the picture's edges, the cut is pulled in two pixels and softened so
-no white rim is left, and the part from column 10 and row 20, 1560 wide and 2011 tall (his head, the calculator he holds
-out on the picture's left and the top of the ledger under his other arm), is scaled to 360 x 464. That is 1560 / 360
-source pixels per bust pixel, the scale tools/buddy_face.py and the measurements in src/mascot.js rely on. """
+no white rim is left, and rows 30 to 2340 are scaled to 360 x 464 (1792 / 360 source pixels per bust pixel, the scale
+tools/buddy_face.py and the measurements in src/mascot.js rely on). """
 import os
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LEFT, TOP, SPAN, W, H = 10, 20, 1560, 360, 464
+TOP, W, H = 30, 360, 464
 im = Image.open(os.path.join(root, "docs", "art", "buddy-faces", "reference.webp")).convert("RGB")
 sw, sh = im.size
 # background: near-white, colourless pixels joined to the picture's edge (the white is not quite even, so a plain
@@ -22,7 +21,7 @@ for p in [(0, 0), (sw - 1, 0), (sw // 2, 0), (0, sh // 3), (sw - 1, sh // 3), (5
     if m.getpixel(p) == (255, 255, 255): ImageDraw.floodfill(m, p, (255, 0, 255))
 f = np.array(m); solid = ~((f[..., 0] == 255) & (f[..., 1] == 0))
 alpha = Image.fromarray((solid * 255).astype(np.uint8)).filter(ImageFilter.MinFilter(5)).filter(ImageFilter.GaussianBlur(1.3))
-box = (LEFT, TOP, LEFT + SPAN, TOP + round(H * SPAN / W))
+box = (0, TOP, sw, TOP + round(H * sw / W))
 rgb, al = np.array(im.crop(box), np.float32), np.array(alpha.crop(box), np.float32)[..., None] / 255
 pm = Image.fromarray(np.concatenate([rgb * al, al * 255], 2).astype(np.uint8), "RGBA").resize((W, H), Image.LANCZOS)  # premultiplied, so no white bleeds in
 p = np.array(pm, np.float32); al = p[..., 3:] / 255
