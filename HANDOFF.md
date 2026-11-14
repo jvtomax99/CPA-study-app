@@ -37,8 +37,8 @@ Both are live.
 
 - `art/intro-plate/phone*.webp` (13 files, about 800 KB) are unused. Delete them
   only once Jose says yes.
-- The how-to video (`media/how-to-use.mp4`, `promo/`) still shows the old kid
-  buddy.
+- The how-to video (`media/how-to-use.mp4`) is 18 MB, over the 5 MB flag line.
+  It was re-rendered on 2026-11-14 with the grown-up buddy and the launch film.
 - The buddy painted on the train in the film has no pencil behind his ear. Fixing
   that needs a new render, which needs credits.
 - The buddy's encourage and doubt faces are from an earlier bust. The app doesn't
