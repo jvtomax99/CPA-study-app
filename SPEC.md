@@ -63,9 +63,10 @@ summary, exam setup, exam, break and results.
    train yard, the graffiti car with the buddy, the chase along the El, the bridge,
    the dive to LAST STOP, with the title ABOVE THE LINE, then Tap to Start on its
    last frame. On landscape screens, or when the film can't start, the 3D ride past
-   one station per part, each lighting up as that part's questions load, and a
-   Blender-rendered Tap to Start. The film has recorded effects and a New York
-   beat; the ride has its synthesized sound and beat.
+   one station per part, each lighting up as that part's questions load; landscape
+   screens end on a Blender-rendered Tap to Start, portrait ones on the film's last
+   frame. The film has recorded effects and a New York
+   beat that keeps playing while Tap to Start waits; the ride has its synthesized sound and beat.
    `?intro=0`, `?intro=1`, `?intro=title`, `?ride=3d`. More has Replay the intro.
    - Done when: the film (or the ride) plays on launch and Tap to Start opens the app
      once the bank has loaded.
