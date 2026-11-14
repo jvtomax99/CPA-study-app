@@ -16,7 +16,8 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 - `art/`: built figures, tower models (`tower-*.glb`), buddy art, the intro plate,
   the HDR sky.
 - `media/`: the how-to video and its still, and the launch film for phones
-  (`intro-phone.mp4`, its first and last frames, the tower cut-out). `icons/` and `manifest.webmanifest`:
+  (`intro-phone.mp4`, its first and last frames, the tower cut-out, and its
+  sound: `intro-mix.mp3`, `intro-sfx.mp3`, `intro-music.mp3`). `icons/` and `manifest.webmanifest`:
   the Home Screen app.
 - `reminders/`: 38 calendar files, one per half hour, 5:00 AM to 11:30 PM.
 - `preview/canyon.html` (674): standalone 3D look sandbox.
@@ -35,7 +36,7 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
 | `src/tsq-map.json` | 1 (74 KB) | The real Times Square, made by `tools/tsq_map.py` |
 | `src/shell.html` | 734 | Page markup and styles, tab bar |
 | `src/mascot.js` | 576 | Greeting and study buddy (`Mascot`) |
-| `src/intro.js` | 282 | Launch overlay, load tracker (`window.Boot`) and the film player for phones |
+| `src/intro.js` | 288 | Launch overlay, load tracker (`window.Boot`) and the film player for phones |
 | `src/intro3d.js` | 860 | The 3D train ride (landscape screens, and when the film can't start) |
 | `src/introart.js` | 202 | Graffiti on the cars, in canvas |
 | `src/introaudio.js` | 192 | Launch sound and beat, Web Audio |

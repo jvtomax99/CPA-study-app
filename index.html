@@ -1445,9 +1445,9 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     const k = step(p); if (k === plate.step) return; plate.step = k; if (plate.on) swapTower(k);
   }
   const NAMES = ["Individuals", "Businesses", "Representation"];
-  const film = { on: false, v: null, aud: {}, shot: -1 };
+  const film = { on: false, v: null, shot: -1, endedAt: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.14 · 88087ad · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · b853621 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1471,7 +1471,29 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
      on the launch screen starts it. The speaker button turns it on or off; the choice is saved. */
   let soundOn = true, musicOn = true, audio = null, unlockedAt = 0;
   try { soundOn = localStorage.getItem("eaTaxTown.sound") !== "off"; musicOn = localStorage.getItem("eaTaxTown.music") !== "off"; } catch (e) {}
+  /* The film's sound is recorded, not synthesized: effects and a beat made in ElevenLabs and mixed to the film's cuts.
+     media/intro-mix.mp3 is effects plus the beat (which dips before the arrival and then carries on under Tap to Start),
+     intro-sfx.mp3 the effects alone for Music: Off, intro-music.mp3 the beat alone, looped once the mix has run out.
+     They are separate from the silent video so both switches keep working; a touch starts them at the film's time. */
+  const FSND = { mix: "media/intro-mix.mp3", sfx: "media/intro-sfx.mp3", music: "media/intro-music.mp3", mixLen: 26.4 };
+  let fsnd = null;
+  function filmSoundStart() {
+    if (fsnd || !film.v) return;
+    const main = new Audio(musicOn ? FSND.mix : FSND.sfx), loop = musicOn ? new Audio(FSND.music) : null;
+    const at = () => film.endedAt ? FILM.end + (performance.now() - film.endedAt) / 1000 : (film.v && film.v.currentTime) || 0;
+    main.preload = "auto"; fsnd = { main, loop };
+    if (loop) { loop.preload = "auto"; loop.loop = true; main.addEventListener("ended", () => { if (fsnd && soundOn && !exiting) loop.play().catch(() => {}); }); }
+    if (loop && at() > FSND.mixLen - 0.5) { loop.play().catch(() => {}); return; }   /* a late first touch: straight to the beat */
+    main.addEventListener("loadedmetadata", () => { try { main.currentTime = Math.min(at(), Math.max(0, main.duration - 0.1)); } catch (e) {} }, { once: true });
+    main.play().catch(() => {});
+  }
+  const filmSoundStop = () => { if (!fsnd) return; fsnd.main.pause(); fsnd.loop && fsnd.loop.pause(); };
   function unlock() {
+    if (film.v) {   /* the film is on screen: its own sound, not the synthesized ride */
+      if (!soundOn || fsnd || exiting) return;
+      try { if (navigator.audioSession) navigator.audioSession.type = "ambient"; } catch (e) {}
+      filmSoundStart(); unlockedAt = performance.now(); paintSound(); return;
+    }
     if (!soundOn || audio || !window.IntroAudio || exiting) return;
     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
     try { if (navigator.audioSession) navigator.audioSession.type = "ambient"; /* respect the silent switch, mix with the user's music */
@@ -1480,18 +1502,19 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   }
   function paintSound() {
     const b = $i("#insnd"); if (!b) return;
-    b.setAttribute("aria-pressed", String(soundOn && !!audio));
-    b.querySelector("span").textContent = !soundOn ? "Sound off" : audio ? "Sound on" : "Tap for sound";
+    b.setAttribute("aria-pressed", String(soundOn && !!(audio || fsnd)));
+    b.querySelector("span").textContent = !soundOn ? "Sound off" : audio || fsnd ? "Sound on" : "Tap for sound";
     b.classList.toggle("off", !soundOn);
   }
   function toggleSound() {
     if (performance.now() - unlockedAt < 800) { paintSound(); return; } /* this same touch just started the sound: keep it on */
-    if (soundOn && audio) { soundOn = false; audio.master.gain.setTargetAtTime(0, audio.ctx.currentTime, 0.05); }
+    if (fsnd) { soundOn = !soundOn; if (!soundOn) filmSoundStop(); else (fsnd.loop && (fsnd.main.ended || fsnd.main.error) ? fsnd.loop : fsnd.main).play().catch(() => {}); }
+    else if (soundOn && audio) { soundOn = false; audio.master.gain.setTargetAtTime(0, audio.ctx.currentTime, 0.05); }
     else { soundOn = true; if (audio) audio.master.gain.setTargetAtTime(1.6, audio.ctx.currentTime, 0.05); else unlock(); }
     try { localStorage.setItem("eaTaxTown.sound", soundOn ? "on" : "off"); } catch (e) {}
     paintSound();
   }
-  const endSound = (tap) => { if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
+  const endSound = (tap) => { if (fsnd) setTimeout(filmSoundStop, tap ? 1000 : 0); if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
     setTimeout(() => { try { a.stopMusic(); a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
   el.addEventListener("pointerdown", unlock, true);
   function exit(where) {
@@ -1546,20 +1569,6 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   if (mode === "full") setTimeout(toast, 1200);
 
   /* ---------- the film player ---------- */
-  /* the sound engine follows the film's clock the way it follows the 3D ride's: speed and closeness every frame, the
-     pass, a station note at each shot, the brakes into the last stop, and the beat */
-  function filmSound(t, n) {
-    const A = soundOn ? audio : null; if (!A) return;
-    try { const at = A.ctx.currentTime, fa = film.aud, braking = t >= FILM.end - 1.1;
-      A.setSpeed(n > 3 || braking ? 0 : n === 3 ? 44 : 34, at, [0.6, 0.8, 1, 0.9][n] || 0.2);
-      if (!fa.pass && t >= FILM.pass - 0.6 && t < FILM.pass + 0.3) { fa.pass = true; A.pass(at + Math.max(0, FILM.pass - t)); }
-      if (n < 3 && fa.chime !== n && t > 0.3) { fa.chime = n; A.chime(n, at); }
-      if (!fa.brake && braking && n === 3) { fa.brake = true; A.brake(at, 1.1); }
-      if (musicOn && !fa.music) { fa.music = true; A.music(at); }
-      const look = n === 3 && t >= FILM.end - 1.6 ? "muffled" : "open";   /* the beat drops back just before the arrival */
-      if (musicOn && look !== fa.look) { fa.look = look; A.musicLook(look, at); }
-    } catch (e) { /* a sound error must never stop the film */ }
-  }
   /* ABOVE THE LINE: over the buddy's mural, and again on the last frame */
   const filmTitle = on => { const p = $i("#intitle"); if (p) p.classList.toggle("show", on); };
   function filmTick() {
@@ -1571,14 +1580,13 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
       if (ph !== phase) setPhase(ph); else paint();
     }
     filmTitle(n === 4 || (t >= FILM.title[0] && t < FILM.title[1]));
-    filmSound(t, n);
     if (n < 4) requestAnimationFrame(filmTick);
   }
   const noFilm = mode !== "full" || reduce || !P.film || new URLSearchParams(location.search).get("ride") === "3d" || !!(navigator.connection && navigator.connection.saveData);
   film.ready = noFilm ? Promise.resolve(false) : new Promise(res => {
     const v = document.createElement("video"), fr = document.createElement("div");
     let settled = false;
-    const fail = () => { if (settled) return; settled = true; try { v.pause(); } catch (e) {} fr.remove(); film.v = null; res(false); };
+    const fail = () => { if (settled) return; settled = true; try { v.pause(); } catch (e) {} fr.remove(); film.v = null; filmSoundStop(); fsnd = null; paintSound(); res(false); };
     const ok = () => {
       if (settled) return; settled = true; film.on = true; el.classList.add("film");
       /* no 3D to build: its load stages are done once three.js (the town needs it) has arrived */
@@ -1588,7 +1596,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
     fr.className = "in-film"; v.muted = v.defaultMuted = true; v.playsInline = true; v.preload = "auto"; v.poster = FILM.first; v.disablePictureInPicture = true;
     v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
-    v.addEventListener("ended", () => { if (film.on) filmTick(); });
+    v.addEventListener("ended", () => { film.endedAt = performance.now(); if (film.on) filmTick(); });
     v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", () => fit(fr));
     try { const pl = v.play(); if (pl && pl.catch) pl.catch(fail); } catch (e) { fail(); }
     setTimeout(fail, 5000);

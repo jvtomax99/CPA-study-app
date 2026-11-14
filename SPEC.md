@@ -64,11 +64,12 @@ summary, exam setup, exam, break and results.
    the dive to LAST STOP, with the title ABOVE THE LINE, then Tap to Start on its
    last frame. On landscape screens, or when the film can't start, the 3D ride past
    one station per part, each lighting up as that part's questions load, and a
-   Blender-rendered Tap to Start. Sound and an original beat on both.
+   Blender-rendered Tap to Start. The film has recorded effects and a New York
+   beat; the ride has its synthesized sound and beat.
    `?intro=0`, `?intro=1`, `?intro=title`, `?ride=3d`. More has Replay the intro.
    - Done when: the film (or the ride) plays on launch and Tap to Start opens the app
      once the bank has loaded.
-   - Not in this version: a film for landscape screens, new music, each part's
+   - Not in this version: a film for landscape screens, each part's
      readiness over the film, the film waiting at a station that hasn't loaded.
 9. **Greeting and study buddy.** Night Midtown header with the user's name, a tax
    quote of the day and a buddy, a grown-up New York accountant, who blinks, smiles,
