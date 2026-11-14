@@ -35,10 +35,6 @@ Both are live.
 
 ## Left / open
 
-- Jose to confirm on his iPhone:
-  - that the status bar is dark (not cream) and there's no violet strip at the
-    bottom;
-  - that the sound plays, and how it sounds.
 - Jose to confirm that the Runway and ElevenLabs terms cover a public website
   (marked TO CHECK in CREDITS.md).
 - `art/intro-plate/phone*.webp` (13 files, about 800 KB) are unused. Delete them
@@ -47,7 +43,6 @@ Both are live.
   buddy.
 - The buddy painted on the train in the film has no pencil behind his ear. Fixing
   that needs a new render, which needs credits.
-- `media/intro-phone.mp4` is 5.6 MB, over the 5 MB flag line in `docs/assets.md`.
 - The buddy's encourage and doubt faces are from an earlier bust. The app doesn't
   use them yet.
 - Credits: Runway has 2 left, and Jose doesn't want to spend more for now.
@@ -55,7 +50,7 @@ Both are live.
 
 ## Next step
 
-Wait for Jose's iPhone check. If the edges or the sound are off, fix those first.
+Jose checked it on his iPhone: edges and sound are right. The film was re-encoded from 5.6 MB to 4.6 MB (two-pass x264 at 2.7 Mbps, no visible change). Next: whichever leftover Jose picks.
 
 ## Files to read first
 
