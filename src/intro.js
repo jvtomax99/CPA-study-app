@@ -151,9 +151,9 @@
     g.cancelScheduledValues(now); g.setValueAtTime(lvl(t), now);
     for (const x of [d0, d0 + 0.3, d1, d2]) if (x > t) g.linearRampToValueAtTime(lvl(x), now + x - t);
   }
-  function filmSoundStart() {
+  function filmSoundStart(have) {   /* have: a context the browser already let run without a touch */
     const AC = window.AudioContext || window.webkitAudioContext; if (fsnd || !film.v || !AC) return;
-    const ctx = new AC(); ctx.resume && ctx.resume();
+    const ctx = have || new AC(); ctx.resume && ctx.resume();
     const sg = ctx.createGain(), mg = ctx.createGain(); sg.connect(ctx.destination); mg.connect(ctx.destination);
     const mine = fsnd = { ctx, sg, mg, bufs: {}, src: [], ready: false };
     const dec = k => (fbytes[k] || Promise.resolve(null)).then(buf => buf ? new Promise(r => ctx.decodeAudioData(buf.slice(0), r, () => r(null))) : null);
@@ -290,10 +290,20 @@
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
     v.addEventListener("ended", () => { if (film.on) filmTick(); });
     v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v;
-    /* No browser lets a page make sound before a touch, so with Sound on the film waits for one: its first frame holds
-       with "Tap to play" in Tap to Start's place, and the first touch starts the film and its sound together, from the
-       first footstep. The same wait covers a phone that refuses to start a video by itself (an iPhone in Low Power Mode).
-       With Sound off the film starts by itself. No touch in 12 seconds goes to Tap to Start on the last frame. */
+    /* With Sound on, the film first asks the browser for sound without a touch. Where that is allowed (Chrome for an
+       installed app, or a site the person plays media on often) the film starts by itself with its sound. Where it is
+       refused (every iPhone) the film waits: its first frame holds with "Tap to play" in Tap to Start's place, and the
+       first touch starts the film and its sound together, from the first footstep. The same wait covers a phone that
+       refuses to start a video by itself (an iPhone in Low Power Mode). With Sound off the film starts by itself. No touch
+       in 12 seconds goes to Tap to Start on the last frame. */
+    const soundFree = () => {
+      const AC = window.AudioContext || window.webkitAudioContext; let ctx = null;
+      try { ctx = AC ? new AC() : null; } catch (e) {}
+      if (!ctx) return Promise.resolve(null);
+      const running = Promise.resolve(ctx.resume ? ctx.resume() : null).then(() => ctx.state === "running", () => false);
+      return Promise.race([running, new Promise(r => setTimeout(() => r(false), 400))]).then(yes => { if (yes && ctx.state === "running") return ctx; try { ctx.close(); } catch (e) {} return null; });
+    };
+    const auto = () => { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
       const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
@@ -304,8 +314,12 @@
       setTimeout(() => { if (settled || exiting) return; done(); settled = true; film.on = true; el.classList.add("film"); film.endedAt = performance.now(); filmTick(); res(true); }, 12000);
     };
     const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
-    if (soundOn) ask();
-    else { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); }
+    if (!soundOn) auto();
+    else soundFree().then(ctx => {
+      if (settled || exiting || !film.v) { try { ctx && ctx.close(); } catch (e) {} return; }
+      if (!ctx) return ask();
+      filmSoundStart(ctx); paintSound(); auto();
+    });
   });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives
