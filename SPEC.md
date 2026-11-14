@@ -62,7 +62,8 @@ summary, exam setup, exam, break and results.
 8. **Launch screen.** On phones (portrait), a 14-second film: writers running in the
    train yard, the graffiti car with the buddy, the chase along the El, the bridge,
    the dive to LAST STOP, with the title ABOVE THE LINE, then Tap to Start on its
-   last frame. With Sound on, the film waits on its first frame with
+   last frame. With Sound on, it starts by itself with sound where the
+   browser allows that; where it doesn't (iPhones) it waits on its first frame with
    "Tap to play" so the sound starts with the picture. Tap to Start rushes into the
    tunnel. On landscape screens, or when the film can't
    load, the 3D ride past
