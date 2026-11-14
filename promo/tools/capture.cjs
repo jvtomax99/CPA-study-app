@@ -11,7 +11,7 @@ const seed = require("./seed.cjs");
 const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
 
 (async () => {
-  const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+  const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--autoplay-policy=no-user-gesture-required"] });
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
   if (process.env.THREE_DIR) await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.160\.0\/(.*)/, r => r.fulfill({ path: path.join(process.env.THREE_DIR, r.request().url().split("three@0.160.0/")[1]), contentType: "text/javascript" }));
   const state = seed();
@@ -39,7 +39,8 @@ const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
   const pageH = () => p.evaluate(() => Math.round(document.documentElement.scrollHeight * 2));
   const layout = {};
 
-  /* the launch screen: partway through the El ride, then Tap to Start */
+  /* the launch screen: partway through the launch film (the 3D ride on landscape), then Tap to Start.
+     The autoplay flag above lets the film start with sound and no tap, as on a phone after "Tap to play". */
   await p.goto(APP("intro=full")); await p.waitForTimeout(9000); await shot("ride");
   await p.goto(APP("intro=title")); await p.waitForTimeout(25000); await shot("title");
   layout.title = await rr({ start: ["#intro button, #intro [role=button], #intro *", "Tap to Start"] });
