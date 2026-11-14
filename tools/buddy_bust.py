@@ -1,5 +1,5 @@
 """Build art/buddy-bust.webp (360 x 464) from the study buddy's picture, docs/art/buddy-faces/reference.webp
-(1792 x 2400 on white). Run from the repo root: python3 tools/buddy_bust.py  (needs numpy and Pillow)
+(1792 x 2400 on white: pencil behind his ear, the calculator held up in one hand). Run from the repo root: python3 tools/buddy_bust.py  (needs numpy and Pillow)
 
 The near-white background is cut by filling in from the picture's edges, the cut is pulled in two pixels and softened so
 no white rim is left, and rows 30 to 2340 are scaled to 360 x 464 (1792 / 360 source pixels per bust pixel, the scale
@@ -17,7 +17,8 @@ sw, sh = im.size
 px = np.array(im).astype(int)
 cand = (px.min(2) >= 232) & (px.max(2) - px.min(2) <= 12)
 m = Image.fromarray((cand * 255).astype(np.uint8)).convert("RGB")
-for p in [(0, 0), (sw - 1, 0), (sw // 2, 0), (0, sh // 3), (sw - 1, sh // 3), (5, sh // 2)]:
+# seeds: the corners and sides, and along the bottom edge for the gaps between his arms and his coat
+for p in [(0, 0), (sw - 1, 0), (sw // 2, 0), (0, sh // 3), (sw - 1, sh // 3), (5, sh // 2)] + [(x, sh - 1) for x in range(0, sw, 8)]:
     if m.getpixel(p) == (255, 255, 255): ImageDraw.floodfill(m, p, (255, 0, 255))
 f = np.array(m); solid = ~((f[..., 0] == 255) & (f[..., 1] == 0))
 alpha = Image.fromarray((solid * 255).astype(np.uint8)).filter(ImageFilter.MinFilter(5)).filter(ImageFilter.GaussianBlur(1.3))
