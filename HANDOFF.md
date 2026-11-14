@@ -35,8 +35,6 @@ Both are live.
 
 ## Left / open
 
-- Jose to confirm that the Runway and ElevenLabs terms cover a public website
-  (marked TO CHECK in CREDITS.md).
 - `art/intro-plate/phone*.webp` (13 files, about 800 KB) are unused. Delete them
   only once Jose says yes.
 - The how-to video (`media/how-to-use.mp4`, `promo/`) still shows the old kid
