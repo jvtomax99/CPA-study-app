@@ -648,6 +648,15 @@ footer p { margin: 0; max-width: 70ch; }
 .in-film { position: absolute; inset: 0; overflow: hidden; }
 .in-film video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; transform-origin: 50% 56.25%; transition: filter 600ms cubic-bezier(0.55, 0, 0.9, 0.45); }
 .intro.flare .in-film video { filter: brightness(1.8); }
+/* The card the film waits behind (media/intro-wait.webp): the buddy leaning on a wall with ABOVE THE LINE sprayed on it.
+   Fitted to the screen's width so the title is never cropped; its foot fades into Night, where Tap to play sits. It drifts
+   in slowly (not with reduced motion) and fades away when the film starts. */
+.in-wait { position: absolute; inset: 0; overflow: hidden; background: #0b0a24; opacity: 0; pointer-events: none; transition: opacity 260ms ease; transform-origin: 50% 40%; }
+.intro.wait .in-wait { opacity: 1; }
+.in-wait img { position: absolute; left: 0; top: 0; width: 100%; max-width: none; -webkit-mask-image: linear-gradient(#000 86%, transparent); mask-image: linear-gradient(#000 86%, transparent); }
+@media (min-aspect-ratio: 9/16) { .in-wait img { left: 50%; width: auto; height: 100%; transform: translateX(-50%); } }
+@media (prefers-reduced-motion: no-preference) { .intro.wait .in-wait { animation: inwait 14s ease-out both; } }
+@keyframes inwait { from { transform: scale(1.06); } to { transform: scale(1); } }
 /* On tap, the last frame rushes into the tunnel: the frame scales up about the tunnel mouth while a burst of light (white
    into Lit Window gold) opens from it, under the white-out. Not with reduced motion. */
 .in-plate-frame { transform-origin: 50% 56.25%; }
@@ -1418,7 +1427,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
      is dimmed from the top down to your mastery through a cut-out of its shape (intro-phone-tower.webp). If the film
      can't start within 5 seconds (blocked autoplay, slow network, data saver) the 3D ride plays as before; ?ride=3d asks
      for it. Landscape screens always get the 3D ride. */
-  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.0, 8.0, 10.5], end: 13.6, title: [6.5, 8.0] };
+  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", wait: "media/intro-wait.webp", cuts: [4.0, 8.0, 10.5], end: 13.6, title: [6.5, 8.0] };
   const PLATE = {phone: {w: 1080, h: 1920, film: true, tower: {x: 331, y: 70, w: 418, h: 721}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
   const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
   const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
@@ -1456,7 +1465,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, shot: -1, endedAt: 0, tried: false, lastT: -1, lastMove: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.14 · eb54c3f · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · 2a85656 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1625,7 +1634,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     const fail = () => {
       if (settled) return; settled = true;
       try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {}   /* and stop downloading it */
-      film.askDone && film.askDone(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
+      film.askDone && film.askDone(); card(false); film.card && film.card.remove(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
       /* the 3D ride starts only now: give it the same 8 seconds before Tap to Start on the plain sky */
       setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
     };
@@ -1653,11 +1662,15 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
       const running = Promise.resolve(ctx.resume ? ctx.resume() : null).then(() => ctx.state === "running", () => false);
       return Promise.race([running, new Promise(r => setTimeout(() => r(false), 400))]).then(yes => { if (yes && ctx.state === "running") return ctx; try { ctx.close(); } catch (e) {} return null; });
     };
-    const auto = () => { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
+    const card = on => {
+      if (on && !film.card) { const c = film.card = document.createElement("div"), i = new Image(); c.className = "in-wait"; i.alt = ""; i.decoding = "async"; i.src = FILM.wait; c.appendChild(i); fr.after(c); }
+      el.classList.toggle("wait", on);
+    };
+    const auto = () => { card(false); try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
-      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
-      const done = film.askDone = () => { film.askDone = null; el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask"); card(true);
+      const done = film.askDone = () => { film.askDone = null; card(false); el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);
       for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
@@ -1665,7 +1678,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     };
     const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
     if (!soundOn) auto();
-    else soundFree().then(ctx => {
+    else card(true), soundFree().then(ctx => {   /* the card is up at once, so the film's first frame never flashes */
       if (settled || exiting || !film.v) { try { ctx && ctx.close(); } catch (e) {} return; }
       if (!ctx) return ask();
       filmSoundStart(ctx); paintSound(); auto();

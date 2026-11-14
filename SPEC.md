@@ -63,8 +63,8 @@ summary, exam setup, exam, break and results.
    train yard, the graffiti car with the buddy, the chase along the El, the bridge,
    the dive to LAST STOP, with the title ABOVE THE LINE, then Tap to Start on its
    last frame. With Sound on, it starts by itself with sound where the
-   browser allows that; where it doesn't (iPhones) it waits on its first frame with
-   "Tap to play" so the sound starts with the picture. Tap to Start rushes into the
+   browser allows that; where it doesn't (iPhones) it waits behind a card of the buddy leaning
+   on a graffiti wall, with "Tap to play", so the sound starts with the picture. Tap to Start rushes into the
    tunnel. On landscape screens, or when the film can't
    load, the 3D ride past
    one station per part, each lighting up as that part's questions load; landscape

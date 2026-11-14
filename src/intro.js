@@ -68,7 +68,7 @@
      is dimmed from the top down to your mastery through a cut-out of its shape (intro-phone-tower.webp). If the film
      can't start within 5 seconds (blocked autoplay, slow network, data saver) the 3D ride plays as before; ?ride=3d asks
      for it. Landscape screens always get the 3D ride. */
-  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", cuts: [4.0, 8.0, 10.5], end: 13.6, title: [6.5, 8.0] };
+  const FILM = { src: "media/intro-phone.mp4", first: "media/intro-phone-start.webp", last: "media/intro-phone-end.webp", mask: "media/intro-phone-tower.webp", wait: "media/intro-wait.webp", cuts: [4.0, 8.0, 10.5], end: 13.6, title: [6.5, 8.0] };
   const PLATE = {phone: {w: 1080, h: 1920, film: true, tower: {x: 331, y: 70, w: 418, h: 721}}, desk: {w: 1920, h: 1200, neon: {x: 637, y: 592, w: 644, h: 291}, tower: {x: 799, y: 0, w: 294, h: 601}}};
   const pk = innerWidth > innerHeight ? "desk" : "phone", P = PLATE[pk], dir = "art/intro-plate/" + pk;
   const step = p => Math.round(Math.max(0, Math.min(1, (p && p.tower) || 0)) * 10);
@@ -275,7 +275,7 @@
     const fail = () => {
       if (settled) return; settled = true;
       try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {}   /* and stop downloading it */
-      film.askDone && film.askDone(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
+      film.askDone && film.askDone(); card(false); film.card && film.card.remove(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
       /* the 3D ride starts only now: give it the same 8 seconds before Tap to Start on the plain sky */
       setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
     };
@@ -303,11 +303,15 @@
       const running = Promise.resolve(ctx.resume ? ctx.resume() : null).then(() => ctx.state === "running", () => false);
       return Promise.race([running, new Promise(r => setTimeout(() => r(false), 400))]).then(yes => { if (yes && ctx.state === "running") return ctx; try { ctx.close(); } catch (e) {} return null; });
     };
-    const auto = () => { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
+    const card = on => {
+      if (on && !film.card) { const c = film.card = document.createElement("div"), i = new Image(); c.className = "in-wait"; i.alt = ""; i.decoding = "async"; i.src = FILM.wait; c.appendChild(i); fr.after(c); }
+      el.classList.toggle("wait", on);
+    };
+    const auto = () => { card(false); try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
-      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
-      const done = film.askDone = () => { film.askDone = null; el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask"); card(true);
+      const done = film.askDone = () => { film.askDone = null; card(false); el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);
       for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
@@ -315,7 +319,7 @@
     };
     const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
     if (!soundOn) auto();
-    else soundFree().then(ctx => {
+    else card(true), soundFree().then(ctx => {   /* the card is up at once, so the film's first frame never flashes */
       if (settled || exiting || !film.v) { try { ctx && ctx.close(); } catch (e) {} return; }
       if (!ctx) return ask();
       filmSoundStart(ctx); paintSound(); auto();
