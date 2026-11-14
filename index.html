@@ -788,25 +788,21 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
 
   /* Bust geometry, in fractions of his picture's width S (art/buddy-bust.webp, made by
      tools/buddy_bust.py; it is S wide and ART_H * S tall). The disc sits round his shoulders.
-     Above LINE (his collar) the whole picture shows, so his head stands clear of the disc;
-     below it only the disc shows, plus the calculator he holds up over its right rim and the
-     pencil hand over its left. */
+     Above LINE (his collar) the whole picture shows, so his head and the pencil behind his ear
+     stand clear of the disc; below it only the disc shows, plus the calculator he holds up over
+     its right rim. His other hand is out of the picture. */
   const DISC = { x: 0.48, y: 0.80, r: 0.34 }, ART_H = 464 / 360, LINE = 0.625;
   // The calculator and the hand holding it, measured on the picture: from LINE down the right
   // side and along its bottom edge to where that meets the disc.
   const CALC = [[1.0045, 0.625], [1.0045, 0.9849], [0.9487, 1.0156], [0.9208, 1.0536], [0.7321, 1.0282]];
-  // The pencil hand and its cuff: from LINE down its left side and in along the cuff to the disc.
-  const HAND = [[0.1395, 0.625], [0.1144, 0.7254], [0.1116, 0.9654], [0.1021, 0.9821], [0.1049, 1.0435], [0.1842, 1.0871], [0.2978, 1.0871]];
-  // Clip for the picture: everything above LINE; below it the disc, the calculator and the hand.
+  // Clip for the picture: everything above LINE; below it the disc and the calculator.
   const FACE_CLIP = (() => {
     const P = (x, y) => `${(x * 100).toFixed(2)}% ${(y / ART_H * 100).toFixed(2)}%`;
-    const ang = p => Math.atan2(p[1] - DISC.y, p[0] - DISC.x);
     const pts = [P(-0.4, -0.4), P(1.4, -0.4), P(1.4, LINE)];
     for (const c of CALC) pts.push(P(c[0], c[1]));
-    // round the bottom of the disc, from the calculator's edge to the cuff's
-    const a0 = ang(CALC[CALC.length - 1]), a1 = ang(HAND[HAND.length - 1]);
-    for (let k = 1; k < 12; k++) { const a = a0 + (a1 - a0) * k / 12; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
-    for (let i = HAND.length - 1; i >= 0; i--) pts.push(P(HAND[i][0], HAND[i][1]));
+    // round the bottom of the disc, from the calculator's edge to where the disc's left side meets LINE
+    const end = CALC[CALC.length - 1], a0 = Math.atan2(end[1] - DISC.y, end[0] - DISC.x), a1 = Math.PI + Math.asin((DISC.y - LINE) / DISC.r);
+    for (let k = 1; k <= 16; k++) { const a = a0 + (a1 - a0) * k / 16; pts.push(P(DISC.x + DISC.r * Math.cos(a), DISC.y + DISC.r * Math.sin(a))); }
     pts.push(P(-0.4, LINE));
     return `polygon(${pts.join(",")})`;
   })();
@@ -1450,7 +1446,7 @@ html.introing { background: #0b0a24; }   /* during the launch screen the status 
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, aud: {}, shot: -1 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.14 · 5c418bf · 972 questions";
+  $i("#inbuild").textContent = "2026.11.14 · 3dfd4ee · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
