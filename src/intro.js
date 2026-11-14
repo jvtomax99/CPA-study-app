@@ -135,10 +135,10 @@
      each end, so it loops between the two times in FSND.loop without a gap for as long as Tap to Start waits. Both play
      through Web Audio from the film's time: the beat dips before the arrival (FSND.duck: down from, back up between) and
      comes straight back. Separate files, so the Sound and Music switches both keep working. */
-  const FSND = { sfx: "media/intro-sfx.mp3", music: "media/intro-music.mp3", loop: [0.1, 25.368], duck: [12.0, 13.0, 13.6] };
+  const FSND = { sfx: "media/intro-sfx.mp3", music: "media/intro-music.mp3", go: "media/intro-go.mp3", loop: [0.1, 25.368], duck: [12.0, 13.0, 13.6] };
   let fsnd = null; const fbytes = {};
   const filmAt = () => film.endedAt ? FILM.end + (performance.now() - film.endedAt) / 1000 : (film.v && film.v.currentTime) || 0;
-  const filmSoundFetch = () => { for (const k of musicOn ? ["sfx", "music"] : ["sfx"]) fbytes[k] = fetch(FSND[k]).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null); };
+  const filmSoundFetch = () => { for (const k of musicOn ? ["sfx", "go", "music"] : ["sfx", "go"]) fbytes[k] = fetch(FSND[k]).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null); };
   function filmSoundStop() { if (!fsnd) return; fsnd.src.forEach(n => { try { n.stop(); } catch (e) {} }); fsnd.src = []; }
   /* start both again from the film's time now: on the first touch, when sound is switched back on, when the film starts or stops */
   function filmSoundSync() {
@@ -157,12 +157,13 @@
     const sg = ctx.createGain(), mg = ctx.createGain(); sg.connect(ctx.destination); mg.connect(ctx.destination);
     const mine = fsnd = { ctx, sg, mg, bufs: {}, src: [], ready: false };
     const dec = k => (fbytes[k] || Promise.resolve(null)).then(buf => buf ? new Promise(r => ctx.decodeAudioData(buf.slice(0), r, () => r(null))) : null);
-    Promise.all([dec("sfx"), dec("music")]).then(([sfx, music]) => { if (fsnd !== mine) return; mine.bufs = { sfx, music }; mine.ready = true; filmSoundSync(); });
+    Promise.all([dec("sfx"), dec("music"), dec("go")]).then(([sfx, music, go]) => { if (fsnd !== mine) return; mine.bufs = { sfx, music, go }; mine.ready = true; filmSoundSync(); });
   }
-  /* leave: fade both out, then close */
-  function filmSoundEnd(ms) {
+  /* leave: fade both out, then close. On Tap to Start (go) the train rushes off into the tunnel over the fade */
+  function filmSoundEnd(ms, go) {
     const f = fsnd; if (!f) return; fsnd = null;
-    try { const now = f.ctx.currentTime; for (const g of [f.sg.gain, f.mg.gain]) { g.cancelScheduledValues(now); g.setValueAtTime(g.value, now); g.linearRampToValueAtTime(0, now + ms / 1000); } } catch (e) {}
+    if (go && soundOn && f.bufs.go) try { const n = f.ctx.createBufferSource(); n.buffer = f.bufs.go; n.connect(f.ctx.destination); n.start(); f.src.push(n); ms = Math.max(ms, f.bufs.go.duration * 1000); } catch (e) {}
+    try { const now = f.ctx.currentTime; for (const g of [f.sg.gain, f.mg.gain]) { g.cancelScheduledValues(now); g.setValueAtTime(g.value, now); g.linearRampToValueAtTime(0, now + 0.9); } } catch (e) {}
     setTimeout(() => { f.src.forEach(n => { try { n.stop(); } catch (e) {} }); try { f.ctx.close(); } catch (e) {} }, ms + 60);
   }
   function unlock(e) {
@@ -193,7 +194,7 @@
     try { localStorage.setItem("eaTaxTown.sound", soundOn ? "on" : "off"); } catch (e) {}
     paintSound();
   }
-  const endSound = (tap) => { filmSoundEnd(tap ? 900 : 120); if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
+  const endSound = (tap) => { filmSoundEnd(tap ? 900 : 120, tap); if (!audio) return; const a = audio; if (tap && soundOn) { a.scratch(); a.tap(); } else { a.stopMusic(); a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.08); }
     setTimeout(() => { try { a.stopMusic(); a.ctx.close(); } catch (e) {} }, tap ? 3800 : 600); };
   el.addEventListener("pointerdown", unlock, true);
   el.addEventListener("pointerup", unlock, true);
@@ -271,11 +272,10 @@
   film.ready = noFilm ? Promise.resolve(false) : new Promise(res => {
     const v = document.createElement("video"), fr = document.createElement("div");
     let settled = false;
-    const refit = () => fit(fr);
     const fail = () => {
       if (settled) return; settled = true;
       try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {}   /* and stop downloading it */
-      window.removeEventListener("resize", refit); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
+      film.askDone && film.askDone(); fr.remove(); film.v = null; filmSoundEnd(0); paintSound(); res(false);
       /* the 3D ride starts only now: give it the same 8 seconds before Tap to Start on the plain sky */
       setTimeout(() => { if (!has3d && phase !== "hero") setPhase("hero"); }, 8000);
     };
@@ -289,22 +289,23 @@
     v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
     v.addEventListener("playing", ok, { once: true }); v.addEventListener("error", fail);
     v.addEventListener("ended", () => { if (film.on) filmTick(); });
-    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v; fit(fr); window.addEventListener("resize", refit);
-    /* A phone that refuses to start a video by itself (an iPhone in Low Power Mode) still plays it on a touch: hold the
-       film's first frame with "Tap to play" in Tap to Start's place, and start on the first touch. No touch in 12 seconds
-       goes to Tap to Start on the last frame. */
+    v.src = FILM.src; fr.appendChild(v); el.insertBefore(fr, el.firstChild); film.v = v;
+    /* No browser lets a page make sound before a touch, so with Sound on the film waits for one: its first frame holds
+       with "Tap to play" in Tap to Start's place, and the first touch starts the film and its sound together, from the
+       first footstep. The same wait covers a phone that refuses to start a video by itself (an iPhone in Low Power Mode).
+       With Sound off the film starts by itself. No touch in 12 seconds goes to Tap to Start on the last frame. */
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
       const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask");
-      const done = () => { el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
+      const done = film.askDone = () => { film.askDone = null; el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);
       for (const k of ["post", "paint", "env"]) Boot.done(k); threeWarm.then(() => Boot.done("three"));
       setTimeout(() => { if (settled || exiting) return; done(); settled = true; film.on = true; el.classList.add("film"); film.endedAt = performance.now(); filmTick(); res(true); }, 12000);
     };
     const refused = e => (e && e.name === "NotAllowedError" ? ask() : fail());
-    try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); }
-    setTimeout(() => { if (!film.ask) fail(); }, 5000);
+    if (soundOn) ask();
+    else { try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); }
   });
   if (mode === "title" || reduce) setPhase("hero");
   /* no ride after 8 seconds (slow network, three.js blocked): Tap to Start on the plain night sky. If the 3D arrives
