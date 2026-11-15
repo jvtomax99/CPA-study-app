@@ -99,6 +99,20 @@ summary, exam setup, exam, break and results.
       `node tools/basis-order/test.mjs`).
 14. **Home Screen app.** Manifest, icons and standalone mode.
     - Done when: the app opens full screen from the Home Screen icon.
+15. **Works offline** (Jose OK'd the plan, 2026-11-15). After one visit with signal the
+    app opens and works with no signal. A whole build is kept on the phone (about
+    11 MB: the page, pictures, models, sounds, the 3D engine, the fonts, the reminder
+    files, and the launch film unless the phone asks to save data). A newer build is
+    fetched in the background, every file checked against its fingerprint, and put to
+    use the next time the app is opened after that (all its windows closed, or the tab
+    loaded again), never in the middle of a drill or an exam. Not kept: the 18 MB how-to video, which plays
+    from the internet. Off switches: `?sw=off` on the address, or `"sw": false` in
+    `version.json`.
+    - Done when: after one visit online the app opens in airplane mode (Home, a drill,
+      the town, the launch film); a new release shows the next time the app is opened once its
+      download has finished, with progress intact; a download that is cut, or a file
+      that is not that release's, leaves the old build working; each off switch
+      removes the copy.
 
 ## Not in v1
 

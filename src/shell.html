@@ -907,3 +907,42 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
 </div>
 <div class="toast" id="toast" hidden></div>
 <div id="layer"></div>
+<script>
+/* The offline copy, the page's side (the worker is sw.js; how it works is at its top). The worker
+   makes every decision; this only starts it, asks it to look for a newer build once the app has
+   finished loading, and loads the page again if the worker says it has just switched builds.
+   Off switches: ?sw=off on the address, or "sw": false in version.json. */
+(async function () {
+  var sw = navigator.serviceWorker;
+  if (!sw || !window.caches || location.protocol === "file:") return;
+  var here = new URL("./", location.href);
+  async function remove() {
+    try {
+      for (var r of await sw.getRegistrations()) if (r.scope === here.href) await r.unregister();
+      for (var k of await caches.keys()) if (k.indexOf("atl:" + here.pathname + ":") === 0) await caches.delete(k);
+    } catch (e) {}
+  }
+  /* for tests and for looking: what the worker holds */
+  window.__offline = function () {
+    return new Promise(function (res) {
+      var w = sw.controller; if (!w) return res(null);
+      var ch = new MessageChannel(), t = setTimeout(function () { res(null); }, 4000);
+      ch.port1.onmessage = function (e) { clearTimeout(t); res(e.data); };
+      w.postMessage({ cmd: "state" }, [ch.port2]);
+    });
+  };
+  try {
+    if (new URLSearchParams(location.search).get("sw") === "off") return remove();
+    sw.addEventListener("message", function (e) { if (e.data && e.data.type === "atl-flipped") location.reload(); });
+    if (sw.controller && new URL(sw.controller.scriptURL).pathname === here.pathname + "sw.js") sw.controller.postMessage({ cmd: "launch" });
+    var v = await fetch("./version.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    if (!v) return;                        /* no signal: the copy on the phone carries on */
+    if (v.sw === false) return remove();   /* the off switch */
+    await sw.register("./sw.js", { updateViaCache: "none" });
+    var w = (await sw.ready).active;
+    if (document.readyState !== "complete") await new Promise(function (r) { addEventListener("load", r, { once: true }); });
+    await new Promise(function (r) { setTimeout(r, 4000); });
+    if (w) w.postMessage({ cmd: "check" });
+  } catch (e) {}
+})();
+</script>

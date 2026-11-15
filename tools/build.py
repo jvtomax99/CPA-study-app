@@ -1,6 +1,47 @@
 """Build index.html from src/. Run from the repo root: python3 tools/build.py"""
 import json, os, subprocess
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# The offline copy (sw.js keeps these files on the phone; how it works is at its top).
+# offline-files.json is the list, with each file's fingerprint; version.json is a fingerprint
+# of them all, so it changes whenever anything the app loads changes and never has to be
+# bumped by hand. Kept: everything in fonts/ and reminders/, the .js files of vendor/three/,
+# the files directly in art/, art/intro-plate/desk*.webp, icons/ and media/ except .svg and
+# .mp4, and the launch film. A file anywhere else, or of another kind, must be added here.
+# `python3 tools/build.py --check-offline` only compares the two files with the repo (CI runs it).
+def offline(write):
+    import glob, hashlib, sys
+    def ls(pattern):
+        return sorted(os.path.relpath(f, root).replace(os.sep, "/") for f in glob.glob(os.path.join(root, pattern), recursive=True) if os.path.isfile(f))
+    keep = {
+        "app": ["index.html", "manifest.webmanifest"]
+               + [f for f in ls("icons/*") if not f.endswith(".svg")]
+               + ls("fonts/*") + ls("vendor/three/**/*.js")
+               + ls("art/*") + ls("art/intro-plate/desk*.webp")      # the phone plates are no longer loaded
+               + [f for f in ls("media/*") if not f.endswith(".mp4")]
+               + ls("reminders/*"),
+        "film": ["media/intro-phone.mp4"],                           # left out when the phone asks to save data
+    }                                                                # not kept: media/how-to-use.mp4 (18 MB), it plays from the internet
+    sha1 = {f: hashlib.sha1(open(os.path.join(root, f), "rb").read()).hexdigest() for f in keep["app"] + keep["film"]}
+    mark = hashlib.sha1("".join(f + "\0" + h + "\n" for f, h in sha1.items()).encode()).hexdigest()[:12]
+    lpath, vpath = os.path.join(root, "offline-files.json"), os.path.join(root, "version.json")
+    try: was = json.load(open(vpath))
+    except Exception: was = {}
+    on = was.get("sw", True) is not False                            # "sw": false is the off switch; a build keeps it as it was
+    listing = json.dumps({"build": mark, **keep, "sha1": sha1}, indent=1) + "\n"
+    if not write:
+        try: same = open(lpath, encoding="utf-8").read() == listing and was.get("build") == mark
+        except Exception: same = False
+        if not same: sys.exit("FAIL: offline-files.json or version.json does not match the files in the repo. Run: python3 tools/build.py, and commit what it writes.")
+        print(f"offline copy: the list and version.json match the repo ({len(sha1)} files, build {mark})")
+        return
+    open(lpath, "w", encoding="utf-8").write(listing)
+    open(vpath, "w", encoding="utf-8").write(json.dumps({"build": mark, "sw": on}) + "\n")
+    size = sum(os.path.getsize(os.path.join(root, f)) for f in sha1)
+    print(f"offline copy: {len(sha1)} files, {size / 1e6:.1f} MB, build {mark}" + ("" if on else '  (switched OFF: "sw": false in version.json)'))
+import sys
+if "--check-offline" in sys.argv:
+    offline(False); sys.exit(0)
 src = lambda f: open(os.path.join(root, "src", f), encoding="utf-8").read()
 bank = json.loads(src("questions.json"))
 app = src("app.js")
@@ -56,3 +97,4 @@ out = (head + shell + "\n<script>\n" + src("mascot.js") + "\n</script>\n<script>
        + "\n</script>\n" + bank_js + "<script>\n" + app + "\n</script>\n<script type=\"module\">\n" + town + "\n</script>\n\n</html>\n")
 open(os.path.join(root, "index.html"), "w", encoding="utf-8").write(out)
 print(f"index.html: {len(out):,} bytes, {len(bank)} questions")
+offline(True)
