@@ -34,6 +34,7 @@ def offline(write):
         except Exception: same = False
         if not same: sys.exit("FAIL: offline-files.json or version.json does not match the files in the repo. Run: python3 tools/build.py, and commit what it writes.")
         print(f"offline copy: the list and version.json match the repo ({len(sha1)} files, build {mark})")
+        if not on: print('::warning::Offline is switched OFF for everyone: version.json says "sw": false. Set it to true to switch it back on.')
         return
     open(lpath, "w", encoding="utf-8").write(listing)
     open(vpath, "w", encoding="utf-8").write(json.dumps({"build": mark, "sw": on}) + "\n")
