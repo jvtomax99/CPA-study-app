@@ -7,7 +7,8 @@ Read this at the start of a session instead of exploring the code. Line counts a
 
 Static site on GitHub Pages from `main` (root folder). No server, no accounts.
 `index.html` is built: edit `src/`, run `python3 tools/build.py` from the repo root,
-commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the head.
+commit both. three.js 0.160.0 is in `vendor/three/` (an importmap in the head points at it) and the
+fonts are in `fonts/`: the page asks no outside server for anything.
 
 ## Main folders
 
