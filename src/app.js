@@ -82,6 +82,19 @@ function load() {
   return Object.assign(blank(), s);
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+/* Ask the phone to keep the saved progress when it runs low on space, instead of clearing it.
+   The phone may say no, and then nothing changes. Asked at the first answer after the app
+   opens, so nobody is asked before they have progress to lose (Firefox shows a question;
+   Chrome and Safari decide by themselves). */
+let askedToKeep = false;
+function askToKeep() {
+  if (askedToKeep) return;
+  askedToKeep = true;
+  try {
+    const s = navigator.storage;
+    if (s && s.persist && s.persisted) s.persisted().then(kept => kept || s.persist()).catch(() => {});
+  } catch (e) {}
+}
 let state = load();
 const isCpa = () => state.exam === "cpa";
 /* The parts (EA) or sections (CPA) in order: numbers for EA, as the rest of the app expects, codes for CPA */
@@ -168,6 +181,7 @@ function gap(p) {
 
 /* ---------- recording an answer ---------- */
 function record(q, ok, mode) {
+  askToKeep();
   const s = st(q.id), now = Date.now();
   /* first answer of the day: keep each area's mastery as it stood, so the daily summary can show what grew */
   if (!state.day || state.day.k !== dayKey(now)) state.day = { k: dayKey(now), m: Object.fromEntries(Object.keys(DOMAINS).map(d => [d, mastery(d)])) };
