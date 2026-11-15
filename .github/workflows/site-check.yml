@@ -34,3 +34,6 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Check the site
         run: node .github/site-check.cjs "index.html?intro=0&gfx=low"
+      - name: Check the offline copy's list
+        # offline-files.json and version.json must match the files in the repo, or phones keep an old copy
+        run: python3 tools/build.py --check-offline

@@ -20,6 +20,12 @@ Read first: `SPEC.md` (what, who, phases; gaps marked TO FILL for Jose),
   must be green before asking Jose to push. A new page goes into that list.
   `node tools/smoke.js` after building is the headless test, but it fails on
   `main` today because software WebGL is slow (`docs/HANDOFF.md`).
+- **Offline copy.** `tools/build.py` also writes `offline-files.json` and
+  `version.json`; commit them with `index.html` (CI fails if they don't match
+  the repo). Which files are kept is the list at the top of `tools/build.py`:
+  a new file the app loads must match it, and must not sit in a folder
+  `.gitignore` skips. To switch offline off for everyone: `"sw": false` in
+  `version.json`.
 - **Every question is checked against the source it cites**, using the
   writer and checker briefs in `docs/`.
 - **Public repo.** AICPA blueprint text and owner uploads never go in it.

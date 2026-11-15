@@ -22,6 +22,19 @@ fonts are in `fonts/`: the page asks no outside server for anything.
   sound: `intro-sfx.mp3`, `intro-music.mp3`, `intro-go.mp3`). `icons/` and `manifest.webmanifest`:
   the Home Screen app.
 - `reminders/`: 38 calendar files, one per half hour, 5:00 AM to 11:30 PM.
+- **The offline copy**: `sw.js` (how it works is at its top) and the short script at the
+  foot of `src/shell.html`. `tools/build.py` writes `offline-files.json` (what is kept,
+  with each file's fingerprint) and `version.json` (a fingerprint of them all) at every
+  build; commit both, and `python3 tools/build.py --check-offline` (CI runs it) fails if
+  they do not match the repo. The worker makes every decision: it reads `version.json`
+  a few seconds after the app opens, fetches a build it does not hold whole into its
+  own cache, checking each file ("stage"), and switches to it only as the app is next
+  opened with no other window of it open, so a running app never mixes builds. The
+  first copy serves at once. `version.json`, `sw.js` and the list are never served
+  from the copy. Cache names start `atl:/CPA-study-app/:`. Off switches: `?sw=off`
+  (that browser only; an iPhone Home Screen app keeps its own copy), or `"sw": false`
+  in `version.json` (everyone, at their next open with signal; a build keeps it as it
+  was). Opened from a file, there is no worker.
 - `preview/canyon.html` (674): standalone 3D look sandbox.
 - `promo/`: the Remotion project that makes the how-to video. Not part of the page.
 - `docs/`: content outlines, writer and checker briefs, drafts, art sources, older
