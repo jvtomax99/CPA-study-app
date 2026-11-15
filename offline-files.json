@@ -1,5 +1,5 @@
 {
- "build": "c3558e05365f",
+ "build": "fabedab3c3b0",
  "app": [
   "index.html",
   "manifest.webmanifest",
@@ -106,7 +106,7 @@
   "media/intro-phone.mp4"
  ],
  "sha1": {
-  "index.html": "2aab89ee768dadf7b2819043e76e2fc12231638f",
+  "index.html": "fe094540af8401f78968a90111313197f02b45f8",
   "manifest.webmanifest": "342123ee671974087652e4a3a66af5541d0d80eb",
   "icons/apple-touch-icon.png": "37c63c8cde937a1ba2948bde43fda3174eb24bbe",
   "icons/favicon-32.png": "2ba68c25fba2cda4a1e57ee7d9377cd442fd0c1e",

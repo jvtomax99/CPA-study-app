@@ -128,6 +128,9 @@ TO FILL: Jose to confirm this list. Drawn from decisions in `docs/HANDOFF.md`:
 
 From `docs/HANDOFF.md` ("Still open" and the "Not done" notes):
 
+- Offline copy: pick up an interrupted download where it stopped, and reuse files that did
+  not change between releases, so short visits on weak signal still end with a copy and a
+  release does not make every phone fetch all 11 MB again (from the review, 2026-11-15).
 - `tools/smoke.js` fails on main: software WebGL takes 2 to 4 s per frame (with
   longer waits it passed the 3D steps but stopped at line 91).
 - The El train bullet on Today squeezes REG, TCP and AUD into a one-digit circle.

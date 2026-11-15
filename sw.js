@@ -44,11 +44,13 @@ async function tidy() {
   const s = await readState(), keep = new Set([META, s.current && cacheOf(s.current), s.staged && cacheOf(s.staged), staging && cacheOf(staging.build)]);
   for (const k of await caches.keys()) if (k.startsWith(PREFIX) && !keep.has(k)) await caches.delete(k);
 }
-const windows = async () => (await self.clients.matchAll({type: 'window', includeUncontrolled: true})).filter(c => new URL(c.url).pathname.startsWith(SCOPE));
+// (Top-level windows only: a figure opened inside the app is a frame, not another window.)
+const windows = async () => (await self.clients.matchAll({type: 'window', includeUncontrolled: true})).filter(c => c.frameType !== 'nested' && new URL(c.url).pathname.startsWith(SCOPE));
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
+const held = async build => !!(await caches.match(SCOPE + 'index.html', {cacheName: cacheOf(build)}));
 const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 
 // Fetch a whole build into its own cache. All or nothing.
@@ -57,7 +59,13 @@ function stage(build, kinds) {
   if (staging) return staging.build === build ? staging.done : Promise.resolve(false);   // one at a time
   const done = (async () => {
     const s = await readState();
-    if (s.current === build || s.staged === build) return true;
+    // (Held already? Only if its cache is really there: another app at this address, or the
+    // browser, may have cleared it, and then it is fetched again.)
+    if ((s.current === build || s.staged === build) && await held(build)) {
+      if (s.current === build && s.staged) { await writeState({current: build, staged: null}); await tidy(); }   // a release that was taken back
+      return true;
+    }
+    if (s.current === build || s.staged === build) await writeState({current: s.current === build ? null : s.current, staged: s.staged === build ? null : s.staged});
     const name = cacheOf(build);
     let failed = false;
     try {
@@ -84,6 +92,7 @@ function stage(build, kinds) {
         }
       };
       await Promise.all(Array.from({length: 6}, next));
+      if (gone) throw new Error('switched off');
       const now = await readState();
       // The first copy is the build already on screen, so it serves at once.
       // A later one waits until the app is next opened.
@@ -101,7 +110,9 @@ function stage(build, kinds) {
 }
 
 // Remove the copy and this worker (the off switch).
+let gone = false;
 async function off() {
+  gone = true;
   for (const k of await caches.keys()) if (k.startsWith(PREFIX)) await caches.delete(k);
   state = NONE;
   await self.registration.unregister();
@@ -133,7 +144,7 @@ self.addEventListener('message', e => {
   const m = e.data || {}, src = e.source, reply = x => e.ports[0] && e.ports[0].postMessage(x);
   // "launch": the page has just loaded in a tab that already had the app. If it is
   // the only window, switch and tell it to load again; it reloads whenever it hears.
-  if (m.cmd === 'launch') e.waitUntil(flip(open => open.every(c => src && c.id === src.id)).then(ok => { if (ok && src) src.postMessage({type: 'atl-flipped'}); }).catch(() => {}));
+  if (m.cmd === 'launch') e.waitUntil(flip(open => !!src && open.length > 0 && open.every(c => c.id === src.id)).then(ok => { if (ok && src) src.postMessage({type: 'atl-flipped'}); }).catch(() => {}));
   else if (m.cmd === 'check') e.waitUntil(check(0).catch(() => {}));
   else if (m.cmd === 'state') e.waitUntil(readState().catch(() => NONE).then(s => reply({current: s.current, staged: s.staged, busy: !!staging})));
 });
