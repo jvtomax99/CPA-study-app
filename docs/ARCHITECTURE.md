@@ -66,6 +66,8 @@ commit both. three.js 0.160.0 loads from jsDelivr through an importmap in the he
    question id, answer log, part, goal, exams, the running exam, exam dates,
    reminder time, name). The older key `eaLedgerDrill.v1` is read once if there is
    no state. A backup file is this state.
+   At the first answer after the app opens, `askToKeep()` asks the phone to keep
+   this data when space runs low (`navigator.storage.persist`); it may refuse.
 3. **Other localStorage keys.** `eaTaxTown.gfx` (town graphics level, kept 7 days),
    `eaTaxTown.sound`, `eaTaxTown.music`, `eaTaxTown.introProg`. `shell.html` removes
    the old `eaTaxTown.intro` at start.

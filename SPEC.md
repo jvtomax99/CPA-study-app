@@ -84,6 +84,9 @@ summary, exam setup, exam, break and results.
 10. **Backup.** Save and load a backup file, or copy and paste it as text. A reminder
     on Home after 7 days with no backup.
     - Done when: a backup saved on one device restores the same progress on another.
+    - Keeping progress (Jose, 2026-11-15): at the first answer the app asks the phone
+      to keep its saved progress when space runs low. The phone may refuse; nothing
+      on screen changes either way.
 11. **Daily reminder.** Pick a time; the app hands over a repeating calendar event
     (one `.ics` file per half hour in `reminders/`).
     - Done when: the user's calendar alerts them daily at the chosen time.
