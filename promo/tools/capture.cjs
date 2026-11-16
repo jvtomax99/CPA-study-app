@@ -13,7 +13,20 @@ const T = s => (JA_ON && JA[s]) || s, EN = Object.fromEntries(Object.entries(JA)
 fs.mkdirSync(OUT, { recursive: true });
 
 const seed = require("./seed.cjs");
-const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
+/* the app is served over http from the repo root: opened from a file, the browser blocks the 3D engine's modules
+   (vendor/three/) and the tower models, so the town never loads */
+const http = require("http");
+const TYPES = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg",
+  ".glb": "model/gltf-binary", ".mp4": "video/mp4", ".mp3": "audio/mpeg", ".woff2": "font/woff2", ".hdr": "application/octet-stream", ".webmanifest": "application/manifest+json", ".ics": "text/calendar" };
+const server = http.createServer((req, res) => {
+  const f = path.join(process.cwd(), decodeURIComponent(req.url.split("?")[0]));
+  if (!f.startsWith(process.cwd()) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end(); }
+  const data = fs.readFileSync(f), range = /bytes=(\d+)-(\d*)/.exec(req.headers.range || "");
+  const type = TYPES[path.extname(f)] || "application/octet-stream";
+  if (range) { const a = +range[1], b = range[2] ? +range[2] : data.length - 1; res.writeHead(206, { "Content-Type": type, "Content-Range": `bytes ${a}-${b}/${data.length}`, "Accept-Ranges": "bytes", "Content-Length": b - a + 1 }); return res.end(data.subarray(a, b + 1)); }
+  res.writeHead(200, { "Content-Type": type, "Content-Length": data.length, "Accept-Ranges": "bytes" }); res.end(data);
+}).listen(0);
+const APP = q => `http://localhost:${server.address().port}/index.html?gfx=high&sw=off&` + q;
 
 (async () => {
   const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--autoplay-policy=no-user-gesture-required"] });
@@ -134,5 +147,5 @@ const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
   fs.writeFileSync(path.resolve(JA_ON ? "promo/src/layout-ja.json" : "promo/src/layout.json"), JSON.stringify(layout, null, 1) + "\n");
   console.log(JSON.stringify(layout));
 
-  await browser.close();
+  await browser.close(); server.close();
 })().catch(e => { console.error(e); process.exit(1); });
