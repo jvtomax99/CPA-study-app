@@ -42,8 +42,8 @@ const fails = []; const check = (ok, what, d) => { console.log((ok ? "PASS " : "
   // 3. a genuine backup comes back unchanged
   const r4 = await p.evaluate(() => {
     const real = { v: 2, exam: "cpa", part: "REG", eaPart: "2", goal: 30, name: "Chris", nameAsked: true, lastBackup: 1763200000000, sky: "day",
-      items: { "reg-012": { box: 3, due: 1763300000000, seen: 4, right: 3, last: 1763200000000, flag: true, note: "Check §1031 timing" } },
-      log: [{ id: "reg-012", ok: true, t: 1763200000000, m: "drill" }],
+      items: { "reg-012": { box: 3, due: 1763300000000, seen: 4, right: 3, last: 1763200000000, flag: true, note: "Check §1031 timing", flaggedAt: 1763200000000 } },
+      log: [{ id: "reg-012", ok: true, t: 1763200000000, m: "drill" }, { id: "reg-013", ok: false, t: 1763200000001, m: "drill", g: 1 }],
       exams: [{ t: 1763200000000, part: "REG", n: 72, right: 50, score: 50 / 72, per: { "REG-IV": { n: 20, r: 15 } }, timeUp: false, fresh: { n: 5, right: 4 }, missed: [{ id: "reg-012", picked: 2 }, { id: "reg-013", picked: null }] }],
       shown: { "REG-IV": 0.4 }, day: { k: "2026-11-15", m: { "REG-IV": 0.4 } }, reminder: { pick: "0730", time: "0730", at: 1763200000000 }, examDates: { REG: "2027-01-15" }, examRun: null };
     const back = readBackup(JSON.stringify({ savedAt: 1763200000000, state: real })).state;
@@ -51,10 +51,23 @@ const fails = []; const check = (ok, what, d) => { console.log((ok ? "PASS " : "
     // The app's own Copy backup is the bare progress: paste it back through the box.
     renderMore(); document.querySelector("#importtext").value = JSON.stringify(real); document.querySelector("#import").click();
     const pasted = Object.keys(real).filter(k => k !== "lastBackup" && JSON.stringify(real[k]) !== JSON.stringify(state[k]));
-    return { diff, pasted, savedAt: readBackup(JSON.stringify({ savedAt: 1763200000000, state: real })).savedAt };
+    return { diff, pasted, flagKept: back.items["reg-012"].flaggedAt === 1763200000000, guessKept: back.log[1].g === 1, savedAt: readBackup(JSON.stringify({ savedAt: 1763200000000, state: real })).savedAt };
   });
   check(r4.diff.length === 0 && r4.savedAt === 1763200000000, "a genuine backup file comes back unchanged, field for field", r4);
   check(r4.pasted.length === 0, "Copy backup, then paste it back: unchanged", r4.pasted);
+  // 4. odd shapes from the review: numbers where text belongs, a part named after an object's
+  //    built-ins, an array for a part. None may break More or Home.
+  const r5 = await p.evaluate(async () => {
+    const out = [];
+    for (const bad of [{ reminder: { pick: 1900, time: 1900, at: Date.now() } }, { part: "constructor", examDates: { constructor: "2027-01-01" } },
+                       { part: ["2"] }, { part: "__proto__", exams: [{ part: "toString", score: 1, t: 1 }] }, { items: { __proto__: { box: 1 } } }]) {
+      try { state = readBackup(JSON.stringify(Object.assign({ items: {} }, bad))).state; useExam(state.exam); renderMore(); renderHome(); out.push(typeof state.part === "string" ? "ok" : "part " + typeof state.part); }
+      catch (e) { out.push("threw: " + e.message); }
+    }
+    return out;
+  });
+  check(r5.every(x => x === "ok"), "odd shapes in a backup can't break More or Home", r5);
+  check(r4.flagKept && r4.guessKept, "a flag's date and the \"I guessed\" mark survive a restore", r4);
   check(errors.length === 0, "no page errors", errors.slice(0, 3));
   await browser.close();
   if (fails.length) { console.log(`${fails.length} failed`); process.exit(1); } else console.log("all passed");

@@ -73,41 +73,47 @@ function blank() { return { v: 2, exam: "ea", items: {}, log: [], part: "1", goa
    anyone's to make: one doctored by someone else and sent to a student could put markup
    where the app expects a number or a date, and it ran as code on every launch. Each field
    keeps only the type it should have; anything else falls back to a fresh value. */
-const ID_RE = /^[\w.-]{1,80}$/, PART_RE = /^[\w-]{1,12}$/, DATE_RE = /^\d{4}-\d\d-\d\d$/, HHMM_RE = /^\d{4}$/;
+const ID_RE = /^[\w.-]{1,80}$/, DATE_RE = /^\d{4}-\d\d-\d\d$/, HHMM_RE = /^\d{4}$/;
 const num = (v, d = 0) => (typeof v === "number" && isFinite(v) ? v : d);
+// A test on text only: RegExp.test turns a number or an array into text first.
+const is = (re, v) => typeof v === "string" && re.test(v);
+// Keys that would reach an object's prototype are never copied.
+const okKey = k => k !== "__proto__" && k !== "constructor" && k !== "prototype";
+const ownPart = v => typeof v === "string" && (Object.hasOwn(EA_PARTS, v) || Object.hasOwn(CPA_PARTS, v));
 const obj = v => (v && typeof v === "object" && !Array.isArray(v) ? v : {});
 const str = (v, n) => (typeof v === "string" ? v.slice(0, n) : "");
 function tidy(s, keepRun) {
   const o = blank(), x = obj(s);
   o.exam = x.exam === "cpa" ? "cpa" : "ea";
-  o.part = PART_RE.test(x.part) ? x.part : "1";
-  if (PART_RE.test(x.eaPart)) o.eaPart = x.eaPart;
+  o.part = ownPart(x.part) ? x.part : "1";
+  if (ownPart(x.eaPart)) o.eaPart = x.eaPart;
   const g = Math.round(num(x.goal, 20)); o.goal = g >= 1 && g <= 500 ? g : 20;
   o.name = str(x.name, 60); o.nameAsked = x.nameAsked === true;
   o.lastBackup = num(x.lastBackup);
   if (x.sky === "day" || x.sky === "dusk") o.sky = x.sky;
   for (const [id, v] of Object.entries(obj(x.items))) {
-    if (!ID_RE.test(id) || !v || typeof v !== "object") continue;
-    o.items[id] = { box: num(v.box), due: num(v.due), seen: num(v.seen), right: num(v.right), last: num(v.last), flag: v.flag === true, note: str(v.note, 2000) };
+    if (!okKey(id) || !ID_RE.test(id) || !v || typeof v !== "object") continue;
+    o.items[id] = { box: num(v.box), due: num(v.due), seen: num(v.seen), right: num(v.right), last: num(v.last), flag: v.flag === true, note: str(v.note, 20000) };
+    if (typeof v.flaggedAt === "number") o.items[id].flaggedAt = v.flaggedAt;
   }
-  o.log = (Array.isArray(x.log) ? x.log : []).filter(e => e && ID_RE.test(e.id)).map(e => ({ id: e.id, ok: e.ok === true, t: num(e.t), m: /^\w{1,12}$/.test(e.m) ? e.m : "drill" }));
+  o.log = (Array.isArray(x.log) ? x.log : []).filter(e => e && is(ID_RE, e.id)).map(e => Object.assign({ id: e.id, ok: e.ok === true, t: num(e.t), m: is(/^\w{1,12}$/, e.m) ? e.m : "drill" }, e.g === 1 ? { g: 1 } : {}));
   o.exams = (Array.isArray(x.exams) ? x.exams : []).filter(e => e && typeof e === "object").slice(-30).map(e => {
     const per = {};
-    for (const [d, v] of Object.entries(obj(e.per))) if (PART_RE.test(d) || ID_RE.test(d)) per[d] = { n: num(obj(v).n), r: num(obj(v).r) };
+    for (const [d, v] of Object.entries(obj(e.per))) if (okKey(d) && ID_RE.test(d)) per[d] = { n: num(obj(v).n), r: num(obj(v).r) };
     const f = e.fresh && typeof e.fresh === "object" ? { n: num(e.fresh.n), right: num(e.fresh.right) } : null;
-    return { t: num(e.t), part: PART_RE.test(e.part) ? e.part : "1", n: num(e.n), right: num(e.right), score: Math.min(1, Math.max(0, num(e.score))), per, timeUp: e.timeUp === true, fresh: f,
-      missed: (Array.isArray(e.missed) ? e.missed : []).filter(m => m && ID_RE.test(m.id)).map(m => ({ id: m.id, picked: typeof m.picked === "number" ? m.picked : null })) };
+    return { t: num(e.t), part: ownPart(e.part) ? e.part : "1", n: num(e.n), right: num(e.right), score: Math.min(1, Math.max(0, num(e.score))), per, timeUp: e.timeUp === true, fresh: f,
+      missed: (Array.isArray(e.missed) ? e.missed : []).filter(m => m && is(ID_RE, m.id)).map(m => ({ id: m.id, picked: typeof m.picked === "number" ? m.picked : null })) };
   });
-  for (const [d, v] of Object.entries(obj(x.shown))) if (ID_RE.test(d)) o.shown[d] = num(v);
-  if (x.day && typeof x.day === "object" && /^[\w-]{1,20}$/.test(x.day.k)) {
-    const m = {}; for (const [d, v] of Object.entries(obj(x.day.m))) if (ID_RE.test(d)) m[d] = num(v);
+  for (const [d, v] of Object.entries(obj(x.shown))) if (okKey(d) && ID_RE.test(d)) o.shown[d] = num(v);
+  if (x.day && typeof x.day === "object" && is(/^[\w-]{1,20}$/, x.day.k)) {
+    const m = {}; for (const [d, v] of Object.entries(obj(x.day.m))) if (okKey(d) && ID_RE.test(d)) m[d] = num(v);
     o.day = { k: x.day.k, m };
   }
   const r = x.reminder;
-  if (r && typeof r === "object" && (HHMM_RE.test(r.pick) || HHMM_RE.test(r.time))) {
-    o.reminder = { pick: HHMM_RE.test(r.pick) ? r.pick : r.time, time: HHMM_RE.test(r.time) ? r.time : r.pick, at: num(r.at) };
+  if (r && typeof r === "object" && (is(HHMM_RE, r.pick) || is(HHMM_RE, r.time))) {
+    o.reminder = { pick: is(HHMM_RE, r.pick) ? r.pick : r.time, time: is(HHMM_RE, r.time) ? r.time : r.pick, at: num(r.at) };
   }
-  for (const [p, d] of Object.entries(obj(x.examDates))) if (PART_RE.test(p) && DATE_RE.test(d)) o.examDates[p] = d;
+  for (const [p, d] of Object.entries(obj(x.examDates))) if (ownPart(p) && is(DATE_RE, d)) o.examDates[p] = d;
   // An exam in progress comes only from this phone's own saves, never from a backup.
   if (keepRun && x.examRun && typeof x.examRun === "object") o.examRun = x.examRun;
   return o;
@@ -420,7 +426,7 @@ function elLine(p, r) {
 }
 /* ---------- exam day: a date per part, counted down on Today and Exam ---------- */
 const WINDOW_END = "2027-02-28"; /* the July 1, 2026 to February 28, 2027 testing window */
-const examDate = p => (state.examDates || {})[p] || "";
+const examDate = p => (state.examDates && Object.hasOwn(state.examDates, p) && typeof state.examDates[p] === "string" ? state.examDates[p] : "");
 function daysTo(iso) { const [y, m, d] = iso.split("-").map(Number), now = new Date(); now.setHours(0, 0, 0, 0); return Math.round((new Date(y, m - 1, d) - now) / 864e5); }
 const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, o || { month: "short", day: "numeric" }); };
 const bestSim = p => { const s = state.exams.filter(e => String(e.part) === String(p)).map(e => e.score); return s.length ? Math.max(...s) : null; };
