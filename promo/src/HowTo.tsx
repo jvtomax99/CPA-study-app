@@ -3,8 +3,12 @@ import {AbsoluteFill, Audio, Easing, Img, Sequence, continueRender, delayRender,
 import {C, FONT, FadeIn, IW, SW, Shot} from './Phone';
 import {ChromeSteps, HomeScreen, SafariSteps} from './Mocks';
 import {Backdrop, Buddy, Burst, CYAN, GhostText, Headline, Kicker, MusicBed, Neon, PINK, Phone3D, Pop, PopCard, Sfx, Sweep, WhipIn, WordSubs, clamp} from './Fx';
-import {SCENES, Scene, TOTAL} from './timeline';
-import layout from './layout.json';
+import {SCENES, Scene, TOTAL, VOICE_DIR} from './timeline';
+import layoutEn from './layout.json';
+import layoutJa from './layout-ja.json';
+import {JA, T} from './lang';
+
+const layout = JA ? layoutJa : layoutEn;
 
 // Positions measured from the app by tools/capture.cjs, in screenshot pixels: [x, y, w, h].
 type R = number[];
@@ -20,6 +24,13 @@ new FontFace('Inter', `url(${staticFile('fonts/inter-latin-var.woff2')})`, {weig
   .load()
   .then((f) => { document.fonts.add(f); continueRender(fontHandle); })
   .catch(() => continueRender(fontHandle));
+// Japanese: Noto Sans JP (OFL) from public/fonts, fetched by tools/jpfont.sh (not committed: 5.7 MB a weight)
+if (JA) {
+  const jp = delayRender('Noto Sans JP');
+  Promise.all(['700Bold', '900Black'].map((w) => new FontFace('Noto Sans JP', `url(${staticFile(`fonts/NotoSansJP_${w}.ttf`)})`, {weight: w.slice(0, 3)}).load()))
+    .then((fs) => { fs.forEach((f) => document.fonts.add(f)); continueRender(jp); })
+    .catch(() => continueRender(jp));
+}
 
 /** Line i's start in the scene, plus `sec` seconds; and its end. */
 const at = (s: Scene, i: number, sec = 0) => s.lines[i].start + Math.round(sec * 30);
@@ -52,7 +63,7 @@ const ORDER = Object.keys(HEAD);
 
 /** A phone scene: city behind, headline, phone in 3D with its screen, floating cards, the buddy. */
 const PhoneScene: React.FC<{s: Scene; bg?: string; ghost?: string; pops?: Pop[]; hops?: number[]; children: React.ReactNode; color?: string}> = ({s, bg, ghost, pops = [], hops = [], children, color}) => {
-  const [a, b] = HEAD[s.id];
+  const [a, b] = HEAD[s.id].map(T);
   return (
     <AbsoluteFill>
       <Backdrop src={bg} />
@@ -99,7 +110,7 @@ const Intro: React.FC<{s: Scene}> = () => {
       <Burst at={53} x={cx} y={cy} n={22} />
       <div style={{position: 'absolute', left: 0, right: 0, top: 1240, textAlign: 'center', opacity: title, transform: `translateY(${(1 - title) * 40}px)`}}>
         <Neon color={C.amber} size={104}>Above the Line</Neon>
-        <Kicker text="How to use it" at={74} style={{marginTop: 34}} />
+        <Kicker text={T("How to use it")} at={74} style={{marginTop: 34}} />
       </div>
       <AbsoluteFill style={{background: '#fff', opacity: flash}} />
       <Sfx at={2} name="whoosh" volume={0.5} />
@@ -125,36 +136,36 @@ const Hook: React.FC<{s: Scene}> = ({s}) => {
       <GhostText text={phase === 2 ? '7 days' : 'Home Screen'} top={300} color={phase === 2 ? 'rgba(255,79,123,0.1)' : 'rgba(255,255,255,0.07)'} />
       {phase === 0 && (
         <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', gap: 40, paddingBottom: 300}}>
-          <Kicker text="The most important step" at={4} />
-          <div style={{transform: `scale(${pop(20)})`}}><Neon color={C.amber} size={150}>Home</Neon></div>
-          <div style={{transform: `scale(${pop(30)})`}}><Neon color={C.amber} size={150}>Screen.</Neon></div>
+          <Kicker text={T("The most important step")} at={4} />
+          <div style={{transform: `scale(${pop(20)})`}}><Neon color={C.amber} size={150}>{T("Home")}</Neon></div>
+          <div style={{transform: `scale(${pop(30)})`}}><Neon color={C.amber} size={150}>{T("Screen.")}</Neon></div>
         </AbsoluteFill>
       )}
       {phase === 1 && (
         <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', gap: 30, paddingBottom: 300}}>
-          <Kicker text="Your progress lives" at={l1} />
-          <div style={{transform: `scale(${pop(l1 + 14)})`}}><Neon color={CYAN} size={130}>On This Phone.</Neon></div>
-          <div style={{opacity: interpolate(frame, [l1 + 40, l1 + 50], [0, 1], clamp)}}><Neon color={CYAN} size={70} style={{opacity: 0.85}}>No account. No cloud.</Neon></div>
+          <Kicker text={T("Your progress lives")} at={l1} />
+          <div style={{transform: `scale(${pop(l1 + 14)})`}}><Neon color={CYAN} size={130}>{T("On This Phone.")}</Neon></div>
+          <div style={{opacity: interpolate(frame, [l1 + 40, l1 + 50], [0, 1], clamp)}}><Neon color={CYAN} size={70} style={{opacity: 0.85}}>{T('No account. No cloud.')}</Neon></div>
         </AbsoluteFill>
       )}
       {phase === 2 && (
         <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', gap: 20, paddingBottom: 300}}>
-          <Kicker text="Safari can erase it in" at={l2} color={PINK} />
+          <Kicker text={T("Safari can erase it in")} at={l2} color={PINK} />
           <div style={{position: 'relative'}}>
             <Neon color={PINK} size={300}>{count}</Neon>
             <div style={{position: 'absolute', left: -60, right: -60, top: '48%', height: 22, background: PINK, borderRadius: 11, boxShadow: `0 0 30px ${PINK}`, transformOrigin: 'left', transform: `scaleX(${strike}) rotate(-8deg)`}} />
           </div>
-          <Neon color={PINK} size={90}>{count === 1 ? 'Day' : 'Days'}</Neon>
-          {strike > 0.5 && <div style={{marginTop: 30, transform: `scale(${pop(l2 + 106)}) rotate(-3deg)`, background: PINK, color: '#fff', fontFamily: FONT, fontWeight: 900, fontSize: 56, padding: '18px 40px', borderRadius: 40, boxShadow: `0 0 40px ${PINK}`}}>Progress Erased.</div>}
+          <Neon color={PINK} size={90}>{T(count === 1 ? 'Day' : 'Days')}</Neon>
+          {strike > 0.5 && <div style={{marginTop: 30, transform: `scale(${pop(l2 + 106)}) rotate(-3deg)`, background: PINK, color: '#fff', fontFamily: FONT, fontWeight: 900, fontSize: 56, padding: '18px 40px', borderRadius: 40, boxShadow: `0 0 40px ${PINK}`}}>{T('Progress Erased.')}</div>}
         </AbsoluteFill>
       )}
       {phase === 3 && (
         <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', gap: 40, paddingBottom: 300}}>
-          <Kicker text="Unless it's on your" at={keep} color="#7dffb0" />
+          <Kicker text={T("Unless it's on your")} at={keep} color="#7dffb0" />
           <div style={{width: 300, height: 300, transform: `scale(${pop(keep + 8)})`}}>
             <Img src={staticFile('icons/icon-512.png')} style={{width: 300, height: 300, borderRadius: 68, boxShadow: '0 0 70px #3ddc84'}} />
           </div>
-          <div style={{transform: `scale(${pop(keep + 16)})`}}><Neon color="#3ddc84" size={130}>Home Screen.</Neon></div>
+          <div style={{transform: `scale(${pop(keep + 16)})`}}><Neon color="#3ddc84" size={JA ? 110 : 130}>{T("Home Screen.")}</Neon></div>
           <Burst at={keep + 8} x={540} y={760} color="#7dffb0" />
         </AbsoluteFill>
       )}
@@ -183,8 +194,8 @@ const Outro: React.FC<{s: Scene}> = ({s}) => {
       </div>
       <Burst at={6} x={540} y={460} n={24} />
       <div style={{position: 'absolute', left: 70, right: 70, top: 1000, textAlign: 'center'}}>
-        <Neon color={C.amber} size={96} style={{opacity: p}}>Add It to Your Home Screen.</Neon>
-        <div style={{marginTop: 40, display: 'inline-block', background: C.amber, color: '#140c00', fontFamily: FONT, fontWeight: 900, fontSize: 64, padding: '12px 30px', borderRadius: 14, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)`, boxShadow: `0 0 40px ${C.amber}88`}}>Always Open It There.</div>
+        <Neon color={C.amber} size={96} style={{opacity: p}}>{T('Add It to Your Home Screen.')}</Neon>
+        <div style={{marginTop: 40, display: 'inline-block', background: C.amber, color: '#140c00', fontFamily: FONT, fontWeight: 900, fontSize: 64, padding: '12px 30px', borderRadius: 14, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)`, boxShadow: `0 0 40px ${C.amber}88`}}>{T('Always Open It There.')}</div>
         <div style={{marginTop: 50, opacity: l2}}><span style={{fontFamily: '"DejaVu Sans Mono", monospace', fontSize: 36, color: '#fff', background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.3)', padding: '12px 26px', borderRadius: 40}}>jvtomax99.github.io/CPA-study-app</span></div>
       </div>
       <Buddy enter={at(s, 0, 3.4)} hops={[at(s, 0, 4.2)]} x={850} y={1450} h={250} />
@@ -241,7 +252,7 @@ function Visual({s}: {s: Scene}) {
       );
     case 'today':
       return (
-        <PhoneScene s={s} ghost="Hello Alex" hops={[at(s, 0, 1.6), end(s, 0, -0.6), at(s, 2, 0.6)]}
+        <PhoneScene s={s} ghost={JA ? "Hello Ken" : "Hello Alex"} hops={[at(s, 0, 1.6), end(s, 0, -0.6), at(s, 2, 0.6)]}
           pops={[{at: at(s, 1, 1.0), to: at(s, 2), src: 'greet', x: G.ready[0], y: G.ready[1], w: 460, h: G.ready[3], dx: 280, dy: -40, scale: 1.6},
                  {at: at(s, 1, 2.6), to: at(s, 2), src: 'greet', x: G.pills[0] + 30, y: G.pills[1], w: 480, h: G.pills[3], dx: 240, dy: 40, scale: 1.4}]}>
           <Shot src="greet" cams={[{at: 0}, {at: at(s, 1, 0.4), x: 390, y: mid(G.card).y - 80, z: 1.3}, {at: at(s, 2, -0.2)}]}
@@ -335,12 +346,12 @@ const IconCallouts: React.FC<{s: Scene}> = ({s}) => {
   const frame = useCurrentFrame();
   const show = (from: number, to: number) => interpolate(frame, [from, from + 10, to - 8, to], [0, 1, 1, 0], clamp);
   const a = show(at(s, 1), at(s, 2)), b = show(at(s, 2), 99999);
-  const pill = (t: string, bg = '#fff', color = C.ink) => <div style={{background: bg, color, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center', fontFamily: FONT}}>{t}</div>;
+  const pill = (t: string, bg = '#fff', color = C.ink) => <div style={{background: bg, color, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center', fontFamily: FONT}}>{T(t)}</div>;
   return (
     <>
       {a > 0 && <AbsoluteFill style={{background: `rgba(10,12,30,${0.6 * a})`, opacity: a, padding: '360px 30px 0'}}>
         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18}}>{pill('Safari')}{pill('Home Screen app')}</div>
-        <div style={{textAlign: 'center', color: PINK, fontSize: 40, fontWeight: 900, margin: '18px 0', fontFamily: FONT}}>≠ separate progress</div>
+        <div style={{textAlign: 'center', color: PINK, fontSize: 40, fontWeight: 900, margin: '18px 0', fontFamily: FONT}}>{T('≠ separate progress')}</div>
         {pill('Study in one place', C.amber, '#140c00')}
       </AbsoluteFill>}
       {b > 0 && <AbsoluteFill style={{background: `rgba(10,12,30,${0.6 * b})`, opacity: b, padding: '330px 30px 0', display: 'grid', alignContent: 'start', gap: 18}}>
@@ -360,12 +371,12 @@ const SpacingCallout: React.FC<{s: Scene}> = ({s}) => {
   const o = interpolate(frame, [w, w + 10], [0, 1], clamp);
   return (
     <AbsoluteFill style={{background: `rgba(10,12,30,${0.6 * o})`, opacity: o, padding: '300px 30px 0', display: 'grid', alignContent: 'start', gap: 22, fontFamily: FONT}}>
-      <div style={{background: '#fbe9ec', color: C.bad, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center'}}>Wrong: back in 5 minutes</div>
-      {frame >= r && <div style={{background: '#e3f3ea', color: C.good, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center'}}>Right: it waits longer each time</div>}
+      <div style={{background: '#fbe9ec', color: C.bad, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center'}}>{T('Wrong: back in 5 minutes')}</div>
+      {frame >= r && <div style={{background: '#e3f3ea', color: C.good, borderRadius: 26, padding: '22px 26px', fontSize: 32, fontWeight: 800, textAlign: 'center'}}>{T('Right: it waits longer each time')}</div>}
       <div style={{display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center'}}>
         {steps.map((x, i) => {
           const p = interpolate(frame, [r + 12 + i * 9, r + 20 + i * 9], [0, 1], clamp);
-          return <div key={x} style={{opacity: p, transform: `scale(${0.6 + 0.4 * p})`, background: C.amber, color: '#2b1a03', borderRadius: 20, padding: '14px 20px', fontSize: 30, fontWeight: 900, boxShadow: `0 0 ${20 * p}px ${C.amber}`}}>{x}</div>;
+          return <div key={x} style={{opacity: p, transform: `scale(${0.6 + 0.4 * p})`, background: C.amber, color: '#2b1a03', borderRadius: 20, padding: '14px 20px', fontSize: 30, fontWeight: 900, boxShadow: `0 0 ${20 * p}px ${C.amber}`}}>{T(x)}</div>;
         })}
       </div>
       {steps.map((_, i) => <Sfx key={i} at={r + 12 + i * 9} name="tick" volume={0.35} />)}
@@ -387,7 +398,7 @@ export const HowTo: React.FC = () => {
           {s.lines.map((l, i) => (
             <React.Fragment key={l.file}>
               <Sequence from={l.start} durationInFrames={l.dur + 2} name={l.file} layout="none">
-                <Audio src={staticFile(`voice/${l.file}`)} />
+                <Audio src={staticFile(`${VOICE_DIR}/${l.file}`)} />
               </Sequence>
               <Sequence from={l.start - 3} durationInFrames={(s.lines[i + 1]?.start ?? s.dur) - l.start + 3} layout="none">
                 <WordSubs text={l.text} start={3} dur={l.dur} />

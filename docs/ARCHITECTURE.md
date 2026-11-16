@@ -46,6 +46,8 @@ fonts are in `fonts/`: the page asks no outside server for anything.
 |---|---|---|
 | `index.html` | 5,193 | Built page (1.6 MB). Never edit by hand |
 | `src/questions.json` | 18,146 | The bank: 972 questions |
+| `src/i18n.js` | 41 | Interface language: `LANG`, `t()`, `tn()`, the More switch; runs before every other script |
+| `src/i18n-ja.js` | 365 | The Japanese for each English interface text (`window.__JA`) |
 | `src/app.js` | 1,039 | Banks per mode, state, drill, summaries, exam sim, More, backup |
 | `src/town.js` | 1,330 | The 3D city (`window.Town`), a module script |
 | `src/tsq-map.json` | 1 (74 KB) | The real Times Square, made by `tools/tsq_map.py` |
@@ -58,6 +60,7 @@ fonts are in `fonts/`: the page asks no outside server for anything.
 | `tools/build.py` | 58 | Builds `index.html` from `src/` |
 | `tools/smoke.js` | 190 | Headless test; run after building |
 | `tools/tsq_map.py` | 113 | OpenStreetMap download to `src/tsq-map.json` |
+| `tools/i18n_check.py` | 39 | Checks every interface text has its Japanese, with the same placeholders |
 | `tools/abbrev.py` | 262 | Checks abbreviations are spelled out (`--fix`) |
 | `tools/blender/towers.py` | 237 | Tower models (`pip install bpy==5.2.3`) |
 | `tools/blender/intro_plate.py` | 536 | The Tap to Start render |
@@ -88,7 +91,8 @@ fonts are in `fonts/`: the page asks no outside server for anything.
    At the first answer after the app opens, `askToKeep()` asks the phone to keep
    this data when space runs low (`navigator.storage.persist`); it may refuse.
 3. **Other localStorage keys.** `eaTaxTown.gfx` (town graphics level, kept 7 days),
-   `eaTaxTown.sound`, `eaTaxTown.music`, `eaTaxTown.introProg`. `shell.html` removes
+   `eaTaxTown.sound`, `eaTaxTown.music`, `eaTaxTown.introProg`, `eaTaxTown.lang` ("en" or "ja";
+   unset means the phone's language decides). `shell.html` removes
    the old `eaTaxTown.intro` at start.
 4. **3D city.** `app.js` drives `window.Town`: `mount`, `update` (mode, mastery per
    area, reviews due, part), `highlight`, `setSky`, `setView`, `fullscreen`,
@@ -101,3 +105,12 @@ fonts are in `fonts/`: the page asks no outside server for anything.
 6. **Questions are made** from `docs/writer-brief*.md` and checked with
    `docs/checker-brief*.md`, against `docs/outline-part1.md` and
    `docs/outline-part23.md`.
+7. **Interface language** (2026-11-16). `src/i18n.js` runs first and sets `LANG` ("en" or "ja": the
+   More switch, else the phone's language), `LOC` (date format) and `<html lang>`. Every interface text
+   in `app.js`, `mascot.js`, `intro.js` and `town.js` goes through `t("English text", { vars })`; the
+   English is the key, and `src/i18n-ja.js` holds its Japanese. Static text in `shell.html` is marked
+   `data-t`, `data-th` (has a link) or `data-ta` (aria-label). Never translated: question data, area
+   names and short names, part and section names, the quote of the day, and words drawn into the 3D
+   town, the ride and the film. Switching language reloads the page with `?intro=0` and reopens More.
+   `python3 tools/i18n_check.py` fails on a text with no Japanese; a new interface text needs `t()`
+   and an entry in `i18n-ja.js`. Watch the guide opens `media/how-to-use-ja.mp4` in Japanese.

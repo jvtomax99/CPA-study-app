@@ -166,17 +166,17 @@ function useExam(x) {
 function indexById() { byId = Object.fromEntries((isCpa() ? BANK.filter(q => q.part === state.part) : BANK).map(q => [q.id, q])); }
 function setPart(p) { state.part = String(p); if (isCpa()) indexById(); }
 /* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
-function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
+function examSwitch() { return `<span class="exsw" role="group" aria-label="${t("Exam")}"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
 function drawSignage() {
   const title = "Above the Line", lines = document.querySelector(".appbar .lines");
   if (!lines) return;
   document.body.classList.toggle("cpa", isCpa());
   document.querySelector(".appbar h1").textContent = title;
-  lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">Tax Year 2025</span>`);
+  lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">${t("Tax Year 2025")}</span>`);
   document.querySelector(".tb-brand").innerHTML = `${title}<div class="tb-sw">${examSwitch()}</div>`;
   const f = document.querySelector("#footnote");
-  f.textContent = isCpa() ? "CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it."
-    : "Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.";
+  f.textContent = isCpa() ? t("CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it.")
+    : t("Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.");
   document.querySelectorAll(".exsw button").forEach(b => b.onclick = () => { if (b.dataset.ex === state.exam) return; useExam(b.dataset.ex); tsView = false; save(); updateFlagDot(); if (view === "more") renderMore(); else renderHome(); });
 }
 /* an exam sim in progress belongs to the exam it was started in */
@@ -192,6 +192,10 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;"
 const st = id => state.items[id] || { box: 0, due: 0, seen: 0, right: 0, last: 0, flag: false, note: "" };
 function setSt(id, p) { state.items[id] = Object.assign(st(id), p); save(); }
 const pct = x => Math.round(x * 100);
+/* an area's building, as "the Bank" (plain), "Bank" (bare) or "The Bank" (cap); in Japanese, its translation */
+const bldName = (D, how) => LANG === "ja" ? t(D.bld) : how === "bare" ? D.bld.replace(/^the /, "") : how === "cap" ? D.bld.replace(/^the /, "The ") : D.bld;
+/* the how-to video in the interface language (made in promo/) */
+const GUIDE = LANG === "ja" ? "media/how-to-use-ja" : "media/how-to-use";
 
 /* ---------- numbers ---------- */
 function inBank(d) { return BANK.filter(q => q.domain === d && !st(q.id).flag); }
@@ -271,7 +275,7 @@ function pickNext(domain, part, exclude) {
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600); }
 /* ---------- backup files ---------- */
 function backupAge() { return state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / DAY) : null; }
-function backupLine() { const a = backupAge(); return a == null ? "No backup file saved yet." : a === 0 ? "Last backup file: today." : a === 1 ? "Last backup file: yesterday." : `Last backup file: ${a} days ago.`; }
+function backupLine() { const a = backupAge(); return a == null ? t("No backup file saved yet.") : a === 0 ? t("Last backup file: today.") : a === 1 ? t("Last backup file: yesterday.") : t("Last backup file: {n} days ago.", { n: a }); }
 function backupDue() { return state.log.length >= 10 && (backupAge() == null || backupAge() >= 7); }
 async function saveBackupFile() {
   const now = Date.now(), name = `ea-ledger-progress-${new Date(now).toISOString().slice(0, 10)}.json`;
@@ -279,13 +283,13 @@ async function saveBackupFile() {
   let done = false;
   try {
     const file = new File([data], name, { type: "application/json" });
-    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Above the Line backup" }); done = true; }
+    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: t("Above the Line backup") }); done = true; }
   } catch (e) { if (e && e.name === "AbortError") return false; }
   if (!done) {
     try { const url = URL.createObjectURL(new Blob([data], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); done = true; } catch (e) {}
   }
-  if (done) { state.lastBackup = now; save(); toast("Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email."); }
-  else toast("Couldn't save a file here. Use Copy backup instead.");
+  if (done) { state.lastBackup = now; save(); toast(t("Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email.")); }
+  else toast(t("Couldn't save a file here. Use Copy backup instead."));
   return done;
 }
 function readBackup(text) {
@@ -294,8 +298,8 @@ function readBackup(text) {
   return { state: tidy(s, false), savedAt: num((o && o.savedAt) || s.lastBackup) };
 }
 async function copyText(text, fb) {
-  try { await navigator.clipboard.writeText(text); toast("Copied."); }
-  catch (e) { if (fb) { fb.hidden = false; fb.value = text; fb.select(); } toast("Couldn't copy automatically. The text is selected below."); }
+  try { await navigator.clipboard.writeText(text); toast(t("Copied.")); }
+  catch (e) { if (fb) { fb.hidden = false; fb.value = text; fb.select(); } toast(t("Couldn't copy automatically. The text is selected below.")); }
 }
 function ring(done, goal) {
   const f = Math.min(1, done / Math.max(goal, 1)), r = 12, c = 2 * Math.PI * r;
@@ -320,7 +324,7 @@ function pushTown() {
   const data = townData(); data.sky = skyNow(); data.view = tsView ? "ts" : "part";
   { const p = state.part, g = gap(p); data.hud = { part: p, ready: pct(readiness(p)), due: dueIn(q => String(q.part) === p), streak: streak(), today: todayCount(), goal: state.goal, gap: g && g.m < 0.999 ? DOMAINS[g.d].short : "" }; }
   const finished = Object.keys(DOMAINS).filter(d => (state.shown[d] ?? 1) < 0.999 && data.mastery[d] >= 0.999);
-  if (finished.length) setTimeout(() => toast(finished.length > 1 ? `${finished.length} buildings finished. Their flags are up.` : `You finished ${DOMAINS[finished[0]].bld}. ${DOMAINS[finished[0]].name} is fully mastered.`), 1800);
+  if (finished.length) setTimeout(() => toast(finished.length > 1 ? t("{n} buildings finished. Their flags are up.", { n: finished.length }) : t("You finished {bld}. {name} is fully mastered.", { bld: bldName(DOMAINS[finished[0]]), name: DOMAINS[finished[0]].name })), 1800);
   window.__townData = data;
   if (window.Town && window.Town.ready) window.Town.update(data);
   state.shown = Object.assign({}, data.mastery); save();
@@ -385,18 +389,18 @@ function stripMap(p, focus) {
   const rows = partDomains(p).map(d => {
     const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = D.w ? D.w.replace(/%$/, "") : Math.round(D.n / 85 * 100);
     const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : bldSvg(d, m);
-    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : "Not started"}</span></span>`;
-    const where = `<span class="hood">${esc(D.bld.replace(/^the /, ""))}</span><span>${share}% of exam</span>${due ? `<b>${due} due</b>` : ""}`;
+    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : t("Not started")}</span></span>`;
+    const where = `<span class="hood">${esc(bldName(D, "bare"))}</span><span>${t("{n}% of exam", { n: share })}</span>${due ? `<b>${t("{n} due", { n: due })}</b>` : ""}`;
     if (d === focus) return `<div class="srow"><span class="sdot"></span><div class="sbox">
-      <div class="shd">${routeBullet(ROUTE[d])}<span>Next stop</span></div>
+      <div class="shd">${routeBullet(ROUTE[d])}<span>${t("Next stop")}</span></div>
       <div class="snm">${esc(D.name)}</div><div class="swhere">${where}</div>${prog}
-      <button class="sgo" data-drill="${d}">Practice <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
+      <button class="sgo" data-drill="${d}">${t("Practice")} <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
       <span class="sart" aria-hidden="true">${art}</span></div></div>`;
-    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="Practice ${esc(D.name)}, ${pct(m)}% mastered"><span class="sdot"></span>
+    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="${t("Practice {name}, {n}% mastered", { name: esc(D.name), n: pct(m) })}"><span class="sdot"></span>
       <span class="stxt"><span class="snm">${esc(D.name)}</span><span class="swhere">${routeBullet(ROUTE[d])}${where}</span>${prog}</span>
       <span class="sart" aria-hidden="true">${art}</span></button>`;
   }).join("");
-  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${RIVER[p]}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
+  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${t(RIVER[p])}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
 }
 /* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
 /* CPA sections take the colors of their section signs: REG A C E blue, FAR G green, AUD B D F M orange, TCP N Q R W yellow */
@@ -421,41 +425,41 @@ function elCar(p, lead) {
 function elLine(p, r) {
   const at = Math.min(1, Math.max(0, r || 0)).toFixed(3);
   return `<div class="el${skyNow() === "day" ? " day" : ""}" aria-hidden="true"><div class="el-cols"><i></i></div><div class="el-deck"><i></i></div>
-    <div class="el-sign"><b>EXAM READY</b><i></i></div>
+    <div class="el-sign"><b>${t("EXAM READY")}</b><i></i></div>
     <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
 }
 /* ---------- exam day: a date per part, counted down on Today and Exam ---------- */
 const WINDOW_END = "2027-02-28"; /* the July 1, 2026 to February 28, 2027 testing window */
 const examDate = p => (state.examDates && Object.hasOwn(state.examDates, p) && typeof state.examDates[p] === "string" ? state.examDates[p] : "");
 function daysTo(iso) { const [y, m, d] = iso.split("-").map(Number), now = new Date(); now.setHours(0, 0, 0, 0); return Math.round((new Date(y, m - 1, d) - now) / 864e5); }
-const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, o || { month: "short", day: "numeric" }); };
+const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(LOC, o || { month: "short", day: "numeric" }); };
 const bestSim = p => { const s = state.exams.filter(e => String(e.part) === String(p)).map(e => e.score); return s.length ? Math.max(...s) : null; };
 function countPill(p) {
   const iso = examDate(p); if (!iso) return "";
   const d = daysTo(iso);
   if (d < 0) return "";
-  return `<div class="countpill">${d === 0 ? `<b>Exam day</b> Good luck on ${PL(p)}` : `<b>${d}</b> day${d === 1 ? "" : "s"} to ${PL(p)} <span>· ${fmtDay(iso)}</span>`}</div>`;
+  return `<div class="countpill">${d === 0 ? t("<b>Exam day</b> Good luck on {p}", { p: PL(p) }) : `${tn(d, "<b>{n}</b> day to {p}", "<b>{n}</b> days to {p}", { p: PL(p) })} <span>· ${fmtDay(iso)}</span>`}</div>`;
 }
 function examDayCard(p) {
   const iso = examDate(p), d = iso ? daysTo(iso) : null;
-  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">Set your ${PL(p)} date to count down to it.</p>`
-    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">${PL(p)} was on ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric" })}. Set your next date.</p>`
-    : `<div class="ed-days">${d === 0 ? "Today" : d}${d === 0 ? "" : `<span>day${d === 1 ? "" : "s"}</span>`}</div>
-      <div class="muted small">${PL(p)} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${isCpa() ? (d === 0 ? " · good luck" : "") : iso > WINDOW_END ? ` · <b class="ed-warn">after the window closes Feb 28</b>` : d === 0 ? " · good luck" : " · the window closes Feb 28"}</div>`;
-  return `<section class="card pad examday"><div class="ed-top"><div><h2>Exam day</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? "Change" : "Set date"}</button></div>
+  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">${t("Set your {p} date to count down to it.", { p: PL(p) })}</p>`
+    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">${t("{p} was on {date}. Set your next date.", { p: PL(p), date: fmtDay(iso, { weekday: "short", month: "short", day: "numeric" }) })}</p>`
+    : `<div class="ed-days">${d === 0 ? t("Today") : d}${d === 0 ? "" : `<span>${tn(d, "day", "days")}</span>`}</div>
+      <div class="muted small">${PL(p)} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${isCpa() ? (d === 0 ? t(" · good luck") : "") : iso > WINDOW_END ? ` · <b class="ed-warn">${t("after the window closes Feb 28")}</b>` : d === 0 ? t(" · good luck") : t(" · the window closes Feb 28")}</div>`;
+  return `<section class="card pad examday"><div class="ed-top"><div><h2>${t("Exam day")}</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? t("Change") : t("Set date")}</button></div>
     <div class="ed-parts">${partKeys().map(n => { const r = readiness(String(n)), b = bestSim(n), di = examDate(String(n));
-      return !isLive(n) ? `<div class="ed-row off">${partSign(n)}<span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="ed-sub">Not in the app yet</span></span></div>` : `<button class="ed-row" type="button" data-setdate="${n}" aria-label="${PL(n)}, ${PARTS[n]}: ${pct(r)}% ready${di ? ", exam " + fmtDay(di) : ", no date set"}">${partSign(n)}
-        <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : "No date"}${b != null ? ` · best sim ${pct(b)}%` : ""}</span></span>
+      return !isLive(n) ? `<div class="ed-row off">${partSign(n)}<span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="ed-sub">${t("Not in the app yet")}</span></span></div>` : `<button class="ed-row" type="button" data-setdate="${n}" aria-label="${t("{p}, {name}: {n}% ready", { p: PL(n), name: PARTS[n], n: pct(r) })}${di ? t(", exam {date}", { date: fmtDay(di) }) : t(", no date set")}">${partSign(n)}
+        <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : t("No date")}${b != null ? t(" · best sim {n}%", { n: pct(b) }) : ""}</span></span>
         <span class="ed-num">${pct(r)}%</span></button>`; }).join("")}</div></section>`;
 }
 function askExamDate(p) {
   const iso = examDate(p), today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="${PL(p)} exam date"><div class="grab"></div>
-    <h3>When is your ${PL(p)} exam?</h3>
-    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="${PL(p)} exam date">
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="${t("{p} exam date", { p: PL(p) })}"><div class="grab"></div>
+    <h3>${t("When is your {p} exam?", { p: PL(p) })}</h3>
+    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="${t("{p} exam date", { p: PL(p) })}">
     <p class="hint" id="datewarn" style="margin:0"></p>
-    <div class="row"><button class="btn primary" type="submit">Save</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">Clear date</button>` : ""}<button class="btn ghost" type="button" id="datecancel">Cancel</button></div></form></div>`;
-  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = isCpa() ? "Pick the date on your Prometric appointment." : v && v > WINDOW_END ? "That's after the window closes on February 28, 2027. Check the date with PSI." : "The current testing window closes February 28, 2027."; };
+    <div class="row"><button class="btn primary" type="submit">${t("Save")}</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">${t("Clear date")}</button>` : ""}<button class="btn ghost" type="button" id="datecancel">${t("Cancel")}</button></div></form></div>`;
+  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = isCpa() ? t("Pick the date on your Prometric appointment.") : v && v > WINDOW_END ? t("That's after the window closes on February 28, 2027. Check the date with PSI.") : t("The current testing window closes February 28, 2027."); };
   $("#datein").oninput = warn; warn();
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#datecancel").onclick = closeLayer;
@@ -487,31 +491,31 @@ function renderHome() {
   /* Day one: nothing answered yet, so the card names the first stop instead of a row of zeros, and Play starts that area */
   const firstRide = !BANK.some(q => st(q.id).seen), next = g && g.m < 0.999 ? g.d : null;
   const heroTop = firstRide && next
-    ? `<div class="eyebrow">Your first stop</div>
+    ? `<div class="eyebrow">${t("Your first stop")}</div>
       <div class="first">${routeBullet(ROUTE[next])}<div><div class="first-nm">${esc(DOMAINS[next].name)}</div>
-        <div class="first-sub">${esc(DOMAINS[next].bld.replace(/^the /, "The "))} · ${DOMAINS[next].w || Math.round(DOMAINS[next].n / 85 * 100) + "%"} of exam · ${inBank(next).length} questions</div></div></div>`
-    : `<div class="eyebrow">Your tax city</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for ${PL(p)}</div></div>
-      <div class="next-line">${next ? `<b>Next stop</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : `Every building in ${PL(p)} is finished. Keep reviews up to date.`}</div>`;
-  const pills = [dueP ? `${ICON.clock}${dueP} due` : "", done ? `${ICON.goal}${done}/${state.goal} today` : ""].filter(Boolean);
+        <div class="first-sub">${esc(bldName(DOMAINS[next], "cap"))} · ${t("{n} of exam", { n: DOMAINS[next].w || Math.round(DOMAINS[next].n / 85 * 100) + "%" })} · ${t("{n} questions", { n: inBank(next).length })}</div></div></div>`
+    : `<div class="eyebrow">${t("Your tax city")}</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">${t("ready for {p}", { p: PL(p) })}</div></div>
+      <div class="next-line">${next ? `<b>${t("Next stop")}</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : t("Every building in {p} is finished. Keep reviews up to date.", { p: PL(p) })}</div>`;
+  const pills = [dueP ? `${ICON.clock}${t("{n} due", { n: dueP })}` : "", done ? `${ICON.goal}${t("{n}/{goal} today", { n: done, goal: state.goal })}` : ""].filter(Boolean);
   const exams = state.exams.slice(-6);
   $("#app").innerHTML = `<div class="panes" data-tab="${homeTab}">
   <div class="pane pane-today">
-  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : isCpa() ? "★ Future CPA" : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
-  <section class="today-card${night}" aria-label="Today">
+  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${t("{n}-day streak", { n: sk })}` : isCpa() ? t("★ Future CPA") : t("★ Future EA"), extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="${t("Watch the 2-minute how-to video")}"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>${t("How to use")}</button>` })}${elLine(p, r)}</div>` : ""}
+  <section class="today-card${night}" aria-label="${t("Today")}">
     <div class="hero-top">${countPill(p)}${heroTop}</div>
     ${pills.length && !firstRide ? `<div class="pills">${pills.map(x => `<span class="pill">${x}</span>`).join("")}</div>` : ""}
     <div class="hero-cta">
-      <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
-      <button class="cta exam" id="examgo">Exam sim</button>
+      <button class="cta play" id="play">${dueP ? t("Play: {n} due", { n: dueP }) : t("Play")}</button>
+      <button class="cta exam" id="examgo">${t("Exam sim")}</button>
     </div>
   </section>
-  ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
-      <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
-      <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
+  ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>${t("Back up your progress")}</h2>
+      <div class="muted small">${backupLine()} ${t("Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.")}</div>
+      <div class="row"><button class="btn amber" id="homebackup">${t("Save backup file")}</button></div></section>` : ""}
   </div>
   <div class="pane pane-city">
-  <section class="hero${night}" aria-label="Your tax city">
-    <div class="ptabs" role="tablist" aria-label="Exam part">
+  <section class="hero${night}" aria-label="${t("Your tax city")}">
+    <div class="ptabs" role="tablist" aria-label="${t("Exam part")}">
       ${partKeys().map(n => `<button class="ptab${isCpa() ? " sec" : ""}" role="tab"${isLive(n) ? "" : " disabled"} data-part="${n}" aria-selected="${String(n) === p}" aria-label="${PL(n)}, ${PARTS[n]}" style="--lc:${LINE[n]}">${n}</button>`).join("")}
       <span class="pname" aria-hidden="true"><small>${PL(p)}</small>${PARTS[p]}</span>
     </div>
@@ -519,25 +523,25 @@ function renderHome() {
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
-      <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? PL(p) : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stage-msg" id="stagemsg">${t("Building your town…")}</div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="${t("Open the city full screen in 3D")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? PL(p) : t("Times Sq")}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + t("Day") : ICON.moon + t("Dusk")}</button></div>
     </div>
   </section>
   </div>
   <div class="pane pane-map">
-    <div class="partseg" role="group" aria-label="Exam part">${partKeys().map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"${isLive(n) ? "" : " disabled"}>${partSign(n)}${isCpa() ? "" : PL(n)}</button>`).join("")}</div>
-    <div class="spread part-head"><h2>${PL(p)} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
+    <div class="partseg" role="group" aria-label="${t("Exam part")}">${partKeys().map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"${isLive(n) ? "" : " disabled"}>${partSign(n)}${isCpa() ? "" : PL(n)}</button>`).join("")}</div>
+    <div class="spread part-head"><h2>${PL(p)} · ${PARTS[p]}</h2><span class="hint">${t("{n} questions", { n: BANK.filter(q => String(q.part) === p).length })}</span></div>
     ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
   </div>
   <div class="pane pane-exam">
     ${examDayCard(p)}
-    <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
-      <p class="muted small" style="margin:0">${isCpa() ? `A sim is the multiple-choice half of ${p}: ${SIMS[p].mcq} questions in two locked testlets of ${SIMS[p].mcq / 2}, in 2 hours.` : "A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test."}</p>
-      <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
+    <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>${t("Exam sim")}</h2>
+      <p class="muted small" style="margin:0">${isCpa() ? t("A sim is the multiple-choice half of {p}: {n} questions in two locked testlets of {half}, in 2 hours.", { p, n: SIMS[p].mcq, half: SIMS[p].mcq / 2 }) : t("A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.")}</p>
+      <div class="row">${state.examRun ? `<button class="btn amber" id="resume">${t("Resume exam")}</button><button class="btn" id="examnew">${t("New exam sim")}</button>` : `<button class="btn amber" id="examnew">${t("Set up an exam sim")}</button>`}</div>
     </section>
-    <section class="card pad"><h2>Past sims</h2>
-      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>${/^\d$/.test(e.part) ? "P" + e.part : e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
-        : `<p class="muted small" style="margin:8px 0 0">No exam sims yet.</p>`}
+    <section class="card pad"><h2>${t("Past sims")}</h2>
+      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>${/^\d$/.test(e.part) ? "P" + e.part : e.part} · ${new Date(e.t).toLocaleDateString(LOC, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
+        : `<p class="muted small" style="margin:8px 0 0">${t("No exam sims yet.")}</p>`}
     </section>
   </div>
   </div>`;
@@ -545,14 +549,14 @@ function renderHome() {
   const pickPart = n => { setPart(n); tsView = false; save(); renderHome(); };
   $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
-  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
+  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : t("Times Sq"); if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(firstRide ? next : null);
   if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
     const dusk = state.sky === "dusk";
-    $("#skybtn").innerHTML = dusk ? ICON.sun + "Day" : ICON.moon + "Dusk";
+    $("#skybtn").innerHTML = dusk ? ICON.sun + t("Day") : ICON.moon + t("Dusk");
     document.querySelectorAll(".hero, .today-card").forEach(e => e.classList.toggle("night", dusk));
     if ($(".el")) $(".el").classList.toggle("day", !dusk);
     if (window.Town && window.Town.setSky) window.Town.setSky(state.sky);
@@ -570,11 +574,11 @@ function renderHome() {
 /* Asked once, after the first hello: the greeting's name. Changeable in More. */
 function askName() {
   state.nameAsked = true; save();
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="Your name"><div class="grab"></div>
-    <h3>What should your study buddy call you?</h3>
-    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="First name" aria-label="First name">
-    <div class="row"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" id="nameskip">Not now</button></div>
-    <p class="hint" style="margin:0">It stays on this device. Change it any time in More.</p></form></div>`;
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="${t("Your name")}"><div class="grab"></div>
+    <h3>${t("What should your study buddy call you?")}</h3>
+    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="${t("First name")}" aria-label="${t("First name")}">
+    <div class="row"><button class="btn primary" type="submit">${t("Save")}</button><button class="btn ghost" type="button" id="nameskip">${t("Not now")}</button></div>
+    <p class="hint" style="margin:0">${t("It stays on this device. Change it any time in More.")}</p></form></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#nameskip").onclick = closeLayer;
   $("#nameform").onsubmit = e => { e.preventDefault(); const v = $("#namein").value.trim(); closeLayer(); if (v) { state.name = v; save(); renderHome(); } };
@@ -584,13 +588,13 @@ function mountTown() {
   window.__townPick = d => openArea(d);
   pushTown();
   if (window.Town && window.Town.ready) { window.Town.mount(stage); $("#stagemsg").hidden = true; }
-  else if (window.__townFailed) { $("#stagemsg").textContent = "The 3D town couldn't load on this device. Everything else works; your areas are listed below."; }
+  else if (window.__townFailed) { $("#stagemsg").textContent = t("The 3D town couldn't load on this device. Everything else works; your areas are listed below."); }
   else window.__townMountWhenReady = stage;
 }
 window.__townReady = () => {
   if (view === "home" && $("#stage")) { window.Town.mount($("#stage")); window.Town.update(window.__townData); $("#stagemsg").hidden = true; }
 };
-window.__townFail = () => { window.__townFailed = true; const m = $("#stagemsg"); if (m) m.textContent = "The 3D town couldn't load on this device. Everything else works; your areas are listed below."; };
+window.__townFail = () => { window.__townFailed = true; const m = $("#stagemsg"); if (m) m.textContent = t("The 3D town couldn't load on this device. Everything else works; your areas are listed below."); };
 window.__townLabels = () => ({ names: Object.fromEntries(Object.entries(DOMAINS).map(([k, d]) => [k, d.short])) });
 
 function openArea(d) {
@@ -598,10 +602,10 @@ function openArea(d) {
   const solid = inBank(d).filter(q => st(q.id).box >= 3).length;
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="${esc(D.name)}">
     <div class="grab"></div>
-    <div><div class="eyebrow" style="color:var(--ink-soft)">Part ${D.part} · ${esc(D.bld)}</div><h3 style="font-size:20px;margin-top:4px">${esc(D.name)}</h3></div>
-    <div class="stats3"><div><small>Mastered</small><b>${pct(m)}%</b></div><div><small>Right</small><b>${a == null ? "–" : pct(a) + "%"}</b></div><div><small>Due</small><b>${due}</b></div></div>
-    <p class="muted small" style="margin:0">${D.n} of 85 scored questions on the exam come from this area. ${inBank(d).length} questions in the bank, ${solid} answered right three times with spacing.</p>
-    <div class="row"><button class="btn amber" id="sheetgo">Drill ${esc(D.short)}</button><button class="btn ghost" id="sheetx">Close</button></div>
+    <div><div class="eyebrow" style="color:var(--ink-soft)">Part ${D.part} · ${esc(bldName(D))}</div><h3 style="font-size:20px;margin-top:4px">${esc(D.name)}</h3></div>
+    <div class="stats3"><div><small>${t("Mastered")}</small><b>${pct(m)}%</b></div><div><small>${t("Right")}</small><b>${a == null ? "–" : pct(a) + "%"}</b></div><div><small>${t("Due")}</small><b>${due}</b></div></div>
+    <p class="muted small" style="margin:0">${t("{n} of 85 scored questions on the exam come from this area. {b} questions in the bank, {s} answered right three times with spacing.", { n: D.n, b: inBank(d).length, s: solid })}</p>
+    <div class="row"><button class="btn amber" id="sheetgo">${t("Drill {name}", { name: esc(D.short) })}</button><button class="btn ghost" id="sheetx">${t("Close")}</button></div>
   </div></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#sheetx").onclick = closeLayer;
@@ -613,12 +617,12 @@ function openGuide() {
   /* Close sits in a title row that stays pinned at the top of the sheet and pads for the status bar (the Home Screen app
      draws under a translucent one), and the video is sized to the visible screen (dvh) less the safe areas, so Close never
      hides under the status bar or scrolls away */
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app" style="max-height:100vh;max-height:100dvh;overflow-y:auto;padding-top:0">
-    <div class="row" style="position:sticky;top:0;z-index:1;background:var(--paper);padding:calc(12px + env(safe-area-inset-top, 0px)) 0 6px;justify-content:space-between;align-items:center"><h3 style="margin:0">How to use</h3>
-      <button class="btn" id="guideclose" aria-label="Close" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
-    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
-    <span class="hint">Step one: add this app to your Home Screen.</span>
-    <p class="muted small" style="margin:0"><b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="${t("How to use this app")}" style="max-height:100vh;max-height:100dvh;overflow-y:auto;padding-top:0">
+    <div class="row" style="position:sticky;top:0;z-index:1;background:var(--paper);padding:calc(12px + env(safe-area-inset-top, 0px)) 0 6px;justify-content:space-between;align-items:center"><h3 style="margin:0">${t("How to use")}</h3>
+      <button class="btn" id="guideclose" aria-label="${t("Close")}" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
+    <video id="guidevid" src="${GUIDE}.mp4" poster="${GUIDE}.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
+    <span class="hint">${t("Step one: add this app to your Home Screen.")}</span>
+    <p class="muted small" style="margin:0">${t("<b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.")}</p>
   </div></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeGuide(); };
   $("#guideclose").onclick = closeGuide;
@@ -647,23 +651,23 @@ function towerSvg(m, prev) {
   }
   return `<svg class="dtower" viewBox="0 0 48 80" aria-hidden="true"><rect class="spire${m >= 0.999 ? " gold" : ""}" x="22.5" y="3" width="3" height="10" rx="1"/><rect class="body" x="7" y="12" width="34" height="62" rx="1.5"/>${w}<rect class="base" x="2" y="74" width="44" height="3" rx="1"/></svg>`;
 }
-const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
+const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."].map(s => t(s)), CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."].map(s => t(s));
 const pickLine = a => a[Math.floor(Math.random() * a.length)];
 /* Questions whose explanation links to a drawn figure in art/, with the case each one opens on */
 const FIGURES = {
-  "loss-sorter": { title: "Loss sorter", label: "Loss sorter: the basis, at-risk, passive and excess business loss limits in order", link: "See it on the loss sorter" },
-  "basis-order": { title: "Basis order", label: "Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it", link: "See the basis order, step by step" },
+  "loss-sorter": { title: t("Loss sorter"), label: t("Loss sorter: the basis, at-risk, passive and excess business loss limits in order"), link: t("See it on the loss sorter") },
+  "basis-order": { title: t("Basis order"), label: t("Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it"), link: t("See the basis order, step by step") },
 };
 /* What each figure shows, for the Figures card in More */
 const FIGURE_ABOUT = {
-  "loss-sorter": "A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss.",
-  "basis-order": "One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored.",
+  "loss-sorter": t("A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss."),
+  "basis-order": t("One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored."),
 };
 const MACHINE = { "p2d1a-018": [["loss-sorter", 0]], "p2d1b-023": [["loss-sorter", 1], ["basis-order", 1]], "p2d1b-024": [["basis-order", 0], ["loss-sorter", 2]], "p2d2a-006": [["loss-sorter", 3]] };
 function openMachine(fig, n) {
   const f = FIGURES[fig];
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet figsheet" role="dialog" aria-label="${f.title}"><div class="grab"></div>
-    <div class="figbar"><b>${f.title}</b><button class="btn ghost" id="figx" type="button">Close</button></div>
+    <div class="figbar"><b>${f.title}</b><button class="btn ghost" id="figx" type="button">${t("Close")}</button></div>
     <iframe src="art/${fig}.html?case=${n}" title="${f.label}"></iframe></div></div>`;
   $("#figx").onclick = closeLayer;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
@@ -672,13 +676,13 @@ const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,
 function renderDrill() {
   view = "drill";
   const scope = drill.domain ? DOMAINS[drill.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
-  const top = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>`;
+  const top = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>`;
   if (!drill.q) {
-    $("#app").innerHTML = top + `<div class="sheet pad"><p>No questions available in ${esc(scope)}. They may all be flagged.</p></div>`;
+    $("#app").innerHTML = top + `<div class="sheet pad"><p>${t("No questions available in {scope}. They may all be flagged.", { scope: esc(scope) })}</p></div>`;
     $("#back").onclick = leaveDrill; return;
   }
   const q = drill.q, D = DOMAINS[q.domain], answered = drill.picked != null, s = st(q.id);
-  const reason = { review: ["review", "Due for review"], new: ["new", "New question"], ahead: ["", "Reviewing early"] }[drill.reason];
+  const reason = { review: ["review", t("Due for review")], new: ["new", t("New question")], ahead: ["", t("Reviewing early")] }[drill.reason];
   const choices = drill.perm.map((o, i) => {
     let c = "choice";
     if (answered) c += o === q.answer ? " right" : o === drill.picked ? " wrong" : " dim";
@@ -689,23 +693,23 @@ function renderDrill() {
   if (answered) {
     const ok = drill.picked === q.answer, cpa = isCpa() || q.exam === "cpa" ? "" : (q.cpa || []).map(t => CPA[t] || t).join("; ");
     const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
-    const sub = ok && !drill.guessed && drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line;
-    after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? "Right, but a guess" : ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
+    const sub = ok && !drill.guessed && drill.run >= 3 ? t("{n} in a row. Keep going.", { n: drill.run }) : drill.line;
+    after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? t("Right, but a guess") : ok ? t("Correct") : t("Not quite. It's {x}.", { x: "ABCD"[drill.perm.indexOf(q.answer)] })}</b><span>${esc(sub)}</span></div>${delta}</div>
       <p>${figs(esc(q.explain))}</p>${(MACHINE[q.id] || []).map(([fig, n]) => `<button class="machine" type="button" data-fig="${fig}" data-case="${n}">${FIGURES[fig].link} ›</button>`).join("")}
-      <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
-    after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
-        <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
-        <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
-      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">See today's summary</button>` : `<button class="btn primary" id="next">Next question</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="Counts this as a miss, so it comes back soon">I guessed</button>` : ""}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
+      <div class="meta"><span class="mk">${t("Source")}</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">${t("Also counts for CPA")}</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
+    after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">${t("What looks wrong? Jose will see this note.")}</label>
+        <textarea id="flagnote" placeholder="${t("e.g. The 2025 figure is $X per Pub 501")}"></textarea>
+        <div class="row"><button class="btn danger" id="flagsave">${t("Flag this question")}</button><button class="btn ghost" id="flagx">${t("Cancel")}</button></div></div>`
+      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">${t("See today's summary")}</button>` : `<button class="btn primary" id="next">${t("Next question")}</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="${t("Counts this as a miss, so it comes back soon")}">${t("I guessed")}</button>` : ""}<button class="btn ghost" id="flag">${t("Flag as wrong")}</button></div>`;
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
       <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" || q.part === "AUD" || q.part === "FAR" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
-        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
+        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `${t("Mastery")} ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `${t("Mastery")} <b>${pct(mastery(q.domain))}%</b>`}</span></div>
         ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
-      <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
+      <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? t("seen {n}× · {r} right", { n: s.seen, r: s.right }) : ""}</div><p class="qtext">${esc(q.q)}</p></div>
       <div class="choices">${choices}</div>${after}
-    </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.</p>`}`;
+    </article>${answered ? "" : `<p class="hint">${t("Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.")}</p>`}`;
   $("#back").onclick = leaveDrill;
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
@@ -714,7 +718,7 @@ function renderDrill() {
   document.querySelectorAll(".explain .machine").forEach(b => (b.onclick = () => openMachine(b.dataset.fig, Number(b.dataset.case))));
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
-  if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
+  if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast(t("Flagged. It stays out of practice until it's unflagged.")); updateFlagDot(); nextQ(); };
 }
 function answerDrill(i) {
   if (!drill.q || drill.picked != null) return;
@@ -737,7 +741,7 @@ function markGuess() {
   const last = state.log[state.log.length - 1]; if (last && last.id === q.id) state.log.pop();
   record(q, false, "drill"); state.log[state.log.length - 1].g = 1; save();
   drill.guessed = true; drill.mAfter = mastery(q.domain); drill.run = 0;
-  drill.line = "Counted as a miss, so it comes back in 5 minutes.";
+  drill.line = t("Counted as a miss, so it comes back in 5 minutes.");
   if (drill.row) drill.row.g = true;
   renderDrill();
 }
@@ -752,24 +756,24 @@ function renderSession() {
   const mins = Math.max(1, Math.round((Date.now() - S.t) / MIN));
   const scope = S.domain ? DOMAINS[S.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
   const missed = [...new Map(rows.filter(r => !good(r)).map(r => [r.id, r])).values()];
-  const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${list.filter(good).length} of ${list.length}</b><span class="small muted">${pct(list.filter(good).length / list.length)}% right</span></div>` : "";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${t("{n} of {m}", { n: list.filter(good).length, m: list.length })}</b><span class="small muted">${t("{n}% right", { n: pct(list.filter(good).length / list.length) })}</span></div>` : "";
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>
   <section class="card pad" style="display:grid;gap:10px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Session · ${esc(scope)} · ${mins} min</div>
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Session · {scope} · {n} min", { scope: esc(scope), n: mins })}</div>
     <div class="result-big">${pct(right / n)}%</div>
-    <div class="muted">${right} of ${n} right.${guessed ? ` ${guessed} more ${guessed === 1 ? "was a guess, counted as a miss" : "were guesses, counted as misses"}.` : ""}</div>
-    <div class="sessstats">${stat("New questions", fresh)}${stat("Reviews", rev)}</div>
-    ${fresh.length ? `<p class="hint" style="margin:0">Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.</p>` : ""}
+    <div class="muted">${t("{n} of {m} right.", { n: right, m: n })}${guessed ? " " + tn(guessed, "{n} more was a guess, counted as a miss.", "{n} more were guesses, counted as misses.") : ""}</div>
+    <div class="sessstats">${stat(t("New questions"), fresh)}${stat(t("Reviews"), rev)}</div>
+    ${fresh.length ? `<p class="hint" style="margin:0">${t("Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.")}</p>` : ""}
   </section>
-  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>Mastery</h2></div>
-    <table class="res"><thead><tr><th style="padding-left:16px">Area</th><th style="text-align:right">Now</th><th style="text-align:right;padding-right:16px">Change</th></tr></thead>
-    <tbody>${Object.keys(S.m0).sort().map(d => { const dm = (mastery(d) - S.m0[d]) * 100, z = Math.abs(dm) < 0.05; return `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${pct(mastery(d))}%</td><td class="n" style="padding-right:16px;color:${z ? "var(--ink-soft)" : dm > 0 ? "var(--good)" : "var(--bad)"}">${z ? "no change" : (dm > 0 ? "+" : "−") + Math.abs(dm).toFixed(1) + "%"}</td></tr>`; }).join("")}</tbody></table></section>
-  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>Missed or guessed</h2><span class="hint">${missed.length}</span></div>
+  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>${t("Mastery")}</h2></div>
+    <table class="res"><thead><tr><th style="padding-left:16px">${t("Area")}</th><th style="text-align:right">${t("Now")}</th><th style="text-align:right;padding-right:16px">${t("Change")}</th></tr></thead>
+    <tbody>${Object.keys(S.m0).sort().map(d => { const dm = (mastery(d) - S.m0[d]) * 100, z = Math.abs(dm) < 0.05; return `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${pct(mastery(d))}%</td><td class="n" style="padding-right:16px;color:${z ? "var(--ink-soft)" : dm > 0 ? "var(--good)" : "var(--bad)"}">${z ? t("no change") : (dm > 0 ? "+" : "−") + Math.abs(dm).toFixed(1) + "%"}</td></tr>`; }).join("")}</tbody></table></section>
+  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>${t("Missed or guessed")}</h2><span class="hint">${missed.length}</span></div>
     ${missed.map(r => { const q = byId[r.id]; return `<details class="miss"><summary>${esc(q.q)}</summary><div class="body">
-      ${r.g ? `<span class="hint">You got this one right by guessing.</span>` : ""}<span style="color:var(--good)"><b>Correct:</b> ${esc(q.choices[q.answer])}</span>
-      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">None. Every answer was right without guessing.</p>`}
+      ${r.g ? `<span class="hint">${t("You got this one right by guessing.")}</span>` : ""}<span style="color:var(--good)"><b>${t("Correct:")}</b> ${esc(q.choices[q.answer])}</span>
+      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">${t("None. Every answer was right without guessing.")}</p>`}
   </section>
-  <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">Keep drilling</button><button class="btn" id="sumhome">Back to town</button></div>`;
+  <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">${t("Keep drilling")}</button><button class="btn" id="sumhome">${t("Back to town")}</button></div>`;
   $("#back").onclick = renderHome; $("#sumhome").onclick = renderHome;
   $("#sumgo").onclick = () => startDrill(S.domain, true);
   window.scrollTo(0, 0);
@@ -788,18 +792,18 @@ function todayStats() {
 }
 function renderSummary() {
   view = "summary";
-  const t = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
-  const towers = t.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
+  const T = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
+  const towers = T.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
     return `<div class="sumtower">${towerSvg(now, was)}<b>${esc(DOMAINS[d].short)}</b><span class="${dm < 0 ? "dn" : ""}">${dm > 0 ? "+" : dm < 0 ? "−" : "±"}${Math.abs(dm)}%</span></div>`; }).join("");
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>
   <article class="sheet summary">
     <div class="sumhead"><img class="sumbuddy" src="art/buddy-bust.webp" alt="">
-      <div><span class="k">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</span><h2>Daily goal done${state.name ? `, ${esc(state.name)}` : ""}.</h2>
-      <span class="sk">${ICON.fire}${sk} day${sk === 1 ? "" : "s"} in a row</span></div></div>
-    <div class="sumstats"><div><b>${t.n}</b><span>answered</span></div><div><b>${t.n ? pct(t.right / t.n) : 0}%</b><span>right</span></div><div><b>${t.min}</b><span>min</span></div><div><b>${t.best}</b><span>best run</span></div></div>
-    <div class="sumtowers"><h3>What you built today</h3><div class="row">${towers}</div></div>
-    <p class="summiss">${t.missed ? `You missed ${t.missed}. Each comes back in 5 minutes, then again tomorrow if you get it.` : "Nothing missed today."}</p>
-    <div class="actions"><button class="btn primary" id="keepgo">Keep going</button><button class="btn ghost" id="totown">Back to town</button></div>
+      <div><span class="k">${new Date().toLocaleDateString(LOC, { weekday: "long", month: "short", day: "numeric" })}</span><h2>${state.name ? t("Daily goal done, {name}.", { name: esc(state.name) }) : t("Daily goal done.")}</h2>
+      <span class="sk">${ICON.fire}${tn(sk, "{n} day in a row", "{n} days in a row")}</span></div></div>
+    <div class="sumstats"><div><b>${T.n}</b><span>${t("answered")}</span></div><div><b>${T.n ? pct(T.right / T.n) : 0}%</b><span>${t("right")}</span></div><div><b>${T.min}</b><span>${t("min")}</span></div><div><b>${T.best}</b><span>${t("best run")}</span></div></div>
+    <div class="sumtowers"><h3>${t("What you built today")}</h3><div class="row">${towers}</div></div>
+    <p class="summiss">${T.missed ? t("You missed {n}. Each comes back in 5 minutes, then again tomorrow if you get it.", { n: T.missed }) : t("Nothing missed today.")}</p>
+    <div class="actions"><button class="btn primary" id="keepgo">${t("Keep going")}</button><button class="btn ghost" id="totown">${t("Back to town")}</button></div>
   </article>`;
   $("#back").onclick = renderHome; $("#totown").onclick = renderHome;
   $("#keepgo").onclick = () => { drill.goalHit = false; nextQ(); };
@@ -822,25 +826,25 @@ function buildExam(p) {
     sections: isCpa() ? [[0, half], [half, n]] : [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
     dur: isCpa() ? Math.round(120 * MIN * n / SIMS[p].mcq) : Math.round(210 * MIN * n / 100), confirm: false };
 }
-function eaSimText(n, avail, p) { return `<p style="margin:0">${n} questions, ${Math.round(210 * n / 100)} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.</p>
-${n < 100 ? `<p class="hint" style="margin:0">The real exam has 100 questions. The ${PL(p)} bank only has ${avail} so far, so this sim is shorter.</p>` : `<p class="hint" style="margin:0">Questions are drawn in proportion to the official outline, so heavier areas get more.</p>`}`; }
+function eaSimText(n, avail, p) { return `<p style="margin:0">${t("{n} questions, {m} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.", { n, m: Math.round(210 * n / 100) })}</p>
+${n < 100 ? `<p class="hint" style="margin:0">${t("The real exam has 100 questions. The {p} bank only has {n} so far, so this sim is shorter.", { p: PL(p), n: avail })}</p>` : `<p class="hint" style="margin:0">${t("Questions are drawn in proportion to the official outline, so heavier areas get more.")}</p>`}`; }
 function cpaSimText(n, avail, p) {
   const S = SIMS[p], short = partDomains(p).filter(d => inBank(d).length < Math.round(S.mcq * DOMAINS[d].n / 100));
-  return `<p style="margin:0">${n} multiple-choice questions in ${Math.round(120 * n / S.mcq)} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.</p>
-    <p class="hint" style="margin:0">The real ${p} exam has ${S.mcq} multiple-choice questions and ${S.tbs} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.</p>
-    <p class="hint" style="margin:0">Questions are drawn by the 2026 blueprint weights.${short.length ? ` ${short.map(d => DOMAINS[d].short).join(", ")} ${short.length > 1 ? "have" : "has"} too few questions so far, so the sim fills in from other areas.` : ""}</p>`;
+  return `<p style="margin:0">${t("{n} multiple-choice questions in {m} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.", { n, m: Math.round(120 * n / S.mcq) })}</p>
+    <p class="hint" style="margin:0">${t("The real {p} exam has {n} multiple-choice questions and {s} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.", { p, n: S.mcq, s: S.tbs })}</p>
+    <p class="hint" style="margin:0">${t("Questions are drawn by the 2026 blueprint weights.")}${short.length ? " " + tn(short.length, "{list} has too few questions so far, so the sim fills in from other areas.", "{list} have too few questions so far, so the sim fills in from other areas.", { list: short.map(d => DOMAINS[d].short).join(", ") }) : ""}</p>`;
 }
 function renderExamSetup() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "examsetup";
   const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(isCpa() ? SIMS[p].mcq : 100, avail);
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <section class="card pad" style="display:grid;gap:14px">
-    <div><div class="eyebrow" style="color:var(--ink-soft)">Exam sim</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
+    <div><div class="eyebrow" style="color:var(--ink-soft)">${t("Exam sim")}</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
     <div class="row">${partKeys().map(k => `<button class="btn${String(k) === p ? " primary" : ""}" data-p="${k}"${isLive(k) ? "" : " disabled"}>${PL(k)}</button>`).join("")}</div>
     ${isCpa() ? cpaSimText(n, avail, p) : eaSimText(n, avail, p)}
-    ${state.examRun ? `<div class="confirm"><b>You have an exam in progress (${PL(state.examRun.part)}).</b><div class="row"><button class="btn amber" id="resume">Resume it</button><button class="btn danger" id="discard">Discard it</button></div></div>`
-      : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>Start the exam</button></div>`}
+    ${state.examRun ? `<div class="confirm"><b>${t("You have an exam in progress ({p}).", { p: PL(state.examRun.part) })}</b><div class="row"><button class="btn amber" id="resume">${t("Resume it")}</button><button class="btn danger" id="discard">${t("Discard it")}</button></div></div>`
+      : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>${t("Start the exam")}</button></div>`}
   </section>`;
   $("#back").onclick = renderHome;
   $("#app").querySelectorAll("[data-p]").forEach(b => b.onclick = () => { setPart(b.dataset.p); save(); renderExamSetup(); });
@@ -850,7 +854,7 @@ function renderExamSetup() {
 }
 /* an EA sim has three sections, a CPA sim two testlets */
 const lastSec = E => E.sec >= E.sections.length - 1;
-const secWord = E => (E.exam || "ea") === "cpa" ? "testlet" : "section";
+const secWord = E => (E.exam || "ea") === "cpa" ? t("testlet") : t("section");
 function examLeft(E) { const now = E.onBreak || Date.now(); return E.dur - (now - E.start - E.breakMs); }
 function fmt(ms) { ms = Math.max(0, ms); const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(x).padStart(2, "0"); }
 let examTick = null;
@@ -866,25 +870,25 @@ function renderExam() {
   const answeredInSec = E.ids.slice(a, b).filter(x => E.ans[x] != null).length;
   $("#app").innerHTML = `
   <div class="exam-top">
-    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">${PL(E.part)} sim · ${secWord(E)} ${E.sec + 1} of ${E.sections.length}</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
-      <button class="btn" id="endsec">${!lastSec(E) ? "Finish " + secWord(E) : "Finish exam"}</button></div>
+    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">${t("{p} sim · {w} {n} of {m}", { p: PL(E.part), w: secWord(E), n: E.sec + 1, m: E.sections.length })}</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
+      <button class="btn" id="endsec">${!lastSec(E) ? t("Finish {w}", { w: secWord(E) }) : t("Finish exam")}</button></div>
     <div class="progressbar"><i style="width:${100 * Object.keys(E.ans).length / E.ids.length}%"></i></div>
   </div>
-  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${!lastSec(E) ? `Leave ${secWord(E)} ${E.sec + 1}? You can't come back to these questions.` : "Submit the exam?"}</b>
-    <span class="small">${b - a - answeredInSec ? `${b - a - answeredInSec} unanswered in this section count as wrong.` : "Every question in this section is answered."}</span>
-    <div class="row"><button class="btn amber" id="yes">${!lastSec(E) ? "Leave " + secWord(E) : "Submit"}</button><button class="btn ghost" id="no">Keep working</button></div></div>` : ""}
+  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${!lastSec(E) ? t("Leave {w} {n}? You can't come back to these questions.", { w: secWord(E), n: E.sec + 1 }) : t("Submit the exam?")}</b>
+    <span class="small">${b - a - answeredInSec ? t("{n} unanswered in this section count as wrong.", { n: b - a - answeredInSec }) : t("Every question in this section is answered.")}</span>
+    <div class="row"><button class="btn amber" id="yes">${!lastSec(E) ? t("Leave {w}", { w: secWord(E) }) : t("Submit")}</button><button class="btn ghost" id="no">${t("Keep working")}</button></div></div>` : ""}
   <article class="sheet">
-    <div class="sheet-head"><div class="id"><span class="k">Question ${E.idx + 1} of ${E.ids.length}</span><span class="d">${esc(DOMAINS[q.domain].name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
+    <div class="sheet-head"><div class="id"><span class="k">${t("Question {n} of {m}", { n: E.idx + 1, m: E.ids.length })}</span><span class="d">${esc(DOMAINS[q.domain].name)}</span></div><div class="yr"><small>${t("Tax year")}</small><b>2025</b></div></div>
     <div class="qbody"><p class="qtext">${esc(q.q)}</p></div>
     <div class="choices">${perm.map((o, i) => `<button class="choice${chosen === o ? " sel" : ""}" data-i="${i}"><span class="L">${"ABCD"[i]}</span><span>${esc(q.choices[o])}</span></button>`).join("")}</div>
-    <div class="actions"><button class="btn" id="prev" ${E.idx <= a ? "disabled" : ""}>‹ Previous</button><button class="btn primary" id="nxt" ${E.idx >= b - 1 ? "disabled" : ""}>Next ›</button>
-      <button class="btn ghost" id="mark">${E.marked[id] ? "Unmark" : "Mark for review"}</button></div>
+    <div class="actions"><button class="btn" id="prev" ${E.idx <= a ? "disabled" : ""}>‹ ${t("Previous")}</button><button class="btn primary" id="nxt" ${E.idx >= b - 1 ? "disabled" : ""}>${t("Next")} ›</button>
+      <button class="btn ghost" id="mark">${E.marked[id] ? t("Unmark") : t("Mark for review")}</button></div>
   </article>
-  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>${secWord(E) === "testlet" ? "Testlet" : "Section"} ${E.sec + 1}</h2><span class="hint">${answeredInSec} of ${b - a} answered</span></div>
+  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>${(E.exam || "ea") === "cpa" ? t("Testlet {n}", { n: E.sec + 1 }) : t("Section {n}", { n: E.sec + 1 })}</h2><span class="hint">${t("{n} of {m} answered", { n: answeredInSec, m: b - a })}</span></div>
     <div class="nav">${E.ids.slice(a, b).map((x, k) => `<button data-go="${a + k}" class="${E.ans[x] != null ? "ans" : ""}${a + k === E.idx ? " cur" : ""}${E.marked[x] ? " mk" : ""}">${a + k + 1}</button>`).join("")}</div>
-    <span class="hint">Dark: answered. Dot: marked for review.</span></section>`;
-  const t = $("#timer");
-  examTick = setInterval(() => { const left = examLeft(E); if (!document.body.contains(t)) return clearInterval(examTick); t.textContent = fmt(left); t.classList.toggle("low", left < 10 * MIN); if (left <= 0) { clearInterval(examTick); finishExam(true); } }, 1000);
+    <span class="hint">${t("Dark: answered. Dot: marked for review.")}</span></section>`;
+  const tm = $("#timer");
+  examTick = setInterval(() => { const left = examLeft(E); if (!document.body.contains(tm)) return clearInterval(examTick); tm.textContent = fmt(left); tm.classList.toggle("low", left < 10 * MIN); if (left <= 0) { clearInterval(examTick); finishExam(true); } }, 1000);
   $("#app").querySelectorAll(".choice").forEach(btn => btn.onclick = () => { E.ans[id] = perm[+btn.dataset.i]; save(); if (E.idx < b - 1) { E.idx++; save(); } renderExam(); });
   $("#prev").onclick = () => { E.idx--; save(); renderExam(); };
   $("#nxt").onclick = () => { E.idx++; save(); renderExam(); };
@@ -902,10 +906,10 @@ function renderExam() {
 function renderBreak() {
   const E = state.examRun; clearInterval(examTick);
   $("#app").innerHTML = `<section class="card pad" style="display:grid;gap:12px;margin-top:8px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Scheduled break</div><h3 style="font-size:22px">Section ${E.sec} is done</h3>
-    <p style="margin:0">The real exam offers a 10-minute break here, and the clock stops while you take it. Section ${E.sec + 1} is ${E.sections[E.sec][1] - E.sections[E.sec][0]} questions.</p>
-    <p class="muted" style="margin:0">Time left on the exam clock: <b>${fmt(examLeft(E))}</b></p>
-    <div><button class="btn amber" id="resumebrk">Start section ${E.sec + 1}</button></div></section>`;
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Scheduled break")}</div><h3 style="font-size:22px">${t("Section {n} is done", { n: E.sec })}</h3>
+    <p style="margin:0">${t("The real exam offers a 10-minute break here, and the clock stops while you take it. Section {n} is {m} questions.", { n: E.sec + 1, m: E.sections[E.sec][1] - E.sections[E.sec][0] })}</p>
+    <p class="muted" style="margin:0">${t("Time left on the exam clock: {x}", { x: `<b>${fmt(examLeft(E))}</b>` })}</p>
+    <div><button class="btn amber" id="resumebrk">${t("Start section {n}", { n: E.sec + 1 })}</button></div></section>`;
   $("#resumebrk").onclick = () => { E.breakMs += Date.now() - E.onBreak; E.onBreak = null; save(); renderExam(); };
 }
 function finishExam(timeUp) {
@@ -927,32 +931,32 @@ function finishExam(timeUp) {
 function freshLine(res) {
   const f = res.fresh; if (!f) return "";
   const seenN = res.n - f.n, seenR = res.right - f.right;
-  if (!f.n) return `<div class="fresh">You had practiced every question in this sim before, so this score partly measures memory of the answers.</div>`;
-  if (f.n < 10) return `<div class="fresh">Only ${f.n} of these questions were new to you (${f.right} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.</div>`;
-  return `<div class="fresh"><b>${pct(f.right / f.n)}%</b> on the ${f.n} questions you'd never seen${seenN ? `, ${pct(seenR / seenN)}% on the ${seenN} you'd practiced` : ""}. The never-seen score is the better read on exam day.</div>`;
+  if (!f.n) return `<div class="fresh">${t("You had practiced every question in this sim before, so this score partly measures memory of the answers.")}</div>`;
+  if (f.n < 10) return `<div class="fresh">${t("Only {n} of these questions were new to you ({r} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.", { n: f.n, r: f.right })}</div>`;
+  return `<div class="fresh">${seenN ? t("<b>{a}%</b> on the {n} questions you'd never seen, {b}% on the {m} you'd practiced. The never-seen score is the better read on exam day.", { a: pct(f.right / f.n), n: f.n, b: pct(seenR / seenN), m: seenN }) : t("<b>{a}%</b> on the {n} questions you'd never seen. The never-seen score is the better read on exam day.", { a: pct(f.right / f.n), n: f.n })}</div>`;
 }
 function renderResults(res) {
   view = "results";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <section class="card pad" style="display:grid;gap:8px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Part ${res.part} exam sim${res.timeUp ? " · time ran out" : ""}</div>
-    <div class="result-big">${pct(res.score)}%</div><div class="muted">${res.right} of ${res.n} correct</div>
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Part {p} exam sim", { p: res.part })}${res.timeUp ? t(" · time ran out") : ""}</div>
+    <div class="result-big">${pct(res.score)}%</div><div class="muted">${t("{n} of {m} correct", { n: res.right, m: res.n })}</div>
     ${freshLine(res)}
-    <p class="hint" style="margin:4px 0 0">The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.</p>
+    <p class="hint" style="margin:4px 0 0">${t("The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.")}</p>
   </section>
-  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>By content area</h2></div>
-    <table class="res"><thead><tr><th style="padding-left:16px">Area</th><th style="text-align:right">Right</th><th style="text-align:right;padding-right:16px">Score</th></tr></thead>
+  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>${t("By content area")}</h2></div>
+    <table class="res"><thead><tr><th style="padding-left:16px">${t("Area")}</th><th style="text-align:right">${t("Right")}</th><th style="text-align:right;padding-right:16px">${t("Score")}</th></tr></thead>
     <tbody>${Object.entries(res.per).sort((a, b) => a[0] < b[0] ? -1 : 1).map(([d, v]) => `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${v.r}/${v.n}</td><td class="n" style="padding-right:16px;color:${v.r / v.n >= 0.7 ? "var(--good)" : "var(--bad)"}">${pct(v.r / v.n)}%</td></tr>`).join("")}</tbody></table></section>
-  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>Missed questions</h2><span class="hint">${res.missed.length}</span></div>
+  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>${t("Missed questions")}</h2><span class="hint">${res.missed.length}</span></div>
     ${res.missed.map(m => { const q = byId[m.id]; return `<details class="miss"><summary>${esc(q.q)}</summary><div class="body">
-      <span><b>Your answer:</b> ${m.picked == null ? "none" : esc(q.choices[m.picked])}</span><span style="color:var(--good)"><b>Correct:</b> ${esc(q.choices[q.answer])}</span>
-      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">None. Every answer was right.</p>`}
+      <span><b>${t("Your answer:")}</b> ${m.picked == null ? t("none") : esc(q.choices[m.picked])}</span><span style="color:var(--good)"><b>${t("Correct:")}</b> ${esc(q.choices[q.answer])}</span>
+      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">${t("None. Every answer was right.")}</p>`}
   </section>`;
   $("#back").onclick = renderHome; window.scrollTo(0, 0);
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
+function updateFlagDot() { const n = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? t("More, {n} flagged", { n }) : t("More")); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
@@ -960,50 +964,53 @@ function renderMore() {
   const counts = partKeys().filter(isLive).map(p => `${PL(p)}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
   /* daily reminder: one calendar file per half hour lives in reminders/ (made by tools/make_reminders.py) */
   const REM_TIMES = []; for (let h = 5; h < 24; h++) for (const m of ["00", "30"]) REM_TIMES.push(String(h).padStart(2, "0") + m);
-  const fmtT = t => { const h = +t.slice(0, 2); return `${h % 12 || 12}:${t.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
+  const fmtT = x => { const h = +x.slice(0, 2); return LANG === "ja" ? `${h}:${x.slice(2)}` : `${h % 12 || 12}:${x.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
   const rem = state.reminder || {}, remPick = rem.pick || rem.time || "1900";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <div class="stack" style="margin-top:0">
-    <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
-      <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
-      <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Launch screen</h3>
-      <p class="muted small" style="margin:0">The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.</p>
-      <div class="row"><button class="btn" id="introreplay">Replay the intro</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">Sound: ${introSoundOn() ? "On" : "Off"}</button><button class="btn" id="intromusic" aria-pressed="${introMusicOn()}">Music: ${introMusicOn() ? "On" : "Off"}</button></div>
-      <p class="hint" style="margin:0">Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
-      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
-      <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
-      <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
-      <p class="muted small" style="margin:0">Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating "EA practice" event, and the event links back to this app.</p>
-      <div class="row" style="align-items:center"><label for="remtime" class="small">Remind me at</label>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("How to use this app")}</h3>
+      <p class="muted small" style="margin:0">${t("A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.")}</p>
+      <div class="row"><button class="btn primary" id="guidemore">${t("Watch the guide")}</button></div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Launch screen")}</h3>
+      <p class="muted small" style="margin:0">${t("The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.")}</p>
+      <div class="row"><button class="btn" id="introreplay">${t("Replay the intro")}</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">${introSoundOn() ? t("Sound: On") : t("Sound: Off")}</button><button class="btn" id="intromusic" aria-pressed="${introMusicOn()}">${introMusicOn() ? t("Music: On") : t("Music: Off")}</button></div>
+      <p class="hint" style="margin:0">${t("Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px" id="langcard"><h3>Language · 言語</h3>
+      <div class="row" role="group" aria-label="Language · 言語"><button class="btn${LANG === "en" ? " primary" : ""}" data-lang="en" lang="en" aria-pressed="${LANG === "en"}">English</button><button class="btn${LANG === "ja" ? " primary" : ""}" data-lang="ja" lang="ja" aria-pressed="${LANG === "ja"}">日本語</button></div>
+      <p class="hint" style="margin:0">${t("Menus and buttons change language. Questions, answers and explanations stay in English, as on the exam.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Your name")}</h3>
+      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="${t("First name")}" value="${esc(state.name || "")}" aria-label="${t("First name")}"><button class="btn primary" type="submit">${t("Save")}</button></form>
+      <p class="hint" style="margin:0">${t("Your study buddy says hello with it on Home.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Daily goal")}</h3>
+      <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${t("{n} a day", { n: g })}</button>`).join("")}</div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Daily reminder")}</h3>
+      <p class="muted small" style="margin:0">${t("Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating \"EA practice\" event, and the event links back to this app.")}</p>
+      <div class="row" style="align-items:center"><label for="remtime" class="small">${t("Remind me at")}</label>
         <select id="remtime" class="btn">${REM_TIMES.map(t => `<option value="${t}"${t === remPick ? " selected" : ""}>${fmtT(t)}</option>`).join("")}</select></div>
-      <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">Add to my calendar</a></div>
-      ${rem.at ? `<p class="small" style="margin:0"><b>You added a ${fmtT(rem.time)} reminder on ${new Date(rem.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}.</b></p>` : ""}
-      <p class="hint" style="margin:0">iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the "EA practice" event in Calendar, then add a new one here.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Figures</h3>
-      <p class="muted small" style="margin:0">Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.</p>
-      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">Linked from ${Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length} questions</span><div><button class="btn" data-figure="${fig}">Open</button></div></div>`).join("")}</section>
-    <section class="card" ><div class="pad spread"><h3>Flagged questions</h3><span class="hint">${flagged.length}</span></div>
-      ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">Copy report for Jose</button></div><textarea id="flagfb" hidden readonly></textarea>
-        ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
-        : `<p class="pad muted small" style="margin:0;padding-top:0">None. Tap "Flag as wrong" after answering a question that looks wrong, and it shows up here.</p>`}</section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Backup</h3>
-      <p class="muted small" style="margin:0">Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.</p>
+      <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">${t("Add to my calendar")}</a></div>
+      ${rem.at ? `<p class="small" style="margin:0"><b>${t("You added a {time} reminder on {date}.", { time: fmtT(rem.time), date: new Date(rem.at).toLocaleDateString(LOC, { month: "short", day: "numeric" }) })}</b></p>` : ""}
+      <p class="hint" style="margin:0">${t("iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the \"EA practice\" event in Calendar, then add a new one here.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Figures")}</h3>
+      <p class="muted small" style="margin:0">${t("Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.")}</p>
+      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">${t("Linked from {n} questions", { n: Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length })}</span><div><button class="btn" data-figure="${fig}">${t("Open")}</button></div></div>`).join("")}</section>
+    <section class="card" ><div class="pad spread"><h3>${t("Flagged questions")}</h3><span class="hint">${flagged.length}</span></div>
+      ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">${t("Copy report for Jose")}</button></div><textarea id="flagfb" hidden readonly></textarea>
+        ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">${t("Unflag")}</button></div></div>`).join("")}</div>`
+        : `<p class="pad muted small" style="margin:0;padding-top:0">${t("None. Tap \"Flag as wrong\" after answering a question that looks wrong, and it shows up here.")}</p>`}</section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Backup")}</h3>
+      <p class="muted small" style="margin:0">${t("Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.")}</p>
       <p class="small" style="margin:0"><b>${backupLine()}</b></p>
-      <div class="row"><button class="btn primary" id="savefile">Save backup file</button><button class="btn" id="loadfile">Load backup file</button><input type="file" id="fileinput" accept=".json,application/json" hidden></div>
+      <div class="row"><button class="btn primary" id="savefile">${t("Save backup file")}</button><button class="btn" id="loadfile">${t("Load backup file")}</button><input type="file" id="fileinput" accept=".json,application/json" hidden></div>
       <div id="loadconfirm"></div>
-      <p class="hint" style="margin:0">On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.</p>
-      <details><summary class="small" style="cursor:pointer">Copy and paste instead</summary>
-        <div style="display:grid;gap:10px;margin-top:10px"><div class="row"><button class="btn" id="export">Copy backup</button></div><textarea id="exportfb" hidden readonly></textarea>
-        <label for="importtext" class="hint">Restore: paste a backup here. It replaces the progress on this device.</label>
-        <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">Restore</button></div></div></details></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Start over</h3><p class="muted small" style="margin:0">Erases every answer, review date, exam and flag on this device.</p>
-      <div class="row" id="resetrow"><button class="btn danger" id="reset">Erase progress</button></div></section>
-    <section class="card pad small muted" style="display:grid;gap:6px"><h3 style="color:var(--ink)">The question bank</h3><span>${BANK.length} questions · ${counts}</span>
-      <span>Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.</span></section>
+      <p class="hint" style="margin:0">${t("On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.")}</p>
+      <details><summary class="small" style="cursor:pointer">${t("Copy and paste instead")}</summary>
+        <div style="display:grid;gap:10px;margin-top:10px"><div class="row"><button class="btn" id="export">${t("Copy backup")}</button></div><textarea id="exportfb" hidden readonly></textarea>
+        <label for="importtext" class="hint">${t("Restore: paste a backup here. It replaces the progress on this device.")}</label>
+        <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">${t("Restore")}</button></div></div></details></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Start over")}</h3><p class="muted small" style="margin:0">${t("Erases every answer, review date, exam and flag on this device.")}</p>
+      <div class="row" id="resetrow"><button class="btn danger" id="reset">${t("Erase progress")}</button></div></section>
+    <section class="card pad small muted" style="display:grid;gap:6px"><h3 style="color:var(--ink)">${t("The question bank")}</h3><span>${t("{n} questions", { n: BANK.length })} · ${counts}</span>
+      <span>${t("Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.")}</span></section>
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
@@ -1011,8 +1018,9 @@ function renderMore() {
   $("#introreplay").onclick = () => { location.href = location.pathname; };
   $("#introsound").onclick = () => { try { localStorage.setItem("eaTaxTown.sound", introSoundOn() ? "off" : "on"); } catch (e) {} renderMore(); };
   $("#intromusic").onclick = () => { try { localStorage.setItem("eaTaxTown.music", introMusicOn() ? "off" : "on"); } catch (e) {} renderMore(); };
+  $("#app").querySelectorAll("[data-lang]").forEach(b => b.onclick = () => { if (b.dataset.lang !== LANG) setLang(b.dataset.lang); });
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
-  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
+  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? t("Saved. Hi, {name}!", { name: state.name }) : t("Name cleared.")); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
   $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };
@@ -1025,19 +1033,19 @@ function renderMore() {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = () => {
-      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an Above the Line backup."); return; }
-      const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
+      let b; try { b = readBackup(String(r.result)); } catch (err) { toast(t("That file isn't an Above the Line backup.")); return; }
+      const when = b.savedAt ? new Date(b.savedAt).toLocaleString(LOC, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : t("an unknown date");
       const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
-      $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;
-      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); useExam(state.exam); save(); updateFlagDot(); toast("Backup loaded."); renderMore(); };
+      $("#loadconfirm").innerHTML = `<div class="confirm"><b>${t("Replace the progress on this device with the backup from {when}?", { when: esc(when) })}</b><span class="small">${t("The backup has {n} questions answered. What's on this device now will be replaced.", { n: answered })}</span><div class="row"><button class="btn amber" id="loadyes">${t("Replace with backup")}</button><button class="btn ghost" id="loadno">${t("Cancel")}</button></div></div>`;
+      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); useExam(state.exam); save(); updateFlagDot(); toast(t("Backup loaded.")); renderMore(); };
       $("#loadno").onclick = () => { $("#loadconfirm").innerHTML = ""; };
     };
     r.readAsText(f); e.target.value = "";
   };
-  $("#import").onclick = () => { try { const s = readBackup($("#importtext").value).state; state = s; useExam(state.exam); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
+  $("#import").onclick = () => { try { const s = readBackup($("#importtext").value).state; state = s; useExam(state.exam); save(); updateFlagDot(); toast(t("Backup restored.")); renderMore(); } catch (e) { toast(t("That isn't a valid backup. Paste the full text you copied.")); } };
   $("#reset").onclick = () => {
-    $("#resetrow").innerHTML = `<span>Erase everything on this device?</span><button class="btn danger" id="ry">Yes, erase</button><button class="btn ghost" id="rn">Cancel</button>`;
-    $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
+    $("#resetrow").innerHTML = `<span>${t("Erase everything on this device?")}</span><button class="btn danger" id="ry">${t("Yes, erase")}</button><button class="btn ghost" id="rn">${t("Cancel")}</button>`;
+    $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast(t("Progress erased.")); renderMore(); };
     $("#rn").onclick = renderMore;
   };
 }
@@ -1083,20 +1091,21 @@ function introMusicOn() { try { return localStorage.getItem("eaTaxTown.music") !
 function introSoundOn() { try { return localStorage.getItem("eaTaxTown.sound") !== "off"; } catch (e) { return true; } }
 function introNotices() {
   const out = [], w = daysTo(WINDOW_END), flags = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size;
-  for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? `${PL(p)} is today. Good luck.` : `${PL(p)} is in ${d} day${d === 1 ? "" : "s"}, on ${fmtDay(iso, { month: "long", day: "numeric" })}.`); }
-  if (!isCpa() && w >= 0) out.push(`The testing window closes February 28, 2027, in ${w} day${w === 1 ? "" : "s"}.`);
+  for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? t("{p} is today. Good luck.", { p: PL(p) }) : tn(d, "{p} is in {n} day, on {date}.", "{p} is in {n} days, on {date}.", { p: PL(p), date: fmtDay(iso, { month: "long", day: "numeric" }) })); }
+  if (!isCpa() && w >= 0) out.push(tn(w, "The testing window closes February 28, 2027, in {n} day.", "The testing window closes February 28, 2027, in {n} days."));
   out.push(backupLine());
-  out.push(flags ? `${flags} flagged question${flags === 1 ? " is" : "s are"} waiting in More to be reported.` : "No flagged questions.");
+  out.push(flags ? tn(flags, "{n} flagged question is waiting in More to be reported.", "{n} flagged questions are waiting in More to be reported.") : t("No flagged questions."));
   return out;
 }
 function introGo(where) {
   const toCard = title => { const h = [...document.querySelectorAll("#app h3")].find(e => e.textContent === title); if (h) h.closest("section").scrollIntoView({ block: "start" }); };
   if (where === "progress") { homeTab = "map"; renderHome(); }
   else if (where === "settings") renderMore();
-  else if (where === "report") { renderMore(); toCard("Flagged questions"); }
-  else if (where === "reset") { renderMore(); $("#reset").click(); toCard("Start over"); } /* opens the confirm; nothing is erased from the launch screen */
+  else if (where === "report") { renderMore(); toCard(t("Flagged questions")); }
+  else if (where === "reset") { renderMore(); $("#reset").click(); toCard(t("Start over")); } /* opens the confirm; nothing is erased from the launch screen */
   else renderHome();
 }
 if (state.examRun) renderExam();
+else if (afterLang()) renderMore();
 else if (window.Intro && window.Intro.on) { window.Intro.begin({ name: state.name, notices: introNotices, go: introGo }); window.Intro.progress && window.Intro.progress(introProgress()); }
 else renderHome();

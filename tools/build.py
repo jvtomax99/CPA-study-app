@@ -93,8 +93,8 @@ def git(*a):
 build = f"{git('log', '-1', '--format=%cd', '--date=format:%Y.%m.%d') or 'dev'} · {git('rev-parse', '--short', 'HEAD') or 'dev'} · {len(bank)} questions"
 intro = src("intro.js").replace("__BUILD__", build).replace("__BANKKB__", json.dumps(bank_kb)).replace("__COUNTS__", json.dumps(counts))
 town = src("town.js").replace("__TSQ__", src("tsq-map.json"))   # the real Times Square, made by tools/tsq_map.py from OpenStreetMap
-# order matters: the launch screen and its ride come before the bank, so they're on screen while it streams in
-out = (head + shell + "\n<script>\n" + src("mascot.js") + "\n</script>\n<script>\n" + intro + "\n</script>\n<script>\n" + src("introaudio.js") + "\n</script>\n<script>\n" + src("introart.js") + "\n</script>\n<script>\n" + src("intro3d.js")
+# order matters: the interface language (i18n-ja.js, i18n.js) comes first, so every script can call t(); the launch screen and its ride come before the bank, so they're on screen while it streams in
+out = (head + shell + "\n<script>\n" + src("i18n-ja.js") + "\n</script>\n<script>\n" + src("i18n.js") + "\n</script>\n<script>\n" + src("mascot.js") + "\n</script>\n<script>\n" + intro + "\n</script>\n<script>\n" + src("introaudio.js") + "\n</script>\n<script>\n" + src("introart.js") + "\n</script>\n<script>\n" + src("intro3d.js")
        + "\n</script>\n" + bank_js + "<script>\n" + app + "\n</script>\n<script type=\"module\">\n" + town + "\n</script>\n\n</html>\n")
 open(os.path.join(root, "index.html"), "w", encoding="utf-8").write(out)
 print(f"index.html: {len(out):,} bytes, {len(bank)} questions")

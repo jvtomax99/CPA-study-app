@@ -46,8 +46,8 @@
   /* the Next stop line over Tap to Start: the area with the biggest gap, as on the Today card */
   function nextStop(p) {
     const n = $i("#innext"); if (!n || !p || !p.next) return;
-    n.querySelector("b").textContent = p.first ? "First stop" : "Next stop";
-    n.querySelector("span").textContent = `${p.next.name} · ${Math.round(p.next.m * 100)}% ready`; n.hidden = false;
+    n.querySelector("b").textContent = p.first ? t("First stop") : t("Next stop");
+    n.querySelector("span").textContent = t("{name} · {n}% ready", { name: p.next.name, n: Math.round(p.next.m * 100) }); n.hidden = false;
   }
   nextStop(window.__introProg);
   setTimeout(() => paintSound(), 0);
@@ -119,7 +119,7 @@
     const i = has3d || film.on ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
     /* the station names only mean something while the train is riding past them */
     const riding = (has3d || film.on) && phase !== "hero" && phase !== "wait";
-    const where = queued ? "Starting when loaded" : riding ? (waiting ? "Waiting at " : "Arriving at ") + NAMES[i] : phase === "hero" ? "Loading" : "Leaving the yard";
+    const where = queued ? t("Starting when loaded") : riding ? t(waiting ? "Waiting at {x}" : "Arriving at {x}", { x: NAMES[i] }) : phase === "hero" ? t("Loading") : t("Leaving the yard");
     $i("#instatus").textContent = `${where}... ${(pr * 100).toFixed(2)}%`;
     el.classList.toggle("loading", !done && phase !== "wide");
     if (done && queued) exit(queued);
@@ -183,7 +183,7 @@
   function paintSound() {
     const b = $i("#insnd"); if (!b) return;
     b.setAttribute("aria-pressed", String(soundOn && !!(audio || fsnd)));
-    b.querySelector("span").textContent = !soundOn ? "Sound off" : audio || fsnd ? "Sound on" : "Tap for sound";
+    b.querySelector("span").textContent = !soundOn ? t("Sound off") : audio || fsnd ? t("Sound on") : t("Tap for sound");
     b.classList.toggle("off", !soundOn);
   }
   function toggleSound() {
@@ -215,9 +215,9 @@
     } else finish();
   }
   function showNotices() {
-    const n = document.createElement("div"); n.className = "in-notes"; n.setAttribute("role", "dialog"); n.setAttribute("aria-label", "Notices");
+    const n = document.createElement("div"); n.className = "in-notes"; n.setAttribute("role", "dialog"); n.setAttribute("aria-label", t("Notices"));
     const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    n.innerHTML = `<h3>Notices</h3><ul>${notices().map(t => `<li>${esc(t)}</li>`).join("")}</ul><button type="button">Close</button>`;
+    n.innerHTML = `<h3>${t("Notices")}</h3><ul>${notices().map(x => `<li>${esc(x)}</li>`).join("")}</ul><button type="button">${t("Close")}</button>`;
     n.addEventListener("click", e => e.stopPropagation());
     n.querySelector("button").onclick = () => n.remove();
     el.appendChild(n); n.querySelector("button").focus();
@@ -243,9 +243,9 @@
   function toast() {
     if (toasted) return; toasted = true;
     let name = ""; try { name = (JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").name || "").trim(); } catch (e) {}
-    const t = $i("#intoast"); $i("#intoastt").textContent = name ? `Welcome, ${name}!` : "Welcome!";
-    requestAnimationFrame(() => t.classList.add("show"));
-    setTimeout(() => t.classList.remove("show"), 1900);
+    const tt = $i("#intoast"); $i("#intoastt").textContent = name ? t("Welcome, {name}!", { name }) : t("Welcome!");
+    requestAnimationFrame(() => tt.classList.add("show"));
+    setTimeout(() => tt.classList.remove("show"), 1900);
   }
   if (mode === "full") setTimeout(toast, 1200);
 
@@ -310,7 +310,7 @@
     const auto = () => { card(false); try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
-      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask"); card(true);
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = t("Tap to play"); el.classList.add("filmask"); card(true);
       const done = film.askDone = () => { film.askDone = null; card(false); el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);

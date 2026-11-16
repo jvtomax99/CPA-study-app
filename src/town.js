@@ -1108,10 +1108,10 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     const card = fs && fs.querySelector(".fs-card"); if (!card) return;
     if (!d) { card.hidden = true; return; }
     const b = B[d], names = (window.__townLabels && window.__townLabels().names) || {}, pctv = Math.round(b.target * 100), floors = Math.round(b.H / 4);
-    card.innerHTML = `<div class="fs-card-top"><b>${names[d] || d}</b><button class="sky" type="button" data-fs="unpick" aria-label="Close this card">✕</button></div>
+    card.innerHTML = `<div class="fs-card-top"><b>${names[d] || d}</b><button class="sky" type="button" data-fs="unpick" aria-label="${t("Close this card")}">✕</button></div>
       <div class="fs-bar"><i style="width:${pctv}%"></i></div>
-      <span>${pctv >= 100 ? "Finished: every floor is mastered." : `${pctv}% finished · ${Math.round(floors * b.target)} of ${floors} floors done`}</span>
-      <button class="btn primary" type="button" data-fs="drill">Drill ${names[d] || "this area"}</button>`;
+      <span>${pctv >= 100 ? t("Finished: every floor is mastered.") : t("{n}% finished · {a} of {b} floors done", { n: pctv, a: Math.round(floors * b.target), b: floors })}</span>
+      <button class="btn primary" type="button" data-fs="drill">${names[d] ? t("Drill {name}", { name: names[d] }) : t("Drill this area")}</button>`;
     card.hidden = false;
     const off = CAM.clone().sub(tgt); SPH.setFromVector3(off);
     /* frame the whole tower, a little above center so the card below doesn't cover it */
@@ -1140,19 +1140,19 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     else if (k === "street") { select(null); flyTo(streetPose(), 1400); }
     else if (k === "unpick") select(null);
     else if (k === "drill") { const d = picked; closeFs(); if (d && window.__townPick) setTimeout(() => window.__townPick(d), 60); }
-    else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? "Day" : "Dusk"; }
+    else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? t("Day") : t("Dusk"); }
     else if (k.startsWith("view-")) { select(null); flyTo(fsView(k.slice(5))); }
   }
   function openFs() {
     if (fs) return;
     fsPrev = stage;
     const pose = stage ? groundPose(rig.t, rig.yaw + rig.off, rig.pitch, rig.dist / rig.zoom * (aspect < 1.2 ? 1.12 : 1)) : fsView(currentPart);
-    fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
+    fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", t("Your study city in 3D"));
     fs.innerHTML = `<div class="labels"></div>
-      <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
-        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["FAR", "FAR"], ["AUD", "AUD"], ["TCP", "TCP"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
-      <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
-      <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
+      <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ ${t("Close")}</button>
+        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["FAR", "FAR"], ["AUD", "AUD"], ["TCP", "TCP"], ["ts", t("Times Sq")]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", t("Times Sq")]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+      <div class="fs-hint">${t("Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower")}</div>
+      <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="${t("Face north, up the avenues")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="${t("Stand on the red steps at street level")}">${t("Street")}</button><button class="sky" type="button" data-fs="sky">${skyTarget ? t("Day") : t("Dusk")}</button><button class="sky" type="button" data-fs="home">${t("Reset view")}</button></div>
       <div class="fs-card" hidden></div>`;
     fs.addEventListener("click", onFsClick);
     document.body.appendChild(fs); document.documentElement.classList.add("town-fs-open");
@@ -1195,7 +1195,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   function lostMsg(show) {
     if (show && stage && !lostEl) {
       lostEl = document.createElement("div"); lostEl.className = "stage-msg town-lost";
-      lostEl.innerHTML = `<div style="display:grid;gap:10px;justify-items:center"><span>The 3D view was paused by your phone to save memory.</span><button class="sky" type="button">Restart 3D</button></div>`;
+      lostEl.innerHTML = `<div style="display:grid;gap:10px;justify-items:center"><span>${t("The 3D view was paused by your phone to save memory.")}</span><button class="sky" type="button">${t("Restart 3D")}</button></div>`;
       lostEl.querySelector("button").onclick = () => location.reload();
       stage.appendChild(lostEl);
     }
