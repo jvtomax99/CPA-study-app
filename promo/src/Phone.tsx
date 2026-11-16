@@ -1,5 +1,6 @@
 import React from 'react';
 import {Audio, Easing, Img, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {SHOTS} from './lang';
 
 // The phone's screen in the video, and the screenshots' size (390 x 844 at 2x).
 export const SW = 600, SH = 1298;
@@ -10,7 +11,7 @@ export const C = {
   ink: '#161c2b', paper: '#ffffff', bg: '#f3f5f9', amber: '#f5b84a', amberDeep: '#d98a1c',
   duskTop: '#1a1840', duskMid: '#33285c', duskLow: '#8a4f72', good: '#2f8f5b', bad: '#c6455a',
 };
-export const FONT = 'Inter, system-ui, sans-serif';
+export const FONT = "Inter, 'Noto Sans JP', system-ui, sans-serif";
 
 /** A camera key: centre (x, y) in screenshot pixels and zoom, reached at frame `at`. */
 export type Cam = {at: number; x?: number; y?: number; z?: number};
@@ -44,7 +45,7 @@ export const Shot: React.FC<{src: string; h?: number; cams?: Cam[]; taps?: Tap[]
   const toScreen = (x: number, y: number) => ({x: left + x * s, y: top + y * s});
   return (
     <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: C.bg}}>
-      <Img src={staticFile(`shots/${src}.png`)} style={{position: 'absolute', left, top, width: IW * s, height: h * s}} />
+      <Img src={staticFile(`${SHOTS}/${src}.png`)} style={{position: 'absolute', left, top, width: IW * s, height: h * s}} />
       {dim > 0 && <div style={{position: 'absolute', inset: 0, background: `rgba(10,12,30,${dim})`}} />}
       {boxes.map((b, i) => {
         const o = interpolate(frame, [b.from, b.from + 8, b.to - 6, b.to], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});

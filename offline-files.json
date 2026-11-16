@@ -1,5 +1,5 @@
 {
- "build": "00a53ca75214",
+ "build": "52ccd597b759",
  "app": [
   "index.html",
   "manifest.webmanifest",
@@ -55,6 +55,7 @@
   "art/intro-plate/desk-tower-8.webp",
   "art/intro-plate/desk-tower-9.webp",
   "art/intro-plate/desk.webp",
+  "media/how-to-use-ja.jpg",
   "media/how-to-use.jpg",
   "media/intro-go.mp3",
   "media/intro-music.mp3",
@@ -106,7 +107,7 @@
   "media/intro-phone.mp4"
  ],
  "sha1": {
-  "index.html": "00f5b2cdc38536b65a528b1af8bc2af359cef774",
+  "index.html": "7f3624c7b8ebce680253fffcbe4428738605cc48",
   "manifest.webmanifest": "342123ee671974087652e4a3a66af5541d0d80eb",
   "icons/apple-touch-icon.png": "37c63c8cde937a1ba2948bde43fda3174eb24bbe",
   "icons/favicon-32.png": "2ba68c25fba2cda4a1e57ee7d9377cd442fd0c1e",
@@ -160,6 +161,7 @@
   "art/intro-plate/desk-tower-8.webp": "d12a03c2c8fe8bde702a00c7e5cb524f3a6acaae",
   "art/intro-plate/desk-tower-9.webp": "430279d029faf7a41ee615c406011be12c591c5b",
   "art/intro-plate/desk.webp": "648cea4df4181197595308e792f910d9db9b33cf",
+  "media/how-to-use-ja.jpg": "81ffbef1208e0dadee333be0cd06a92f1d5887d2",
   "media/how-to-use.jpg": "ca38084f0f165619d209c4c11a13117253fb1b2d",
   "media/intro-go.mp3": "32ca003f9a95ee296769d2be2c91912506ab8d97",
   "media/intro-music.mp3": "20fc0752e484b34210488d1324dc8ce3bef8e324",

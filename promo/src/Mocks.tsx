@@ -1,6 +1,7 @@
 import React from 'react';
 import {Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {C, FONT, SH, SW, Shot, TapRing} from './Phone';
+import {JA, T} from './lang';
 
 // Simplified drawings of the browser steps (not screenshots of iOS or Android), on the phone's screen.
 
@@ -51,7 +52,7 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
       {menu > 0 && (
         <div style={{position: 'absolute', right: 24, bottom: 160, width: 330, borderRadius: 30, background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', opacity: menu, transform: `scale(${0.9 + 0.1 * menu})`, transformOrigin: 'bottom right', overflow: 'hidden'}}>
           {['Bookmarks', 'New Tab', 'Share'].map((x) => (
-            <div key={x} style={{...row, background: x === 'Share' && frame >= t.share - 6 ? '#fdf0d6' : '#fff', fontWeight: x === 'Share' ? 700 : 500}}>{x}{x === 'Share' && <ShareIcon />}</div>
+            <div key={x} style={{...row, background: x === 'Share' && frame >= t.share - 6 ? '#fdf0d6' : '#fff', fontWeight: x === 'Share' ? 700 : 500}}>{T(x)}{x === 'Share' && <ShareIcon />}</div>
           ))}
         </div>
       )}
@@ -63,8 +64,8 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
             <div style={{fontSize: 30, fontWeight: 700, color: C.ink}}>Above the Line<div style={{fontSize: 24, fontWeight: 400, color: '#666'}}>jvtomax99.github.io</div></div>
           </div>
           <div style={{margin: '0 24px', borderRadius: 24, background: '#fff', overflow: 'hidden'}}>
-            {['Copy', 'Add to Reading List', 'Add Bookmark'].map((x) => <div key={x} style={row}>{x}</div>)}
-            <div style={{...row, background: rowLit ? '#fdf0d6' : '#fff', fontWeight: 700, borderBottom: 'none', boxShadow: rowLit ? `inset 0 0 0 4px ${C.amber}` : undefined}}>Add to Home Screen<PlusSquare /></div>
+            {['Copy', 'Add to Reading List', 'Add Bookmark'].map((x) => <div key={x} style={row}>{T(x)}</div>)}
+            <div style={{...row, background: rowLit ? '#fdf0d6' : '#fff', fontWeight: 700, borderBottom: 'none', boxShadow: rowLit ? `inset 0 0 0 4px ${C.amber}` : undefined}}>{T('Add to Home Screen.').replace(/[.。]$/, '')}<PlusSquare /></div>
           </div>
         </div>
       )}
@@ -72,17 +73,17 @@ export const SafariSteps: React.FC<{dots: number; share: number; sheet: number; 
       {formY > 0 && (
         <div style={{position: 'absolute', inset: 0, background: '#f2f2f7', transform: `translateY(${(1 - formY) * SH}px)`}}>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '70px 30px 30px', fontSize: 30}}>
-            <span style={{color: '#2f6fed'}}>Cancel</span><b style={{color: C.ink}}>Add to Home Screen</b><b style={{color: '#2f6fed'}}>Add</b>
+            <span style={{color: '#2f6fed'}}>{T('Cancel')}</span><b style={{color: C.ink}}>{T('Add to Home Screen.').replace(/[.。]$/, '')}</b><b style={{color: '#2f6fed'}}>{T('Add')}</b>
           </div>
           <div style={{margin: '0 24px', borderRadius: 24, background: '#fff', padding: 28, display: 'flex', gap: 24, alignItems: 'center'}}>
             <Img src={staticFile('icons/icon-512.png')} style={{width: 110, height: 110, borderRadius: 26}} />
             <div style={{fontSize: 32, color: C.ink}}>Above Line<div style={{fontSize: 24, color: '#888', marginTop: 8}}>jvtomax99.github.io/CPA-study-app</div></div>
           </div>
           <div style={{margin: '24px 24px 0', borderRadius: 24, background: '#fff', ...row, height: 96, borderBottom: 'none', boxShadow: toggleLit ? `0 0 0 5px ${C.amber}` : undefined}}>
-            <span style={{fontWeight: 600}}>Open as Web App</span>
+            <span style={{fontWeight: 600}}>{T('Open as Web App')}</span>
             <div style={{width: 92, height: 54, borderRadius: 27, background: '#34c759', position: 'relative'}}><div style={{position: 'absolute', right: 4, top: 4, width: 46, height: 46, borderRadius: 23, background: '#fff'}} /></div>
           </div>
-          <div style={{margin: '18px 40px', fontSize: 24, color: '#777', lineHeight: 1.4}}>Keep this on, so it opens as its own app with its own storage.</div>
+          <div style={{margin: '18px 40px', fontSize: 24, color: '#777', lineHeight: 1.4}}>{T('Keep this on, so it opens as its own app with its own storage.')}</div>
         </div>
       )}
       <TapRing at={t.dots} x={SW - 24 - 35 - 18 + 18} y={SH - 150 + 22 + 35} />
@@ -108,17 +109,17 @@ export const ChromeSteps: React.FC<{dots: number; pick: number; dialog: number; 
       <div style={{position: 'absolute', left: 0, right: 0, top: 120, bottom: 0}}><Shot src="greet" /></div>
       {menu > 0 && (
         <div style={{position: 'absolute', right: 14, top: 110, width: 380, borderRadius: 18, background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', opacity: menu, transform: `scale(${0.9 + 0.1 * menu})`, transformOrigin: 'top right', zIndex: 3, overflow: 'hidden'}}>
-          {['New tab', 'History', 'Bookmarks', 'Downloads'].map((x) => <div key={x} style={row}>{x}</div>)}
-          <div style={{...row, background: lit ? '#fdf0d6' : '#fff', fontWeight: 700, height: 'auto', padding: '18px 28px', display: 'block', boxShadow: lit ? `inset 0 0 0 4px ${C.amber}` : undefined}}>Add to Home screen<div style={{fontSize: 22, fontWeight: 500, color: '#777'}}>or: Install app</div></div>
-          {['Settings'].map((x) => <div key={x} style={{...row, borderBottom: 'none'}}>{x}</div>)}
+          {['New tab', 'History', 'Bookmarks', 'Downloads'].map((x) => <div key={x} style={row}>{T(x)}</div>)}
+          <div style={{...row, background: lit ? '#fdf0d6' : '#fff', fontWeight: 700, height: 'auto', padding: '18px 28px', display: 'block', boxShadow: lit ? `inset 0 0 0 4px ${C.amber}` : undefined}}>{T('Add to Home screen')}<div style={{fontSize: 22, fontWeight: 500, color: '#777'}}>{JA ? `または：${T('Install app')}` : 'or: Install app'}</div></div>
+          {['Settings'].map((x) => <div key={x} style={{...row, borderBottom: 'none'}}>{JA ? '設定' : x}</div>)}
         </div>
       )}
       {dlg > 0 && (
         <div style={{position: 'absolute', inset: 0, background: `rgba(0,0,0,${0.45 * dlg})`, display: 'grid', placeItems: 'center', zIndex: 4}}>
           <div style={{width: 500, borderRadius: 30, background: '#fff', padding: 36, opacity: dlg, display: 'grid', gap: 24}}>
-            <b style={{fontSize: 34, color: C.ink}}>Install app</b>
+            <b style={{fontSize: 34, color: C.ink}}>{T('Install app')}</b>
             <div style={{display: 'flex', gap: 20, alignItems: 'center'}}><Img src={staticFile('icons/icon-512.png')} style={{width: 90, height: 90, borderRadius: 45}} /><div style={{fontSize: 30, color: C.ink}}>Above the Line</div></div>
-            <div style={{display: 'flex', justifyContent: 'flex-end', gap: 40, fontSize: 30, fontWeight: 700, color: '#1a73e8'}}><span>Cancel</span><span>Install</span></div>
+            <div style={{display: 'flex', justifyContent: 'flex-end', gap: 40, fontSize: 30, fontWeight: 700, color: '#1a73e8'}}><span>{T('Cancel')}</span><span>{T('Install')}</span></div>
           </div>
         </div>
       )}

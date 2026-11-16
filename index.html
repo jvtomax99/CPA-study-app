@@ -195,6 +195,13 @@
   --f-sign: "Helvetica Neue", "Inter", Arial, sans-serif;
   --r-sm: 10px; --r-md: 14px; --r-lg: 22px;
 }
+/* Japanese interface (src/i18n.js sets <html lang="ja">): Inter and Helvetica keep the Latin letters and numbers, the
+   phone's own Japanese font draws the rest (Hiragino on iPhone, Noto Sans CJK on Android, Yu Gothic on Windows), so no
+   Japanese font is downloaded. Listed by name so a browser never picks a Chinese font for the same characters. */
+:root:lang(ja) {
+  --f-ui: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Meiryo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-sign: "Helvetica Neue", "Inter", "Hiragino Sans", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", sans-serif;
+}
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e1120; --paper: #171b2d; --ink: #e8ebf3; --ink-soft: #a0a8bc; --ink-faint: #6f7890; --line: #262c44;
@@ -560,6 +567,8 @@ h3 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
   background: repeating-linear-gradient(62deg, transparent 0 46px, rgba(255,255,255,0.75) 46px 49px), repeating-linear-gradient(-28deg, transparent 0 30px, rgba(255,255,255,0.6) 30px 32px), var(--tan); }
 .smap .river { position: absolute; left: 0; top: 0; bottom: 0; width: 38px; background: #b4d6ee; border-right: 3px solid #fff; }
 .smap .river span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap; color: #2a7cc0; font-size: 19px; letter-spacing: 0.45em; }
+/* Japanese stands upright, top to bottom, as on a Japanese map */
+:lang(ja) .smap .river span { transform: translate(-50%, -50%); writing-mode: vertical-rl; letter-spacing: 0.3em; }
 .smap .rail { position: absolute; left: 62px; top: 0; bottom: 0; width: 7px; background: var(--line); }
 .srow { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 54px; gap: 10px; align-items: center; width: 100%; min-height: 92px; padding: 16px 14px 16px 86px;
   background: none; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
@@ -876,14 +885,14 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
 <div class="nightsky" aria-hidden="true"></div>
 <div class="intro" id="intro" role="dialog" aria-label="Above the Line" aria-describedby="instatus">
   <div class="in-plate" aria-hidden="true"></div>
-  <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt">Welcome!</span></div>
-  <button class="in-snd" id="insnd" type="button" data-go="sound" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="x" d="M16 9l6 6M22 9l-6 6"/></svg><span>Tap for sound</span></button>
-  <nav class="in-side" aria-label="Launch menu"><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>Notices</button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span>Progress</button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span>Settings</button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span>Report a Question</button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span>Reset</button></nav>
-  <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus">Leaving the yard...</span></div>
-  <p class="in-next" id="innext" hidden><b>Next stop</b><span></span></p>
+  <div class="in-toast" id="intoast"><span class="in-ico" aria-hidden="true"></span><span id="intoastt" data-t>Welcome!</span></div>
+  <button class="in-snd" id="insnd" type="button" data-go="sound" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path class="w" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="x" d="M16 9l6 6M22 9l-6 6"/></svg><span data-t>Tap for sound</span></button>
+  <nav class="in-side" aria-label="Launch menu" data-ta><button type="button" data-go="notices"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><span data-t>Notices</span></button><button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M7 16v-4M12 16V8M17 16V5"/></svg></span><span data-t>Progress</span></button><button type="button" data-go="settings"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></span><span data-t>Settings</span></button><button type="button" data-go="report"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span><span data-t>Report a Question</span></button><button type="button" data-go="reset"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></span><span data-t>Reset</span></button></nav>
+  <div class="in-status" role="status"><span class="in-spin" aria-hidden="true"></span><span id="instatus" data-t>Leaving the yard...</span></div>
+  <p class="in-next" id="innext" hidden><b data-t>Next stop</b><span></span></p>
   <p class="in-title" id="intitle" aria-hidden="true">Above the Line</p>
-  <button class="in-skip" id="inskip" type="button" data-go="skip">Skip<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
-  <button class="in-tap" id="intap" type="button"><span>Tap to Start</span></button>
+  <button class="in-skip" id="inskip" type="button" data-go="skip"><span data-t>Skip</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg></button>
+  <button class="in-tap" id="intap" type="button"><span data-t>Tap to Start</span></button>
   <div class="in-bar" aria-hidden="true"><i id="inbar"></i></div>
   <div class="in-build" id="inbuild" aria-hidden="true"></div>
   <div class="in-flash" aria-hidden="true"></div>
@@ -904,21 +913,21 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
       <h1>Above the Line</h1>
       <p class="lines"><span class="bul" data-part="1" aria-hidden="true">1</span><span class="bul" data-part="2" aria-hidden="true">2</span><span class="bul" data-part="3" aria-hidden="true">3</span><span class="t"><span class="ea">Enrolled Agent · </span>Tax Year 2025</span></p>
     </div>
-    <button class="menubtn" id="morebtn" aria-label="More"><i></i><span id="flagdot"></span></button>
+    <button class="menubtn" id="morebtn" aria-label="More" data-ta><i></i><span id="flagdot"></span></button>
   </header>
   <main id="app"></main>
-  <nav class="tabbar" aria-label="Home sections">
+  <nav class="tabbar" aria-label="Home sections" data-ta>
     <div class="tb-brand">Above the Line<div class="tb-sw"></div></div>
-    <button type="button" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>Today</span></button>
-    <button type="button" data-tab="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l4-2v14M9 21V4l6 3v14M15 21v-9l4 2v7"/></svg><span>City</span></button>
-    <button type="button" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5h4a6 6 0 0 1 6 5"/></svg><span>Map</span></button>
-    <button type="button" data-tab="exam"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span>Exam</span></button>
-    <button type="button" id="tbmore" aria-label="More"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>More</span><span id="tbflag"></span></button>
+    <button type="button" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span data-t>Today</span></button>
+    <button type="button" data-tab="city"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l4-2v14M9 21V4l6 3v14M15 21v-9l4 2v7"/></svg><span data-t>City</span></button>
+    <button type="button" data-tab="map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5h4a6 6 0 0 1 6 5"/></svg><span data-t>Map</span></button>
+    <button type="button" data-tab="exam"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg><span data-t>Exam</span></button>
+    <button type="button" id="tbmore" aria-label="More" data-ta><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span data-t>More</span><span id="tbflag"></span></button>
   </nav>
   <footer>
     <p id="footnote">Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.</p>
-    <p>Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.</p>
-    <p>Times Square's streets, plazas and buildings come from map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
+    <p data-t>Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.</p>
+    <p data-th>Times Square's streets, plazas and buildings come from map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
     <p class="rights">© 2026 Chris Hidalgo. All rights reserved.</p>
   </footer>
 </div>
@@ -964,6 +973,418 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
 })();
 </script>
 
+<script>
+/* Japanese for the interface (Jose, 2026-11-16). Each key is the exact English the app passes to t() (src/i18n.js);
+   the value is what a Japanese reader sees. A key missing here shows in English. The buddy's pep lines keep one space
+   where his thought cloud breaks them into two lines. Check: python3 tools/i18n_check.py */
+window.__JA = {
+"Welcome!": "ようこそ！",
+"Tap for sound": "タップで音を出す",
+"Notices": "お知らせ",
+"Progress": "進み具合",
+"Settings": "設定",
+"Report a Question": "問題を報告",
+"Reset": "リセット",
+"Leaving the yard...": "車庫を出発…",
+"Next stop": "次の駅",
+"Skip": "スキップ",
+"Tap to Start": "タップしてスタート",
+"Today": "今日",
+"City": "シティ",
+"Map": "マップ",
+"Exam": "試験",
+"More": "メニュー",
+"Not affiliated with the IRS or PSI. Progress is saved in this browser only; copy a backup from More now and then.": "IRSおよびPSIとは関係ありません。進み具合はこのブラウザにだけ保存されます。ときどきメニューからバックアップを取ってください。",
+"Times Square's streets, plazas and buildings come from map data © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>.": "タイムズスクエアの通り・広場・建物は地図データ © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a> によるものです。",
+"Launch menu": "スタート画面のメニュー",
+"Home sections": "ホームのセクション",
+"Good morning": "おはようございます",
+"Good afternoon": "こんにちは",
+"Good evening": "こんばんは",
+"Welcome": "ようこそ",
+"Greeting": "あいさつ",
+"Your study buddy. Tap for a pep talk.": "勉強仲間です。タップすると応援してくれます。",
+"Play: start a drill": "プレイ：ドリルを始める",
+"First stop": "最初の駅",
+"{name} · {n}% ready": "{name} · 準備度{n}%",
+"Starting when loaded": "読み込みが終わったら出発",
+"Loading": "読み込み中",
+"Leaving the yard": "車庫を出発",
+"Sound off": "音：オフ",
+"Sound on": "音：オン",
+"Close": "閉じる",
+"Welcome, {name}!": "ようこそ、{name}さん！",
+"Tap to play": "タップして再生",
+"Waiting at {x}": "{x}駅で停車中",
+"Arriving at {x}": "まもなく{x}駅",
+"<b>{n}</b> day to {p}": "{p}まであと<b>{n}</b>日",
+"<b>{n}</b> days to {p}": "{p}まであと<b>{n}</b>日",
+"day": "日",
+"days": "日",
+"{n} more was a guess, counted as a miss.": "ほかに{n}問は当てずっぽうで、不正解として数えました。",
+"{n} more were guesses, counted as misses.": "ほかに{n}問は当てずっぽうで、不正解として数えました。",
+"{n} day in a row": "{n}日連続",
+"{n} days in a row": "{n}日連続",
+"{list} has too few questions so far, so the sim fills in from other areas.": "{list}はまだ問題が少ないため、ほかの分野の問題で補います。",
+"{list} have too few questions so far, so the sim fills in from other areas.": "{list}はまだ問題が少ないため、ほかの分野の問題で補います。",
+"{p} is in {n} day, on {date}.": "{p}の試験まであと{n}日（{date}）。",
+"{p} is in {n} days, on {date}.": "{p}の試験まであと{n}日（{date}）。",
+"The testing window closes February 28, 2027, in {n} day.": "受験期間は2027年2月28日まで。あと{n}日です。",
+"The testing window closes February 28, 2027, in {n} days.": "受験期間は2027年2月28日まで。あと{n}日です。",
+"{n} flagged question is waiting in More to be reported.": "報告待ちの問題が{n}問、メニューにあります。",
+"{n} flagged questions are waiting in More to be reported.": "報告待ちの問題が{n}問、メニューにあります。",
+"Tax Year 2025": "2025年度税法",
+"CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it.": "CPAモードはAICPAの2026年ブループリントに沿ってREGとTCPを扱います。税の問題は2025年12月31日までの改正を含む2025年度の税法に基づきます。ビジネス法の問題は統一商事法典（UCC）、合衆国法典、統一法、コーネル大学のWex法律辞典を出典としています。どの問題もAIの助けを借りて作り、引用した出典と照らして別に確認しました。おかしいと思ったら報告してください。",
+"Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.": "問題は2025年12月31日までの改正を含む2025年度の税法に基づきます。2026年7月1日から2027年2月28日までの受験期間で出題される範囲です。どの問題もAIの助けを借りて作り、引用したIRSの出典と照らして別に確認しました。おかしいと思ったら報告してください。",
+"No backup file saved yet.": "バックアップファイルはまだありません。",
+"Last backup file: today.": "最後のバックアップ：今日。",
+"Last backup file: yesterday.": "最後のバックアップ：昨日。",
+"Last backup file: {n} days ago.": "最後のバックアップ：{n}日前。",
+"Above the Line backup": "Above the Line のバックアップ",
+"Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email.": "バックアップファイルを保存しました。iCloud Drive、Google Drive、メールなど安全な場所に保管してください。",
+"Couldn't save a file here. Use Copy backup instead.": "ここではファイルを保存できませんでした。代わりに「バックアップをコピー」を使ってください。",
+"Copied.": "コピーしました。",
+"Couldn't copy automatically. The text is selected below.": "自動でコピーできませんでした。下のテキストを選択してあります。",
+"{n} buildings finished. Their flags are up.": "{n}棟のビルが完成！ 旗が揚がりました。",
+"You finished {bld}. {name} is fully mastered.": "{bld}が完成！ {name}を完全にマスターしました。",
+"Not started": "未着手",
+"{n}% of exam": "出題の{n}%",
+"{n} due": "復習{n}問",
+"Practice": "練習する",
+"Practice {name}, {n}% mastered": "{name}を練習（習熟度{n}%）",
+"EXAM READY": "合格圏",
+"<b>Exam day</b> Good luck on {p}": "<b>試験当日</b> {p}、がんばって！",
+"Set your {p} date to count down to it.": "{p}の試験日を入れると、カウントダウンします。",
+"{p} was on {date}. Set your next date.": "{p}の試験は{date}でした。次の試験日を入れてください。",
+" · good luck": " · がんばって！",
+"after the window closes Feb 28": "受験期間（2月28日まで）の後です",
+" · the window closes Feb 28": " · 受験期間は2月28日まで",
+"Exam day": "試験日",
+"Change": "変更",
+"Set date": "日付を入れる",
+"Not in the app yet": "まだアプリにありません",
+"{p}, {name}: {n}% ready": "{p}、{name}：準備度{n}%",
+", exam {date}": "、試験日 {date}",
+", no date set": "、試験日は未設定",
+"No date": "未設定",
+" · best sim {n}%": " · 模試の最高{n}%",
+"{p} exam date": "{p}の試験日",
+"When is your {p} exam?": "{p}の試験はいつですか？",
+"Save": "保存",
+"Clear date": "日付を消す",
+"Cancel": "キャンセル",
+"Pick the date on your Prometric appointment.": "Prometricの予約日を選んでください。",
+"That's after the window closes on February 28, 2027. Check the date with PSI.": "その日は受験期間（2027年2月28日まで）の後です。PSIで日付を確かめてください。",
+"The current testing window closes February 28, 2027.": "今の受験期間は2027年2月28日までです。",
+"Your first stop": "最初の駅",
+"{n} of exam": "出題の{n}",
+"{n} questions": "{n}問",
+"Your tax city": "あなたの税の街",
+"ready for {p}": "{p}の準備度",
+"Every building in {p} is finished. Keep reviews up to date.": "{p}のビルはすべて完成しました。復習を続けましょう。",
+"{n}/{goal} today": "今日 {n}/{goal}",
+"{n}-day streak": "{n}日連続",
+"★ Future CPA": "★ 未来のCPA",
+"★ Future EA": "★ 未来のEA",
+"Watch the 2-minute how-to video": "使い方の動画（2分）を見る",
+"How to use": "使い方",
+"Play: {n} due": "プレイ：復習{n}問",
+"Play": "プレイ",
+"Exam sim": "模擬試験",
+"Back up your progress": "進み具合をバックアップ",
+"Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.": "進み具合はこの端末にしか保存されていません。スマホをなくしたりブラウザのデータを消したりしても大丈夫なように、バックアップファイルを保存してください。",
+"Save backup file": "バックアップを保存",
+"Exam part": "試験パート",
+"Building your town…": "街を建設中…",
+"Open the city full screen in 3D": "街を3Dの全画面で開く",
+"Times Sq": "タイムズスクエア",
+"Day": "昼",
+"Dusk": "夕暮れ",
+"A sim is the multiple-choice half of {p}: {n} questions in two locked testlets of {half}, in 2 hours.": "模擬試験は{p}の選択問題パートです：{n}問を、戻れないテストレット2つ（各{half}問）に分けて2時間で解きます。",
+"A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.": "本番と同じシンプルな画面で、100問を3.5時間、戻れない3つのセクションに分けて解きます。",
+"Resume exam": "模擬試験を再開",
+"New exam sim": "新しい模擬試験",
+"Set up an exam sim": "模擬試験を準備する",
+"Past sims": "過去の模擬試験",
+"No exam sims yet.": "まだ模擬試験を受けていません。",
+"Your name": "お名前",
+"What should your study buddy call you?": "勉強仲間に何と呼んでほしいですか？",
+"First name": "名前",
+"Not now": "あとで",
+"It stays on this device. Change it any time in More.": "この端末にだけ保存されます。メニューからいつでも変えられます。",
+"The 3D town couldn't load on this device. Everything else works; your areas are listed below.": "この端末では3Dの街を読み込めませんでした。ほかの機能は使えます。分野の一覧は下にあります。",
+"Mastered": "習熟度",
+"Right": "正答率",
+"Due": "復習待ち",
+"{n} of 85 scored questions on the exam come from this area. {b} questions in the bank, {s} answered right three times with spacing.": "本番の採点対象85問のうち{n}問がこの分野から出ます。問題集には{b}問あり、そのうち{s}問は間隔をあけて3回正解しています。",
+"Drill {name}": "{name}をドリル",
+"How to use this app": "このアプリの使い方",
+"Step one: add this app to your Home Screen.": "まず最初に、このアプリをホーム画面に追加してください。",
+"<b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.": "<b>街の見方。</b>タワー1棟が試験の1分野です。完成した階はマスター済み。むき出しのコンクリート、オレンジのネット、クレーンが残りの部分です。大通りのタクシーは復習待ちの問題。完成したタワーは屋上が光ります。大型スクリーンにはあなたの最新の数字と2025年の税の数字が出ます。タワーをタップするとその分野をドリルできます。",
+"Loss sorter": "損失の仕分け機",
+"Loss sorter: the basis, at-risk, passive and excess business loss limits in order": "損失の仕分け機：ベーシス、アットリスク、パッシブ、超過事業損失の制限を順番に",
+"See it on the loss sorter": "損失の仕分け機で見る",
+"Basis order": "ベーシスの順番",
+"Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it": "ベーシスの順番：Sコーポレーションの株式ベーシスと債務ベーシスを、Form 7203の順に一歩ずつ",
+"See the basis order, step by step": "ベーシスの順番を一歩ずつ見る",
+"A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss.": "損失は、法律が当てはめる順に4つの制限を通ります：ベーシス、アットリスク、パッシブ、そして超過事業損失。",
+"One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored.": "Sコーポレーションの株式ベーシスと債務ベーシスの1年：所得、分配、控除できない費用、損失、そして債務ベーシスの回復。",
+"Town": "街へ",
+"No questions available in {scope}. They may all be flagged.": "{scope}には出せる問題がありません。すべて報告済みかもしれません。",
+"Due for review": "復習の時期",
+"New question": "新しい問題",
+"Reviewing early": "早めの復習",
+"{n} in a row. Keep going.": "{n}問連続正解。この調子！",
+"Right, but a guess": "正解。でも当てずっぽう",
+"Correct": "正解",
+"Not quite. It's {x}.": "おしい。正解は{x}です。",
+"Source": "出典",
+"Also counts for CPA": "CPAにもカウント",
+"What looks wrong? Jose will see this note.": "どこがおかしいですか？ このメモはJoseに届きます。",
+"e.g. The 2025 figure is $X per Pub 501": "例：Pub 501 によると2025年の金額は$Xです",
+"Flag this question": "この問題を報告",
+"See today's summary": "今日のまとめを見る",
+"Next question": "次の問題",
+"Counts this as a miss, so it comes back soon": "不正解として数えるので、すぐにまた出ます",
+"I guessed": "当てずっぽうだった",
+"Flag as wrong": "まちがいを報告",
+"Mastery": "習熟度",
+"seen {n}× · {r} right": "解答{n}回 · 正解{r}回",
+"Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.": "キー操作：AからD（または1から4）で解答、当てずっぽうで正解したらG、Enterで次の問題。",
+"Flagged. It stays out of practice until it's unflagged.": "報告しました。報告を取り消すまで練習には出ません。",
+"Counted as a miss, so it comes back in 5 minutes.": "不正解として数えたので、5分後にまた出ます。",
+"{n} of {m}": "{m}問中{n}問",
+"{n}% right": "正答率{n}%",
+"Session · {scope} · {n} min": "セッション · {scope} · {n}分",
+"{n} of {m} right.": "{m}問中{n}問正解。",
+"New questions": "新しい問題",
+"Reviews": "復習",
+"Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.": "新しい問題への最初の解答が、本番の実力にいちばん近い数字です。復習は答えを見たことがあるぶん簡単になります。",
+"Area": "分野",
+"Now": "現在",
+"no change": "変化なし",
+"Missed or guessed": "不正解・当てずっぽう",
+"You got this one right by guessing.": "この問題は当てずっぽうで正解しました。",
+"Correct:": "正解：",
+"None. Every answer was right without guessing.": "ありません。すべて実力で正解しました。",
+"Keep drilling": "ドリルを続ける",
+"Back to town": "街に戻る",
+"Daily goal done, {name}.": "{name}さん、今日の目標達成！",
+"Daily goal done.": "今日の目標達成！",
+"answered": "解答",
+"right": "正答率",
+"min": "分",
+"best run": "最高連続",
+"What you built today": "今日建てたもの",
+"You missed {n}. Each comes back in 5 minutes, then again tomorrow if you get it.": "{n}問まちがえました。どれも5分後にまた出て、正解すれば明日もう一度出ます。",
+"Nothing missed today.": "今日はまちがいなし。",
+"Keep going": "続ける",
+"{n} questions, {m} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.": "{n}問・{m}分。本番のPSI試験と同じく3つのセクションに分かれます。セクションを出たら戻れません。セクションの間には時計が止まる休憩を取れます（任意）。答えは最後まで表示されません。",
+"The real exam has 100 questions. The {p} bank only has {n} so far, so this sim is shorter.": "本番は100問です。{p}の問題集はまだ{n}問しかないので、この模擬試験は短めです。",
+"Questions are drawn in proportion to the official outline, so heavier areas get more.": "問題は公式の出題範囲の比率で選ばれるので、比重の大きい分野ほど多く出ます。",
+"{n} multiple-choice questions in {m} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.": "選択問題{n}問を{m}分で、2つのテストレットに分けて解きます。テストレットを提出したら戻れません。答えは最後まで表示されません。",
+"The real {p} exam has {n} multiple-choice questions and {s} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.": "本番の{p}は選択問題{n}問とTBS（タスク型シミュレーション）{s}問を4時間で解き、それぞれが得点の半分です（AICPA 2026年ブループリント）。この模擬試験は選択問題の部分です。2時間はアプリの目安で、AICPAの数字ではありません。",
+"Questions are drawn by the 2026 blueprint weights.": "問題は2026年ブループリントの比重で選ばれます。",
+"You have an exam in progress ({p}).": "途中の模擬試験があります（{p}）。",
+"Resume it": "再開する",
+"Discard it": "破棄する",
+"Start the exam": "試験を始める",
+"testlet": "テストレット",
+"section": "セクション",
+"{p} sim · {w} {n} of {m}": "{p} 模擬試験 · {w} {n}/{m}",
+"Finish {w}": "{w}を終える",
+"Finish exam": "試験を終える",
+"Leave {w} {n}? You can't come back to these questions.": "{w}{n}を終えますか？ この問題には戻れません。",
+"Submit the exam?": "試験を提出しますか？",
+"{n} unanswered in this section count as wrong.": "このセクションの未解答{n}問は不正解になります。",
+"Every question in this section is answered.": "このセクションはすべて解答済みです。",
+"Leave {w}": "{w}を終える",
+"Submit": "提出",
+"Keep working": "続ける",
+"Question {n} of {m}": "{m}問中 第{n}問",
+"Tax year": "税年度",
+"Previous": "前へ",
+"Next": "次へ",
+"Unmark": "マークを外す",
+"Mark for review": "見直しマーク",
+"Testlet {n}": "テストレット{n}",
+"Section {n}": "セクション{n}",
+"{n} of {m} answered": "{m}問中{n}問解答",
+"Dark: answered. Dot: marked for review.": "濃い色：解答済み。点：見直しマーク。",
+"Scheduled break": "休憩",
+"Section {n} is done": "セクション{n}が終わりました",
+"The real exam offers a 10-minute break here, and the clock stops while you take it. Section {n} is {m} questions.": "本番ではここで10分の休憩があり、休憩中は時計が止まります。セクション{n}は{m}問です。",
+"Time left on the exam clock: {x}": "試験の残り時間：{x}",
+"Start section {n}": "セクション{n}を始める",
+"You had practiced every question in this sim before, so this score partly measures memory of the answers.": "この模擬試験の問題はすべて練習済みだったので、このスコアには答えを覚えていたぶんも含まれます。",
+"Only {n} of these questions were new to you ({r} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.": "初めて見る問題は{n}問だけ（正解{r}問）で、それだけでは判断できません。残りは練習済みなので、このスコアには記憶のぶんも含まれます。",
+"<b>{a}%</b> on the {n} questions you'd never seen, {b}% on the {m} you'd practiced. The never-seen score is the better read on exam day.": "初めて見た{n}問で<b>{a}%</b>、練習済みの{m}問で{b}%。本番の実力に近いのは初めて見た問題のスコアです。",
+"<b>{a}%</b> on the {n} questions you'd never seen. The never-seen score is the better read on exam day.": "初めて見た{n}問で<b>{a}%</b>。本番の実力に近いのは初めて見た問題のスコアです。",
+"Part {p} exam sim": "Part {p} 模擬試験",
+" · time ran out": " · 時間切れ",
+"{n} of {m} correct": "{m}問中{n}問正解",
+"The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.": "本番のスコアは200〜800のスケールスコアで、500で合格です。IRSは素点の換算方法を公表していないので、ここでは正答率をそのまま表示します。合否の予測ではなく、練習の目安として見てください。",
+"By content area": "分野別",
+"Score": "スコア",
+"Missed questions": "まちがえた問題",
+"Your answer:": "あなたの答え：",
+"none": "なし",
+"None. Every answer was right.": "ありません。全問正解です。",
+"More, {n} flagged": "メニュー、報告{n}件",
+"A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.": "ナレーション付きのガイド動画です：ホーム画面への追加、街、ドリル、模擬試験、バックアップ。",
+"Watch the guide": "ガイドを見る",
+"Launch screen": "スタート画面",
+"The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.": "アプリを起動するたびに、高架鉄道で税の街へ向かう映像が流れます。スマホはアプリを裏で開いたままにするので、今見たいときはここから再生してください。",
+"Replay the intro": "オープニングを再生",
+"Sound: On": "音：オン",
+"Sound: Off": "音：オフ",
+"Music: On": "音楽：オン",
+"Music: Off": "音楽：オフ",
+"Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.": "音はスタート画面で最初にタップしたときに鳴り始め、スマホのマナーモードに従います。音楽は電車の映像に流れるブーンバップのビートです。オフにすると効果音だけになります。",
+"Menus and buttons change language. Questions, answers and explanations stay in English, as on the exam.": "メニューとボタンの言語が変わります。問題・選択肢・解説は本番と同じく英語のままです。",
+"Your study buddy says hello with it on Home.": "ホームで勉強仲間がこの名前であいさつします。",
+"Daily goal": "1日の目標",
+"{n} a day": "1日{n}問",
+"Daily reminder": "毎日のリマインダー",
+"Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating \"EA practice\" event, and the event links back to this app.": "毎日同じ時間にスマホに通知します。カレンダーに「EA practice」という繰り返しの予定として入り、予定からこのアプリに戻れます。",
+"Remind me at": "通知の時刻",
+"Add to my calendar": "カレンダーに追加",
+"You added a {time} reminder on {date}.": "{date}に{time}のリマインダーを追加しました。",
+"iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the \"EA practice\" event in Calendar, then add a new one here.": "iPhone：予定が表示されたら「すべてを追加」をタップ。Android：ダウンロードしたファイルをカレンダーアプリで開きます。時刻を変えたり止めたりするには、カレンダーの「EA practice」を削除してから、ここで新しく追加してください。",
+"Figures": "図解",
+"Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.": "ルールの働きを見せる図解の仕掛けです。それぞれ、関係する問題に答えたあとにも開けます。",
+"Linked from {n} questions": "{n}問からリンク",
+"Open": "開く",
+"Flagged questions": "報告した問題",
+"Copy report for Jose": "Jose宛ての報告をコピー",
+"Unflag": "報告を取り消す",
+"None. Tap \"Flag as wrong\" after answering a question that looks wrong, and it shows up here.": "ありません。おかしいと思った問題に答えたあと「まちがいを報告」をタップすると、ここに表示されます。",
+"Backup": "バックアップ",
+"Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.": "進み具合はこのブラウザにしか保存されていません。ときどきバックアップファイルを保存して、iCloud Drive、Google Drive、メールなど安全な場所に保管してください。どのスマホやパソコンでも読み込めば、続きから始められます。",
+"Load backup file": "バックアップを読み込む",
+"On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.": "iPhoneでは、このアプリをホーム画面に追加してください（共有 →「ホーム画面に追加」）。Safariは7日間開かなかったサイトの保存データを消すことがありますが、ホーム画面のアプリは対象外です。",
+"Copy and paste instead": "コピー＆ペーストで行う",
+"Copy backup": "バックアップをコピー",
+"Restore: paste a backup here. It replaces the progress on this device.": "復元：バックアップをここに貼り付けます。この端末の進み具合は置き換わります。",
+"Restore": "復元",
+"Start over": "最初からやり直す",
+"Erases every answer, review date, exam and flag on this device.": "この端末のすべての解答、復習日、模擬試験、報告を消します。",
+"Erase progress": "進み具合を消す",
+"The question bank": "問題集について",
+"Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.": "分野ごとの比重はPSIの受験者案内（Candidate Information Bulletin、2026年10月9日改訂）によります。どの問題も、根拠にしたIRSの刊行物、様式の説明書、Revenue Procedure、または内国歳入法典の条文を出典に挙げています。",
+"Saved. Hi, {name}!": "保存しました。こんにちは、{name}さん！",
+"Name cleared.": "名前を消しました。",
+"That file isn't an Above the Line backup.": "このファイルは Above the Line のバックアップではありません。",
+"an unknown date": "不明な日付",
+"Replace the progress on this device with the backup from {when}?": "この端末の進み具合を、{when}のバックアップで置き換えますか？",
+"The backup has {n} questions answered. What's on this device now will be replaced.": "バックアップには解答済みの問題が{n}問あります。今この端末にあるデータは置き換わります。",
+"Replace with backup": "バックアップで置き換える",
+"Backup loaded.": "バックアップを読み込みました。",
+"Backup restored.": "バックアップを復元しました。",
+"That isn't a valid backup. Paste the full text you copied.": "正しいバックアップではありません。コピーしたテキストを全部貼り付けてください。",
+"Erase everything on this device?": "この端末のデータをすべて消しますか？",
+"Yes, erase": "はい、消します",
+"Progress erased.": "進み具合を消しました。",
+"{p} is today. Good luck.": "今日は{p}の試験日。がんばって！",
+"No flagged questions.": "報告した問題はありません。",
+"Close this card": "このカードを閉じる",
+"Finished: every floor is mastered.": "完成：すべての階をマスターしました。",
+"{n}% finished · {a} of {b} floors done": "{n}%完成 · {b}階中{a}階",
+"Drill this area": "この分野をドリル",
+"Your study city in 3D": "3Dの勉強の街",
+"Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower": "ドラッグで移動 · ピンチでズーム · ひねって回転 · 2本指の上下で傾き · ダブルタップで拡大 · タワーをタップ",
+"Face north, up the avenues": "北を向く（アベニューの上り方向）",
+"Stand on the red steps at street level": "通りの高さで赤い階段に立つ",
+"Street": "通り",
+"Reset view": "視点を戻す",
+"The 3D view was paused by your phone to save memory.": "メモリを節約するため、スマホが3D表示を止めました。",
+"Restart 3D": "3Dを再開",
+"the tax prep shop": "税務申告の事務所",
+"the Bank": "銀行",
+"the brownstones": "ブラウンストーンの家並み",
+"the walk-up": "ウォークアップのアパート",
+"the planner's office": "プランナーの事務所",
+"the townhouse mansion": "タウンハウスの邸宅",
+"the Midtown tower": "ミッドタウンのタワー",
+"the loft building": "ロフトビル",
+"the rooftop farm": "屋上農園",
+"the practitioner's office": "税務代理人の事務所",
+"the courthouse": "裁判所",
+"the collections office": "徴収事務所",
+"the post office": "郵便局",
+"Hudson River": "ハドソン川",
+"East River": "イースト川",
+"Harlem River": "ハーレム川",
+"Bronx River": "ブロンクス川",
+"Nailed it.": "完璧！",
+"That's the one.": "それが正解。",
+"Clean.": "お見事。",
+"Right on the money.": "ドンピシャ。",
+"Exactly.": "その通り。",
+"Tricky one. The rule's below.": "ひっかけ問題。ルールは下に。",
+"Close. Read why below.": "おしい。理由は下を読もう。",
+"This one comes back in 5 minutes.": "この問題は5分後にまた出ます。",
+"Good one to miss now, not in July.": "本番じゃなく、今まちがえてよかった。",
+"You’ve got this!": "きみなら できる！",
+"Small wins add up.": "小さな勝ちが 積み重なる。",
+"One tower at a time.": "タワーは 一棟ずつ。",
+"Progress compounds.": "進歩は 複利で効く。",
+"Every question counts.": "一問一問が 力になる。",
+"Keep the streak alive!": "連続記録を 止めるな！",
+"Ten questions. Go!": "あと10問。 いこう！",
+"Tax law fears you.": "税法が きみを恐れてる。",
+"Your future self says thanks.": "未来のきみが ありがとうって。",
+"Balance the books, then rest.": "帳尻を合わせたら 休もう。",
+"Debits left, credits right.": "借方は左、 貸方は右。",
+"Due reviews first, then new ones.": "まず復習、 次は新しい問題。",
+"Tap me for another.": "タップで もうひとつ。"
+};
+
+</script>
+<script>
+/* Interface language: English, or Japanese for menus, buttons and the study buddy (Jose, 2026-11-16).
+   Questions, answers, explanations, sources, area names and section codes stay English, as on the exam.
+   LANG is chosen once at start: the More switch (localStorage "eaTaxTown.lang"), else the phone's language.
+   t("English text", { n: 3 }) returns the Japanese for that exact English text when LANG is "ja" and
+   src/i18n-ja.js has it, else the English; {name} placeholders are filled from the object. Keys are the
+   English text itself, so English never depends on this file. tn(n, one, many, vars) picks the English
+   singular or plural first (Japanese has one form). Static markup in shell.html marks its text with
+   data-t (text), data-th (text with a link in it) and data-ta (aria-label); all three are translated as soon as this file runs.
+   Runs first, before mascot.js, intro.js and app.js, so every one of them can call t(). */
+const LANG = (() => {
+  let pick = null;
+  try { pick = localStorage.getItem("eaTaxTown.lang"); } catch (e) {}
+  if (pick === "en" || pick === "ja") return pick;
+  const langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]);
+  return /^ja\b/i.test(langs[0] || "") ? "ja" : "en";
+})();
+/* dates: Japanese format in Japanese; undefined keeps the phone's own format in English, as before */
+const LOC = LANG === "ja" ? "ja-JP" : undefined;
+const JA = window.__JA || {};
+function t(s, vars) {
+  let out = LANG === "ja" && Object.hasOwn(JA, s) ? JA[s] : s;
+  if (vars) out = out.replace(/\{(\w+)\}/g, (m, k) => (Object.hasOwn(vars, k) ? String(vars[k]) : m));
+  return out;
+}
+function tn(n, one, many, vars) { return t(n === 1 ? one : many, Object.assign({ n }, vars)); }
+/* the More switch: keep the choice and load the page again, straight back to More with no launch screen */
+function setLang(l) {
+  try { localStorage.setItem("eaTaxTown.lang", l); sessionStorage.setItem("eaTaxTown.afterLang", "1"); } catch (e) {}
+  location.replace(location.pathname + "?intro=0");
+}
+function afterLang() {
+  try { if (sessionStorage.getItem("eaTaxTown.afterLang")) { sessionStorage.removeItem("eaTaxTown.afterLang"); return true; } } catch (e) {}
+  return false;
+}
+document.documentElement.lang = LANG;
+if (LANG !== "en") {
+  document.querySelectorAll("[data-t]").forEach(e => { e.textContent = t(e.dataset.t || e.textContent.trim()); });
+  document.querySelectorAll("[data-th]").forEach(e => { e.innerHTML = t(e.innerHTML.trim()); });
+  document.querySelectorAll("[data-ta]").forEach(e => { e.setAttribute("aria-label", t(e.getAttribute("aria-label"))); });
+  document.title = t(document.title);
+}
+
+</script>
 <script>
 /* The greeting at the top of Home, with the study buddy. Ported from Dr. Smiley's hello in
    the Interp app (home-polish.js / home-polish.css there):
@@ -1032,7 +1453,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     let n = Math.floor(Math.random() * (PEP.length - 1));
     if (lastPep >= 0 && n >= lastPep) n++;
     if (lastPep < 0) n = Math.floor(Math.random() * PEP.length);
-    lastPep = n; return PEP[n];
+    lastPep = n; return t(PEP[n]);
   }
 
   const clamp = x => x < 0 ? 0 : x > 1 ? 1 : x;
@@ -1096,17 +1517,17 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
   function greeting({ name, pill, extra }) {
     const now = new Date(), h = now.getHours();
-    const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    const hello = h < 12 ? t("Good morning") : h < 17 ? t("Good afternoon") : t("Good evening");
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
-    const nm = (name || "").trim(), shown = nm || "Welcome";
+    const nm = (name || "").trim(), shown = nm || t("Welcome");
     const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
     const ring = RING_GLYPHS.map((g, i) => { const a = i / RING_GLYPHS.length * TAU - Math.PI / 2;
       return `<span class="rg" style="left:${(50 + 50 * Math.cos(a)).toFixed(2)}%;top:${(50 + 50 * Math.sin(a)).toFixed(2)}%;--i:${i}"><i>${g}</i></span>`; }).join("");
-    return `<section class="greet" aria-label="Greeting">
+    return `<section class="greet" aria-label="${t("Greeting")}">
       <div class="greet-sky" style="background-image:url(&quot;${drawSkyline()}&quot;)"></div>
       <div class="greet-scrim"></div>
       <div class="greet-text">
-        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
+        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm && LANG !== "ja" ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(LOC, { weekday: "short", month: "short", day: "numeric" })}</time></div>
         <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
         <div class="greet-row">
           <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}${extra || ""}</div>
@@ -1114,10 +1535,10 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
             <span class="buddy-fig">
-              <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+              <button class="buddy-face" id="buddyface" type="button" aria-label="${t("Your study buddy. Tap for a pep talk.")}">
                 <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}">${FACE_WIN}<span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
-              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="${t("Play: start a drill")}"></button>
               <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
             </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
@@ -1588,8 +2009,8 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   /* the Next stop line over Tap to Start: the area with the biggest gap, as on the Today card */
   function nextStop(p) {
     const n = $i("#innext"); if (!n || !p || !p.next) return;
-    n.querySelector("b").textContent = p.first ? "First stop" : "Next stop";
-    n.querySelector("span").textContent = `${p.next.name} · ${Math.round(p.next.m * 100)}% ready`; n.hidden = false;
+    n.querySelector("b").textContent = p.first ? t("First stop") : t("Next stop");
+    n.querySelector("span").textContent = t("{name} · {n}% ready", { name: p.next.name, n: Math.round(p.next.m * 100) }); n.hidden = false;
   }
   nextStop(window.__introProg);
   setTimeout(() => paintSound(), 0);
@@ -1648,7 +2069,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, shot: -1, endedAt: 0, tried: false, lastT: -1, lastMove: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.16 · 9f92a75 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.16 · 581ea97 · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -1661,7 +2082,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     const i = has3d || film.on ? stationI : Math.max(0, [0, 1, 2].findIndex(k => !Boot.lit(k)));
     /* the station names only mean something while the train is riding past them */
     const riding = (has3d || film.on) && phase !== "hero" && phase !== "wait";
-    const where = queued ? "Starting when loaded" : riding ? (waiting ? "Waiting at " : "Arriving at ") + NAMES[i] : phase === "hero" ? "Loading" : "Leaving the yard";
+    const where = queued ? t("Starting when loaded") : riding ? t(waiting ? "Waiting at {x}" : "Arriving at {x}", { x: NAMES[i] }) : phase === "hero" ? t("Loading") : t("Leaving the yard");
     $i("#instatus").textContent = `${where}... ${(pr * 100).toFixed(2)}%`;
     el.classList.toggle("loading", !done && phase !== "wide");
     if (done && queued) exit(queued);
@@ -1725,7 +2146,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   function paintSound() {
     const b = $i("#insnd"); if (!b) return;
     b.setAttribute("aria-pressed", String(soundOn && !!(audio || fsnd)));
-    b.querySelector("span").textContent = !soundOn ? "Sound off" : audio || fsnd ? "Sound on" : "Tap for sound";
+    b.querySelector("span").textContent = !soundOn ? t("Sound off") : audio || fsnd ? t("Sound on") : t("Tap for sound");
     b.classList.toggle("off", !soundOn);
   }
   function toggleSound() {
@@ -1757,9 +2178,9 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     } else finish();
   }
   function showNotices() {
-    const n = document.createElement("div"); n.className = "in-notes"; n.setAttribute("role", "dialog"); n.setAttribute("aria-label", "Notices");
+    const n = document.createElement("div"); n.className = "in-notes"; n.setAttribute("role", "dialog"); n.setAttribute("aria-label", t("Notices"));
     const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    n.innerHTML = `<h3>Notices</h3><ul>${notices().map(t => `<li>${esc(t)}</li>`).join("")}</ul><button type="button">Close</button>`;
+    n.innerHTML = `<h3>${t("Notices")}</h3><ul>${notices().map(x => `<li>${esc(x)}</li>`).join("")}</ul><button type="button">${t("Close")}</button>`;
     n.addEventListener("click", e => e.stopPropagation());
     n.querySelector("button").onclick = () => n.remove();
     el.appendChild(n); n.querySelector("button").focus();
@@ -1785,9 +2206,9 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
   function toast() {
     if (toasted) return; toasted = true;
     let name = ""; try { name = (JSON.parse(localStorage.getItem("eaTaxTown.v2") || "{}").name || "").trim(); } catch (e) {}
-    const t = $i("#intoast"); $i("#intoastt").textContent = name ? `Welcome, ${name}!` : "Welcome!";
-    requestAnimationFrame(() => t.classList.add("show"));
-    setTimeout(() => t.classList.remove("show"), 1900);
+    const tt = $i("#intoast"); $i("#intoastt").textContent = name ? t("Welcome, {name}!", { name }) : t("Welcome!");
+    requestAnimationFrame(() => tt.classList.add("show"));
+    setTimeout(() => tt.classList.remove("show"), 1900);
   }
   if (mode === "full") setTimeout(toast, 1200);
 
@@ -1852,7 +2273,7 @@ html.introing, html.introing body { background: #0b0a24; }   /* the body too: so
     const auto = () => { card(false); try { const pl = v.play(); if (pl && pl.catch) pl.catch(refused); } catch (e) { fail(); } setTimeout(() => { if (!film.ask) fail(); }, 5000); };
     const ask = () => {
       if (settled || film.ask) return; film.ask = true;
-      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = "Tap to play"; el.classList.add("filmask"); card(true);
+      const lab = $i("#intap span"), was = lab.textContent; lab.textContent = t("Tap to play"); el.classList.add("filmask"); card(true);
       const done = film.askDone = () => { film.askDone = null; card(false); el.classList.remove("filmask"); lab.textContent = was; el.removeEventListener("pointerup", go1, true); };
       const go1 = e => { if (e.target.closest("[data-go]")) return; done(); const p2 = v.play(); if (p2 && p2.catch) p2.catch(fail); setTimeout(fail, 5000); };
       el.addEventListener("pointerup", go1, true);
@@ -3339,17 +3760,17 @@ function useExam(x) {
 function indexById() { byId = Object.fromEntries((isCpa() ? BANK.filter(q => q.part === state.part) : BANK).map(q => [q.id, q])); }
 function setPart(p) { state.part = String(p); if (isCpa()) indexById(); }
 /* The app bar, sidebar and footer follow the exam: title, part bullets or section signs, and the EA/CPA switch */
-function examSwitch() { return `<span class="exsw" role="group" aria-label="Exam"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
+function examSwitch() { return `<span class="exsw" role="group" aria-label="${t("Exam")}"><button type="button" data-ex="ea" aria-pressed="${!isCpa()}">EA</button><button type="button" data-ex="cpa" aria-pressed="${isCpa()}">CPA</button></span>`; }
 function drawSignage() {
   const title = "Above the Line", lines = document.querySelector(".appbar .lines");
   if (!lines) return;
   document.body.classList.toggle("cpa", isCpa());
   document.querySelector(".appbar h1").textContent = title;
-  lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">Tax Year 2025</span>`);
+  lines.innerHTML = partKeys().map(n => partSign(n, isLive(n) ? "" : " off")).join("") + examSwitch() + (isCpa() ? "" : `<span class="t">${t("Tax Year 2025")}</span>`);
   document.querySelector(".tb-brand").innerHTML = `${title}<div class="tb-sw">${examSwitch()}</div>`;
   const f = document.querySelector("#footnote");
-  f.textContent = isCpa() ? "CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it."
-    : "Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.";
+  f.textContent = isCpa() ? t("CPA mode covers REG and TCP on the AICPA's 2026 blueprint. Tax questions follow tax year 2025 law as amended through December 31, 2025. Business law questions cite the Uniform Commercial Code, the U.S. Code, the uniform acts and Cornell's Wex legal dictionary. Each was drafted with AI help and independently checked against the source it cites. If one looks wrong, flag it.")
+    : t("Questions follow tax year 2025 law as amended through December 31, 2025, which is what the July 1, 2026 to February 28, 2027 exam window tests. Each was drafted with AI help and independently checked against the IRS source it cites. If one looks wrong, flag it.");
   document.querySelectorAll(".exsw button").forEach(b => b.onclick = () => { if (b.dataset.ex === state.exam) return; useExam(b.dataset.ex); tsView = false; save(); updateFlagDot(); if (view === "more") renderMore(); else renderHome(); });
 }
 /* an exam sim in progress belongs to the exam it was started in */
@@ -3365,6 +3786,10 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;"
 const st = id => state.items[id] || { box: 0, due: 0, seen: 0, right: 0, last: 0, flag: false, note: "" };
 function setSt(id, p) { state.items[id] = Object.assign(st(id), p); save(); }
 const pct = x => Math.round(x * 100);
+/* an area's building, as "the Bank" (plain), "Bank" (bare) or "The Bank" (cap); in Japanese, its translation */
+const bldName = (D, how) => LANG === "ja" ? t(D.bld) : how === "bare" ? D.bld.replace(/^the /, "") : how === "cap" ? D.bld.replace(/^the /, "The ") : D.bld;
+/* the how-to video in the interface language (made in promo/) */
+const GUIDE = LANG === "ja" ? "media/how-to-use-ja" : "media/how-to-use";
 
 /* ---------- numbers ---------- */
 function inBank(d) { return BANK.filter(q => q.domain === d && !st(q.id).flag); }
@@ -3444,7 +3869,7 @@ function pickNext(domain, part, exclude) {
 function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600); }
 /* ---------- backup files ---------- */
 function backupAge() { return state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / DAY) : null; }
-function backupLine() { const a = backupAge(); return a == null ? "No backup file saved yet." : a === 0 ? "Last backup file: today." : a === 1 ? "Last backup file: yesterday." : `Last backup file: ${a} days ago.`; }
+function backupLine() { const a = backupAge(); return a == null ? t("No backup file saved yet.") : a === 0 ? t("Last backup file: today.") : a === 1 ? t("Last backup file: yesterday.") : t("Last backup file: {n} days ago.", { n: a }); }
 function backupDue() { return state.log.length >= 10 && (backupAge() == null || backupAge() >= 7); }
 async function saveBackupFile() {
   const now = Date.now(), name = `ea-ledger-progress-${new Date(now).toISOString().slice(0, 10)}.json`;
@@ -3452,13 +3877,13 @@ async function saveBackupFile() {
   let done = false;
   try {
     const file = new File([data], name, { type: "application/json" });
-    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Above the Line backup" }); done = true; }
+    if (/Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: t("Above the Line backup") }); done = true; }
   } catch (e) { if (e && e.name === "AbortError") return false; }
   if (!done) {
     try { const url = URL.createObjectURL(new Blob([data], { type: "application/json" })), a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); done = true; } catch (e) {}
   }
-  if (done) { state.lastBackup = now; save(); toast("Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email."); }
-  else toast("Couldn't save a file here. Use Copy backup instead.");
+  if (done) { state.lastBackup = now; save(); toast(t("Backup file saved. Keep it somewhere safe, like iCloud Drive, Google Drive or your email.")); }
+  else toast(t("Couldn't save a file here. Use Copy backup instead."));
   return done;
 }
 function readBackup(text) {
@@ -3467,8 +3892,8 @@ function readBackup(text) {
   return { state: tidy(s, false), savedAt: num((o && o.savedAt) || s.lastBackup) };
 }
 async function copyText(text, fb) {
-  try { await navigator.clipboard.writeText(text); toast("Copied."); }
-  catch (e) { if (fb) { fb.hidden = false; fb.value = text; fb.select(); } toast("Couldn't copy automatically. The text is selected below."); }
+  try { await navigator.clipboard.writeText(text); toast(t("Copied.")); }
+  catch (e) { if (fb) { fb.hidden = false; fb.value = text; fb.select(); } toast(t("Couldn't copy automatically. The text is selected below.")); }
 }
 function ring(done, goal) {
   const f = Math.min(1, done / Math.max(goal, 1)), r = 12, c = 2 * Math.PI * r;
@@ -3493,7 +3918,7 @@ function pushTown() {
   const data = townData(); data.sky = skyNow(); data.view = tsView ? "ts" : "part";
   { const p = state.part, g = gap(p); data.hud = { part: p, ready: pct(readiness(p)), due: dueIn(q => String(q.part) === p), streak: streak(), today: todayCount(), goal: state.goal, gap: g && g.m < 0.999 ? DOMAINS[g.d].short : "" }; }
   const finished = Object.keys(DOMAINS).filter(d => (state.shown[d] ?? 1) < 0.999 && data.mastery[d] >= 0.999);
-  if (finished.length) setTimeout(() => toast(finished.length > 1 ? `${finished.length} buildings finished. Their flags are up.` : `You finished ${DOMAINS[finished[0]].bld}. ${DOMAINS[finished[0]].name} is fully mastered.`), 1800);
+  if (finished.length) setTimeout(() => toast(finished.length > 1 ? t("{n} buildings finished. Their flags are up.", { n: finished.length }) : t("You finished {bld}. {name} is fully mastered.", { bld: bldName(DOMAINS[finished[0]]), name: DOMAINS[finished[0]].name })), 1800);
   window.__townData = data;
   if (window.Town && window.Town.ready) window.Town.update(data);
   state.shown = Object.assign({}, data.mastery); save();
@@ -3558,18 +3983,18 @@ function stripMap(p, focus) {
   const rows = partDomains(p).map(d => {
     const D = DOMAINS[d], m = mastery(d), due = inBank(d).filter(q => isDue(q, now)).length, share = D.w ? D.w.replace(/%$/, "") : Math.round(D.n / 85 * 100);
     const art = ART.has(d) ? `<img src="art/area-${d.toLowerCase()}.webp" alt="" loading="lazy">` : bldSvg(d, m);
-    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : "Not started"}</span></span>`;
-    const where = `<span class="hood">${esc(D.bld.replace(/^the /, ""))}</span><span>${share}% of exam</span>${due ? `<b>${due} due</b>` : ""}`;
+    const prog = `<span class="prog">${stopsLine(m)}<span class="pc${m ? "" : " zero"}">${m ? pct(m) + "%" : t("Not started")}</span></span>`;
+    const where = `<span class="hood">${esc(bldName(D, "bare"))}</span><span>${t("{n}% of exam", { n: share })}</span>${due ? `<b>${t("{n} due", { n: due })}</b>` : ""}`;
     if (d === focus) return `<div class="srow"><span class="sdot"></span><div class="sbox">
-      <div class="shd">${routeBullet(ROUTE[d])}<span>Next stop</span></div>
+      <div class="shd">${routeBullet(ROUTE[d])}<span>${t("Next stop")}</span></div>
       <div class="snm">${esc(D.name)}</div><div class="swhere">${where}</div>${prog}
-      <button class="sgo" data-drill="${d}">Practice <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
+      <button class="sgo" data-drill="${d}">${t("Practice")} <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4"/></svg></button>
       <span class="sart" aria-hidden="true">${art}</span></div></div>`;
-    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="Practice ${esc(D.name)}, ${pct(m)}% mastered"><span class="sdot"></span>
+    return `<button class="srow${m >= 0.999 ? " done" : ""}" data-drill="${d}" aria-label="${t("Practice {name}, {n}% mastered", { name: esc(D.name), n: pct(m) })}"><span class="sdot"></span>
       <span class="stxt"><span class="snm">${esc(D.name)}</span><span class="swhere">${routeBullet(ROUTE[d])}${where}</span>${prog}</span>
       <span class="sart" aria-hidden="true">${art}</span></button>`;
   }).join("");
-  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${RIVER[p]}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
+  return `<section class="smap" style="--line:${LINE[p]}"><div class="river" aria-hidden="true"><span>${t(RIVER[p])}</span></div><div class="rail" aria-hidden="true"></div>${rows}</section>`;
 }
 /* The elevated line between the greeting and the town card: a two-car train in the part's route color, parked at readiness r (0 to 1). */
 /* CPA sections take the colors of their section signs: REG A C E blue, FAR G green, AUD B D F M orange, TCP N Q R W yellow */
@@ -3594,41 +4019,41 @@ function elCar(p, lead) {
 function elLine(p, r) {
   const at = Math.min(1, Math.max(0, r || 0)).toFixed(3);
   return `<div class="el${skyNow() === "day" ? " day" : ""}" aria-hidden="true"><div class="el-cols"><i></i></div><div class="el-deck"><i></i></div>
-    <div class="el-sign"><b>EXAM READY</b><i></i></div>
+    <div class="el-sign"><b>${t("EXAM READY")}</b><i></i></div>
     <div class="el-train" style="--r:${at}">${elCar(p, false)}${elCar(p, true)}<i class="el-beam"></i></div></div>`;
 }
 /* ---------- exam day: a date per part, counted down on Today and Exam ---------- */
 const WINDOW_END = "2027-02-28"; /* the July 1, 2026 to February 28, 2027 testing window */
 const examDate = p => (state.examDates && Object.hasOwn(state.examDates, p) && typeof state.examDates[p] === "string" ? state.examDates[p] : "");
 function daysTo(iso) { const [y, m, d] = iso.split("-").map(Number), now = new Date(); now.setHours(0, 0, 0, 0); return Math.round((new Date(y, m - 1, d) - now) / 864e5); }
-const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, o || { month: "short", day: "numeric" }); };
+const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(LOC, o || { month: "short", day: "numeric" }); };
 const bestSim = p => { const s = state.exams.filter(e => String(e.part) === String(p)).map(e => e.score); return s.length ? Math.max(...s) : null; };
 function countPill(p) {
   const iso = examDate(p); if (!iso) return "";
   const d = daysTo(iso);
   if (d < 0) return "";
-  return `<div class="countpill">${d === 0 ? `<b>Exam day</b> Good luck on ${PL(p)}` : `<b>${d}</b> day${d === 1 ? "" : "s"} to ${PL(p)} <span>· ${fmtDay(iso)}</span>`}</div>`;
+  return `<div class="countpill">${d === 0 ? t("<b>Exam day</b> Good luck on {p}", { p: PL(p) }) : `${tn(d, "<b>{n}</b> day to {p}", "<b>{n}</b> days to {p}", { p: PL(p) })} <span>· ${fmtDay(iso)}</span>`}</div>`;
 }
 function examDayCard(p) {
   const iso = examDate(p), d = iso ? daysTo(iso) : null;
-  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">Set your ${PL(p)} date to count down to it.</p>`
-    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">${PL(p)} was on ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric" })}. Set your next date.</p>`
-    : `<div class="ed-days">${d === 0 ? "Today" : d}${d === 0 ? "" : `<span>day${d === 1 ? "" : "s"}</span>`}</div>
-      <div class="muted small">${PL(p)} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${isCpa() ? (d === 0 ? " · good luck" : "") : iso > WINDOW_END ? ` · <b class="ed-warn">after the window closes Feb 28</b>` : d === 0 ? " · good luck" : " · the window closes Feb 28"}</div>`;
-  return `<section class="card pad examday"><div class="ed-top"><div><h2>Exam day</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? "Change" : "Set date"}</button></div>
+  const head = !iso ? `<p class="muted small" style="margin:8px 0 0">${t("Set your {p} date to count down to it.", { p: PL(p) })}</p>`
+    : d < 0 ? `<p class="muted small" style="margin:8px 0 0">${t("{p} was on {date}. Set your next date.", { p: PL(p), date: fmtDay(iso, { weekday: "short", month: "short", day: "numeric" }) })}</p>`
+    : `<div class="ed-days">${d === 0 ? t("Today") : d}${d === 0 ? "" : `<span>${tn(d, "day", "days")}</span>`}</div>
+      <div class="muted small">${PL(p)} · ${fmtDay(iso, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}${isCpa() ? (d === 0 ? t(" · good luck") : "") : iso > WINDOW_END ? ` · <b class="ed-warn">${t("after the window closes Feb 28")}</b>` : d === 0 ? t(" · good luck") : t(" · the window closes Feb 28")}</div>`;
+  return `<section class="card pad examday"><div class="ed-top"><div><h2>${t("Exam day")}</h2>${head}</div><button class="btn" type="button" data-setdate="${p}">${iso && d >= 0 ? t("Change") : t("Set date")}</button></div>
     <div class="ed-parts">${partKeys().map(n => { const r = readiness(String(n)), b = bestSim(n), di = examDate(String(n));
-      return !isLive(n) ? `<div class="ed-row off">${partSign(n)}<span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="ed-sub">Not in the app yet</span></span></div>` : `<button class="ed-row" type="button" data-setdate="${n}" aria-label="${PL(n)}, ${PARTS[n]}: ${pct(r)}% ready${di ? ", exam " + fmtDay(di) : ", no date set"}">${partSign(n)}
-        <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : "No date"}${b != null ? ` · best sim ${pct(b)}%` : ""}</span></span>
+      return !isLive(n) ? `<div class="ed-row off">${partSign(n)}<span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="ed-sub">${t("Not in the app yet")}</span></span></div>` : `<button class="ed-row" type="button" data-setdate="${n}" aria-label="${t("{p}, {name}: {n}% ready", { p: PL(n), name: PARTS[n], n: pct(r) })}${di ? t(", exam {date}", { date: fmtDay(di) }) : t(", no date set")}">${partSign(n)}
+        <span class="ed-mid"><span class="ed-nm">${PARTS[n]}</span><span class="meter"><i style="width:${pct(r)}%;--hue:${LINE[n]}"></i></span><span class="ed-sub">${di ? fmtDay(di) : t("No date")}${b != null ? t(" · best sim {n}%", { n: pct(b) }) : ""}</span></span>
         <span class="ed-num">${pct(r)}%</span></button>`; }).join("")}</div></section>`;
 }
 function askExamDate(p) {
   const iso = examDate(p), today = new Date(); today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="${PL(p)} exam date"><div class="grab"></div>
-    <h3>When is your ${PL(p)} exam?</h3>
-    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="${PL(p)} exam date">
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="dateform" role="dialog" aria-label="${t("{p} exam date", { p: PL(p) })}"><div class="grab"></div>
+    <h3>${t("When is your {p} exam?", { p: PL(p) })}</h3>
+    <input id="datein" class="namein" type="date" value="${iso}" min="${today.toISOString().slice(0, 10)}" aria-label="${t("{p} exam date", { p: PL(p) })}">
     <p class="hint" id="datewarn" style="margin:0"></p>
-    <div class="row"><button class="btn primary" type="submit">Save</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">Clear date</button>` : ""}<button class="btn ghost" type="button" id="datecancel">Cancel</button></div></form></div>`;
-  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = isCpa() ? "Pick the date on your Prometric appointment." : v && v > WINDOW_END ? "That's after the window closes on February 28, 2027. Check the date with PSI." : "The current testing window closes February 28, 2027."; };
+    <div class="row"><button class="btn primary" type="submit">${t("Save")}</button>${iso ? `<button class="btn ghost" type="button" id="dateclear">${t("Clear date")}</button>` : ""}<button class="btn ghost" type="button" id="datecancel">${t("Cancel")}</button></div></form></div>`;
+  const warn = () => { const v = $("#datein").value; $("#datewarn").textContent = isCpa() ? t("Pick the date on your Prometric appointment.") : v && v > WINDOW_END ? t("That's after the window closes on February 28, 2027. Check the date with PSI.") : t("The current testing window closes February 28, 2027."); };
   $("#datein").oninput = warn; warn();
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#datecancel").onclick = closeLayer;
@@ -3660,31 +4085,31 @@ function renderHome() {
   /* Day one: nothing answered yet, so the card names the first stop instead of a row of zeros, and Play starts that area */
   const firstRide = !BANK.some(q => st(q.id).seen), next = g && g.m < 0.999 ? g.d : null;
   const heroTop = firstRide && next
-    ? `<div class="eyebrow">Your first stop</div>
+    ? `<div class="eyebrow">${t("Your first stop")}</div>
       <div class="first">${routeBullet(ROUTE[next])}<div><div class="first-nm">${esc(DOMAINS[next].name)}</div>
-        <div class="first-sub">${esc(DOMAINS[next].bld.replace(/^the /, "The "))} · ${DOMAINS[next].w || Math.round(DOMAINS[next].n / 85 * 100) + "%"} of exam · ${inBank(next).length} questions</div></div></div>`
-    : `<div class="eyebrow">Your tax city</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">ready for ${PL(p)}</div></div>
-      <div class="next-line">${next ? `<b>Next stop</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : `Every building in ${PL(p)} is finished. Keep reviews up to date.`}</div>`;
-  const pills = [dueP ? `${ICON.clock}${dueP} due` : "", done ? `${ICON.goal}${done}/${state.goal} today` : ""].filter(Boolean);
+        <div class="first-sub">${esc(bldName(DOMAINS[next], "cap"))} · ${t("{n} of exam", { n: DOMAINS[next].w || Math.round(DOMAINS[next].n / 85 * 100) + "%" })} · ${t("{n} questions", { n: inBank(next).length })}</div></div></div>`
+    : `<div class="eyebrow">${t("Your tax city")}</div><div class="ready-row"><div class="ready">${pct(r)}%</div><div class="ready-sub">${t("ready for {p}", { p: PL(p) })}</div></div>
+      <div class="next-line">${next ? `<b>${t("Next stop")}</b>${routeBullet(ROUTE[next])}<span>${esc(DOMAINS[next].name)}</span>` : t("Every building in {p} is finished. Keep reviews up to date.", { p: PL(p) })}</div>`;
+  const pills = [dueP ? `${ICON.clock}${t("{n} due", { n: dueP })}` : "", done ? `${ICON.goal}${t("{n}/{goal} today", { n: done, goal: state.goal })}` : ""].filter(Boolean);
   const exams = state.exams.slice(-6);
   $("#app").innerHTML = `<div class="panes" data-tab="${homeTab}">
   <div class="pane pane-today">
-  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${sk}-day streak` : isCpa() ? "★ Future CPA" : "★ Future EA", extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="Watch the 2-minute how-to video"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>How to use</button>` })}${elLine(p, r)}</div>` : ""}
-  <section class="today-card${night}" aria-label="Today">
+  ${window.Mascot ? `<div class="nightline">${window.Mascot.greeting({ name: state.name, pill: sk ? `${ICON.fire}${t("{n}-day streak", { n: sk })}` : isCpa() ? t("★ Future CPA") : t("★ Future EA"), extra: `<button class="greet-guide" id="greetguide" type="button" aria-label="${t("Watch the 2-minute how-to video")}"><span class="gg-play"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg></span>${t("How to use")}</button>` })}${elLine(p, r)}</div>` : ""}
+  <section class="today-card${night}" aria-label="${t("Today")}">
     <div class="hero-top">${countPill(p)}${heroTop}</div>
     ${pills.length && !firstRide ? `<div class="pills">${pills.map(x => `<span class="pill">${x}</span>`).join("")}</div>` : ""}
     <div class="hero-cta">
-      <button class="cta play" id="play">${dueP ? `Play: ${dueP} due` : "Play"}</button>
-      <button class="cta exam" id="examgo">Exam sim</button>
+      <button class="cta play" id="play">${dueP ? t("Play: {n} due", { n: dueP }) : t("Play")}</button>
+      <button class="cta exam" id="examgo">${t("Exam sim")}</button>
     </div>
   </section>
-  ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>Back up your progress</h2>
-      <div class="muted small">${backupLine()} Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.</div>
-      <div class="row"><button class="btn amber" id="homebackup">Save backup file</button></div></section>` : ""}
+  ${backupDue() ? `<section class="card pad" style="display:grid;gap:8px;border-color:var(--warn)"><h2>${t("Back up your progress")}</h2>
+      <div class="muted small">${backupLine()} ${t("Your progress lives only on this device. Save a backup file so a lost phone or a cleared browser doesn't erase it.")}</div>
+      <div class="row"><button class="btn amber" id="homebackup">${t("Save backup file")}</button></div></section>` : ""}
   </div>
   <div class="pane pane-city">
-  <section class="hero${night}" aria-label="Your tax city">
-    <div class="ptabs" role="tablist" aria-label="Exam part">
+  <section class="hero${night}" aria-label="${t("Your tax city")}">
+    <div class="ptabs" role="tablist" aria-label="${t("Exam part")}">
       ${partKeys().map(n => `<button class="ptab${isCpa() ? " sec" : ""}" role="tab"${isLive(n) ? "" : " disabled"} data-part="${n}" aria-selected="${String(n) === p}" aria-label="${PL(n)}, ${PARTS[n]}" style="--lc:${LINE[n]}">${n}</button>`).join("")}
       <span class="pname" aria-hidden="true"><small>${PL(p)}</small>${PARTS[p]}</span>
     </div>
@@ -3692,25 +4117,25 @@ function renderHome() {
     <div class="stage" id="stage">
       <div class="shadow-under"></div>
       <div class="labels" id="labels"></div>
-      <div class="stage-msg" id="stagemsg">Building your town…</div>
-      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="Open the city full screen in 3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? PL(p) : "Times Sq"}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + "Day" : ICON.moon + "Dusk"}</button></div>
+      <div class="stage-msg" id="stagemsg">${t("Building your town…")}</div>
+      <div class="stagebtns"><button class="sky" id="fsbtn" type="button" aria-label="${t("Open the city full screen in 3D")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2z"/><path d="M4 7.2 12 11.6l8-4.4M12 11.6v9.6"/></svg>3D</button><button class="sky" id="tsbtn" type="button">${tsView ? PL(p) : t("Times Sq")}</button><button class="sky" id="skybtn" type="button">${skyNow() === "dusk" ? ICON.sun + t("Day") : ICON.moon + t("Dusk")}</button></div>
     </div>
   </section>
   </div>
   <div class="pane pane-map">
-    <div class="partseg" role="group" aria-label="Exam part">${partKeys().map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"${isLive(n) ? "" : " disabled"}>${partSign(n)}${isCpa() ? "" : PL(n)}</button>`).join("")}</div>
-    <div class="spread part-head"><h2>${PL(p)} · ${PARTS[p]}</h2><span class="hint">${BANK.filter(q => String(q.part) === p).length} questions</span></div>
+    <div class="partseg" role="group" aria-label="${t("Exam part")}">${partKeys().map(n => `<button type="button" data-part="${n}" aria-pressed="${String(n) === p}"${isLive(n) ? "" : " disabled"}>${partSign(n)}${isCpa() ? "" : PL(n)}</button>`).join("")}</div>
+    <div class="spread part-head"><h2>${PL(p)} · ${PARTS[p]}</h2><span class="hint">${t("{n} questions", { n: BANK.filter(q => String(q.part) === p).length })}</span></div>
     ${stripMap(p, g && g.m < 0.999 ? g.d : null)}
   </div>
   <div class="pane pane-exam">
     ${examDayCard(p)}
-    <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>Exam sim</h2>
-      <p class="muted small" style="margin:0">${isCpa() ? `A sim is the multiple-choice half of ${p}: ${SIMS[p].mcq} questions in two locked testlets of ${SIMS[p].mcq / 2}, in 2 hours.` : "A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test."}</p>
-      <div class="row">${state.examRun ? `<button class="btn amber" id="resume">Resume exam</button><button class="btn" id="examnew">New exam sim</button>` : `<button class="btn amber" id="examnew">Set up an exam sim</button>`}</div>
+    <section class="card pad" style="display:grid;gap:10px;align-content:start"><h2>${t("Exam sim")}</h2>
+      <p class="muted small" style="margin:0">${isCpa() ? t("A sim is the multiple-choice half of {p}: {n} questions in two locked testlets of {half}, in 2 hours.", { p, n: SIMS[p].mcq, half: SIMS[p].mcq / 2 }) : t("A full sim is 100 questions in 3.5 hours, in three locked sections, on a plain screen like the real test.")}</p>
+      <div class="row">${state.examRun ? `<button class="btn amber" id="resume">${t("Resume exam")}</button><button class="btn" id="examnew">${t("New exam sim")}</button>` : `<button class="btn amber" id="examnew">${t("Set up an exam sim")}</button>`}</div>
     </section>
-    <section class="card pad"><h2>Past sims</h2>
-      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>${/^\d$/.test(e.part) ? "P" + e.part : e.part} · ${new Date(e.t).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
-        : `<p class="muted small" style="margin:8px 0 0">No exam sims yet.</p>`}
+    <section class="card pad"><h2>${t("Past sims")}</h2>
+      ${exams.length ? `<div class="hist" style="margin-top:12px">${exams.map(e => `<div><span class="b" style="height:${Math.max(6, e.score * 56)}px"></span><span>${pct(e.score)}%</span><span>${/^\d$/.test(e.part) ? "P" + e.part : e.part} · ${new Date(e.t).toLocaleDateString(LOC, { month: "short", day: "numeric" })}</span></div>`).join("")}</div>`
+        : `<p class="muted small" style="margin:8px 0 0">${t("No exam sims yet.")}</p>`}
     </section>
   </div>
   </div>`;
@@ -3718,14 +4143,14 @@ function renderHome() {
   const pickPart = n => { setPart(n); tsView = false; save(); renderHome(); };
   $("#app").querySelectorAll(".ptab, .partseg button").forEach(b => b.onclick = () => pickPart(b.dataset.part));
   $("#fsbtn").onclick = () => { if (window.Town && window.Town.fullscreen) window.Town.fullscreen(true); };
-  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : "Times Sq"; if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
+  $("#tsbtn").onclick = () => { tsView = !tsView; $("#tsbtn").textContent = tsView ? PL(state.part) : t("Times Sq"); if (window.Town && window.Town.setView) window.Town.setView(tsView ? "ts" : "part"); };
   $("#play").onclick = () => startDrill(firstRide ? next : null);
   if ($("#greetguide")) $("#greetguide").onclick = openGuide;
   if ($("#homebackup")) $("#homebackup").onclick = async () => { if (await saveBackupFile()) renderHome(); };
   $("#skybtn").onclick = () => {
     state.sky = skyNow() === "dusk" ? "day" : "dusk"; save();
     const dusk = state.sky === "dusk";
-    $("#skybtn").innerHTML = dusk ? ICON.sun + "Day" : ICON.moon + "Dusk";
+    $("#skybtn").innerHTML = dusk ? ICON.sun + t("Day") : ICON.moon + t("Dusk");
     document.querySelectorAll(".hero, .today-card").forEach(e => e.classList.toggle("night", dusk));
     if ($(".el")) $(".el").classList.toggle("day", !dusk);
     if (window.Town && window.Town.setSky) window.Town.setSky(state.sky);
@@ -3743,11 +4168,11 @@ function renderHome() {
 /* Asked once, after the first hello: the greeting's name. Changeable in More. */
 function askName() {
   state.nameAsked = true; save();
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="Your name"><div class="grab"></div>
-    <h3>What should your study buddy call you?</h3>
-    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="First name" aria-label="First name">
-    <div class="row"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" id="nameskip">Not now</button></div>
-    <p class="hint" style="margin:0">It stays on this device. Change it any time in More.</p></form></div>`;
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><form class="bsheet" id="nameform" role="dialog" aria-label="${t("Your name")}"><div class="grab"></div>
+    <h3>${t("What should your study buddy call you?")}</h3>
+    <input id="namein" class="namein" autocomplete="given-name" maxlength="24" placeholder="${t("First name")}" aria-label="${t("First name")}">
+    <div class="row"><button class="btn primary" type="submit">${t("Save")}</button><button class="btn ghost" type="button" id="nameskip">${t("Not now")}</button></div>
+    <p class="hint" style="margin:0">${t("It stays on this device. Change it any time in More.")}</p></form></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#nameskip").onclick = closeLayer;
   $("#nameform").onsubmit = e => { e.preventDefault(); const v = $("#namein").value.trim(); closeLayer(); if (v) { state.name = v; save(); renderHome(); } };
@@ -3757,13 +4182,13 @@ function mountTown() {
   window.__townPick = d => openArea(d);
   pushTown();
   if (window.Town && window.Town.ready) { window.Town.mount(stage); $("#stagemsg").hidden = true; }
-  else if (window.__townFailed) { $("#stagemsg").textContent = "The 3D town couldn't load on this device. Everything else works; your areas are listed below."; }
+  else if (window.__townFailed) { $("#stagemsg").textContent = t("The 3D town couldn't load on this device. Everything else works; your areas are listed below."); }
   else window.__townMountWhenReady = stage;
 }
 window.__townReady = () => {
   if (view === "home" && $("#stage")) { window.Town.mount($("#stage")); window.Town.update(window.__townData); $("#stagemsg").hidden = true; }
 };
-window.__townFail = () => { window.__townFailed = true; const m = $("#stagemsg"); if (m) m.textContent = "The 3D town couldn't load on this device. Everything else works; your areas are listed below."; };
+window.__townFail = () => { window.__townFailed = true; const m = $("#stagemsg"); if (m) m.textContent = t("The 3D town couldn't load on this device. Everything else works; your areas are listed below."); };
 window.__townLabels = () => ({ names: Object.fromEntries(Object.entries(DOMAINS).map(([k, d]) => [k, d.short])) });
 
 function openArea(d) {
@@ -3771,10 +4196,10 @@ function openArea(d) {
   const solid = inBank(d).filter(q => st(q.id).box >= 3).length;
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="${esc(D.name)}">
     <div class="grab"></div>
-    <div><div class="eyebrow" style="color:var(--ink-soft)">Part ${D.part} · ${esc(D.bld)}</div><h3 style="font-size:20px;margin-top:4px">${esc(D.name)}</h3></div>
-    <div class="stats3"><div><small>Mastered</small><b>${pct(m)}%</b></div><div><small>Right</small><b>${a == null ? "–" : pct(a) + "%"}</b></div><div><small>Due</small><b>${due}</b></div></div>
-    <p class="muted small" style="margin:0">${D.n} of 85 scored questions on the exam come from this area. ${inBank(d).length} questions in the bank, ${solid} answered right three times with spacing.</p>
-    <div class="row"><button class="btn amber" id="sheetgo">Drill ${esc(D.short)}</button><button class="btn ghost" id="sheetx">Close</button></div>
+    <div><div class="eyebrow" style="color:var(--ink-soft)">Part ${D.part} · ${esc(bldName(D))}</div><h3 style="font-size:20px;margin-top:4px">${esc(D.name)}</h3></div>
+    <div class="stats3"><div><small>${t("Mastered")}</small><b>${pct(m)}%</b></div><div><small>${t("Right")}</small><b>${a == null ? "–" : pct(a) + "%"}</b></div><div><small>${t("Due")}</small><b>${due}</b></div></div>
+    <p class="muted small" style="margin:0">${t("{n} of 85 scored questions on the exam come from this area. {b} questions in the bank, {s} answered right three times with spacing.", { n: D.n, b: inBank(d).length, s: solid })}</p>
+    <div class="row"><button class="btn amber" id="sheetgo">${t("Drill {name}", { name: esc(D.short) })}</button><button class="btn ghost" id="sheetx">${t("Close")}</button></div>
   </div></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
   $("#sheetx").onclick = closeLayer;
@@ -3786,12 +4211,12 @@ function openGuide() {
   /* Close sits in a title row that stays pinned at the top of the sheet and pads for the status bar (the Home Screen app
      draws under a translucent one), and the video is sized to the visible screen (dvh) less the safe areas, so Close never
      hides under the status bar or scrolls away */
-  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="How to use this app" style="max-height:100vh;max-height:100dvh;overflow-y:auto;padding-top:0">
-    <div class="row" style="position:sticky;top:0;z-index:1;background:var(--paper);padding:calc(12px + env(safe-area-inset-top, 0px)) 0 6px;justify-content:space-between;align-items:center"><h3 style="margin:0">How to use</h3>
-      <button class="btn" id="guideclose" aria-label="Close" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
-    <video id="guidevid" src="media/how-to-use.mp4" poster="media/how-to-use.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
-    <span class="hint">Step one: add this app to your Home Screen.</span>
-    <p class="muted small" style="margin:0"><b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.</p>
+  $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet" role="dialog" aria-label="${t("How to use this app")}" style="max-height:100vh;max-height:100dvh;overflow-y:auto;padding-top:0">
+    <div class="row" style="position:sticky;top:0;z-index:1;background:var(--paper);padding:calc(12px + env(safe-area-inset-top, 0px)) 0 6px;justify-content:space-between;align-items:center"><h3 style="margin:0">${t("How to use")}</h3>
+      <button class="btn" id="guideclose" aria-label="${t("Close")}" style="width:44px;height:44px;padding:0;border-radius:50%;display:grid;place-items:center;font-size:20px;line-height:1">✕</button></div>
+    <video id="guidevid" src="${GUIDE}.mp4" poster="${GUIDE}.jpg" controls playsinline autoplay preload="metadata" style="display:block;margin:0 auto;max-height:72vh;max-height:calc(100dvh - 170px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));max-width:100%;aspect-ratio:9/16;background:#000;border-radius:14px"></video>
+    <span class="hint">${t("Step one: add this app to your Home Screen.")}</span>
+    <p class="muted small" style="margin:0">${t("<b>Reading the town.</b> Each tower is one exam area. Finished floors are mastered; bare concrete, orange netting and a crane mark what's left. Cabs on the avenue are reviews due. A finished tower lights up its crown. The big screens show your live numbers and 2025 tax facts. Tap a tower to drill it.")}</p>
   </div></div>`;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeGuide(); };
   $("#guideclose").onclick = closeGuide;
@@ -3820,23 +4245,23 @@ function towerSvg(m, prev) {
   }
   return `<svg class="dtower" viewBox="0 0 48 80" aria-hidden="true"><rect class="spire${m >= 0.999 ? " gold" : ""}" x="22.5" y="3" width="3" height="10" rx="1"/><rect class="body" x="7" y="12" width="34" height="62" rx="1.5"/>${w}<rect class="base" x="2" y="74" width="44" height="3" rx="1"/></svg>`;
 }
-const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."], CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."];
+const PRAISE = ["Nailed it.", "That's the one.", "Clean.", "Right on the money.", "Exactly."].map(s => t(s)), CONSOLE = ["Tricky one. The rule's below.", "Close. Read why below.", "This one comes back in 5 minutes.", "Good one to miss now, not in July."].map(s => t(s));
 const pickLine = a => a[Math.floor(Math.random() * a.length)];
 /* Questions whose explanation links to a drawn figure in art/, with the case each one opens on */
 const FIGURES = {
-  "loss-sorter": { title: "Loss sorter", label: "Loss sorter: the basis, at-risk, passive and excess business loss limits in order", link: "See it on the loss sorter" },
-  "basis-order": { title: "Basis order", label: "Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it", link: "See the basis order, step by step" },
+  "loss-sorter": { title: t("Loss sorter"), label: t("Loss sorter: the basis, at-risk, passive and excess business loss limits in order"), link: t("See it on the loss sorter") },
+  "basis-order": { title: t("Basis order"), label: t("Basis order: S corporation stock and debt basis, step by step in the order Form 7203 applies it"), link: t("See the basis order, step by step") },
 };
 /* What each figure shows, for the Figures card in More */
 const FIGURE_ABOUT = {
-  "loss-sorter": "A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss.",
-  "basis-order": "One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored.",
+  "loss-sorter": t("A loss runs past four limits in the order the law applies them: basis, at-risk, passive, then excess business loss."),
+  "basis-order": t("One year of S corporation stock and debt basis: income, distributions, nondeductible expenses, losses, then debt restored."),
 };
 const MACHINE = { "p2d1a-018": [["loss-sorter", 0]], "p2d1b-023": [["loss-sorter", 1], ["basis-order", 1]], "p2d1b-024": [["basis-order", 0], ["loss-sorter", 2]], "p2d2a-006": [["loss-sorter", 3]] };
 function openMachine(fig, n) {
   const f = FIGURES[fig];
   $("#layer").innerHTML = `<div class="scrim" id="scrim"><div class="bsheet figsheet" role="dialog" aria-label="${f.title}"><div class="grab"></div>
-    <div class="figbar"><b>${f.title}</b><button class="btn ghost" id="figx" type="button">Close</button></div>
+    <div class="figbar"><b>${f.title}</b><button class="btn ghost" id="figx" type="button">${t("Close")}</button></div>
     <iframe src="art/${fig}.html?case=${n}" title="${f.label}"></iframe></div></div>`;
   $("#figx").onclick = closeLayer;
   $("#scrim").onclick = e => { if (e.target.id === "scrim") closeLayer(); };
@@ -3845,13 +4270,13 @@ const figs = t => t.replace(/\$\d[\d,]*(?:\.\d+)?|\b\d+(?:\.\d+)?%|\b\d{1,3}(?:,
 function renderDrill() {
   view = "drill";
   const scope = drill.domain ? DOMAINS[drill.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
-  const top = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>`;
+  const top = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>`;
   if (!drill.q) {
-    $("#app").innerHTML = top + `<div class="sheet pad"><p>No questions available in ${esc(scope)}. They may all be flagged.</p></div>`;
+    $("#app").innerHTML = top + `<div class="sheet pad"><p>${t("No questions available in {scope}. They may all be flagged.", { scope: esc(scope) })}</p></div>`;
     $("#back").onclick = leaveDrill; return;
   }
   const q = drill.q, D = DOMAINS[q.domain], answered = drill.picked != null, s = st(q.id);
-  const reason = { review: ["review", "Due for review"], new: ["new", "New question"], ahead: ["", "Reviewing early"] }[drill.reason];
+  const reason = { review: ["review", t("Due for review")], new: ["new", t("New question")], ahead: ["", t("Reviewing early")] }[drill.reason];
   const choices = drill.perm.map((o, i) => {
     let c = "choice";
     if (answered) c += o === q.answer ? " right" : o === drill.picked ? " wrong" : " dim";
@@ -3862,23 +4287,23 @@ function renderDrill() {
   if (answered) {
     const ok = drill.picked === q.answer, cpa = isCpa() || q.exam === "cpa" ? "" : (q.cpa || []).map(t => CPA[t] || t).join("; ");
     const dm = (drill.mAfter - drill.mBefore) * 100, delta = Math.abs(dm) < 0.05 ? "" : `<span class="delta ${dm > 0 ? "up" : "down"}">${dm > 0 ? "+" : "−"}${Math.abs(dm).toFixed(1)}%</span>`;
-    const sub = ok && !drill.guessed && drill.run >= 3 ? `${drill.run} in a row. Keep going.` : drill.line;
-    after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? "Right, but a guess" : ok ? "Correct" : "Not quite. It's " + "ABCD"[drill.perm.indexOf(q.answer)] + "."}</b><span>${esc(sub)}</span></div>${delta}</div>
+    const sub = ok && !drill.guessed && drill.run >= 3 ? t("{n} in a row. Keep going.", { n: drill.run }) : drill.line;
+    after = `<div class="explain"><div class="verdict ${drill.guessed ? "gs" : ok ? "ok" : "no"}"><img class="vbuddy" src="art/buddy-bust.webp" alt=""><div class="vt"><b>${drill.guessed ? t("Right, but a guess") : ok ? t("Correct") : t("Not quite. It's {x}.", { x: "ABCD"[drill.perm.indexOf(q.answer)] })}</b><span>${esc(sub)}</span></div>${delta}</div>
       <p>${figs(esc(q.explain))}</p>${(MACHINE[q.id] || []).map(([fig, n]) => `<button class="machine" type="button" data-fig="${fig}" data-case="${n}">${FIGURES[fig].link} ›</button>`).join("")}
-      <div class="meta"><span class="mk">Source</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">Also counts for CPA</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
-    after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">What looks wrong? Jose will see this note.</label>
-        <textarea id="flagnote" placeholder="e.g. The 2025 figure is $X per Pub 501"></textarea>
-        <div class="row"><button class="btn danger" id="flagsave">Flag this question</button><button class="btn ghost" id="flagx">Cancel</button></div></div>`
-      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">See today's summary</button>` : `<button class="btn primary" id="next">Next question</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="Counts this as a miss, so it comes back soon">I guessed</button>` : ""}<button class="btn ghost" id="flag">Flag as wrong</button></div>`;
+      <div class="meta"><span class="mk">${t("Source")}</span>${q.source.split(";").map(x => `<span class="pill">${esc(x.trim())}</span>`).join("")}${cpa ? `<span class="mk">${t("Also counts for CPA")}</span><span class="pill cpa">${esc(cpa)}</span>` : ""}</div></div>`;
+    after += drill.flagging ? `<div class="flagform"><label for="flagnote" class="hint">${t("What looks wrong? Jose will see this note.")}</label>
+        <textarea id="flagnote" placeholder="${t("e.g. The 2025 figure is $X per Pub 501")}"></textarea>
+        <div class="row"><button class="btn danger" id="flagsave">${t("Flag this question")}</button><button class="btn ghost" id="flagx">${t("Cancel")}</button></div></div>`
+      : `<div class="actions">${drill.goalHit ? `<button class="btn amber" id="summary">${t("See today's summary")}</button>` : `<button class="btn primary" id="next">${t("Next question")}</button>`}${ok && !drill.guessed ? `<button class="btn" id="guess" title="${t("Counts this as a miss, so it comes back soon")}">${t("I guessed")}</button>` : ""}<button class="btn ghost" id="flag">${t("Flag as wrong")}</button></div>`;
   }
   $("#app").innerHTML = top + `
     <article class="sheet drillsheet${answered ? (drill.picked === q.answer ? " is-ok" : " is-no") : ""}">
       <div class="dhead"><div class="id"><span class="k">${PL(q.part)} · ${PARTS[q.part]} ${q.domain === "REG-II" || q.part === "AUD" || q.part === "FAR" ? "" : " · TY 2025"}</span><span class="d">${esc(D.name)}</span>
-        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `Mastery ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `Mastery <b>${pct(mastery(q.domain))}%</b>`}</span></div>
+        <span class="m">${answered && drill.mBefore != null && pct(drill.mBefore) !== pct(drill.mAfter) ? `${t("Mastery")} ${pct(drill.mBefore)}% <i>→</i> <b${drill.mAfter < drill.mBefore ? ' class="dn"' : ""}>${pct(drill.mAfter)}%</b>` : `${t("Mastery")} <b>${pct(mastery(q.domain))}%</b>`}</span></div>
         ${towerSvg(mastery(q.domain), answered ? drill.mBefore : null)}</div>
-      <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? `seen ${s.seen}× · ${s.right} right` : ""}</div><p class="qtext">${esc(q.q)}</p></div>
+      <div class="qbody"><div class="reason"><span class="chip ${reason[0]}">${reason[1]}</span>${s.seen ? t("seen {n}× · {r} right", { n: s.seen, r: s.right }) : ""}</div><p class="qtext">${esc(q.q)}</p></div>
       <div class="choices">${choices}</div>${after}
-    </article>${answered ? "" : `<p class="hint">Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.</p>`}`;
+    </article>${answered ? "" : `<p class="hint">${t("Keys: A to D (or 1 to 4) to answer, G if you got it right by guessing, Enter for the next question.")}</p>`}`;
   $("#back").onclick = leaveDrill;
   $("#app").querySelectorAll(".choice").forEach(b => b.onclick = () => answerDrill(+b.dataset.i));
   if ($("#next")) $("#next").onclick = nextQ;
@@ -3887,7 +4312,7 @@ function renderDrill() {
   document.querySelectorAll(".explain .machine").forEach(b => (b.onclick = () => openMachine(b.dataset.fig, Number(b.dataset.case))));
   if ($("#flag")) $("#flag").onclick = () => { drill.flagging = true; renderDrill(); setTimeout(() => $("#flagnote") && $("#flagnote").focus(), 0); };
   if ($("#flagx")) $("#flagx").onclick = () => { drill.flagging = false; renderDrill(); };
-  if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast("Flagged. It stays out of practice until it's unflagged."); updateFlagDot(); nextQ(); };
+  if ($("#flagsave")) $("#flagsave").onclick = () => { setSt(q.id, { flag: true, note: $("#flagnote").value.trim(), flaggedAt: Date.now() }); toast(t("Flagged. It stays out of practice until it's unflagged.")); updateFlagDot(); nextQ(); };
 }
 function answerDrill(i) {
   if (!drill.q || drill.picked != null) return;
@@ -3910,7 +4335,7 @@ function markGuess() {
   const last = state.log[state.log.length - 1]; if (last && last.id === q.id) state.log.pop();
   record(q, false, "drill"); state.log[state.log.length - 1].g = 1; save();
   drill.guessed = true; drill.mAfter = mastery(q.domain); drill.run = 0;
-  drill.line = "Counted as a miss, so it comes back in 5 minutes.";
+  drill.line = t("Counted as a miss, so it comes back in 5 minutes.");
   if (drill.row) drill.row.g = true;
   renderDrill();
 }
@@ -3925,24 +4350,24 @@ function renderSession() {
   const mins = Math.max(1, Math.round((Date.now() - S.t) / MIN));
   const scope = S.domain ? DOMAINS[S.domain].name : `${PL(state.part)} · ${PARTS[state.part]}`;
   const missed = [...new Map(rows.filter(r => !good(r)).map(r => [r.id, r])).values()];
-  const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${list.filter(good).length} of ${list.length}</b><span class="small muted">${pct(list.filter(good).length / list.length)}% right</span></div>` : "";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  const stat = (label, list) => list.length ? `<div><span class="hint">${label}</span><b>${t("{n} of {m}", { n: list.filter(good).length, m: list.length })}</b><span class="small muted">${t("{n}% right", { n: pct(list.filter(good).length / list.length) })}</span></div>` : "";
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>
   <section class="card pad" style="display:grid;gap:10px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Session · ${esc(scope)} · ${mins} min</div>
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Session · {scope} · {n} min", { scope: esc(scope), n: mins })}</div>
     <div class="result-big">${pct(right / n)}%</div>
-    <div class="muted">${right} of ${n} right.${guessed ? ` ${guessed} more ${guessed === 1 ? "was a guess, counted as a miss" : "were guesses, counted as misses"}.` : ""}</div>
-    <div class="sessstats">${stat("New questions", fresh)}${stat("Reviews", rev)}</div>
-    ${fresh.length ? `<p class="hint" style="margin:0">Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.</p>` : ""}
+    <div class="muted">${t("{n} of {m} right.", { n: right, m: n })}${guessed ? " " + tn(guessed, "{n} more was a guess, counted as a miss.", "{n} more were guesses, counted as misses.") : ""}</div>
+    <div class="sessstats">${stat(t("New questions"), fresh)}${stat(t("Reviews"), rev)}</div>
+    ${fresh.length ? `<p class="hint" style="margin:0">${t("Your first try on a new question is the best read on exam day. Reviews are easier because you've seen the answer.")}</p>` : ""}
   </section>
-  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>Mastery</h2></div>
-    <table class="res"><thead><tr><th style="padding-left:16px">Area</th><th style="text-align:right">Now</th><th style="text-align:right;padding-right:16px">Change</th></tr></thead>
-    <tbody>${Object.keys(S.m0).sort().map(d => { const dm = (mastery(d) - S.m0[d]) * 100, z = Math.abs(dm) < 0.05; return `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${pct(mastery(d))}%</td><td class="n" style="padding-right:16px;color:${z ? "var(--ink-soft)" : dm > 0 ? "var(--good)" : "var(--bad)"}">${z ? "no change" : (dm > 0 ? "+" : "−") + Math.abs(dm).toFixed(1) + "%"}</td></tr>`; }).join("")}</tbody></table></section>
-  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>Missed or guessed</h2><span class="hint">${missed.length}</span></div>
+  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>${t("Mastery")}</h2></div>
+    <table class="res"><thead><tr><th style="padding-left:16px">${t("Area")}</th><th style="text-align:right">${t("Now")}</th><th style="text-align:right;padding-right:16px">${t("Change")}</th></tr></thead>
+    <tbody>${Object.keys(S.m0).sort().map(d => { const dm = (mastery(d) - S.m0[d]) * 100, z = Math.abs(dm) < 0.05; return `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${pct(mastery(d))}%</td><td class="n" style="padding-right:16px;color:${z ? "var(--ink-soft)" : dm > 0 ? "var(--good)" : "var(--bad)"}">${z ? t("no change") : (dm > 0 ? "+" : "−") + Math.abs(dm).toFixed(1) + "%"}</td></tr>`; }).join("")}</tbody></table></section>
+  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>${t("Missed or guessed")}</h2><span class="hint">${missed.length}</span></div>
     ${missed.map(r => { const q = byId[r.id]; return `<details class="miss"><summary>${esc(q.q)}</summary><div class="body">
-      ${r.g ? `<span class="hint">You got this one right by guessing.</span>` : ""}<span style="color:var(--good)"><b>Correct:</b> ${esc(q.choices[q.answer])}</span>
-      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">None. Every answer was right without guessing.</p>`}
+      ${r.g ? `<span class="hint">${t("You got this one right by guessing.")}</span>` : ""}<span style="color:var(--good)"><b>${t("Correct:")}</b> ${esc(q.choices[q.answer])}</span>
+      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">${t("None. Every answer was right without guessing.")}</p>`}
   </section>
-  <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">Keep drilling</button><button class="btn" id="sumhome">Back to town</button></div>`;
+  <div class="row" style="margin-top:14px"><button class="btn primary" id="sumgo">${t("Keep drilling")}</button><button class="btn" id="sumhome">${t("Back to town")}</button></div>`;
   $("#back").onclick = renderHome; $("#sumhome").onclick = renderHome;
   $("#sumgo").onclick = () => startDrill(S.domain, true);
   window.scrollTo(0, 0);
@@ -3961,18 +4386,18 @@ function todayStats() {
 }
 function renderSummary() {
   view = "summary";
-  const t = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
-  const towers = t.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
+  const T = todayStats(), m0 = (state.day && state.day.k === dayKey(Date.now()) && state.day.m) || {}, sk = streak();
+  const towers = T.areas.sort((a, b) => a.localeCompare(b)).map(d => { const now = mastery(d), was = m0[d] == null ? now : m0[d], dm = Math.round((now - was) * 100);
     return `<div class="sumtower">${towerSvg(now, was)}<b>${esc(DOMAINS[d].short)}</b><span class="${dm < 0 ? "dn" : ""}">${dm > 0 ? "+" : dm < 0 ? "−" : "±"}${Math.abs(dm)}%</span></div>`; }).join("");
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button><span class="goal">${ring(todayCount(), state.goal)}${todayCount()}/${state.goal} today</span></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button><span class="goal">${ring(todayCount(), state.goal)}${t("{n}/{goal} today", { n: todayCount(), goal: state.goal })}</span></div>
   <article class="sheet summary">
     <div class="sumhead"><img class="sumbuddy" src="art/buddy-bust.webp" alt="">
-      <div><span class="k">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</span><h2>Daily goal done${state.name ? `, ${esc(state.name)}` : ""}.</h2>
-      <span class="sk">${ICON.fire}${sk} day${sk === 1 ? "" : "s"} in a row</span></div></div>
-    <div class="sumstats"><div><b>${t.n}</b><span>answered</span></div><div><b>${t.n ? pct(t.right / t.n) : 0}%</b><span>right</span></div><div><b>${t.min}</b><span>min</span></div><div><b>${t.best}</b><span>best run</span></div></div>
-    <div class="sumtowers"><h3>What you built today</h3><div class="row">${towers}</div></div>
-    <p class="summiss">${t.missed ? `You missed ${t.missed}. Each comes back in 5 minutes, then again tomorrow if you get it.` : "Nothing missed today."}</p>
-    <div class="actions"><button class="btn primary" id="keepgo">Keep going</button><button class="btn ghost" id="totown">Back to town</button></div>
+      <div><span class="k">${new Date().toLocaleDateString(LOC, { weekday: "long", month: "short", day: "numeric" })}</span><h2>${state.name ? t("Daily goal done, {name}.", { name: esc(state.name) }) : t("Daily goal done.")}</h2>
+      <span class="sk">${ICON.fire}${tn(sk, "{n} day in a row", "{n} days in a row")}</span></div></div>
+    <div class="sumstats"><div><b>${T.n}</b><span>${t("answered")}</span></div><div><b>${T.n ? pct(T.right / T.n) : 0}%</b><span>${t("right")}</span></div><div><b>${T.min}</b><span>${t("min")}</span></div><div><b>${T.best}</b><span>${t("best run")}</span></div></div>
+    <div class="sumtowers"><h3>${t("What you built today")}</h3><div class="row">${towers}</div></div>
+    <p class="summiss">${T.missed ? t("You missed {n}. Each comes back in 5 minutes, then again tomorrow if you get it.", { n: T.missed }) : t("Nothing missed today.")}</p>
+    <div class="actions"><button class="btn primary" id="keepgo">${t("Keep going")}</button><button class="btn ghost" id="totown">${t("Back to town")}</button></div>
   </article>`;
   $("#back").onclick = renderHome; $("#totown").onclick = renderHome;
   $("#keepgo").onclick = () => { drill.goalHit = false; nextQ(); };
@@ -3995,25 +4420,25 @@ function buildExam(p) {
     sections: isCpa() ? [[0, half], [half, n]] : [[0, s1], [s1, s2], [s2, n]], sec: 0, idx: 0, start: Date.now(), breakMs: 0, onBreak: null,
     dur: isCpa() ? Math.round(120 * MIN * n / SIMS[p].mcq) : Math.round(210 * MIN * n / 100), confirm: false };
 }
-function eaSimText(n, avail, p) { return `<p style="margin:0">${n} questions, ${Math.round(210 * n / 100)} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.</p>
-${n < 100 ? `<p class="hint" style="margin:0">The real exam has 100 questions. The ${PL(p)} bank only has ${avail} so far, so this sim is shorter.</p>` : `<p class="hint" style="margin:0">Questions are drawn in proportion to the official outline, so heavier areas get more.</p>`}`; }
+function eaSimText(n, avail, p) { return `<p style="margin:0">${t("{n} questions, {m} minutes, in three sections like the real PSI test. Once you leave a section you can't go back to it. Between sections you get an optional break that stops the clock. No answers are shown until the end.", { n, m: Math.round(210 * n / 100) })}</p>
+${n < 100 ? `<p class="hint" style="margin:0">${t("The real exam has 100 questions. The {p} bank only has {n} so far, so this sim is shorter.", { p: PL(p), n: avail })}</p>` : `<p class="hint" style="margin:0">${t("Questions are drawn in proportion to the official outline, so heavier areas get more.")}</p>`}`; }
 function cpaSimText(n, avail, p) {
   const S = SIMS[p], short = partDomains(p).filter(d => inBank(d).length < Math.round(S.mcq * DOMAINS[d].n / 100));
-  return `<p style="margin:0">${n} multiple-choice questions in ${Math.round(120 * n / S.mcq)} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.</p>
-    <p class="hint" style="margin:0">The real ${p} exam has ${S.mcq} multiple-choice questions and ${S.tbs} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.</p>
-    <p class="hint" style="margin:0">Questions are drawn by the 2026 blueprint weights.${short.length ? ` ${short.map(d => DOMAINS[d].short).join(", ")} ${short.length > 1 ? "have" : "has"} too few questions so far, so the sim fills in from other areas.` : ""}</p>`;
+  return `<p style="margin:0">${t("{n} multiple-choice questions in {m} minutes, in two testlets. Once you submit a testlet you can't go back to it. No answers are shown until the end.", { n, m: Math.round(120 * n / S.mcq) })}</p>
+    <p class="hint" style="margin:0">${t("The real {p} exam has {n} multiple-choice questions and {s} task-based simulations in 4 hours, each half the score (AICPA 2026 blueprint). This sim is the multiple-choice half; 2 hours is the app's estimate for it, not an AICPA figure.", { p, n: S.mcq, s: S.tbs })}</p>
+    <p class="hint" style="margin:0">${t("Questions are drawn by the 2026 blueprint weights.")}${short.length ? " " + tn(short.length, "{list} has too few questions so far, so the sim fills in from other areas.", "{list} have too few questions so far, so the sim fills in from other areas.", { list: short.map(d => DOMAINS[d].short).join(", ") }) : ""}</p>`;
 }
 function renderExamSetup() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "examsetup";
   const p = state.part, avail = BANK.filter(q => String(q.part) === p && !st(q.id).flag).length, n = Math.min(isCpa() ? SIMS[p].mcq : 100, avail);
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <section class="card pad" style="display:grid;gap:14px">
-    <div><div class="eyebrow" style="color:var(--ink-soft)">Exam sim</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
+    <div><div class="eyebrow" style="color:var(--ink-soft)">${t("Exam sim")}</div><h3 style="font-size:22px;margin-top:4px">${PL(p)}: ${PARTS[p]}</h3></div>
     <div class="row">${partKeys().map(k => `<button class="btn${String(k) === p ? " primary" : ""}" data-p="${k}"${isLive(k) ? "" : " disabled"}>${PL(k)}</button>`).join("")}</div>
     ${isCpa() ? cpaSimText(n, avail, p) : eaSimText(n, avail, p)}
-    ${state.examRun ? `<div class="confirm"><b>You have an exam in progress (${PL(state.examRun.part)}).</b><div class="row"><button class="btn amber" id="resume">Resume it</button><button class="btn danger" id="discard">Discard it</button></div></div>`
-      : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>Start the exam</button></div>`}
+    ${state.examRun ? `<div class="confirm"><b>${t("You have an exam in progress ({p}).", { p: PL(state.examRun.part) })}</b><div class="row"><button class="btn amber" id="resume">${t("Resume it")}</button><button class="btn danger" id="discard">${t("Discard it")}</button></div></div>`
+      : `<div><button class="btn amber" id="start" ${n ? "" : "disabled"}>${t("Start the exam")}</button></div>`}
   </section>`;
   $("#back").onclick = renderHome;
   $("#app").querySelectorAll("[data-p]").forEach(b => b.onclick = () => { setPart(b.dataset.p); save(); renderExamSetup(); });
@@ -4023,7 +4448,7 @@ function renderExamSetup() {
 }
 /* an EA sim has three sections, a CPA sim two testlets */
 const lastSec = E => E.sec >= E.sections.length - 1;
-const secWord = E => (E.exam || "ea") === "cpa" ? "testlet" : "section";
+const secWord = E => (E.exam || "ea") === "cpa" ? t("testlet") : t("section");
 function examLeft(E) { const now = E.onBreak || Date.now(); return E.dur - (now - E.start - E.breakMs); }
 function fmt(ms) { ms = Math.max(0, ms); const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(x).padStart(2, "0"); }
 let examTick = null;
@@ -4039,25 +4464,25 @@ function renderExam() {
   const answeredInSec = E.ids.slice(a, b).filter(x => E.ans[x] != null).length;
   $("#app").innerHTML = `
   <div class="exam-top">
-    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">${PL(E.part)} sim · ${secWord(E)} ${E.sec + 1} of ${E.sections.length}</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
-      <button class="btn" id="endsec">${!lastSec(E) ? "Finish " + secWord(E) : "Finish exam"}</button></div>
+    <div class="spread"><div><div class="eyebrow" style="color:var(--ink-soft)">${t("{p} sim · {w} {n} of {m}", { p: PL(E.part), w: secWord(E), n: E.sec + 1, m: E.sections.length })}</div><div class="timer" id="timer">${fmt(examLeft(E))}</div></div>
+      <button class="btn" id="endsec">${!lastSec(E) ? t("Finish {w}", { w: secWord(E) }) : t("Finish exam")}</button></div>
     <div class="progressbar"><i style="width:${100 * Object.keys(E.ans).length / E.ids.length}%"></i></div>
   </div>
-  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${!lastSec(E) ? `Leave ${secWord(E)} ${E.sec + 1}? You can't come back to these questions.` : "Submit the exam?"}</b>
-    <span class="small">${b - a - answeredInSec ? `${b - a - answeredInSec} unanswered in this section count as wrong.` : "Every question in this section is answered."}</span>
-    <div class="row"><button class="btn amber" id="yes">${!lastSec(E) ? "Leave " + secWord(E) : "Submit"}</button><button class="btn ghost" id="no">Keep working</button></div></div>` : ""}
+  ${E.confirm ? `<div class="confirm" style="margin-bottom:12px"><b>${!lastSec(E) ? t("Leave {w} {n}? You can't come back to these questions.", { w: secWord(E), n: E.sec + 1 }) : t("Submit the exam?")}</b>
+    <span class="small">${b - a - answeredInSec ? t("{n} unanswered in this section count as wrong.", { n: b - a - answeredInSec }) : t("Every question in this section is answered.")}</span>
+    <div class="row"><button class="btn amber" id="yes">${!lastSec(E) ? t("Leave {w}", { w: secWord(E) }) : t("Submit")}</button><button class="btn ghost" id="no">${t("Keep working")}</button></div></div>` : ""}
   <article class="sheet">
-    <div class="sheet-head"><div class="id"><span class="k">Question ${E.idx + 1} of ${E.ids.length}</span><span class="d">${esc(DOMAINS[q.domain].name)}</span></div><div class="yr"><small>Tax year</small><b>2025</b></div></div>
+    <div class="sheet-head"><div class="id"><span class="k">${t("Question {n} of {m}", { n: E.idx + 1, m: E.ids.length })}</span><span class="d">${esc(DOMAINS[q.domain].name)}</span></div><div class="yr"><small>${t("Tax year")}</small><b>2025</b></div></div>
     <div class="qbody"><p class="qtext">${esc(q.q)}</p></div>
     <div class="choices">${perm.map((o, i) => `<button class="choice${chosen === o ? " sel" : ""}" data-i="${i}"><span class="L">${"ABCD"[i]}</span><span>${esc(q.choices[o])}</span></button>`).join("")}</div>
-    <div class="actions"><button class="btn" id="prev" ${E.idx <= a ? "disabled" : ""}>‹ Previous</button><button class="btn primary" id="nxt" ${E.idx >= b - 1 ? "disabled" : ""}>Next ›</button>
-      <button class="btn ghost" id="mark">${E.marked[id] ? "Unmark" : "Mark for review"}</button></div>
+    <div class="actions"><button class="btn" id="prev" ${E.idx <= a ? "disabled" : ""}>‹ ${t("Previous")}</button><button class="btn primary" id="nxt" ${E.idx >= b - 1 ? "disabled" : ""}>${t("Next")} ›</button>
+      <button class="btn ghost" id="mark">${E.marked[id] ? t("Unmark") : t("Mark for review")}</button></div>
   </article>
-  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>${secWord(E) === "testlet" ? "Testlet" : "Section"} ${E.sec + 1}</h2><span class="hint">${answeredInSec} of ${b - a} answered</span></div>
+  <section class="card pad" style="margin-top:14px;display:grid;gap:10px"><div class="spread"><h2>${(E.exam || "ea") === "cpa" ? t("Testlet {n}", { n: E.sec + 1 }) : t("Section {n}", { n: E.sec + 1 })}</h2><span class="hint">${t("{n} of {m} answered", { n: answeredInSec, m: b - a })}</span></div>
     <div class="nav">${E.ids.slice(a, b).map((x, k) => `<button data-go="${a + k}" class="${E.ans[x] != null ? "ans" : ""}${a + k === E.idx ? " cur" : ""}${E.marked[x] ? " mk" : ""}">${a + k + 1}</button>`).join("")}</div>
-    <span class="hint">Dark: answered. Dot: marked for review.</span></section>`;
-  const t = $("#timer");
-  examTick = setInterval(() => { const left = examLeft(E); if (!document.body.contains(t)) return clearInterval(examTick); t.textContent = fmt(left); t.classList.toggle("low", left < 10 * MIN); if (left <= 0) { clearInterval(examTick); finishExam(true); } }, 1000);
+    <span class="hint">${t("Dark: answered. Dot: marked for review.")}</span></section>`;
+  const tm = $("#timer");
+  examTick = setInterval(() => { const left = examLeft(E); if (!document.body.contains(tm)) return clearInterval(examTick); tm.textContent = fmt(left); tm.classList.toggle("low", left < 10 * MIN); if (left <= 0) { clearInterval(examTick); finishExam(true); } }, 1000);
   $("#app").querySelectorAll(".choice").forEach(btn => btn.onclick = () => { E.ans[id] = perm[+btn.dataset.i]; save(); if (E.idx < b - 1) { E.idx++; save(); } renderExam(); });
   $("#prev").onclick = () => { E.idx--; save(); renderExam(); };
   $("#nxt").onclick = () => { E.idx++; save(); renderExam(); };
@@ -4075,10 +4500,10 @@ function renderExam() {
 function renderBreak() {
   const E = state.examRun; clearInterval(examTick);
   $("#app").innerHTML = `<section class="card pad" style="display:grid;gap:12px;margin-top:8px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Scheduled break</div><h3 style="font-size:22px">Section ${E.sec} is done</h3>
-    <p style="margin:0">The real exam offers a 10-minute break here, and the clock stops while you take it. Section ${E.sec + 1} is ${E.sections[E.sec][1] - E.sections[E.sec][0]} questions.</p>
-    <p class="muted" style="margin:0">Time left on the exam clock: <b>${fmt(examLeft(E))}</b></p>
-    <div><button class="btn amber" id="resumebrk">Start section ${E.sec + 1}</button></div></section>`;
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Scheduled break")}</div><h3 style="font-size:22px">${t("Section {n} is done", { n: E.sec })}</h3>
+    <p style="margin:0">${t("The real exam offers a 10-minute break here, and the clock stops while you take it. Section {n} is {m} questions.", { n: E.sec + 1, m: E.sections[E.sec][1] - E.sections[E.sec][0] })}</p>
+    <p class="muted" style="margin:0">${t("Time left on the exam clock: {x}", { x: `<b>${fmt(examLeft(E))}</b>` })}</p>
+    <div><button class="btn amber" id="resumebrk">${t("Start section {n}", { n: E.sec + 1 })}</button></div></section>`;
   $("#resumebrk").onclick = () => { E.breakMs += Date.now() - E.onBreak; E.onBreak = null; save(); renderExam(); };
 }
 function finishExam(timeUp) {
@@ -4100,32 +4525,32 @@ function finishExam(timeUp) {
 function freshLine(res) {
   const f = res.fresh; if (!f) return "";
   const seenN = res.n - f.n, seenR = res.right - f.right;
-  if (!f.n) return `<div class="fresh">You had practiced every question in this sim before, so this score partly measures memory of the answers.</div>`;
-  if (f.n < 10) return `<div class="fresh">Only ${f.n} of these questions were new to you (${f.right} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.</div>`;
-  return `<div class="fresh"><b>${pct(f.right / f.n)}%</b> on the ${f.n} questions you'd never seen${seenN ? `, ${pct(seenR / seenN)}% on the ${seenN} you'd practiced` : ""}. The never-seen score is the better read on exam day.</div>`;
+  if (!f.n) return `<div class="fresh">${t("You had practiced every question in this sim before, so this score partly measures memory of the answers.")}</div>`;
+  if (f.n < 10) return `<div class="fresh">${t("Only {n} of these questions were new to you ({r} right), too few to read on their own. The rest you'd practiced, so this score partly measures memory.", { n: f.n, r: f.right })}</div>`;
+  return `<div class="fresh">${seenN ? t("<b>{a}%</b> on the {n} questions you'd never seen, {b}% on the {m} you'd practiced. The never-seen score is the better read on exam day.", { a: pct(f.right / f.n), n: f.n, b: pct(seenR / seenN), m: seenN }) : t("<b>{a}%</b> on the {n} questions you'd never seen. The never-seen score is the better read on exam day.", { a: pct(f.right / f.n), n: f.n })}</div>`;
 }
 function renderResults(res) {
   view = "results";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <section class="card pad" style="display:grid;gap:8px">
-    <div class="eyebrow" style="color:var(--ink-soft)">Part ${res.part} exam sim${res.timeUp ? " · time ran out" : ""}</div>
-    <div class="result-big">${pct(res.score)}%</div><div class="muted">${res.right} of ${res.n} correct</div>
+    <div class="eyebrow" style="color:var(--ink-soft)">${t("Part {p} exam sim", { p: res.part })}${res.timeUp ? t(" · time ran out") : ""}</div>
+    <div class="result-big">${pct(res.score)}%</div><div class="muted">${t("{n} of {m} correct", { n: res.right, m: res.n })}</div>
     ${freshLine(res)}
-    <p class="hint" style="margin:4px 0 0">The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.</p>
+    <p class="hint" style="margin:4px 0 0">${t("The real exam reports a scaled score from 200 to 800, with 500 to pass. The IRS doesn't publish how raw answers convert, so this shows your raw percentage. Read it as practice, not a pass prediction.")}</p>
   </section>
-  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>By content area</h2></div>
-    <table class="res"><thead><tr><th style="padding-left:16px">Area</th><th style="text-align:right">Right</th><th style="text-align:right;padding-right:16px">Score</th></tr></thead>
+  <section class="card" style="margin-top:14px;overflow-x:auto"><div class="pad"><h2>${t("By content area")}</h2></div>
+    <table class="res"><thead><tr><th style="padding-left:16px">${t("Area")}</th><th style="text-align:right">${t("Right")}</th><th style="text-align:right;padding-right:16px">${t("Score")}</th></tr></thead>
     <tbody>${Object.entries(res.per).sort((a, b) => a[0] < b[0] ? -1 : 1).map(([d, v]) => `<tr><td style="padding-left:16px">${esc(DOMAINS[d].name)}</td><td class="n">${v.r}/${v.n}</td><td class="n" style="padding-right:16px;color:${v.r / v.n >= 0.7 ? "var(--good)" : "var(--bad)"}">${pct(v.r / v.n)}%</td></tr>`).join("")}</tbody></table></section>
-  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>Missed questions</h2><span class="hint">${res.missed.length}</span></div>
+  <section class="card" style="margin-top:14px"><div class="pad spread"><h2>${t("Missed questions")}</h2><span class="hint">${res.missed.length}</span></div>
     ${res.missed.map(m => { const q = byId[m.id]; return `<details class="miss"><summary>${esc(q.q)}</summary><div class="body">
-      <span><b>Your answer:</b> ${m.picked == null ? "none" : esc(q.choices[m.picked])}</span><span style="color:var(--good)"><b>Correct:</b> ${esc(q.choices[q.answer])}</span>
-      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">None. Every answer was right.</p>`}
+      <span><b>${t("Your answer:")}</b> ${m.picked == null ? t("none") : esc(q.choices[m.picked])}</span><span style="color:var(--good)"><b>${t("Correct:")}</b> ${esc(q.choices[q.answer])}</span>
+      <span style="font-family:var(--f-read)">${esc(q.explain)}</span><span class="hint">${esc(q.source)}</span></div></details>`; }).join("") || `<p class="pad muted" style="margin:0">${t("None. Every answer was right.")}</p>`}
   </section>`;
   $("#back").onclick = renderHome; window.scrollTo(0, 0);
 }
 
 /* ---------- More ---------- */
-function updateFlagDot() { const n = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? `More, ${n} flagged` : "More"); }
+function updateFlagDot() { const n = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size; $("#flagdot").textContent = $("#tbflag").textContent = n || ""; $("#morebtn").setAttribute("aria-label", n ? t("More, {n} flagged", { n }) : t("More")); }
 function renderMore() {
   if (window.Town && window.Town.unmount) window.Town.unmount();
   view = "more";
@@ -4133,50 +4558,53 @@ function renderMore() {
   const counts = partKeys().filter(isLive).map(p => `${PL(p)}: ${BANK.filter(q => q.part === p).length}`).join(" · ");
   /* daily reminder: one calendar file per half hour lives in reminders/ (made by tools/make_reminders.py) */
   const REM_TIMES = []; for (let h = 5; h < 24; h++) for (const m of ["00", "30"]) REM_TIMES.push(String(h).padStart(2, "0") + m);
-  const fmtT = t => { const h = +t.slice(0, 2); return `${h % 12 || 12}:${t.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
+  const fmtT = x => { const h = +x.slice(0, 2); return LANG === "ja" ? `${h}:${x.slice(2)}` : `${h % 12 || 12}:${x.slice(2)} ${h < 12 ? "AM" : "PM"}`; };
   const rem = state.reminder || {}, remPick = rem.pick || rem.time || "1900";
-  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ Town</button></div>
+  $("#app").innerHTML = `<div class="qbar"><button class="btn ghost" id="back">‹ ${t("Town")}</button></div>
   <div class="stack" style="margin-top:0">
-    <section class="card pad" style="display:grid;gap:10px"><h3>How to use this app</h3>
-      <p class="muted small" style="margin:0">A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.</p>
-      <div class="row"><button class="btn primary" id="guidemore">Watch the guide</button></div></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Launch screen</h3>
-      <p class="muted small" style="margin:0">The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.</p>
-      <div class="row"><button class="btn" id="introreplay">Replay the intro</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">Sound: ${introSoundOn() ? "On" : "Off"}</button><button class="btn" id="intromusic" aria-pressed="${introMusicOn()}">Music: ${introMusicOn() ? "On" : "Off"}</button></div>
-      <p class="hint" style="margin:0">Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Your name</h3>
-      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="First name" value="${esc(state.name || "")}" aria-label="First name"><button class="btn primary" type="submit">Save</button></form>
-      <p class="hint" style="margin:0">Your study buddy says hello with it on Home.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Daily goal</h3>
-      <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${g} a day</button>`).join("")}</div></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Daily reminder</h3>
-      <p class="muted small" style="margin:0">Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating "EA practice" event, and the event links back to this app.</p>
-      <div class="row" style="align-items:center"><label for="remtime" class="small">Remind me at</label>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("How to use this app")}</h3>
+      <p class="muted small" style="margin:0">${t("A 2-minute guide with narration: adding the app to your Home Screen, the town, drills, exam sims and backups.")}</p>
+      <div class="row"><button class="btn primary" id="guidemore">${t("Watch the guide")}</button></div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Launch screen")}</h3>
+      <p class="muted small" style="margin:0">${t("The El ride into the tax town plays each time the app starts. Your phone keeps the app open in the background, so to see it now, replay it here.")}</p>
+      <div class="row"><button class="btn" id="introreplay">${t("Replay the intro")}</button><button class="btn" id="introsound" aria-pressed="${introSoundOn()}">${introSoundOn() ? t("Sound: On") : t("Sound: Off")}</button><button class="btn" id="intromusic" aria-pressed="${introMusicOn()}">${introMusicOn() ? t("Music: On") : t("Music: Off")}</button></div>
+      <p class="hint" style="margin:0">${t("Sound starts at your first tap on the launch screen and follows your phone's silent switch. Music is a boom-bap beat under the ride; turn it off to keep only the effects.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px" id="langcard"><h3>Language · 言語</h3>
+      <div class="row" role="group" aria-label="Language · 言語"><button class="btn${LANG === "en" ? " primary" : ""}" data-lang="en" lang="en" aria-pressed="${LANG === "en"}">English</button><button class="btn${LANG === "ja" ? " primary" : ""}" data-lang="ja" lang="ja" aria-pressed="${LANG === "ja"}">日本語</button></div>
+      <p class="hint" style="margin:0">${t("Menus and buttons change language. Questions, answers and explanations stay in English, as on the exam.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Your name")}</h3>
+      <form class="row" id="nameset"><input id="namemore" class="namein" style="flex:1;min-width:0" autocomplete="given-name" maxlength="24" placeholder="${t("First name")}" value="${esc(state.name || "")}" aria-label="${t("First name")}"><button class="btn primary" type="submit">${t("Save")}</button></form>
+      <p class="hint" style="margin:0">${t("Your study buddy says hello with it on Home.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Daily goal")}</h3>
+      <div class="row">${[10, 20, 30, 50].map(g => `<button class="btn${state.goal === g ? " primary" : ""}" data-goal="${g}">${t("{n} a day", { n: g })}</button>`).join("")}</div></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Daily reminder")}</h3>
+      <p class="muted small" style="margin:0">${t("Get a phone alert at the same time every day. It goes into your phone's Calendar as a repeating \"EA practice\" event, and the event links back to this app.")}</p>
+      <div class="row" style="align-items:center"><label for="remtime" class="small">${t("Remind me at")}</label>
         <select id="remtime" class="btn">${REM_TIMES.map(t => `<option value="${t}"${t === remPick ? " selected" : ""}>${fmtT(t)}</option>`).join("")}</select></div>
-      <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">Add to my calendar</a></div>
-      ${rem.at ? `<p class="small" style="margin:0"><b>You added a ${fmtT(rem.time)} reminder on ${new Date(rem.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}.</b></p>` : ""}
-      <p class="hint" style="margin:0">iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the "EA practice" event in Calendar, then add a new one here.</p></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Figures</h3>
-      <p class="muted small" style="margin:0">Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.</p>
-      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">Linked from ${Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length} questions</span><div><button class="btn" data-figure="${fig}">Open</button></div></div>`).join("")}</section>
-    <section class="card" ><div class="pad spread"><h3>Flagged questions</h3><span class="hint">${flagged.length}</span></div>
-      ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">Copy report for Jose</button></div><textarea id="flagfb" hidden readonly></textarea>
-        ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">Unflag</button></div></div>`).join("")}</div>`
-        : `<p class="pad muted small" style="margin:0;padding-top:0">None. Tap "Flag as wrong" after answering a question that looks wrong, and it shows up here.</p>`}</section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Backup</h3>
-      <p class="muted small" style="margin:0">Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.</p>
+      <div class="row"><a class="btn primary" id="remadd" style="text-decoration:none" href="reminders/ea-practice-${remPick}.ics">${t("Add to my calendar")}</a></div>
+      ${rem.at ? `<p class="small" style="margin:0"><b>${t("You added a {time} reminder on {date}.", { time: fmtT(rem.time), date: new Date(rem.at).toLocaleDateString(LOC, { month: "short", day: "numeric" }) })}</b></p>` : ""}
+      <p class="hint" style="margin:0">${t("iPhone: tap Add All when the event appears. Android: open the downloaded file with your Calendar app. To change the time or stop the reminder, delete the \"EA practice\" event in Calendar, then add a new one here.")}</p></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Figures")}</h3>
+      <p class="muted small" style="margin:0">${t("Drawn machines that show a rule working. Each one also opens from the questions it reproduces, after you answer.")}</p>
+      ${Object.entries(FIGURES).map(([fig, f]) => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><b>${f.title}</b><span class="small">${FIGURE_ABOUT[fig]}</span><span class="hint">${t("Linked from {n} questions", { n: Object.values(MACHINE).filter(list => list.some(([x]) => x === fig)).length })}</span><div><button class="btn" data-figure="${fig}">${t("Open")}</button></div></div>`).join("")}</section>
+    <section class="card" ><div class="pad spread"><h3>${t("Flagged questions")}</h3><span class="hint">${flagged.length}</span></div>
+      ${flagged.length ? `<div class="pad" style="padding-top:0;display:grid;gap:10px"><div><button class="btn amber" id="copyflags">${t("Copy report for Jose")}</button></div><textarea id="flagfb" hidden readonly></textarea>
+        ${flagged.map(q => `<div style="border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px"><span class="hint">${esc(q.id)} · ${esc(DOMAINS[q.domain].name)}</span><span style="font-family:var(--f-read)">${esc(q.q)}</span>${st(q.id).note ? `<span class="small" style="background:var(--warn-soft);padding:6px 8px;border-radius:8px">${esc(st(q.id).note)}</span>` : ""}<div><button class="btn ghost" data-unflag="${esc(q.id)}">${t("Unflag")}</button></div></div>`).join("")}</div>`
+        : `<p class="pad muted small" style="margin:0;padding-top:0">${t("None. Tap \"Flag as wrong\" after answering a question that looks wrong, and it shows up here.")}</p>`}</section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Backup")}</h3>
+      <p class="muted small" style="margin:0">${t("Your progress lives only in this browser. Save a backup file now and then and keep it somewhere safe, like iCloud Drive, Google Drive or your email. Load it on any phone or computer to pick up where you left off.")}</p>
       <p class="small" style="margin:0"><b>${backupLine()}</b></p>
-      <div class="row"><button class="btn primary" id="savefile">Save backup file</button><button class="btn" id="loadfile">Load backup file</button><input type="file" id="fileinput" accept=".json,application/json" hidden></div>
+      <div class="row"><button class="btn primary" id="savefile">${t("Save backup file")}</button><button class="btn" id="loadfile">${t("Load backup file")}</button><input type="file" id="fileinput" accept=".json,application/json" hidden></div>
       <div id="loadconfirm"></div>
-      <p class="hint" style="margin:0">On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.</p>
-      <details><summary class="small" style="cursor:pointer">Copy and paste instead</summary>
-        <div style="display:grid;gap:10px;margin-top:10px"><div class="row"><button class="btn" id="export">Copy backup</button></div><textarea id="exportfb" hidden readonly></textarea>
-        <label for="importtext" class="hint">Restore: paste a backup here. It replaces the progress on this device.</label>
-        <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">Restore</button></div></div></details></section>
-    <section class="card pad" style="display:grid;gap:10px"><h3>Start over</h3><p class="muted small" style="margin:0">Erases every answer, review date, exam and flag on this device.</p>
-      <div class="row" id="resetrow"><button class="btn danger" id="reset">Erase progress</button></div></section>
-    <section class="card pad small muted" style="display:grid;gap:6px"><h3 style="color:var(--ink)">The question bank</h3><span>${BANK.length} questions · ${counts}</span>
-      <span>Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.</span></section>
+      <p class="hint" style="margin:0">${t("On an iPhone, add this app to your Home Screen (Share, then Add to Home Screen). Safari can erase a website's saved data after 7 days of not visiting it; Home Screen apps are exempt.")}</p>
+      <details><summary class="small" style="cursor:pointer">${t("Copy and paste instead")}</summary>
+        <div style="display:grid;gap:10px;margin-top:10px"><div class="row"><button class="btn" id="export">${t("Copy backup")}</button></div><textarea id="exportfb" hidden readonly></textarea>
+        <label for="importtext" class="hint">${t("Restore: paste a backup here. It replaces the progress on this device.")}</label>
+        <textarea id="importtext"></textarea><div class="row"><button class="btn" id="import">${t("Restore")}</button></div></div></details></section>
+    <section class="card pad" style="display:grid;gap:10px"><h3>${t("Start over")}</h3><p class="muted small" style="margin:0">${t("Erases every answer, review date, exam and flag on this device.")}</p>
+      <div class="row" id="resetrow"><button class="btn danger" id="reset">${t("Erase progress")}</button></div></section>
+    <section class="card pad small muted" style="display:grid;gap:6px"><h3 style="color:var(--ink)">${t("The question bank")}</h3><span>${t("{n} questions", { n: BANK.length })} · ${counts}</span>
+      <span>${t("Weights per area come from the PSI Candidate Information Bulletin (revised October 9, 2026). Each question cites the IRS publication, form instructions, Revenue Procedure or Code section it relies on.")}</span></section>
   </div>`;
   $("#back").onclick = renderHome;
   $("#guidemore").onclick = openGuide;
@@ -4184,8 +4612,9 @@ function renderMore() {
   $("#introreplay").onclick = () => { location.href = location.pathname; };
   $("#introsound").onclick = () => { try { localStorage.setItem("eaTaxTown.sound", introSoundOn() ? "off" : "on"); } catch (e) {} renderMore(); };
   $("#intromusic").onclick = () => { try { localStorage.setItem("eaTaxTown.music", introMusicOn() ? "off" : "on"); } catch (e) {} renderMore(); };
+  $("#app").querySelectorAll("[data-lang]").forEach(b => b.onclick = () => { if (b.dataset.lang !== LANG) setLang(b.dataset.lang); });
   $("#app").querySelectorAll("[data-figure]").forEach(b => (b.onclick = () => openMachine(b.dataset.figure, 0)));
-  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? `Saved. Hi, ${state.name}!` : "Name cleared."); };
+  $("#nameset").onsubmit = e => { e.preventDefault(); state.name = $("#namemore").value.trim(); state.nameAsked = true; save(); toast(state.name ? t("Saved. Hi, {name}!", { name: state.name }) : t("Name cleared.")); };
   $("#app").querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { state.goal = +b.dataset.goal; save(); renderMore(); });
   $("#remtime").onchange = e => { state.reminder = Object.assign({}, state.reminder, { pick: e.target.value }); save(); $("#remadd").href = `reminders/ea-practice-${e.target.value}.ics`; };
   $("#remadd").onclick = () => { const t = $("#remtime").value; state.reminder = { pick: t, time: t, at: Date.now() }; save(); setTimeout(() => { if (view === "more") renderMore(); }, 1200); };
@@ -4198,19 +4627,19 @@ function renderMore() {
     const f = e.target.files && e.target.files[0]; if (!f) return;
     const r = new FileReader();
     r.onload = () => {
-      let b; try { b = readBackup(String(r.result)); } catch (err) { toast("That file isn't an Above the Line backup."); return; }
-      const when = b.savedAt ? new Date(b.savedAt).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : "an unknown date";
+      let b; try { b = readBackup(String(r.result)); } catch (err) { toast(t("That file isn't an Above the Line backup.")); return; }
+      const when = b.savedAt ? new Date(b.savedAt).toLocaleString(LOC, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) : t("an unknown date");
       const answered = Object.values(b.state.items).filter(x => x && x.seen).length;
-      $("#loadconfirm").innerHTML = `<div class="confirm"><b>Replace the progress on this device with the backup from ${esc(when)}?</b><span class="small">The backup has ${answered} questions answered. What's on this device now will be replaced.</span><div class="row"><button class="btn amber" id="loadyes">Replace with backup</button><button class="btn ghost" id="loadno">Cancel</button></div></div>`;
-      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); useExam(state.exam); save(); updateFlagDot(); toast("Backup loaded."); renderMore(); };
+      $("#loadconfirm").innerHTML = `<div class="confirm"><b>${t("Replace the progress on this device with the backup from {when}?", { when: esc(when) })}</b><span class="small">${t("The backup has {n} questions answered. What's on this device now will be replaced.", { n: answered })}</span><div class="row"><button class="btn amber" id="loadyes">${t("Replace with backup")}</button><button class="btn ghost" id="loadno">${t("Cancel")}</button></div></div>`;
+      $("#loadyes").onclick = () => { state = Object.assign(blank(), b.state, { lastBackup: b.savedAt || Date.now(), examRun: null }); useExam(state.exam); save(); updateFlagDot(); toast(t("Backup loaded.")); renderMore(); };
       $("#loadno").onclick = () => { $("#loadconfirm").innerHTML = ""; };
     };
     r.readAsText(f); e.target.value = "";
   };
-  $("#import").onclick = () => { try { const s = readBackup($("#importtext").value).state; state = s; useExam(state.exam); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
+  $("#import").onclick = () => { try { const s = readBackup($("#importtext").value).state; state = s; useExam(state.exam); save(); updateFlagDot(); toast(t("Backup restored.")); renderMore(); } catch (e) { toast(t("That isn't a valid backup. Paste the full text you copied.")); } };
   $("#reset").onclick = () => {
-    $("#resetrow").innerHTML = `<span>Erase everything on this device?</span><button class="btn danger" id="ry">Yes, erase</button><button class="btn ghost" id="rn">Cancel</button>`;
-    $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
+    $("#resetrow").innerHTML = `<span>${t("Erase everything on this device?")}</span><button class="btn danger" id="ry">${t("Yes, erase")}</button><button class="btn ghost" id="rn">${t("Cancel")}</button>`;
+    $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast(t("Progress erased.")); renderMore(); };
     $("#rn").onclick = renderMore;
   };
 }
@@ -4256,21 +4685,23 @@ function introMusicOn() { try { return localStorage.getItem("eaTaxTown.music") !
 function introSoundOn() { try { return localStorage.getItem("eaTaxTown.sound") !== "off"; } catch (e) { return true; } }
 function introNotices() {
   const out = [], w = daysTo(WINDOW_END), flags = new Set(BANK.filter(q => st(q.id).flag).map(q => q.id)).size;
-  for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? `${PL(p)} is today. Good luck.` : `${PL(p)} is in ${d} day${d === 1 ? "" : "s"}, on ${fmtDay(iso, { month: "long", day: "numeric" })}.`); }
-  if (!isCpa() && w >= 0) out.push(`The testing window closes February 28, 2027, in ${w} day${w === 1 ? "" : "s"}.`);
+  for (const p of partKeys()) { const iso = examDate(p), d = iso ? daysTo(iso) : -1; if (d >= 0) out.push(d === 0 ? t("{p} is today. Good luck.", { p: PL(p) }) : tn(d, "{p} is in {n} day, on {date}.", "{p} is in {n} days, on {date}.", { p: PL(p), date: fmtDay(iso, { month: "long", day: "numeric" }) })); }
+  if (!isCpa() && w >= 0) out.push(tn(w, "The testing window closes February 28, 2027, in {n} day.", "The testing window closes February 28, 2027, in {n} days."));
   out.push(backupLine());
-  out.push(flags ? `${flags} flagged question${flags === 1 ? " is" : "s are"} waiting in More to be reported.` : "No flagged questions.");
+  out.push(flags ? tn(flags, "{n} flagged question is waiting in More to be reported.", "{n} flagged questions are waiting in More to be reported.") : t("No flagged questions."));
   return out;
 }
 function introGo(where) {
   const toCard = title => { const h = [...document.querySelectorAll("#app h3")].find(e => e.textContent === title); if (h) h.closest("section").scrollIntoView({ block: "start" }); };
   if (where === "progress") { homeTab = "map"; renderHome(); }
   else if (where === "settings") renderMore();
-  else if (where === "report") { renderMore(); toCard("Flagged questions"); }
-  else if (where === "reset") { renderMore(); $("#reset").click(); toCard("Start over"); } /* opens the confirm; nothing is erased from the launch screen */
+  else if (where === "report") { renderMore(); toCard(t("Flagged questions")); }
+  else if (where === "reset") { renderMore(); $("#reset").click(); toCard(t("Start over")); } /* opens the confirm; nothing is erased from the launch screen */
   else renderHome();
 }
+const backToMore = afterLang(); /* read once, so the flag never outlives this load */
 if (state.examRun) renderExam();
+else if (backToMore) renderMore();
 else if (window.Intro && window.Intro.on) { window.Intro.begin({ name: state.name, notices: introNotices, go: introGo }); window.Intro.progress && window.Intro.progress(introProgress()); }
 else renderHome();
 
@@ -5386,10 +5817,10 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     const card = fs && fs.querySelector(".fs-card"); if (!card) return;
     if (!d) { card.hidden = true; return; }
     const b = B[d], names = (window.__townLabels && window.__townLabels().names) || {}, pctv = Math.round(b.target * 100), floors = Math.round(b.H / 4);
-    card.innerHTML = `<div class="fs-card-top"><b>${names[d] || d}</b><button class="sky" type="button" data-fs="unpick" aria-label="Close this card">✕</button></div>
+    card.innerHTML = `<div class="fs-card-top"><b>${names[d] || d}</b><button class="sky" type="button" data-fs="unpick" aria-label="${t("Close this card")}">✕</button></div>
       <div class="fs-bar"><i style="width:${pctv}%"></i></div>
-      <span>${pctv >= 100 ? "Finished: every floor is mastered." : `${pctv}% finished · ${Math.round(floors * b.target)} of ${floors} floors done`}</span>
-      <button class="btn primary" type="button" data-fs="drill">Drill ${names[d] || "this area"}</button>`;
+      <span>${pctv >= 100 ? t("Finished: every floor is mastered.") : t("{n}% finished · {a} of {b} floors done", { n: pctv, a: Math.round(floors * b.target), b: floors })}</span>
+      <button class="btn primary" type="button" data-fs="drill">${names[d] ? t("Drill {name}", { name: names[d] }) : t("Drill this area")}</button>`;
     card.hidden = false;
     const off = CAM.clone().sub(tgt); SPH.setFromVector3(off);
     /* frame the whole tower, a little above center so the card below doesn't cover it */
@@ -5418,19 +5849,19 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
     else if (k === "street") { select(null); flyTo(streetPose(), 1400); }
     else if (k === "unpick") select(null);
     else if (k === "drill") { const d = picked; closeFs(); if (d && window.__townPick) setTimeout(() => window.__townPick(d), 60); }
-    else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? "Day" : "Dusk"; }
+    else if (k === "sky") { const sb = document.getElementById("skybtn"); if (sb) sb.click(); else setSky(skyTarget ? "day" : "dusk"); a.textContent = skyTarget ? t("Day") : t("Dusk"); }
     else if (k.startsWith("view-")) { select(null); flyTo(fsView(k.slice(5))); }
   }
   function openFs() {
     if (fs) return;
     fsPrev = stage;
     const pose = stage ? groundPose(rig.t, rig.yaw + rig.off, rig.pitch, rig.dist / rig.zoom * (aspect < 1.2 ? 1.12 : 1)) : fsView(currentPart);
-    fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", "Your study city in 3D");
+    fs = document.createElement("div"); fs.className = "town-fs"; fs.setAttribute("role", "dialog"); fs.setAttribute("aria-modal", "true"); fs.setAttribute("aria-label", t("Your study city in 3D"));
     fs.innerHTML = `<div class="labels"></div>
-      <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ Close</button>
-        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["FAR", "FAR"], ["AUD", "AUD"], ["TCP", "TCP"], ["ts", "Times Sq"]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", "Times Sq"]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
-      <div class="fs-hint">Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower</div>
-      <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="Face north, up the avenues"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="Stand on the red steps at street level">Street</button><button class="sky" type="button" data-fs="sky">${skyTarget ? "Day" : "Dusk"}</button><button class="sky" type="button" data-fs="home">Reset view</button></div>
+      <div class="fs-top"><button class="sky" type="button" data-fs="close">✕ ${t("Close")}</button>
+        <div class="fs-views">${(exam === "cpa" ? [["REG", "REG"], ["FAR", "FAR"], ["AUD", "AUD"], ["TCP", "TCP"], ["ts", t("Times Sq")]] : [["1", "Part 1"], ["2", "Part 2"], ["3", "Part 3"], ["ts", t("Times Sq")]]).map(([k, l]) => `<button class="sky" type="button" data-fs="view-${k}">${l}</button>`).join("")}</div></div>
+      <div class="fs-hint">${t("Drag to move · pinch to zoom · twist to turn · two fingers up or down to tilt · double-tap to zoom in · tap a tower")}</div>
+      <div class="fs-bottom"><button class="sky fs-compass" type="button" data-fs="north" aria-label="${t("Face north, up the avenues")}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 15.5 12h-7z" fill="#ffd27a"/><path d="M12 21.5 8.5 12h7z" fill="rgba(255,255,255,0.6)"/></svg></button><button class="sky" type="button" data-fs="street" aria-label="${t("Stand on the red steps at street level")}">${t("Street")}</button><button class="sky" type="button" data-fs="sky">${skyTarget ? t("Day") : t("Dusk")}</button><button class="sky" type="button" data-fs="home">${t("Reset view")}</button></div>
       <div class="fs-card" hidden></div>`;
     fs.addEventListener("click", onFsClick);
     document.body.appendChild(fs); document.documentElement.classList.add("town-fs-open");
@@ -5473,7 +5904,7 @@ void main(){ float h = vD.y; vec3 c = mix(hor, mid, smoothstep(0.0, 0.14, h)); c
   function lostMsg(show) {
     if (show && stage && !lostEl) {
       lostEl = document.createElement("div"); lostEl.className = "stage-msg town-lost";
-      lostEl.innerHTML = `<div style="display:grid;gap:10px;justify-items:center"><span>The 3D view was paused by your phone to save memory.</span><button class="sky" type="button">Restart 3D</button></div>`;
+      lostEl.innerHTML = `<div style="display:grid;gap:10px;justify-items:center"><span>${t("The 3D view was paused by your phone to save memory.")}</span><button class="sky" type="button">${t("Restart 3D")}</button></div>`;
       lostEl.querySelector("button").onclick = () => location.reload();
       stage.appendChild(lostEl);
     }

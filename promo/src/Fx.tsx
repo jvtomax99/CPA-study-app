@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Easing, Img, Sequence, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {C, FONT, IW, Phone} from './Phone';
+import {JA, SHOTS} from './lang';
 
 // Effects for the how-to video, in the Interpreter Hub promo's language: a dark city behind
 // everything, neon type, two-line headlines with a highlight box, a phone in 3D with UI cards
@@ -24,7 +25,7 @@ export const Backdrop: React.FC<{src?: string; bright?: number}> = ({src = 'town
   const drift = Math.sin(frame / 160) * 40, zoom = 1.25 + frame / 6000;
   return (
     <AbsoluteFill style={{background: '#06060f', overflow: 'hidden'}}>
-      <Img src={staticFile(`shots/${src}.png`)} style={{position: 'absolute', left: -140 + drift, top: -200, width: 1360, height: 2340, objectFit: 'cover', filter: `blur(16px) saturate(1.3) brightness(${bright})`, transform: `scale(${zoom})`}} />
+      <Img src={staticFile(`${SHOTS}/${src}.png`)} style={{position: 'absolute', left: -140 + drift, top: -200, width: 1360, height: 2340, objectFit: 'cover', filter: `blur(16px) saturate(1.3) brightness(${bright})`, transform: `scale(${zoom})`}} />
       <AbsoluteFill style={{background: 'radial-gradient(120% 80% at 50% 40%, rgba(10,10,30,0.15), rgba(4,4,12,0.85) 75%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(4,4,14,0.7) 0%, rgba(4,4,14,0) 28%, rgba(4,4,14,0) 70%, rgba(4,4,14,0.85) 100%)'}} />
       <Bokeh />
@@ -67,7 +68,7 @@ export const Neon: React.FC<{children: React.ReactNode; color?: string; size?: n
 export const Kicker: React.FC<{text: string; at?: number; color?: string; style?: React.CSSProperties}> = ({text, at = 0, color = CYAN, style}) => {
   const frame = useCurrentFrame();
   const n = Math.floor(interpolate(frame, [at, at + text.length * 1.2], [0, text.length], clamp));
-  return <div style={{fontFamily: MONO, fontSize: 34, letterSpacing: 14, color, textTransform: 'uppercase', textShadow: `0 0 18px ${color}`, ...style}}>{text.slice(0, n)}<span style={{opacity: frame % 16 < 8 && n < text.length ? 1 : 0}}>▍</span></div>;
+  return <div style={{fontFamily: JA ? FONT : MONO, fontSize: JA ? 38 : 34, fontWeight: JA ? 700 : undefined, letterSpacing: JA ? 6 : 14, color, textTransform: 'uppercase', textShadow: `0 0 18px ${color}`, ...style}}>{text.slice(0, n)}<span style={{opacity: frame % 16 < 8 && n < text.length ? 1 : 0}}>▍</span></div>;
 };
 
 /** The Hub's headline: a segmented bar, a white line, then a line in a highlight box. */
@@ -98,6 +99,8 @@ export const WordSubs: React.FC<{text: string; start: number; dur: number}> = ({
   const frame = useCurrentFrame();
   if (frame < start - 3) return null;
   const words = text.replace(/C P A/g, 'CPA').replace(/E A/g, 'EA').replace(/I R S/g, 'IRS').split(' ');
+  // Japanese has no spaces between words: the script's spaces mark the phrases that light up, and aren't shown
+  const gap = (i: number) => !JA || (/[A-Za-z0-9]$/.test(words[i]) && /^[A-Za-z]/.test(words[i + 1] || '')) ? ' ' : '';  // keep the space inside English names
   const total = words.reduce((a, w) => a + w.length + 1, 0);
   let acc = 0;
   const o = interpolate(frame, [start - 3, start + 3], [0, 1], clamp);
@@ -107,7 +110,7 @@ export const WordSubs: React.FC<{text: string; start: number; dur: number}> = ({
         {words.map((w, i) => {
           const t0 = start + (acc / total) * dur; acc += w.length + 1;
           const on = frame >= t0, now = on && frame < start + (acc / total) * dur;
-          return <span key={i} style={{color: now ? C.amber : on ? '#fff' : 'rgba(255,255,255,0.42)'}}>{w} </span>;
+          return <span key={i} style={{color: now ? C.amber : on ? '#fff' : 'rgba(255,255,255,0.42)'}}>{w}{gap(i)}</span>;
         })}
       </div>
     </div>
@@ -179,7 +182,7 @@ export const PopCard: React.FC<Pop & {phoneLeft: number; phoneTop: number; k: nu
   const cx = phoneLeft + (x + w / 2) * k + dx * p, cy = phoneTop + (y + h / 2) * k + dy * p + Math.sin((frame - at) / 14) * 6 * p;
   return (
     <div style={{position: 'absolute', left: cx - (w * s) / 2, top: cy - (h * s) / 2, width: w * s, height: h * s, borderRadius: 26, overflow: 'hidden', opacity: Math.min(1, p * 1.4) * out, border: `4px solid ${color}`, boxShadow: `0 0 0 2px rgba(255,255,255,0.25), 0 0 40px ${color}aa, 0 30px 60px rgba(0,0,0,0.6)`, transform: `perspective(1400px) rotateY(${(1 - p) * -30}deg)`}}>
-      <Img src={staticFile(`shots/${src}.png`)} style={{position: 'absolute', left: -x * s, top: -y * s, width: IW * s, maxWidth: 'none'}} />
+      <Img src={staticFile(`${SHOTS}/${src}.png`)} style={{position: 'absolute', left: -x * s, top: -y * s, width: IW * s, maxWidth: 'none'}} />
       <Sweep at={at + 10} />
     </div>
   );
@@ -200,7 +203,7 @@ export const Phone3D: React.FC<{children: React.ReactNode; left?: number; top?: 
   );
 };
 
-/** Sound bed for the whole video: music under the voice, faded at the ends. */
+/** Sound bed for the whole video: music under the voice, faded at the ends. It loops, for a render longer than the bed (the Japanese one). */
 export const MusicBed: React.FC<{total: number}> = ({total}) => (
-  <Audio src={staticFile('music.mp3')} volume={(f) => 0.16 * interpolate(f, [0, 20, total - 60, total], [0, 1, 1, 0], clamp)} />
+  <Audio src={staticFile('music.mp3')} loop volume={(f) => 0.16 * interpolate(f, [0, 20, total - 60, total], [0, 1, 1, 0], clamp)} />
 );

@@ -15,6 +15,8 @@ Live: https://jvtomax99.github.io/CPA-study-app/
 
 - TO FILL: who studies with it. Jose directs the build; the page footer and README
   name Chris Hidalgo as the copyright holder. Is the real user Jose, Chris, or both?
+- A Japanese friend of Jose's also studies with it (Jose, 2026-11-16). He sits the exam in the US, in
+  English, so he reads the questions in English and the menus in Japanese.
 - TO FILL: which exam comes first (EA or CPA), and the exam dates.
 - What the code assumes they need: short drills on a phone, an honest read on
   readiness, a sim close to the real exam, and a reason to come back each day (the
@@ -114,6 +116,19 @@ summary, exam setup, exam, break and results.
       that is not that release's, leaves the old build working; each off switch
       removes the copy.
 
+16. **Japanese interface** (Jose OK'd the plan, 2026-11-16). More > Language · 言語 switches the
+    menus, buttons, messages, summaries, exam sim screens, the launch screen's words and the study
+    buddy's lines to Japanese. A phone set to Japanese starts in Japanese. Questions, choices,
+    explanations, sources, area names, part and section names, the quote of the day and words drawn
+    in 3D stay English, as on the real exam. Japanese uses the phone's own font, so nothing extra is
+    downloaded. Watch the guide plays a Japanese version of the how-to video (Japanese voice from
+    ElevenLabs, Japanese subtitles, screenshots of the Japanese app).
+    - Done when: with Japanese picked, every screen (Today, City, Map, Exam, More, drill, summaries,
+      exam sim, results, launch screen) shows no English interface text, the question stays English,
+      switching back to English restores every label, saved progress is untouched, and the guide
+      plays in Japanese. `python3 tools/i18n_check.py` passes.
+    - Not in this version: Japanese explanations, Japanese area names, a third language.
+
 ## Not in v1
 
 TO FILL: Jose to confirm this list. Drawn from decisions in `docs/HANDOFF.md`:
@@ -125,6 +140,11 @@ TO FILL: Jose to confirm this list. Drawn from decisions in `docs/HANDOFF.md`:
 - Task-based simulations (TBS) in the CPA sim. The sim is the multiple-choice half.
 
 ## Later
+
+- Japanese explanations after answering (Jose, 2026-11-16): a study aid like TAC's translations of its
+  English questions. Each of the 972 explanations would need translating and checking against its
+  source, so it is its own project.
+- The 3D town's live screens (PART 1 READY, REVIEWS DUE) are English in Japanese mode.
 
 From `docs/HANDOFF.md` ("Still open" and the "Not done" notes):
 
@@ -168,6 +188,9 @@ Built (dates and commits in `git log`):
 - [x] How-to video refreshed for CPA mode (commit 95a0464).
 - [x] Launch film for phones with recorded sound, and the grown-up study buddy
   (footage from Runway, sound from ElevenLabs; 2026-11-14).
+
+- [ ] Japanese interface and Japanese how-to video (2026-11-16): checked off once Jose's friend has
+  tried it.
 
 In progress or next:
 

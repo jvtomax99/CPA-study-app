@@ -50,7 +50,24 @@ npm run finish                                   # level the voice, compress -> 
   Acronyms are written spaced out in the script ("E A", "C P A") so it spells them; subtitles
   close them up again. Section codes stay as codes in the script, and `SAY` in `voice.py` says them
   as words ("Reg", "Far", "Aud") or spelled out ("T C P").
-- **Test stills:** `node tools/stills.mjs 120 900 2400` (frame numbers) writes half-size PNGs to
+- **Japanese version** (`media/how-to-use-ja.mp4`, opened by Watch the guide when the app is in Japanese).
+  Same scenes and timing rules; `src/lang.ts` swaps everything by `--props='{"lang":"ja"}'`: the narration
+  (`src/script-ja.json`, spoken by ElevenLabs into `public/voice-ja/` and `src/timing-ja.json`), the
+  screenshots (`public/shots-ja/`, `src/layout-ja.json`, learner named Ken) and the words drawn over the
+  video (the `W` list in `src/lang.ts`, including the Japanese Safari and Chrome menus). The big outlined
+  background words stay English. Spaces in the Japanese script mark the phrases that light up in the
+  subtitles; they aren't shown or spoken. `SAY` in `tools/voice_ja.py` writes codes and names in kana
+  for the voice (EA, CPA, iPhone, Safari...). Steps, from the repo root after `python3 tools/build.py`:
+
+  ```
+  LANG_APP=ja node promo/tools/capture.cjs         # Japanese screenshots
+  python3 promo/tools/voice_ja.py EXAVITQu4vr4xnSDxMaL   # narration, voice "Sarah" (key: ELEVENLABS_API_KEY)
+  cd promo && sh tools/jpfont.sh                   # Noto Sans JP for the titles (not committed)
+  npm run render:ja && npm run finish:ja           # -> ../media/how-to-use-ja.mp4 and .jpg
+  ```
+
+  The music bed loops, since the Japanese narration runs longer than the English.
+- **Test stills:** `node tools/stills.mjs 120 900 2400` (frame numbers; `LANG_APP=ja` for the Japanese one) writes half-size PNGs to
   `out/stills/`.
 
 In a cloud session, point Remotion at the preinstalled Chromium:

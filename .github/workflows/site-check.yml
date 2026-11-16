@@ -37,3 +37,6 @@ jobs:
       - name: Check the offline copy's list
         # offline-files.json and version.json must match the files in the repo, or phones keep an old copy
         run: python3 tools/build.py --check-offline
+      - name: Check the Japanese interface
+        # every interface text passed to t() needs its Japanese in src/i18n-ja.js, with the same {placeholders}
+        run: python3 tools/i18n_check.py

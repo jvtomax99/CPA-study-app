@@ -1,21 +1,40 @@
 /* Screenshots of the real app for the how-to video, at iPhone size (390 x 844, 2x).
    Run from the repo root after building: node promo/tools/capture.cjs
    Writes promo/public/shots/*.png and promo/src/layout.json. Progress is seeded so the town is partly built.
-   If jsDelivr is blocked, set THREE_DIR to a local three@0.160.0 package folder (as for tools/smoke.js). */
+   If jsDelivr is blocked, set THREE_DIR to a local three@0.160.0 package folder (as for tools/smoke.js).
+   LANG_APP=ja captures the Japanese interface instead, into promo/public/shots-ja/ and promo/src/layout-ja.json, with the
+   learner named Ken; layout keys stay in English (the More cards are named back through src/i18n-ja.js). */
 const { chromium } = require("playwright");
 const fs = require("fs"), path = require("path");
-const OUT = path.resolve("promo/public/shots");
+const JA_ON = process.env.LANG_APP === "ja";
+const OUT = path.resolve(JA_ON ? "promo/public/shots-ja" : "promo/public/shots");
+const jsrc = fs.readFileSync("src/i18n-ja.js", "utf8"), JA = JSON.parse(jsrc.slice(jsrc.indexOf("{"), jsrc.lastIndexOf("}") + 1));
+const T = s => (JA_ON && JA[s]) || s, EN = Object.fromEntries(Object.entries(JA).map(([k, v]) => [v, k]));
 fs.mkdirSync(OUT, { recursive: true });
 
 const seed = require("./seed.cjs");
-const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
+/* the app is served over http from the repo root: opened from a file, the browser blocks the 3D engine's modules
+   (vendor/three/) and the tower models, so the town never loads */
+const http = require("http");
+const TYPES = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg",
+  ".glb": "model/gltf-binary", ".mp4": "video/mp4", ".mp3": "audio/mpeg", ".woff2": "font/woff2", ".hdr": "application/octet-stream", ".webmanifest": "application/manifest+json", ".ics": "text/calendar" };
+const server = http.createServer((req, res) => {
+  const f = path.join(process.cwd(), decodeURIComponent(req.url.split("?")[0]));
+  if (!f.startsWith(process.cwd()) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end(); }
+  const data = fs.readFileSync(f), range = /bytes=(\d+)-(\d*)/.exec(req.headers.range || "");
+  const type = TYPES[path.extname(f)] || "application/octet-stream";
+  if (range) { const a = +range[1], b = range[2] ? +range[2] : data.length - 1; res.writeHead(206, { "Content-Type": type, "Content-Range": `bytes ${a}-${b}/${data.length}`, "Accept-Ranges": "bytes", "Content-Length": b - a + 1 }); return res.end(data.subarray(a, b + 1)); }
+  res.writeHead(200, { "Content-Type": type, "Content-Length": data.length, "Accept-Ranges": "bytes" }); res.end(data);
+}).listen(0);
+const APP = q => `http://localhost:${server.address().port}/index.html?gfx=high&sw=off&` + q;
 
 (async () => {
   const browser = await chromium.launch({ args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--autoplay-policy=no-user-gesture-required"] });
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: JA_ON ? "ja-JP" : "en-US" });
   if (process.env.THREE_DIR) await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.160\.0\/(.*)/, r => r.fulfill({ path: path.join(process.env.THREE_DIR, r.request().url().split("three@0.160.0/")[1]), contentType: "text/javascript" }));
-  const state = seed();
+  const state = seed(); if (JA_ON) state.name = "Ken";
   await ctx.addInitScript(s => { if (!sessionStorage.getItem("seeded")) { localStorage.setItem("eaTaxTown.v2", s); sessionStorage.setItem("seeded", "1"); } }, JSON.stringify(state));
+  await ctx.addInitScript(l => { localStorage.setItem("eaTaxTown.lang", l); }, JA_ON ? "ja" : "en");
   const p = await ctx.newPage();
   p.on("pageerror", e => console.log("pageerror:", e.message));
   const shot = async (name, opts = {}) => { await p.screenshot({ path: path.join(OUT, name + ".png"), ...opts }); console.log("shot", name); };
@@ -43,7 +62,7 @@ const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
      The autoplay flag above lets the film start with sound and no tap, as on a phone after "Tap to play". */
   await p.goto(APP("intro=full")); await p.waitForTimeout(9000); await shot("ride");
   await p.goto(APP("intro=title")); await p.waitForTimeout(25000); await shot("title");
-  layout.title = await rr({ start: ["#intro button, #intro [role=button], #intro *", "Tap to Start"] });
+  layout.title = await rr({ start: ["#intro button, #intro [role=button], #intro *", T("Tap to Start")] });
 
   /* Today, in EA mode */
   await p.goto(APP("intro=0"));
@@ -68,9 +87,9 @@ const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
 
   /* Map and Exam */
   await tab("map"); await shot("map-full", { fullPage: true });
-  layout.map = Object.assign(await rr({ seg: ".partseg", next: [".pane-map *", "Next stop"], head: ".part-head" }, true), { h: await pageH() });
-  layout.map.nextCard = await p.evaluate(() => { const e = [...document.querySelectorAll(".pane-map *")].filter(x => /next stop/i.test(x.textContent) && x.children.length).pop(); if (!e) return null;
-    let c = e; while (c.parentElement && c.getBoundingClientRect().height < 150) c = c.parentElement; const b = c.getBoundingClientRect(); return [Math.round(b.x * 2), Math.round((b.y + scrollY) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]; });
+  layout.map = Object.assign(await rr({ seg: ".partseg", next: [".pane-map *", T("Next stop")], head: ".part-head" }, true), { h: await pageH() });
+  layout.map.nextCard = await p.evaluate(NS => { const e = [...document.querySelectorAll(".pane-map *")].filter(x => x.textContent.includes(NS) && x.children.length).pop(); if (!e) return null;
+    let c = e; while (c.parentElement && c.getBoundingClientRect().height < 150) c = c.parentElement; const b = c.getBoundingClientRect(); return [Math.round(b.x * 2), Math.round((b.y + scrollY) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]; }, T("Next stop"));
   await p.evaluate(() => window.scrollTo(0, 0));
   await tab("exam"); await shot("exam-tab");
   layout.examtab = await rr({ day: ".examday", days: ".ed-days", parts: ".ed-parts", sim: "#examnew^section", simbtn: "#examnew" });
@@ -123,10 +142,10 @@ const APP = q => "file://" + path.resolve("index.html") + "?gfx=high&" + q;
   /* the menu: goal, reminder, backup */
   await p.click("#back"); await p.waitForTimeout(800);
   await p.click("#morebtn"); await p.waitForTimeout(400); await shot("more-full", { fullPage: true });
-  layout.more = await p.evaluate(() => Object.fromEntries([...document.querySelectorAll("#app .stack > section")].map(e => { const b = e.getBoundingClientRect(); return [(e.querySelector("h3,h2") || e).textContent.trim(), [Math.round(b.x * 2), Math.round((b.y + scrollY) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]]; })));
+  layout.more = Object.fromEntries(Object.entries(await p.evaluate(() => Object.fromEntries([...document.querySelectorAll("#app .stack > section")].map(e => { const b = e.getBoundingClientRect(); return [(e.querySelector("h3,h2") || e).textContent.trim(), [Math.round(b.x * 2), Math.round((b.y + scrollY) * 2), Math.round(b.width * 2), Math.round(b.height * 2)]]; })))).map(([k, v]) => [EN[k] || k, v]));
   layout.moreH = await pageH();
-  fs.writeFileSync(path.resolve("promo/src/layout.json"), JSON.stringify(layout, null, 1) + "\n");
+  fs.writeFileSync(path.resolve(JA_ON ? "promo/src/layout-ja.json" : "promo/src/layout.json"), JSON.stringify(layout, null, 1) + "\n");
   console.log(JSON.stringify(layout));
 
-  await browser.close();
+  await browser.close(); server.close();
 })().catch(e => { console.error(e); process.exit(1); });

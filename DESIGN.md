@@ -87,6 +87,9 @@ The app bar title (27px/700), the part line under it, and the whole strip map: s
 ### Launch screen text
 Tap to Start in Inter 17px/700 with 0.04em tracking; the status line 13px/600 with tabular numbers; the side button labels 10px/700 uppercase with 0.06em tracking; the build string 10px/400 in white at 38%, decorative only. Station signs in the 3D use Helvetica 700.
 
+### Japanese — the phone's own font (`:lang(ja)`)
+When the interface is Japanese (More > Language), `--f-ui` and `--f-sign` add Japanese system fonts after Inter and Helvetica: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Meiryo", then the same system fonts as English. Latin letters and numbers stay Inter or Helvetica; kana and kanji come from the phone (Hiragino on iPhone, Noto Sans CJK on Android). No Japanese font is downloaded, so the app and its offline copy stay the same size. Same sizes and weights as English; the river name on the strip map stands upright (`writing-mode: vertical-rl`) instead of turned on its side. Questions, choices and explanations are English in both languages, so `--f-read` has no Japanese fallback. The how-to video's Japanese render uses Noto Sans JP 700 and 900 (`promo/tools/jpfont.sh`).
+
 ### Lora italic and Parisienne — the greeting only
 Lora italic 500 for the buddy's quote, Parisienne for your name. Never anywhere else.
 

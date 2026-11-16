@@ -65,7 +65,7 @@
     let n = Math.floor(Math.random() * (PEP.length - 1));
     if (lastPep >= 0 && n >= lastPep) n++;
     if (lastPep < 0) n = Math.floor(Math.random() * PEP.length);
-    lastPep = n; return PEP[n];
+    lastPep = n; return t(PEP[n]);
   }
 
   const clamp = x => x < 0 ? 0 : x > 1 ? 1 : x;
@@ -129,17 +129,17 @@
   const RING_GLYPHS = ["$", "7", "%", "+", "3", "÷", "=", "9", "×", "Σ", "−", "0"];
   function greeting({ name, pill, extra }) {
     const now = new Date(), h = now.getHours();
-    const hello = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+    const hello = h < 12 ? t("Good morning") : h < 17 ? t("Good afternoon") : t("Good evening");
     const day = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5), [q, who] = QUOTES[day % QUOTES.length];
-    const nm = (name || "").trim(), shown = nm || "Welcome";
+    const nm = (name || "").trim(), shown = nm || t("Welcome");
     const iso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
     const ring = RING_GLYPHS.map((g, i) => { const a = i / RING_GLYPHS.length * TAU - Math.PI / 2;
       return `<span class="rg" style="left:${(50 + 50 * Math.cos(a)).toFixed(2)}%;top:${(50 + 50 * Math.sin(a)).toFixed(2)}%;--i:${i}"><i>${g}</i></span>`; }).join("");
-    return `<section class="greet" aria-label="Greeting">
+    return `<section class="greet" aria-label="${t("Greeting")}">
       <div class="greet-sky" style="background-image:url(&quot;${drawSkyline()}&quot;)"></div>
       <div class="greet-scrim"></div>
       <div class="greet-text">
-        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</time></div>
+        <div class="greet-meta"><span class="greet-eyebrow">${hello}${nm && LANG !== "ja" ? "," : ""}</span><time datetime="${iso}">${now.toLocaleDateString(LOC, { weekday: "short", month: "short", day: "numeric" })}</time></div>
         <h2 class="greet-name${shown.length > 9 ? " is-long" : ""}">${esc(shown)}</h2>
         <div class="greet-row">
           <div class="greet-side">${pill ? `<span class="greet-pill">${pill}</span>` : ""}${extra || ""}</div>
@@ -147,10 +147,10 @@
             <span class="buddy-ring" aria-hidden="true">${ring}</span>
             <span class="buddy-disc" aria-hidden="true"></span>
             <span class="buddy-fig">
-              <button class="buddy-face" id="buddyface" type="button" aria-label="Your study buddy. Tap for a pep talk.">
+              <button class="buddy-face" id="buddyface" type="button" aria-label="${t("Your study buddy. Tap for a pep talk.")}">
                 <span class="buddy-body"><img class="buddy-art" src="${ART}" alt="" width="360" height="464" decoding="async" style="clip-path:${FACE_CLIP}">${FACE_WIN}<span class="buddy-shine" style="clip-path:${FACE_CLIP}"></span></span>
               </button>
-              <button class="buddy-play" id="buddyplay" type="button" aria-label="Play: start a drill"></button>
+              <button class="buddy-play" id="buddyplay" type="button" aria-label="${t("Play: start a drill")}"></button>
               <svg class="bp-lcd" viewBox="0 0 1000 1288.9" aria-hidden="true" focusable="false">${LCD}</svg>
             </span>
             <span class="buddy-glint a" aria-hidden="true">✦</span><span class="buddy-glint b" aria-hidden="true">✦</span>
