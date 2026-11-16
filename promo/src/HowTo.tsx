@@ -194,7 +194,7 @@ const Outro: React.FC<{s: Scene}> = ({s}) => {
       </div>
       <Burst at={6} x={540} y={460} n={24} />
       <div style={{position: 'absolute', left: 70, right: 70, top: 1000, textAlign: 'center'}}>
-        <Neon color={C.amber} size={96} style={{opacity: p}}>{T('Add It to Your Home Screen.')}</Neon>
+        <Neon color={C.amber} size={JA ? 84 : 96} style={{opacity: p}}>{T('Add It to Your Home Screen.')}</Neon>
         <div style={{marginTop: 40, display: 'inline-block', background: C.amber, color: '#140c00', fontFamily: FONT, fontWeight: 900, fontSize: 64, padding: '12px 30px', borderRadius: 14, opacity: l2, transform: `translateY(${(1 - l2) * 30}px)`, boxShadow: `0 0 40px ${C.amber}88`}}>{T('Always Open It There.')}</div>
         <div style={{marginTop: 50, opacity: l2}}><span style={{fontFamily: '"DejaVu Sans Mono", monospace', fontSize: 36, color: '#fff', background: 'rgba(255,255,255,0.12)', border: '2px solid rgba(255,255,255,0.3)', padding: '12px 26px', borderRadius: 40}}>jvtomax99.github.io/CPA-study-app</span></div>
       </div>
