@@ -80,6 +80,11 @@ fonts are in `fonts/`: the page asks no outside server for anything.
    question id, answer log, part, goal, exams, the running exam, exam dates,
    reminder time, name). The older key `eaLedgerDrill.v1` is read once if there is
    no state. A backup file is this state.
+   Every load and every restore (file or paste) goes through `tidy()`, which keeps
+   each field only in the type it should have, because a backup file is anyone's
+   to make (security pass, 2026-11-15). A new field in `state` needs a line in
+   `tidy()`, or it is dropped on the next launch. Checked by
+   `node tools/backup-check.js`.
    At the first answer after the app opens, `askToKeep()` asks the phone to keep
    this data when space runs low (`navigator.storage.persist`); it may refuse.
 3. **Other localStorage keys.** `eaTaxTown.gfx` (town graphics level, kept 7 days),

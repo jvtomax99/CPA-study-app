@@ -69,6 +69,55 @@ let byId = Object.fromEntries(BANK.map(q => [q.id, q]));
 
 /* ---------- state ---------- */
 function blank() { return { v: 2, exam: "ea", items: {}, log: [], part: "1", goal: 20, exams: [], examRun: null, shown: {}, lastBackup: 0, reminder: null, name: "", nameAsked: false, examDates: {} }; }
+/* Saved progress checked field by field (security pass, 2026-11-15). A backup file is
+   anyone's to make: one doctored by someone else and sent to a student could put markup
+   where the app expects a number or a date, and it ran as code on every launch. Each field
+   keeps only the type it should have; anything else falls back to a fresh value. */
+const ID_RE = /^[\w.-]{1,80}$/, DATE_RE = /^\d{4}-\d\d-\d\d$/, HHMM_RE = /^\d{4}$/;
+const num = (v, d = 0) => (typeof v === "number" && isFinite(v) ? v : d);
+// A test on text only: RegExp.test turns a number or an array into text first.
+const is = (re, v) => typeof v === "string" && re.test(v);
+// Keys that would reach an object's prototype are never copied.
+const okKey = k => k !== "__proto__" && k !== "constructor" && k !== "prototype";
+const ownPart = v => typeof v === "string" && (Object.hasOwn(EA_PARTS, v) || Object.hasOwn(CPA_PARTS, v));
+const obj = v => (v && typeof v === "object" && !Array.isArray(v) ? v : {});
+const str = (v, n) => (typeof v === "string" ? v.slice(0, n) : "");
+function tidy(s, keepRun) {
+  const o = blank(), x = obj(s);
+  o.exam = x.exam === "cpa" ? "cpa" : "ea";
+  o.part = ownPart(x.part) ? x.part : "1";
+  if (ownPart(x.eaPart)) o.eaPart = x.eaPart;
+  const g = Math.round(num(x.goal, 20)); o.goal = g >= 1 && g <= 500 ? g : 20;
+  o.name = str(x.name, 60); o.nameAsked = x.nameAsked === true;
+  o.lastBackup = num(x.lastBackup);
+  if (x.sky === "day" || x.sky === "dusk") o.sky = x.sky;
+  for (const [id, v] of Object.entries(obj(x.items))) {
+    if (!okKey(id) || !ID_RE.test(id) || !v || typeof v !== "object") continue;
+    o.items[id] = { box: num(v.box), due: num(v.due), seen: num(v.seen), right: num(v.right), last: num(v.last), flag: v.flag === true, note: str(v.note, 20000) };
+    if (typeof v.flaggedAt === "number") o.items[id].flaggedAt = v.flaggedAt;
+  }
+  o.log = (Array.isArray(x.log) ? x.log : []).filter(e => e && is(ID_RE, e.id)).map(e => Object.assign({ id: e.id, ok: e.ok === true, t: num(e.t), m: is(/^\w{1,12}$/, e.m) ? e.m : "drill" }, e.g === 1 ? { g: 1 } : {}));
+  o.exams = (Array.isArray(x.exams) ? x.exams : []).filter(e => e && typeof e === "object").slice(-30).map(e => {
+    const per = {};
+    for (const [d, v] of Object.entries(obj(e.per))) if (okKey(d) && ID_RE.test(d)) per[d] = { n: num(obj(v).n), r: num(obj(v).r) };
+    const f = e.fresh && typeof e.fresh === "object" ? { n: num(e.fresh.n), right: num(e.fresh.right) } : null;
+    return { t: num(e.t), part: ownPart(e.part) ? e.part : "1", n: num(e.n), right: num(e.right), score: Math.min(1, Math.max(0, num(e.score))), per, timeUp: e.timeUp === true, fresh: f,
+      missed: (Array.isArray(e.missed) ? e.missed : []).filter(m => m && is(ID_RE, m.id)).map(m => ({ id: m.id, picked: typeof m.picked === "number" ? m.picked : null })) };
+  });
+  for (const [d, v] of Object.entries(obj(x.shown))) if (okKey(d) && ID_RE.test(d)) o.shown[d] = num(v);
+  if (x.day && typeof x.day === "object" && is(/^[\w-]{1,20}$/, x.day.k)) {
+    const m = {}; for (const [d, v] of Object.entries(obj(x.day.m))) if (okKey(d) && ID_RE.test(d)) m[d] = num(v);
+    o.day = { k: x.day.k, m };
+  }
+  const r = x.reminder;
+  if (r && typeof r === "object" && (is(HHMM_RE, r.pick) || is(HHMM_RE, r.time))) {
+    o.reminder = { pick: is(HHMM_RE, r.pick) ? r.pick : r.time, time: is(HHMM_RE, r.time) ? r.time : r.pick, at: num(r.at) };
+  }
+  for (const [p, d] of Object.entries(obj(x.examDates))) if (ownPart(p) && is(DATE_RE, d)) o.examDates[p] = d;
+  // An exam in progress comes only from this phone's own saves, never from a backup.
+  if (keepRun && x.examRun && typeof x.examRun === "object") o.examRun = x.examRun;
+  return o;
+}
 function load() {
   let s = null;
   try { const raw = localStorage.getItem(KEY); if (raw) s = JSON.parse(raw); } catch (e) {}
@@ -79,7 +128,7 @@ function load() {
     } catch (e) {}
   }
   if (!s || typeof s !== "object" || typeof s.items !== "object") return blank();
-  return Object.assign(blank(), s);
+  return tidy(s, true);
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 /* Ask the phone to keep the saved progress when it runs low on space, instead of clearing it.
@@ -242,7 +291,7 @@ async function saveBackupFile() {
 function readBackup(text) {
   const o = JSON.parse(text), s = o && o.state && typeof o.state === "object" ? o.state : o;
   if (!s || typeof s.items !== "object") throw new Error("shape");
-  return { state: s, savedAt: (o && o.savedAt) || s.lastBackup || 0 };
+  return { state: tidy(s, false), savedAt: num((o && o.savedAt) || s.lastBackup) };
 }
 async function copyText(text, fb) {
   try { await navigator.clipboard.writeText(text); toast("Copied."); }
@@ -377,7 +426,7 @@ function elLine(p, r) {
 }
 /* ---------- exam day: a date per part, counted down on Today and Exam ---------- */
 const WINDOW_END = "2027-02-28"; /* the July 1, 2026 to February 28, 2027 testing window */
-const examDate = p => (state.examDates || {})[p] || "";
+const examDate = p => (state.examDates && Object.hasOwn(state.examDates, p) && typeof state.examDates[p] === "string" ? state.examDates[p] : "");
 function daysTo(iso) { const [y, m, d] = iso.split("-").map(Number), now = new Date(); now.setHours(0, 0, 0, 0); return Math.round((new Date(y, m - 1, d) - now) / 864e5); }
 const fmtDay = (iso, o) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, o || { month: "short", day: "numeric" }); };
 const bestSim = p => { const s = state.exams.filter(e => String(e.part) === String(p)).map(e => e.score); return s.length ? Math.max(...s) : null; };
@@ -985,7 +1034,7 @@ function renderMore() {
     };
     r.readAsText(f); e.target.value = "";
   };
-  $("#import").onclick = () => { try { const s = JSON.parse($("#importtext").value); if (!s || typeof s.items !== "object") throw 0; s.examRun = null; state = Object.assign(blank(), s); useExam(state.exam); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
+  $("#import").onclick = () => { try { const s = readBackup($("#importtext").value).state; state = s; useExam(state.exam); save(); updateFlagDot(); toast("Backup restored."); renderMore(); } catch (e) { toast("That isn't a valid backup. Paste the full text you copied."); } };
   $("#reset").onclick = () => {
     $("#resetrow").innerHTML = `<span>Erase everything on this device?</span><button class="btn danger" id="ry">Yes, erase</button><button class="btn ghost" id="rn">Cancel</button>`;
     $("#ry").onclick = () => { state = blank(); useExam("ea"); save(); updateFlagDot(); toast("Progress erased."); renderMore(); };
