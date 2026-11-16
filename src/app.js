@@ -1105,7 +1105,8 @@ function introGo(where) {
   else if (where === "reset") { renderMore(); $("#reset").click(); toCard(t("Start over")); } /* opens the confirm; nothing is erased from the launch screen */
   else renderHome();
 }
+const backToMore = afterLang(); /* read once, so the flag never outlives this load */
 if (state.examRun) renderExam();
-else if (afterLang()) renderMore();
+else if (backToMore) renderMore();
 else if (window.Intro && window.Intro.on) { window.Intro.begin({ name: state.name, notices: introNotices, go: introGo }); window.Intro.progress && window.Intro.progress(introProgress()); }
 else renderHome();

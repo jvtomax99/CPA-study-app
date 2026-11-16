@@ -100,7 +100,7 @@ export const WordSubs: React.FC<{text: string; start: number; dur: number}> = ({
   if (frame < start - 3) return null;
   const words = text.replace(/C P A/g, 'CPA').replace(/E A/g, 'EA').replace(/I R S/g, 'IRS').split(' ');
   // Japanese has no spaces between words: the script's spaces mark the phrases that light up, and aren't shown
-  const gap = JA ? '' : ' ';
+  const gap = (i: number) => !JA || (/[A-Za-z0-9]$/.test(words[i]) && /^[A-Za-z]/.test(words[i + 1] || '')) ? ' ' : '';  // keep the space inside English names
   const total = words.reduce((a, w) => a + w.length + 1, 0);
   let acc = 0;
   const o = interpolate(frame, [start - 3, start + 3], [0, 1], clamp);
@@ -110,7 +110,7 @@ export const WordSubs: React.FC<{text: string; start: number; dur: number}> = ({
         {words.map((w, i) => {
           const t0 = start + (acc / total) * dur; acc += w.length + 1;
           const on = frame >= t0, now = on && frame < start + (acc / total) * dur;
-          return <span key={i} style={{color: now ? C.amber : on ? '#fff' : 'rgba(255,255,255,0.42)'}}>{w}{gap}</span>;
+          return <span key={i} style={{color: now ? C.amber : on ? '#fff' : 'rgba(255,255,255,0.42)'}}>{w}{gap(i)}</span>;
         })}
       </div>
     </div>

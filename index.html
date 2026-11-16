@@ -199,7 +199,7 @@
    phone's own Japanese font draws the rest (Hiragino on iPhone, Noto Sans CJK on Android, Yu Gothic on Windows), so no
    Japanese font is downloaded. Listed by name so a browser never picks a Chinese font for the same characters. */
 :root:lang(ja) {
-  --f-ui: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  --f-ui: "Inter", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", "Meiryo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --f-sign: "Helvetica Neue", "Inter", "Hiragino Sans", "Noto Sans JP", "Noto Sans CJK JP", "Yu Gothic UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
@@ -2069,7 +2069,7 @@ if (LANG !== "en") {
   const NAMES = ["Individuals", "Businesses", "Representation"];
   const film = { on: false, v: null, shot: -1, endedAt: 0, tried: false, lastT: -1, lastMove: 0 };
   let stationI = 0, waiting = false, phase = "wait", has3d = false, failed3d = false, queued = false, exiting = false, scene = null, go = null, notices = () => [];
-  $i("#inbuild").textContent = "2026.11.16 · 28b8f37 · 972 questions";
+  $i("#inbuild").textContent = "2026.11.16 · b981acf · 972 questions";
   const setPhase = p => {
     phase = p; el.dataset.phase = p;
     el.classList.toggle("hero", p === "hero");
@@ -4699,8 +4699,9 @@ function introGo(where) {
   else if (where === "reset") { renderMore(); $("#reset").click(); toCard(t("Start over")); } /* opens the confirm; nothing is erased from the launch screen */
   else renderHome();
 }
+const backToMore = afterLang(); /* read once, so the flag never outlives this load */
 if (state.examRun) renderExam();
-else if (afterLang()) renderMore();
+else if (backToMore) renderMore();
 else if (window.Intro && window.Intro.on) { window.Intro.begin({ name: state.name, notices: introNotices, go: introGo }); window.Intro.progress && window.Intro.progress(introProgress()); }
 else renderHome();
 

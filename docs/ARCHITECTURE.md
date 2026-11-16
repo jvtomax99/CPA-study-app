@@ -60,7 +60,7 @@ fonts are in `fonts/`: the page asks no outside server for anything.
 | `tools/build.py` | 58 | Builds `index.html` from `src/` |
 | `tools/smoke.js` | 190 | Headless test; run after building |
 | `tools/tsq_map.py` | 113 | OpenStreetMap download to `src/tsq-map.json` |
-| `tools/i18n_check.py` | 39 | Checks every interface text has its Japanese, with the same placeholders |
+| `tools/i18n_check.py` | 59 | Checks every interface text has its Japanese, with the same placeholders |
 | `tools/abbrev.py` | 262 | Checks abbreviations are spelled out (`--fix`) |
 | `tools/blender/towers.py` | 237 | Tower models (`pip install bpy==5.2.3`) |
 | `tools/blender/intro_plate.py` | 536 | The Tap to Start render |
